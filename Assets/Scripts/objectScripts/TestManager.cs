@@ -80,9 +80,6 @@ public class TestManager : MonoBehaviour
             StartCoroutine(Transition(SceneManager.GetActiveScene().buildIndex));
             restarting = false;
         }
-
-        Debug.Log(isPaused);
-
 		
     }
 

@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading;
-using JetBrains.Annotations;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Unity.Mathematics;
 
 public class PlayerController : MonoBehaviour
 {
@@ -58,6 +55,7 @@ public class PlayerController : MonoBehaviour
     #region movements
     [Header("Movement")]
     public bool canMove = true;
+    public bool isMobileControls;
     [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
     public float horizontal, vertical;
@@ -115,6 +113,9 @@ public class PlayerController : MonoBehaviour
 
 	#endregion
 
+    private Vector2 touchPos;
+    private bool formChanged;
+
 	private void Start(){
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamControllerV2>();
         groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
@@ -160,21 +161,27 @@ public class PlayerController : MonoBehaviour
         soundTriggerTwo.SetActive(true);
 
     }
+
         
     // Update is called once per frame
     void Update()
     {
+        //mobileControls();
         RespawnParse();
         PlayerStopMoving();
 
         if (canMove) 
         {
-            horizontal = Input.GetAxisRaw("Horizontal");
-            vertical = Input.GetAxisRaw("Vertical");
+            if(!isMobileControls){
+                horizontal = Input.GetAxisRaw("Horizontal");
+            }else{
+                horizontal = MobileJoystick.instance.mobileInput();
+            }
+            //vertical = Input.GetAxisRaw("Vertical");
             Movements();
         }
 
-        if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
+        if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey) || formChanged)
         {
             if (!devControl)
             {
@@ -201,8 +208,14 @@ public class PlayerController : MonoBehaviour
             print(curForm);
         }
 
-        LatestInput((int)horizontal, (int)vertical);
+        LatestInput((int)horizontal);
         
+    }
+
+    public void formChangeButton(){
+        if(!formChanged){
+            formChanged = true;
+        }
     }
 
     private void FixedUpdate() {
@@ -235,7 +248,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void LatestInput(int horizontalInput, int verticalInput){//Finds the latest input for vertical and horizontal
+    private void LatestInput(int horizontalInput){//Finds the latest input for vertical and horizontal
         if (horizontalInput != 0)
         {
             int i = horizontalInput;
@@ -246,19 +259,20 @@ public class PlayerController : MonoBehaviour
             horiLatestInput = 0;
         }
 
-        if (verticalInput != 0)
-        {
-            int i = verticalInput;
-            vertLatestInput = i;
-        }
-        else
-        {
-            vertLatestInput = 0;
-        }
+        // if (verticalInput != 0)
+        // {
+        //     int i = verticalInput;
+        //     vertLatestInput = i;
+        // }
+        // else
+        // {
+        //     vertLatestInput = 0;
+        // }
     }
 
     public void ChangeForm(int playerFormNum)
     {
+        formChanged = false;
         playerForm = (playerForms)playerFormNum;
         FormSettings();
 
