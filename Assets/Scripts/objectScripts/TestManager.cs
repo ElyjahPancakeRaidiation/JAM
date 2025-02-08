@@ -23,19 +23,34 @@ public class TestManager : MonoBehaviour
 
     [Header("Audio")]
     public GameObject musicChanger;
+    public GameObject musicChangerTwo;
+
+    [Header("Level 3 Respawn")]
+    [SerializeField]private Animator respawnAnim;
+    [SerializeField]private AnimationClip respawnStart, respawnEnd;
 
 
     
     // Start is called before the first frame update
     
     private void Start() {
-        buttonCotainer = GameObject.Find("ContentArea");
-        exitBall.SetActive(false);
-        buttonCotainer.SetActive(false);
-        buttonConfig = false;
-        player = GameObject.Find("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
         pc = player.GetComponent<PlayerController>();
-        musicChanger.SetActive(true);
+        respawnAnim.gameObject.SetActive(false);
+        //buttonCotainer = GameObject.Find("ContentArea");
+        //buttonCotainer.SetActive(false);
+        exitBall.SetActive(false);
+        buttonConfig = false;
+
+        try
+        {
+            musicChanger.SetActive(true);
+        }
+        catch (System.Exception)
+        {
+            return;
+        }
+        musicChangerTwo.SetActive(true);
     }
 
     private void Update() {
@@ -65,8 +80,7 @@ public class TestManager : MonoBehaviour
             StartCoroutine(Transition(SceneManager.GetActiveScene().buildIndex));
             restarting = false;
         }
-
-        Debug.Log(isPaused);
+		
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -86,6 +100,19 @@ public class TestManager : MonoBehaviour
         yield return new WaitForSeconds(start.length);
         SceneManager.LoadScene(scene);
         transitioned = false;
+    }
+
+    public IEnumerator RespawnLevel3(){
+        respawnAnim.gameObject.SetActive(true);
+        yield return new WaitForSeconds(respawnStart.length);
+        pc.canMove = false;
+        player.transform.position = pc.spawner.transform.position;
+        yield return new WaitForSeconds(0.6f);
+        respawnAnim.SetTrigger("RespawnEnd");
+        yield return new WaitForSeconds(respawnEnd.length);
+        respawnAnim.ResetTrigger("RespawnEnd");
+        respawnAnim.gameObject.SetActive(false);
+
     }
 
     private IEnumerator ExitTransition(){
@@ -121,6 +148,17 @@ public class TestManager : MonoBehaviour
 		}
     }
 
+   /* public void MusicTriggerEnd()
+    {
+        if (pc.musicHasChangedOne)
+		{
+            musicChanger.SetActive(false);
+		}
+		if (pc.musicHasChangedTwo)
+		{
+           Destroy(musicChangerTwo);
+		}
+    }*/
    /* public void ButtonExit() 
     {
         buttonConfig = true;

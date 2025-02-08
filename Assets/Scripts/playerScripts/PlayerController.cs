@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading;
-using JetBrains.Annotations;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Unity.Mathematics;
 
 public class PlayerController : MonoBehaviour
 {
+
     #region General
     [Header("General")]
     Abilities abilityScript;
@@ -23,14 +21,17 @@ public class PlayerController : MonoBehaviour
     public float textOffsetX;
     public float textOffsetY;
     public Transform spherePoint;
-    public GameManager gm;
+    public TestManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
     [SerializeField]private Animator anim;
     public float jumpTime;
     public AudioManagerScript AMS;
 
-    public bool musicHasChanged = false;
+/*    public bool musicHasChangedOne = false;
+    public bool musicHasChangedTwo = false;*/
+    public GameObject soundTrigger;
+    public GameObject soundTriggerTwo;
 
     private static bool playerDead;
 
@@ -54,6 +55,7 @@ public class PlayerController : MonoBehaviour
     #region movements
     [Header("Movement")]
     public bool canMove = true;
+    public bool isMobileControls;
     [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
     public float horizontal, vertical;
@@ -111,6 +113,9 @@ public class PlayerController : MonoBehaviour
 
 	#endregion
 
+    private Vector2 touchPos;
+    private bool formChanged;
+
 	private void Start(){
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamControllerV2>();
         groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
@@ -122,10 +127,19 @@ public class PlayerController : MonoBehaviour
         playerForm = playerForms.Ball;
         FormSettings();
         AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
-        if (thoughtBubble != null)
+        try
+        {
+            thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
+        }
+        catch (System.Exception)
+        {
+            return;
+        }
+        if (thoughtBub != null)
         {
             thoughtBub.enabled = false;
         }else{
+            Debug.LogError("Thought bubble variable is empty.");
             return;
         }
 
@@ -134,25 +148,40 @@ public class PlayerController : MonoBehaviour
             playerPieces[0] = true;
             playerPieces[1] = false;
         }
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<TestManager>();
+        if (gm == null)
+        {
+            return;
+        }
 
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         //guideText.text = "";
-        
+
+        soundTrigger.SetActive(true);
+        soundTriggerTwo.SetActive(true);
+
     }
+
         
     // Update is called once per frame
     void Update()
     {
+        //mobileControls();
         RespawnParse();
+        PlayerStopMoving();
 
         if (canMove) 
         {
-            horizontal = Input.GetAxisRaw("Horizontal");
-            vertical = Input.GetAxisRaw("Vertical");
+            if(!isMobileControls){
+                horizontal = Input.GetAxisRaw("Horizontal");
+            }else{
+                horizontal = MobileJoystick.instance.mobileInput();
+            }
+            //vertical = Input.GetAxisRaw("Vertical");
             Movements();
         }
 
-        if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
+        if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey) || formChanged)
         {
             if (!devControl)
             {
@@ -179,9 +208,14 @@ public class PlayerController : MonoBehaviour
             print(curForm);
         }
 
-        LatestInput((int)horizontal, (int)vertical);
-        Debug.Log(thoughtBub.enabled);
+        LatestInput((int)horizontal);
         
+    }
+
+    public void formChangeButton(){
+        if(!formChanged){
+            formChanged = true;
+        }
     }
 
     private void FixedUpdate() {
@@ -214,7 +248,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void LatestInput(int horizontalInput, int verticalInput){//Finds the latest input for vertical and horizontal
+    private void LatestInput(int horizontalInput){//Finds the latest input for vertical and horizontal
         if (horizontalInput != 0)
         {
             int i = horizontalInput;
@@ -225,19 +259,20 @@ public class PlayerController : MonoBehaviour
             horiLatestInput = 0;
         }
 
-        if (verticalInput != 0)
-        {
-            int i = verticalInput;
-            vertLatestInput = i;
-        }
-        else
-        {
-            vertLatestInput = 0;
-        }
+        // if (verticalInput != 0)
+        // {
+        //     int i = verticalInput;
+        //     vertLatestInput = i;
+        // }
+        // else
+        // {
+        //     vertLatestInput = 0;
+        // }
     }
 
     public void ChangeForm(int playerFormNum)
     {
+        formChanged = false;
         playerForm = (playerForms)playerFormNum;
         FormSettings();
 
@@ -365,14 +400,13 @@ public class PlayerController : MonoBehaviour
             Collider2D circleCol = circleCols[i];
 			if (circleCol == spawner || circleCol == null)
 			{
-                continue; ;
+                continue; 
 			}
 
             spawner = circleCol.gameObject;
             break;
 		}
 
-        Debug.Log("The spawner current avalible is" + spawner);
     }
 
     private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
@@ -392,13 +426,11 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity > 0.02f)
                 {
                     rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                    print("Off ground and going right");
                 }
             }else if(horizontal == -1){
                 if (rb.angularVelocity < -0.02f)
                 {
                     rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                    print("Off ground and going right");
                 }
             }
         }
@@ -421,7 +453,6 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity < -rotChangePointMax)
                 {
                     canBoostRotSpeed = true;
-                    print("going Right at negative");
                 }
                 break;
 
@@ -441,7 +472,6 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity > rotChangePointMax)
                 {
                     canBoostRotSpeed = true;
-                    print("going Left at positive");
                 }
                 break;
             
@@ -459,15 +489,26 @@ public class PlayerController : MonoBehaviour
 		{
             case "Spike":
                 Debug.Log("dead");
-                this.transform.position = spawner.transform.position;
+                StartCoroutine(PlayDead());
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = 0;
-                playerDead = true;
                 break;
             
             
 		}
 	}
+
+    private void OnTriggerEnter2D(Collider2D other) {//For level 3 death valley
+        switch (other.gameObject.tag)
+		{
+            case "Spike":
+                Debug.Log("dead");
+                StartCoroutine(PlayDead());
+                //rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0;
+                break;
+		}
+    }
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
@@ -499,13 +540,24 @@ public class PlayerController : MonoBehaviour
            AMS.currentMusic = AMS.soundTrack[1];
            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
            AMS.soundTrackSource.volume = 0.55f;
-           musicHasChanged = true;
+           soundTrigger.SetActive(false);
            
 
         }
-               
-                
-	}
+
+        if (collision.tag == "MusicChange2")
+        {
+            AMS.soundTrackSource.Stop();
+            AMS.currentMusic = AMS.soundTrack[2];
+            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
+            AMS.soundTrackSource.volume = 0.55f;
+            soundTriggerTwo.SetActive(false);
+
+
+        }
+
+
+    }
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
@@ -522,6 +574,28 @@ public class PlayerController : MonoBehaviour
         }
 
 	}
+
+    private void PlayerStopMoving() 
+    {
+		if (playerDead)
+		{
+            canMove = false;
+		}
+		if (!playerDead)
+		{
+            canMove = true;
+		}
+    }
+
+    public IEnumerator PlayDead() 
+    {
+        playerDead = true;
+        StartCoroutine(gm.RespawnLevel3());
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        canMove = true;
+        playerDead = false;
+
+    }
 
 
 }
