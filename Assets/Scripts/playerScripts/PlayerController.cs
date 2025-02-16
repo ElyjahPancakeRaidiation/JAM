@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Mathematics;
+using System.Threading;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,10 +17,6 @@ public class PlayerController : MonoBehaviour
     public KeyCode rightformChangeKey;
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
-    public float timer;
-    [SerializeField]public int maxTime; //Can adjust the time it takes for text to appear accordingly
-    public float textOffsetX;
-    public float textOffsetY;
     public Transform spherePoint;
     public TestManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
@@ -28,48 +25,34 @@ public class PlayerController : MonoBehaviour
     public float jumpTime;
     public AudioManagerScript AMS;
 
-/*    public bool musicHasChangedOne = false;
-    public bool musicHasChangedTwo = false;*/
-    public GameObject soundTrigger;
-    public GameObject soundTriggerTwo;
-
-    private static bool playerDead;
-
-    public Collider2D circleCol; // checks for all colliders
+    public Collider2D circleCol; // checks for all colliders //NOTE - do we need this?
     public Collider2D vineCol;
     
 
     public GameObject spawner;
-    public GameObject player;
     public GameObject grabOn;
-
-    public TMP_Text guideText;
-    public Image thoughtBub;
-    [SerializeField] GameObject thoughtBubble;
-    public IEnumerator thoughtBubbleTime;
 
     IEnumerator playingSound;
     private bool soundIsPlaying;
-    [SerializeField]public CamControllerV2 cam;
+    [SerializeField]public CamControllerV2 cam;//NOTE - Change script name and get rid of old cam controller
     #endregion
+
     #region movements
     [Header("Movement")]
     public bool canMove = true;
-    public bool isMobileControls;
     [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
     public float horizontal, vertical;
-    public int horiLatestInput = 1, vertLatestInput = 0;
+    public int horiLatestInput = 1;
     public float speed,jumpSpeedX,jumpSpeedY;
     [SerializeField]private float bonusRotationSpeed;
     [SerializeField]private float rotChangePointMax;//The max amount rb rotation can get to before giving a boost when changing dir
     [SerializeField]private float rotChangePointMin;//The minimal amount rb rotation can get to before stoping the boost when changing dir
     private bool canBoostRotSpeed;
 
-    [Header("Interaction")]
-    private Collider2D interactCol;
-    [SerializeField]public float interactRadius;
-    [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground
+    [Header("Respawn variables(Level 3)")]
+    [SerializeField]public float respawnRadius;
+    [SerializeField]public LayerMask respawnMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground
     
     
     [Header("Player Forms")]
@@ -113,76 +96,49 @@ public class PlayerController : MonoBehaviour
 
 	#endregion
 
-    private Vector2 touchPos;
     private bool formChanged;
 
 	private void Start(){
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<TestManager>();
+        if (gm == null)
+        {
+            return;
+        }
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamControllerV2>();
         groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
-        player = GameObject.FindGameObjectWithTag("Player");
         abilityScript = GetComponent<Abilities>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         playerForm = playerForms.Ball;
         FormSettings();
         AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
-        try
-        {
-            thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
-        }
-        catch (System.Exception)
-        {
-            return;
-        }
-        if (thoughtBub != null)
-        {
-            thoughtBub.enabled = false;
-        }else{
-            Debug.LogError("Thought bubble variable is empty.");
-            return;
-        }
 
         if (!devControl)
         {
             playerPieces[0] = true;
             playerPieces[1] = false;
         }
-        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<TestManager>();
-        if (gm == null)
-        {
-            return;
-        }
-
-        //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        //guideText.text = "";
-
-        soundTrigger.SetActive(true);
-        soundTriggerTwo.SetActive(true);
-
     }
 
         
     // Update is called once per frame
     void Update()
     {
-        //mobileControls();
-        RespawnParse();
-        PlayerStopMoving();
 
         if (canMove) 
         {
-            if(!isMobileControls){
+            if(!gm.isMobileControls){
                 horizontal = Input.GetAxisRaw("Horizontal");
             }else{
                 horizontal = MobileJoystick.instance.mobileInput();
             }
-            //vertical = Input.GetAxisRaw("Vertical");
+
             Movements();
         }
 
         if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey) || formChanged)
-        {
+        {//NOTE - Looks weirdly complicated try to recode this
             if (!devControl)
             {
                
@@ -205,7 +161,6 @@ public class PlayerController : MonoBehaviour
                 }
                 ChangeForm(curForm);//Controlls the changing of the players form
             }
-            print(curForm);
         }
 
         LatestInput((int)horizontal);
@@ -221,7 +176,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate() {
 
         if (canMove){
-            interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
 
             if (!ignoreResistences)
             {
@@ -238,7 +192,7 @@ public class PlayerController : MonoBehaviour
 
         if (rb.velocity.x > 1.5f || rb.velocity.x < -1.5)//the game will register if it is moving when its past a certain speed
         {
-            isMoving = true;
+            isMoving = true;//only used for the sfx of moving in the grass.
         }
         else
         {
@@ -248,7 +202,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void LatestInput(int horizontalInput){//Finds the latest input for vertical and horizontal
+    private void LatestInput(int horizontalInput){//Finds the latest input for horizontal
         if (horizontalInput != 0)
         {
             int i = horizontalInput;
@@ -258,16 +212,6 @@ public class PlayerController : MonoBehaviour
         {
             horiLatestInput = 0;
         }
-
-        // if (verticalInput != 0)
-        // {
-        //     int i = verticalInput;
-        //     vertLatestInput = i;
-        // }
-        // else
-        // {
-        //     vertLatestInput = 0;
-        // }
     }
 
     public void ChangeForm(int playerFormNum)
@@ -277,6 +221,7 @@ public class PlayerController : MonoBehaviour
         FormSettings();
 
     }
+    // NOTE - Could this be turned into struct? Research more about structs
     void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
             switch (playerForm)
             {
@@ -347,7 +292,6 @@ public class PlayerController : MonoBehaviour
                         if (canJump)
                         {
                             canJump = false;
-                            print("being called");
                             jumping = Jump();
                             StartCoroutine(jumping);
                         }
@@ -392,21 +336,8 @@ public class PlayerController : MonoBehaviour
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
     }
 
-    void RespawnParse()
-    {
-        Collider2D[] circleCols = Physics2D.OverlapCircleAll(spherePoint.transform.position, interactRadius, interactMask);
-		for (int i = 0; i < circleCols.Length; i++)
-		{
-            Collider2D circleCol = circleCols[i];
-			if (circleCol == spawner || circleCol == null)
-			{
-                continue; 
-			}
-
-            spawner = circleCol.gameObject;
-            break;
-		}
-
+    public void setRespawn(GameObject spawner){
+        this.spawner = spawner;
     }
 
     private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
@@ -480,93 +411,48 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()  
     {
-        Gizmos.DrawWireSphere(transform.position, interactRadius);
+        Gizmos.DrawWireSphere(spherePoint.transform.position, respawnRadius);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
 	{
-		switch (collision.gameObject.tag)
-		{
-            case "Spike":
-                Debug.Log("dead");
-                StartCoroutine(PlayDead());
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = 0;
-                break;
-            
-            
-		}
+        if(collision.gameObject.tag == "Spike"){
+            Debug.Log("dead");
+            StartCoroutine(PlayDead());
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = 0;
+        }
 	}
 
     private void OnTriggerEnter2D(Collider2D other) {//For level 3 death valley
-        switch (other.gameObject.tag)
-		{
-            case "Spike":
-                Debug.Log("dead");
-                StartCoroutine(PlayDead());
-                //rb.velocity = Vector3.zero;
-                rb.angularVelocity = 0;
-                break;
-		}
+        if(other.gameObject.tag == "Spike"){
+            Debug.Log("dead");
+            StartCoroutine(PlayDead());
+            //rb.velocity = Vector3.zero;
+            rb.angularVelocity = 0;
+        }
     }
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-		if (collision.tag == "Guide")
-		{
-			timer += Time.deltaTime;
-			if (timer >= maxTime)
-			{
-                thoughtBub.enabled = true;
-            }
-			else
-			{
-                thoughtBub.enabled = false;
-			}
-		}
-		if (collision.tag == "sfx")
-		{
-            if (!soundIsPlaying && isMoving)
-            {
-                playingSound = PlaySound(0.6f);
-                StartCoroutine(playingSound);
-                soundIsPlaying = true;
-            }
+        
+        switch (collision.tag)
+        {
+            case "sfx":
+                if (!soundIsPlaying && isMoving)
+                {
+                    playingSound = PlaySound(0.6f);
+                    StartCoroutine(playingSound);
+                    soundIsPlaying = true;
+                }
+                break;
             
-		}
-        if(collision.tag == "MusicChange" )
-        {
-           AMS.soundTrackSource.Stop();
-           AMS.currentMusic = AMS.soundTrack[1];
-           AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
-           AMS.soundTrackSource.volume = 0.55f;
-           soundTrigger.SetActive(false);
-           
-
         }
-
-        if (collision.tag == "MusicChange2")
-        {
-            AMS.soundTrackSource.Stop();
-            AMS.currentMusic = AMS.soundTrack[2];
-            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
-            AMS.soundTrackSource.volume = 0.55f;
-            soundTriggerTwo.SetActive(false);
-
-
-        }
-
 
     }
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-        if (collision.tag == "Guide")
-        {
-            thoughtBub.enabled = false;
-            timer = 0;
-        }
-
         if (collision.tag == "sfx")
         {
             StopCoroutine(playingSound);
@@ -575,25 +461,12 @@ public class PlayerController : MonoBehaviour
 
 	}
 
-    private void PlayerStopMoving() 
-    {
-		if (playerDead)
-		{
-            canMove = false;
-		}
-		if (!playerDead)
-		{
-            canMove = true;
-		}
-    }
-
     public IEnumerator PlayDead() 
     {
-        playerDead = true;
+        canMove = false;
         StartCoroutine(gm.RespawnLevel3());
         yield return new WaitUntil(() => groundedScript.isGrounded());
         canMove = true;
-        playerDead = false;
 
     }
 

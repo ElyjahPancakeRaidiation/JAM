@@ -90,7 +90,7 @@ public class CamControllerV2 : MonoBehaviour
     private void FollowPlayer(float speed){
 
         target = playerTarget.position + offset;
-        transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, speed);
+        transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, speed * Time.deltaTime);
         transform.position = new Vector3
         (
             Mathf.Clamp(transform.position.x, leftLimit, rightLimit),
@@ -101,7 +101,7 @@ public class CamControllerV2 : MonoBehaviour
 
     private void FollowObj(float speed){
         target = objTarget.position + offset;
-        transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, speed);
+        transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, speed * Time.deltaTime);
         //For borders just do new vector3 for both transform.position and target
     }
 
