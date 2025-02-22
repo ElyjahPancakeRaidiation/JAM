@@ -15,23 +15,26 @@ public class PlayerController : MonoBehaviour
     Abilities abilityScript;
     public KeyCode formChangeKey;
     public KeyCode rightformChangeKey;
-    [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
-    public int neareastSpawner;
-    public Transform spherePoint;
+    public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
+    // public int neareastSpawner;
+    //public Transform spherePoint;
     public TestManager gm;
+    //Reference to the players sprite render component
     [SerializeField]private SpriteRenderer playerSpriteRender;
+    //The different sprites used for the player
     [SerializeField]private Sprite[] playerFormSprite;
-    [SerializeField]private Animator anim;
-    public float jumpTime;
+    //[SerializeField]private Animator anim;
+    //public float jumpTime;
     public AudioManagerScript AMS;
 
-    public Collider2D circleCol; // checks for all colliders //NOTE - do we need this?
+    //public Collider2D circleCol; // checks for all colliders //NOTE - do we need this?
     public Collider2D vineCol;
     
 
     public GameObject spawner;
     public GameObject grabOn;
 
+    //I believe we should thy fix this and put it into its own class for playing sounds
     IEnumerator playingSound;
     private bool soundIsPlaying;
     [SerializeField]public CamControllerV2 cam;//NOTE - Change script name and get rid of old cam controller
@@ -42,7 +45,9 @@ public class PlayerController : MonoBehaviour
     public bool canMove = true;
     [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
-    public float horizontal, vertical;
+    public float horizontal;
+    //Mainly used for dashing and taking the last input when the player isnt pressing anything 
+    //DOESNT FUCKING WORK
     public int horiLatestInput = 1;
     public float speed,jumpSpeedX,jumpSpeedY;
     [SerializeField]private float bonusRotationSpeed;
@@ -108,7 +113,7 @@ public class PlayerController : MonoBehaviour
         groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
         abilityScript = GetComponent<Abilities>();
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         playerForm = playerForms.Ball;
         FormSettings();
@@ -232,7 +237,7 @@ public class PlayerController : MonoBehaviour
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
                     playerSpriteRender.sprite = playerFormSprite[0];
-                    anim.enabled = false;
+                    //anim.enabled = false;
                     rb.freezeRotation = false;
                     try
                     {
@@ -256,7 +261,7 @@ public class PlayerController : MonoBehaviour
                     pogoCol.enabled = true;
                     //anim.enabled = true;
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
+                    //anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
                     canJump = true;
                     if (hasArms)
                     {
@@ -291,9 +296,9 @@ public class PlayerController : MonoBehaviour
                     {
                         if (canJump)
                         {
-                            canJump = false;
                             jumping = Jump();
                             StartCoroutine(jumping);
+                            canJump = false;
                         }
                     }
                     else{
@@ -322,6 +327,7 @@ public class PlayerController : MonoBehaviour
         int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
         int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
         // Multiplies the direction then coefficient of air resistence and the velocity squared
+        //CoeAR = 0.075 
         rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfAirResistence * (rb.velocity.x * rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfAirResistence * (rb.velocity.y * rb.velocity.y)));
     }
@@ -409,10 +415,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()  
-    {
-        Gizmos.DrawWireSphere(spherePoint.transform.position, respawnRadius);
-    }
+    // private void OnDrawGizmos()  
+    // {
+    //     Gizmos.DrawWireSphere(spherePoint.transform.position, respawnRadius);
+    // }
 
     private void OnCollisionEnter2D(Collision2D collision)
 	{
@@ -433,6 +439,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //fix this add it to its own class for sfx
 	private void OnTriggerStay2D(Collider2D collision)
 	{
         
