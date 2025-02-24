@@ -17,7 +17,7 @@ public class Abilities : MonoBehaviour
     #region Dashing variables
 
     [Header("Dash Variables")]
-    
+    public bool usedAbility;
     [SerializeField]private float dashingDuration;//How long the dash will go for
     [SerializeField] float DASHPOWER;
     public static bool isDashing;
@@ -114,10 +114,11 @@ public class Abilities : MonoBehaviour
     private void Dash(){
         if (!TestManager.transitioned)
         {
-            if (Input.GetKeyDown(abilityKey))
+            if (Input.GetKeyDown(abilityKey) || usedAbility)
             {
                 tryingToDash = true;
                 attemptingToDashTimer = 0;
+                usedAbility = false;
             }
             if (tryingToDash)
             {
@@ -135,6 +136,12 @@ public class Abilities : MonoBehaviour
                     StartCoroutine(ignoreResistences());
                 }
             }
+        }
+    }
+
+    public void abilitiesButton(){
+        if(!usedAbility){
+            usedAbility = true;
         }
     }
     
@@ -182,10 +189,13 @@ public class Abilities : MonoBehaviour
             coyotoeTimer -= Time.deltaTime; 
 		}
 
-        if (coyotoeTimer > 0f && Input.GetKeyDown(abilityKey))
+        if (coyotoeTimer > 0f)
         {
-            StartCoroutine(ignoreResistences());
-            player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+            if(Input.GetKeyDown(abilityKey) || usedAbility){
+                StartCoroutine(ignoreResistences());
+                player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+                usedAbility = false;
+            }
             coyotoeTimer = 0f;
         }
 
