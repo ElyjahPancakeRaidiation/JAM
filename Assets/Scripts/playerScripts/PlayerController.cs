@@ -66,6 +66,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private float rotChangePointMin;//The minimal amount rb rotation can get to before stoping the boost when changing dir
     private bool canBoostRotSpeed;
 
+    [SerializeField] public GameObject dustParticles;
+    [SerializeField] DustMovement dustMovement;
+
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
@@ -121,6 +124,8 @@ public class PlayerController : MonoBehaviour
         groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        dustParticles = GameObject.FindGameObjectWithTag("Dust");
+        dustMovement = dustParticles.GetComponent<DustMovement>();
         abilityScript = GetComponent<Abilities>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
