@@ -18,6 +18,7 @@ TagManager:
   - MusicChange2
   - ThoughtBubble
   - GM
+  - GameManager
   layers:
   - Default
   - TransparentFX
