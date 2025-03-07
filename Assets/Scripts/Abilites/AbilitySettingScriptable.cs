@@ -11,6 +11,7 @@ public abstract class AbilitySettingScriptable : ScriptableObject
     public float movementSpeed;
     public string formName;
     public bool formAddOn = false;
+    public float groundChecker;
     
     //Customizable method that will hold the form settings for each piece
     public abstract void formSetting(Rigidbody2D rb, SpriteRenderer sr, Collider2D cir, Collider2D box);
