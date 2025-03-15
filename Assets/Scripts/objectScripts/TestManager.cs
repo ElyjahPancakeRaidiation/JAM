@@ -6,36 +6,69 @@ using UnityEngine.SceneManagement;
 public class TestManager : MonoBehaviour
 {
 
-    public static bool transitioned;
-    public GameObject buttonCotainer;
-    [SerializeField]private Animator transitionAnim;
-    [SerializeField]private AnimationClip start, end;
-    [SerializeField]private int sceneNum;
+    [SerializeField]private int nextSceneNum;
 
     [Header("Pause Menu")]
-    [SerializeField]private GameObject pauseMenu, exitBall;
-    private bool isPaused, exit, restarting, buttonConfig;
+    [SerializeField]private Animator transitionAnim;
+    [SerializeField]private AnimationClip start, end;
+    public static bool transitioned;
+    private GameObject buttonCotainer;
+    private GameObject pauseMenu;
+    [SerializeField]private GameObject exitBallTransition;//exit ball transition relates to the games exit animation.
+    //Also exit ball object starts off inactive making us have to store it manually in the inspector. Sucks ass.
+    private bool isPaused;
     [SerializeField]private AnimationClip mainMenuTransition;
 
     [Header("Player")]
-    public PlayerController pc;
-    public GameObject player;
+    public bool isMobileControls;
+    private PlayerController playerController;
+    private Transform player;
+    private GameObject mobileControlPanel;
 
     [Header("Audio")]
-    public GameObject musicChanger;
+    [SerializeField]private GameObject musicChanger;
+    [SerializeField]private GameObject musicChangerTwo;
+
+    [Header("Level 3 Respawn")]
+    [SerializeField]private Animator respawnAnim;
+    [SerializeField]private AnimationClip respawnStart, respawnEnd;
 
 
     
     // Start is called before the first frame update
     
     private void Start() {
-        buttonCotainer = GameObject.Find("ContentArea");
-        exitBall.SetActive(false);
-        buttonCotainer.SetActive(false);
-        buttonConfig = false;
-        player = GameObject.Find("Player");
-        pc = player.GetComponent<PlayerController>();
-        musicChanger.SetActive(true);
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        pauseMenu = GameObject.Find("PauseCanvas");
+        mobileControlPanel = GameObject.Find("MobileLayout") ?? null;
+
+
+        playerController = player.GetComponent<PlayerController>();
+        if(respawnAnim != null){respawnAnim.gameObject.SetActive(false);}
+        exitBallTransition.SetActive(false);
+
+        if(mobileControlPanel != null){
+            if(isMobileControls){
+                mobileControlPanel.SetActive(true);
+            }else{
+                mobileControlPanel.SetActive(false);
+            }
+        }
+
+        isPaused = false;
+
+        //buttonCotainer = GameObject.Find("ContentArea");
+        //buttonCotainer.SetActive(false);//Must fix mainly for PC though
+
+        try//Some levels dont have music changers so we use a try and catch to get past the error.
+        {
+            musicChanger.SetActive(true);
+            musicChangerTwo.SetActive(true);
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError("Music changer variable is null");
+        }
     }
 
     private void Update() {
@@ -49,36 +82,15 @@ public class TestManager : MonoBehaviour
         {
             Time.timeScale = 0;
             pauseMenu.SetActive(true);
-        }else
-        {
+        }else{
             Time.timeScale = 1;
             pauseMenu.SetActive(false);
         }
-
-        if (exit)
-        {
-            StartCoroutine(ExitTransition());
-        }
-
-        if (restarting)
-        {
-            StartCoroutine(Transition(SceneManager.GetActiveScene().buildIndex));
-            restarting = false;
-        }
-
-        Debug.Log(isPaused);
+		
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        try
-        {
-            StartCoroutine(Transition(sceneNum));
-        }
-        catch (System.Exception)
-        {
-            throw;
-        }
-    }
+    //Gamemanger also acts as a scene transitioner for the player
+    private void OnTriggerEnter2D(Collider2D other) {StartCoroutine(Transition(nextSceneNum));}
 
     private IEnumerator Transition(int scene){
         transitionAnim.SetTrigger("Transition");
@@ -88,39 +100,61 @@ public class TestManager : MonoBehaviour
         transitioned = false;
     }
 
+    public IEnumerator RespawnLevel3(){
+        respawnAnim.gameObject.SetActive(true);
+        yield return new WaitForSeconds(respawnStart.length);
+        playerController.canMove = false;
+        player.position = playerController.spawner.transform.position;
+        yield return new WaitForSeconds(0.6f);
+        respawnAnim.SetTrigger("RespawnEnd");
+        yield return new WaitForSeconds(respawnEnd.length);
+        respawnAnim.ResetTrigger("RespawnEnd");
+        respawnAnim.gameObject.SetActive(false);
+
+    }
+
     private IEnumerator ExitTransition(){
-        exit = false;
-        exitBall.SetActive(true);
+        //exit = false;
+        exitBallTransition.SetActive(true);
         transitioned = true;
         yield return new WaitForSeconds(mainMenuTransition.length);
         SceneManager.LoadScene(0);
         transitioned = false;
     }
 
+    //Buttons for the main menu
     public void Exit(){
         isPaused = false;
-        if (!exit)
-        {
-            exit = true;
-        }
+        StartCoroutine(ExitTransition());
     }
 
     public void Restart(){
         isPaused = false;
-        if(!restarting){
-            restarting = true;
-        }
+        StartCoroutine(Transition(SceneManager.GetActiveScene().buildIndex));
     }
 
-    public void ButtonConfig() 
+    //For button config it can be changed to just use the button function in unity instead of functions here....
+
+    // public void ButtonConfig() 
+    // {
+    //     isPaused = false;
+	// 	if (!buttonConfig)
+	// 	{
+    //         buttonConfig = true;
+	// 	}
+    // }
+
+   /* public void MusicTriggerEnd()
     {
-        isPaused = false;
-		if (!buttonConfig)
+        if (pc.musicHasChangedOne)
 		{
-            buttonConfig = true;
+            musicChanger.SetActive(false);
 		}
-    }
-
+		if (pc.musicHasChangedTwo)
+		{
+           Destroy(musicChangerTwo);
+		}
+    }*/
    /* public void ButtonExit() 
     {
         buttonConfig = true;

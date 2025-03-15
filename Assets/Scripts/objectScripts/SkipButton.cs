@@ -13,12 +13,6 @@ public class SkipButton : MonoBehaviour
         anim = GetComponent<Animation>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnGUI() {
         Event e = Event.current;
         if (e.isKey && !isVisible)

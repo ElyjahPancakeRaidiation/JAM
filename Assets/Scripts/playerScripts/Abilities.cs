@@ -17,7 +17,7 @@ public class Abilities : MonoBehaviour
     #region Dashing variables
 
     [Header("Dash Variables")]
-    
+    public bool usedAbility;
     [SerializeField]private float dashingDuration;//How long the dash will go for
     [SerializeField] float DASHPOWER;
     public static bool isDashing;
@@ -27,7 +27,7 @@ public class Abilities : MonoBehaviour
     [SerializeField]float dashDelay;
 
     [SerializeField]float yDashModifier;
-    [SerializeField] float dashInputForgivenessTime;
+    [SerializeField] float dashInputForgivenessTime = 0.2f;
     bool tryingToDash;
     float attemptingToDashTimer;
     #endregion
@@ -66,8 +66,9 @@ public class Abilities : MonoBehaviour
     private void Start() {
         player = GetComponent<PlayerController>();
         dashAmount = maxDashAmount;
+        isDashing = false;
         //player.rb.centerOfMass = COM;
-        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
+        groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         hinge = GetComponent<HingeJoint2D>();
         // grab arms
 
@@ -113,10 +114,11 @@ public class Abilities : MonoBehaviour
     private void Dash(){
         if (!TestManager.transitioned)
         {
-            if (Input.GetKeyDown(abilityKey))
+            if (Input.GetKeyDown(abilityKey) || usedAbility)
             {
                 tryingToDash = true;
                 attemptingToDashTimer = 0;
+                usedAbility = false;
             }
             if (tryingToDash)
             {
@@ -134,6 +136,12 @@ public class Abilities : MonoBehaviour
                     StartCoroutine(ignoreResistences());
                 }
             }
+        }
+    }
+
+    public void abilitiesButton(){
+        if(!usedAbility){
+            usedAbility = true;
         }
     }
     
@@ -181,10 +189,13 @@ public class Abilities : MonoBehaviour
             coyotoeTimer -= Time.deltaTime; 
 		}
 
-        if (coyotoeTimer > 0f && Input.GetKeyDown(abilityKey))
+        if (coyotoeTimer > 0f)
         {
-            StartCoroutine(ignoreResistences());
-            player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+            if(Input.GetKeyDown(abilityKey) || usedAbility){
+                StartCoroutine(ignoreResistences());
+                player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+                usedAbility = false;
+            }
             coyotoeTimer = 0f;
         }
 
@@ -201,7 +212,7 @@ public class Abilities : MonoBehaviour
     #endregion
 
 
-    #region New Arm Ability Elyjah
+    #region Arm Ability
 
     private void Grab(){
 
@@ -239,6 +250,7 @@ public class Abilities : MonoBehaviour
         {
             if (!groundedScript.isGrounded())
             {
+                player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
                 hinge.enabled = true;
                 hinge.autoConfigureConnectedAnchor = false;
                 hinge.useLimits = true;
@@ -277,11 +289,11 @@ public class Abilities : MonoBehaviour
     }
 
     void FixedUpdate() {
-        armCol = Physics2D.OverlapCircle(transform.position, armColRadius, vineLayer);
+        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, .5f, 0), armColRadius, vineLayer);
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, armColRadius);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, .5f, 0), armColRadius);
     }
 
 
