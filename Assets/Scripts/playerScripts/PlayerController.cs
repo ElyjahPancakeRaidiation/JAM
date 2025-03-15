@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Mathematics;
 using System.Threading;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -86,7 +87,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Collider2D pogoCol;
     public IEnumerator jumping;
     public bool canJump = true;
-    
+    //variable to allow jumping after motion is stopped right when player lands
+    private bool canJumpAgain= true;
 	#endregion
 
 	#region Arm movement variables
@@ -128,6 +130,7 @@ public class PlayerController : MonoBehaviour
 
         
     // Update is called once per frame
+    //handles player movement
     void Update()
     {
 
@@ -141,7 +144,7 @@ public class PlayerController : MonoBehaviour
 
             Movements();
         }
-
+        //checks if the form key is pressed and allows to switch between forms
         if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey) || formChanged)
         {//NOTE - Looks weirdly complicated try to recode this
             if (!devControl)
@@ -187,6 +190,7 @@ public class PlayerController : MonoBehaviour
                 if (groundedScript.isGrounded())
                 {
                     Friction();
+                    
                 }
                 else
                 {
@@ -203,8 +207,6 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = false;
         }
-
-        
     }
 
     private void LatestInput(int horizontalInput){//Finds the latest input for horizontal
@@ -295,9 +297,10 @@ public class PlayerController : MonoBehaviour
                     if (groundedScript.isGrounded())
                     {
                         if (canJump)
-                        {
+                        {   
                             jumping = Jump();
                             StartCoroutine(jumping);
+                           
                             canJump = false;
                         }
                     }
@@ -311,16 +314,39 @@ public class PlayerController : MonoBehaviour
 		}
 
 	}
-
+    //Coroutine for jumping
     public IEnumerator Jump() 
-    {
+    {   
         Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
+        //impulse makes it so it's a strong force happening at once
         rb.AddForce(jumpForce, ForceMode2D.Impulse);
+
+        // jumpAgainNo();
+        //wait .5 seconds before anything
         yield return new WaitForSeconds(.5f);
+        
+        //keep checking until the player touches the ground
 		yield return new WaitUntil (() => groundedScript.isGrounded());
+        // jumpAgainYes();
+        // stopSliding();
+        //and then allow the player to jump again
 		canJump = true;
     }
+    public Boolean jumpAgainNo(){
+        return canJumpAgain = false;
+    }
+    public Boolean jumpAgainYes(){
+        return canJumpAgain = true;
+    }
+    public void stopSliding(){
+        if (canJumpAgain==true){
+            if (groundedScript.isGrounded()){
+            rb.velocity = Vector3.zero;
+            }
 
+        }
+        
+    }
     void AirResistance()
     {
         // Air resistance opposes motion
@@ -337,6 +363,14 @@ public class PlayerController : MonoBehaviour
         // Grabs the sign of velocity and multiplies it by -1 to get opposite
         int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
         int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
+        // Multiplies the direction then coefficient of air resistence and the velocity squared
+        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(rb.velocity.x * rb.velocity.x),
+        OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
+    }
+
+    void ForceStop(){
+        int OppositedirectionMultipleX = -100 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
+        int OppositedirectionMultipleY = -100 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
         // Multiplies the direction then coefficient of air resistence and the velocity squared
         rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(rb.velocity.x * rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
