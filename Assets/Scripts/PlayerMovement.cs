@@ -6,10 +6,14 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D _rb;
-    private float horizontalInput;
+
+    private PlayerAbilities playerAbility;
+   private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
     [SerializeField]private bool isGrounded;
+
+   
 
     [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
@@ -34,6 +38,13 @@ public class PlayerMovement : MonoBehaviour
     private float lastVelocityX;
     #endregion
 
+    #region PogoMovement
+    public bool canJumpAgain = true;
+    public IEnumerator jumping;
+    public bool canJump = true;
+    public float jumpSpeedX,jumpSpeedY;
+    private 
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -44,12 +55,14 @@ public class PlayerMovement : MonoBehaviour
         dustScript = _dustSpawner.GetComponent<DustScript>();
         _spriteRender = GetComponent<SpriteRenderer>();
         forms[curForm].formSetting(_rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        playerAbility = GetComponent<PlayerAbilities>();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        maxForm = forms.Count-1;
+    {  
+      
+           maxForm = forms.Count-1;
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
         //This prevents the easing from going above what its supposed to be
@@ -139,13 +152,60 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void torsoMovement(){
-        //Should be able to move left and right while keeping its y axis the same. also adapt to the collider. 
-        //Options are rb.moveposition, rb.velocity, or using raycast to calculate if its on a slope or not and making it
-        //tilt to the way it is.
+    
 
         //Or also just use add force and do some corotines(Will probably try this first)
+        if (horizontalInput != 0)
+                {
+                    if (playerAbility.isGrounded())
+                    {
+                        if (canJump)
+                        {   
+                            jumping = Jump();
+                            StartCoroutine(jumping);
+                           
+                            canJump = false;
+                        }
+                    }
+                    else{
+                        _rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
+                    }
+                }
+
+    }
+public IEnumerator Jump() 
+    {   
+        Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
+        //impulse makes it so it's a strong force happening at once
+        _rb.AddForce(jumpForce, ForceMode2D.Impulse);
+
+        jumpAgainNo();
+        //wait .5 seconds before anything
+        yield return new WaitForSeconds(.5f);
+        
+        //keep checking until the player touches the ground
+		yield return new WaitUntil (() => playerAbility.isGrounded());
+        jumpAgainYes();
+        stopSliding();
+        //and then allow the player to jump again
+		canJump = true;
     }
 
+    public Boolean jumpAgainNo(){
+        return canJumpAgain = false;
+    }
+    public Boolean jumpAgainYes(){
+        return canJumpAgain = true;
+    }
+    public void stopSliding(){
+        if (canJumpAgain==true){
+            if (playerAbility.isGrounded()){
+            _rb.velocity = Vector3.zero;
+            }
+
+        }
+        
+    }
 
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
@@ -163,6 +223,6 @@ public class PlayerMovement : MonoBehaviour
         _rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(_rb.velocity.x * _rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * _rb.velocity.y)));
     }
-
+   
     
 }
