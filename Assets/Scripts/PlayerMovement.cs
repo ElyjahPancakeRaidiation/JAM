@@ -9,10 +9,15 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
+    [SerializeField]private bool isGrounded;
 
     [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
+    private PlayerAbilities playerAbilities;
+
+    private GameObject _dustSpawner;
+    public DustScript dustScript;
 
     #region Ball settings
     [Header("----Ball Settings----")]
@@ -26,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private float curFloat;
     [SerializeField]private bool withEasing;
     [SerializeField]private float angularVelHalf;
+    private float lastVelocityX;
     #endregion
 
 
@@ -33,6 +39,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        playerAbilities = GetComponent<PlayerAbilities>();
+        _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
+        dustScript = _dustSpawner.GetComponent<DustScript>();
         _spriteRender = GetComponent<SpriteRenderer>();
         forms[curForm].formSetting(_rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
     }
@@ -86,15 +95,27 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        isGrounded = playerAbilities.isGrounded();
         Friction();
         if(GetComponent<CircleCollider2D>().enabled){
             ballMovement();
+            dustScript.checkForDust();
+            
         }else if(GetComponent<BoxCollider2D>().enabled){
             torsoMovement();
         }
-        
+        lastVelocityX = _rb.velocity.x;
     }
-
+    public float getAcceleration(){
+        float aMultiplier; //acceleration multiplier
+        if (lastVelocityX < 0 && _rb.velocity.x < 0){
+            aMultiplier = -1;
+        }else{
+            aMultiplier = 1;
+        }
+        float avgAcceleration = aMultiplier * (_rb.velocity.x - lastVelocityX)/Time.deltaTime;
+        return avgAcceleration;
+    }
     private void changeForm(){
         if(curForm == maxForm){
             curForm = 0;
