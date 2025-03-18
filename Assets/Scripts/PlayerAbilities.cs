@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -30,6 +31,7 @@ public class PlayerAbilities : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
         dashAmount = maxDashes;
+        canUseAbility= true;
     }
 
     // Update is called once per frame
@@ -104,4 +106,6 @@ public class PlayerAbilities : MonoBehaviour
         RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask); 
         return ray;
     }
+
+
 }

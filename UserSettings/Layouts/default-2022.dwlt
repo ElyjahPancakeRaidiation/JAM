@@ -728,7 +728,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: -327, y: -204}
-      snapOffsetDelta: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 30.399994}
       snapCorner: 3
       id: Scene View/Path
       index: 9
@@ -1795,20 +1795,20 @@ MonoBehaviour:
       m_ExpandedIDs: 9cdffeff28e5feff3429ffffd2faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: PlaceHolderGameManager (1)
+        m_OriginalName: PlaceHolderGameManager (1)
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 54902
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 4
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 7}
+        m_ClientGUIView: {fileID: 10}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -1905,7 +1905,7 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/Scenes/Test Scenes
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\tisha\Unity Projects\JAM
+  m_LastProjectPath: C:\Users\moham\OneDrive\Documents\JAM-Unity\JAM
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
