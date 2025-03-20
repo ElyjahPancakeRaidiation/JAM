@@ -35,7 +35,7 @@ public class PlayerAbilities : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
         dashAmount = maxDashes;
-        canUseAbility= true;
+        canUseAbility = true;
     }
 
     // Update is called once per frame
@@ -125,7 +125,10 @@ public class PlayerAbilities : MonoBehaviour
 
     //This is for when the player changes form it changes the distance of the ray cast.
     public void setGroundDistance(float distanceAmount){groundCheckerDistance = distanceAmount;}
-    public void setUseAbility(bool canUseAbility){ this.canUseAbility = canUseAbility;}
+    public void setUseAbility(bool canUseAbility)
+    { 
+        this.canUseAbility = canUseAbility;
+    }
 
     public Boolean isGrounded()
     {

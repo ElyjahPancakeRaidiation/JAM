@@ -109,14 +109,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coefficientOfFriction: 0.065
+  rainyFriction: 0.5
   forms:
   - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
   - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
   smoothStopSpeed: 0.2
   maxSpeedPoint: 7
-  coefficientOfFriction: 0.075
-  withEasing: 0
+  isEasingOn: 0
   angularVelHalf: 0
+  canJumpAgain: 1
+  canJump: 1
+  jumpSpeedX: 0
+  jumpSpeedY: 0
 --- !u!114 &3885449311235757612
 MonoBehaviour:
   m_ObjectHideFlags: 0
