@@ -19,6 +19,10 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Pogo variables
     private const float SUPERJUMP = 40;
+    private IEnumerator stopSliding;
+
+    public bool usedJumpAbility =false;
+    
     #endregion
 
     [SerializeField]private float groundCheckerDistance;
@@ -48,17 +52,27 @@ public class PlayerAbilities : MonoBehaviour
         switch (formName)
         {
             case "Ball":
+                
                 //Will have the dashing ability
+                
                 dashAbility();
+                
                 break;
             case "Pogo":
                 //Will have the mega jump and arms ability
+                
                 if(isGrounded()){
+                    
                     pogoAbility();
+                    // if(usedJumpAbility==true){
+                     
+                    //     usedJumpAbility=false;
+                    // }
                 }
                 break;
         }
     }
+
 
 
     #region Ball Ability
@@ -87,8 +101,26 @@ public class PlayerAbilities : MonoBehaviour
     #region Pogo Ability
     private void pogoAbility(){
         _rb.AddForce(new Vector2(0, SUPERJUMP), ForceMode2D.Impulse);
+        // usedJumpAbility = true;
+        stopSliding = preventSlide();
+        StartCoroutine(stopSliding);
+        
     }
 
+    public IEnumerator preventSlide(){
+        
+        yield return new WaitForSeconds(.6f);
+        yield return new WaitUntil(() => isGrounded());
+          
+        if (playerMovement.isPogo==true){
+          
+            
+           
+            _rb.velocity = Vector3.zero;
+               
+
+        }
+    }
     #endregion
 
     //This is for when the player changes form it changes the distance of the ray cast.
