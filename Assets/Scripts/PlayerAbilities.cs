@@ -31,14 +31,14 @@ public class PlayerAbilities : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
         dashAmount = maxDashes;
-        canUseAbility= true;
+        canUseAbility = true;
     }
 
     // Update is called once per frame
     void Update()
     {
     
-        if(Input.GetKeyDown(gm.playerAbilityKey) /*&& canUseAbility*/){
+        if(Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility){
             useFormsAbility(playerMovement.getCurForm().formName);
         }
     
@@ -96,8 +96,6 @@ public class PlayerAbilities : MonoBehaviour
     public void setUseAbility(bool canUseAbility)
     { 
         this.canUseAbility = canUseAbility;
-    
-    
     }
 
     public Boolean isGrounded()

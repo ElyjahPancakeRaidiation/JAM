@@ -2013,7 +2013,7 @@ GameObject:
   - component: {fileID: 217850234}
   m_Layer: 0
   m_Name: rain shit
-  m_TagString: Untagged
+  m_TagString: RainShit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2059,7 +2059,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -2175,7 +2175,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2.47
+      scalar: 2.65
       minScalar: 7.91
       maxCurve:
         serializedVersion: 2
@@ -2929,7 +2929,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 500
+      scalar: 652.9
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -3200,8 +3200,8 @@ ParticleSystem:
     enabled: 0
     x:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
+      minMaxState: 3
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3253,8 +3253,8 @@ ParticleSystem:
         m_RotationOrder: 4
     y:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
+      minMaxState: 3
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3306,8 +3306,8 @@ ParticleSystem:
         m_RotationOrder: 4
     curve:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.83252203
+      minMaxState: 3
+      scalar: 2.6755898
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -3357,7 +3357,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    separateAxes: 0
+    separateAxes: 1
   ColorModule:
     enabled: 0
     gradient:
@@ -5678,10 +5678,10 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
-    type: 0
-    collisionMode: 0
+    type: 1
+    collisionMode: 1
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
@@ -5796,7 +5796,7 @@ ParticleSystem:
     m_EnergyLossOnCollision:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5855,7 +5855,7 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
@@ -6824,7 +6824,7 @@ Transform:
   m_GameObject: {fileID: 217850233}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 10.8, y: 31.2, z: 0.2794816}
+  m_LocalPosition: {x: -27.6, y: 31.2, z: 0.2794816}
   m_LocalScale: {x: 0.4602, y: 5.3014, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8694,7 +8694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!199 &790276834
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -17660,7 +17660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7944302752217619906, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8463250702516011933, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_Enabled
@@ -18754,14 +18754,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coefficientOfFriction: 0.075
+  rainyFriction: 0
   forms:
   - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
   - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
   smoothStopSpeed: 0.2
   maxSpeedPoint: 7
-  coefficientOfFriction: 0.075
-  withEasing: 0
+  isEasingOn: 0
   angularVelHalf: 0
+  canJumpAgain: 1
+  canJump: 1
+  jumpSpeedX: 0
+  jumpSpeedY: 0
 --- !u!114 &1633118438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21546,9 +21551,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: rainyForce
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: slipperyShit
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.29
+      value: 6.95
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21755,3 +21768,4 @@ SceneRoots:
   - {fileID: 62138261}
   - {fileID: 217850236}
   - {fileID: 790276836}
+  - {fileID: 1400635052}

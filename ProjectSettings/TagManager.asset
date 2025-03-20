@@ -19,6 +19,7 @@ TagManager:
   - ThoughtBubble
   - GM
   - GameManager
+  - RainShit
   layers:
   - Default
   - TransparentFX
