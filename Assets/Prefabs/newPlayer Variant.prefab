@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coefficientOfFriction: 0.065
-  rainyFriction: 0.5
+  rainyFriction: 1
   forms:
   - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
   - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
@@ -119,6 +119,7 @@ MonoBehaviour:
   isEasingOn: 0
   angularVelHalf: 0
   canJumpAgain: 1
+  isPogo: 0
   canJump: 1
   jumpSpeedX: 0
   jumpSpeedY: 0
@@ -135,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDashes: 1
+  usedJumpAbility: 0
   groundCheckerDistance: 1.2
   groundMask:
     serializedVersion: 2
