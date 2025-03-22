@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -40,10 +41,14 @@ public class PlayerMovement : MonoBehaviour
 
     #region PogoMovement
     public bool canJumpAgain = true;
+
+    public bool isPogo = false;
     public IEnumerator jumping;
     public bool canJump = true;
     public float jumpSpeedX,jumpSpeedY;
-    private 
+
+    
+    
     #endregion
 
     // Start is called before the first frame update
@@ -61,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
-      
+        
            maxForm = forms.Count-1;
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
@@ -104,6 +109,11 @@ public class PlayerMovement : MonoBehaviour
         if(forms[curForm].formAddOn){
             changeForm();
         }
+
+        if(forms[curForm].formName== "Pogo"){
+            isPogo = true;
+        }
+        else isPogo = false;
     }
 
     void FixedUpdate()
@@ -111,10 +121,12 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = playerAbilities.isGrounded();
         Friction();
         if(GetComponent<CircleCollider2D>().enabled){
+            
             ballMovement();
             dustScript.checkForDust();
             
         }else if(GetComponent<BoxCollider2D>().enabled){
+            
             torsoMovement();
         }
         lastVelocityX = _rb.velocity.x;
@@ -178,28 +190,26 @@ public IEnumerator Jump()
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
         //impulse makes it so it's a strong force happening at once
         _rb.AddForce(jumpForce, ForceMode2D.Impulse);
-
-        jumpAgainNo();
+        
+        
         //wait .5 seconds before anything
         yield return new WaitForSeconds(.5f);
         
         //keep checking until the player touches the ground
 		yield return new WaitUntil (() => playerAbility.isGrounded());
-        jumpAgainYes();
-        stopSliding();
+       stopSliding();
+        
         //and then allow the player to jump again
 		canJump = true;
     }
 
-    public Boolean jumpAgainNo(){
-        return canJumpAgain = false;
-    }
-    public Boolean jumpAgainYes(){
-        return canJumpAgain = true;
-    }
+  
     public void stopSliding(){
-        if (canJumpAgain==true){
-            if (playerAbility.isGrounded()){
+        //it now detects when its pogo. If switched to ball ability should be cancelledd
+        if (isPogo==true){
+             
+            if (playerAbility.isGrounded() /*&& playerAbility.usedJumpAbility ==false*/){
+             
             _rb.velocity = Vector3.zero;
             }
 
