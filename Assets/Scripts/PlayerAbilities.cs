@@ -38,7 +38,7 @@ public class PlayerAbilities : MonoBehaviour
     void Update()
     {
     
-        if(Input.GetKeyDown(gm.playerAbilityKey) /*&& canUseAbility*/){
+        if(Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility){
             useFormsAbility(playerMovement.getCurForm().formName);
         }
     
