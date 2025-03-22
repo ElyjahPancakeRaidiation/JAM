@@ -1,24 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerMovement : Physics
+public class PlayerMovement : MonoBehaviour
 {
+    private Physics physics;
+    [Header("----Physics----")]
+    [SerializeField]private float coefficientOfFriction;
+    [SerializeField]private float rainyFriction;
+
     private PlayerAbilities playerAbility;
     private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
 
-    [Header("                                                             PLAYER                                                             ")]
+    [Header("----Player----")]
     [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
 
     #region Ball settings
-    [Header("----Ball Settings----")]
+    [Header("Ball Settings")]
     //Used for when the players a ball and makes the turning from fast movement more sudden.
     //The lower the number the faster it stops
     [SerializeField]private float smoothStopSpeed;
@@ -36,7 +39,7 @@ public class PlayerMovement : Physics
     #endregion
 
     #region PogoMovement
-    [Header("----Pogo Settings----")]
+    [Header("Pogo Settings")]
     public bool canJumpAgain = true;
 
     public bool isPogo = false;
@@ -49,9 +52,12 @@ public class PlayerMovement : Physics
     // Start is called before the first frame update
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        physics = new Physics(GetComponent<Rigidbody2D>());
+        physics.setCoefficientOfFriction(coefficientOfFriction);
+        physics.setRainyFriction(rainyFriction);
+
         _spriteRender = GetComponent<SpriteRenderer>();
-        forms[curForm].formSetting(_rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
     }
@@ -59,39 +65,39 @@ public class PlayerMovement : Physics
     // Update is called once per frame
     void Update()
     {  
-      
+    
+
         maxForm = forms.Count-1;
         horizontalInput = Input.GetAxisRaw("Horizontal");
-
         //This prevents the easing from going above what its supposed to be
 
         if(isEasingOn){
 
             if(withEasing){
-                if(_rb.velocity.x >= -0.1f && _rb.velocity.x <= 0.1f){
+                if(physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f){
                     withEasing = false;
                 }
 
                 //This piece of code ensures that easing is never on when it doesn't have to be
                 //Since the angularvelocity is directyl related to the direction the player is rolling to.
-                if(oppositeInput == 1 && _rb.angularVelocity < 0){
+                if(oppositeInput == 1 && physics._rb.angularVelocity < 0){
                     withEasing = false;
-                } else if(oppositeInput == -1 && _rb.angularVelocity > 0){
+                } else if(oppositeInput == -1 && physics._rb.angularVelocity > 0){
                     withEasing = false;
                 }
             }
             if(withEasing && horizontalInput == oppositeInput){
-                Vector2 velocity = _rb.velocity;
+                Vector2 velocity = physics._rb.velocity;
                 //Smoothly brings down the velocity's x to a 0 making it a smooth stop when the player turns.
                 velocity.x = Mathf.SmoothDamp(velocity.x, 0, ref curFloat, smoothStopSpeed);
                 //This doesn't really do much although it is similar to what Tarin did with the player controller
-                angularVelHalf = -(_rb.angularVelocity/2) * 10;
+                angularVelHalf = -(physics._rb.angularVelocity/2) * 10;
                 /*
                 This is used for the players rotation in the rigidbody mainly when its a ball. It's supposed to make sure the balls rotation is going 
                 the same as the players input however with further inspection this was done with the gravity
                 */
-                _rb.angularVelocity += angularVelHalf * Time.fixedDeltaTime;
-                _rb.velocity = velocity;
+                physics._rb.angularVelocity += angularVelHalf * Time.fixedDeltaTime;
+                physics._rb.velocity = velocity;
             }
         }
 
@@ -114,7 +120,7 @@ public class PlayerMovement : Physics
 
     void FixedUpdate()
     {
-        Friction();
+        physics.Friction();
         if(GetComponent<CircleCollider2D>().enabled){
             
             ballMovement();
@@ -132,14 +138,14 @@ public class PlayerMovement : Physics
             curForm++;
         }
 
-        forms[curForm].formSetting(_rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
     }
 
     private void ballMovement(){
-        _rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
+        physics._rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
 
-        if(_rb.velocity.x <= -maxSpeedPoint || _rb.velocity.x >= maxSpeedPoint){
-            oppositeInput = -1 * (_rb.velocity.x/Mathf.Abs(_rb.velocity.x));
+        if(physics._rb.velocity.x <= -maxSpeedPoint || physics._rb.velocity.x >= maxSpeedPoint){
+            oppositeInput = -1 * (physics._rb.velocity.x/Mathf.Abs(physics._rb.velocity.x));
             if(horizontalInput != oppositeInput){
                 withEasing = true;
             }
@@ -149,11 +155,10 @@ public class PlayerMovement : Physics
 
     private void torsoMovement(){
     
-
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
                 {
-                    if (playerAbility.isGrounded())
+                    if (playerAbility.isGrounded() && !playerAbility.getJumpNextFrame())
                     {
                         if (canJump)
                         {   
@@ -164,7 +169,7 @@ public class PlayerMovement : Physics
                         }
                     }
                     else{
-                        _rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
+                        physics._rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
                     }
                 }
 
@@ -173,7 +178,7 @@ public IEnumerator Jump()
     {   
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
         //impulse makes it so it's a strong force happening at once
-        _rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        physics._rb.AddForce(jumpForce, ForceMode2D.Impulse);
         
         
         //wait .5 seconds before anything
@@ -181,7 +186,10 @@ public IEnumerator Jump()
         
         //keep checking until the player touches the ground
 		yield return new WaitUntil (() => playerAbility.isGrounded());
-       stopSliding();
+        yield return new WaitForSeconds(.1f);
+        if(!playerAbility.getJumpNextFrame()){
+            stopSliding();
+        }
         
         //and then allow the player to jump again
 		canJump = true;
@@ -192,9 +200,9 @@ public IEnumerator Jump()
         //it now detects when its pogo. If switched to ball ability should be cancelledd
         if (isPogo==true){
              
-            if (playerAbility.isGrounded() /*&& playerAbility.usedJumpAbility ==false*/){
-             
-            _rb.velocity = Vector3.zero;
+            if (playerAbility.isGrounded()){
+
+                physics._rb.velocity = Vector3.zero;
             }
 
         }
@@ -213,7 +221,7 @@ public IEnumerator Jump()
     {
         if(other.CompareTag("RainShit")){
             isEasingOn = false;
-            slipperyShitFunction();
+            physics.slipperyShitFunction();
             if(turnEasingBackOn != null) {//This if statement ensures that easing is not turned back on while rain is hiting the player.
                 StopCoroutine(turnEasingBackOn);
                 turnEasingBackOn = null;

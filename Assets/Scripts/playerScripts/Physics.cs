@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Physics : MonoBehaviour
 {
-    [Header("                                                             PHYSICS                                                             ")]
-    [SerializeField]protected float coefficientOfFriction;
-    [SerializeField]protected float rainyFriction;
-    protected Rigidbody2D _rb;
+    private float coefficientOfFriction;
+    private float rainyFriction;
+    public Rigidbody2D _rb;
 
-    protected void Friction()
+    public Physics(Rigidbody2D rb){
+        _rb = rb;
+    }
+
+    public void Friction()
     {
         // Air resistance opposes motion but in ball motion is reversed because rotation
         // Grabs the sign of velocity and multiplies it by -1 to get opposite
@@ -20,7 +23,10 @@ public class Physics : MonoBehaviour
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * _rb.velocity.y)));
     }
 
-    protected void slipperyShitFunction(){//Just applies a downward force in the y direction 
+    public void slipperyShitFunction(){//Just applies a downward force in the y direction 
         _rb.AddForce(new Vector2(0, -rainyFriction), ForceMode2D.Impulse);
     }
+
+    public void setCoefficientOfFriction(float amount){ coefficientOfFriction = amount; }
+    public void setRainyFriction(float amount){ rainyFriction = amount; }
 }

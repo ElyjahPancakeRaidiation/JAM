@@ -22,6 +22,9 @@ public class PlayerAbilities : MonoBehaviour
     private IEnumerator stopSliding;
 
     public bool usedJumpAbility =false;
+    [SerializeField]private bool canJumpNextFrame = false;
+    private float jumpFrameTimer = 0;
+    public float maxJumpFrameTimer;
     
     #endregion
 
@@ -41,8 +44,21 @@ public class PlayerAbilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(transform.position, -Vector2.up*groundCheckerDistance);
+
+        if(canJumpNextFrame){
+            jumpFrameTimer += Time.deltaTime;
+            if(jumpFrameTimer >= maxJumpFrameTimer){
+                canJumpNextFrame = false;
+                jumpFrameTimer = 0;
+            }
+        }
     
         if(Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility){
+            useFormsAbility(playerMovement.getCurForm().formName);
+        }
+
+        if(isGrounded() && canJumpNextFrame){
             useFormsAbility(playerMovement.getCurForm().formName);
         }
     
@@ -56,13 +72,11 @@ public class PlayerAbilities : MonoBehaviour
                 //Will have the dashing ability
                 
                 dashAbility();
-                
                 break;
             case "Pogo":
                 //Will have the mega jump and arms ability
-                
+                canJumpNextFrame = true;
                 if(isGrounded()){
-                    
                     pogoAbility();
                     // if(usedJumpAbility==true){
                      
@@ -100,6 +114,8 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Pogo Ability
     private void pogoAbility(){
+        canJumpNextFrame = false;
+        jumpFrameTimer = 0;
         _rb.AddForce(new Vector2(0, SUPERJUMP), ForceMode2D.Impulse);
         // usedJumpAbility = true;
         stopSliding = preventSlide();
@@ -113,12 +129,8 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGrounded());
           
         if (playerMovement.isPogo==true){
-          
-            
-           
-            _rb.velocity = Vector3.zero;
-               
 
+            _rb.velocity = Vector3.zero;
         }
     }
     #endregion
@@ -136,6 +148,8 @@ public class PlayerAbilities : MonoBehaviour
         RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask); 
         return ray;
     }
+
+    public bool getJumpNextFrame(){return canJumpNextFrame;}
 
 
 }

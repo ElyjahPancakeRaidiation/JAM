@@ -18764,6 +18764,7 @@ MonoBehaviour:
   isEasingOn: 0
   angularVelHalf: 0
   canJumpAgain: 1
+  isPogo: 0
   canJump: 1
   jumpSpeedX: 0
   jumpSpeedY: 0
@@ -18780,6 +18781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDashes: 1
+  usedJumpAbility: 0
   groundCheckerDistance: 1.2
   groundMask:
     serializedVersion: 2
