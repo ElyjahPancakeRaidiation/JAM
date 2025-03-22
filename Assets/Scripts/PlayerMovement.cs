@@ -181,7 +181,7 @@ public IEnumerator Jump()
         
         //keep checking until the player touches the ground
 		yield return new WaitUntil (() => playerAbility.isGrounded());
-       stopSliding();
+        stopSliding();
         
         //and then allow the player to jump again
 		canJump = true;
@@ -194,7 +194,7 @@ public IEnumerator Jump()
              
             if (playerAbility.isGrounded() /*&& playerAbility.usedJumpAbility ==false*/){
              
-            _rb.velocity = Vector3.zero;
+            _rb.velocity = new Vector2(0, 0);
             }
 
         }

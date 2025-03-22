@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class PlayerAbilities : MonoBehaviour
     #region Pogo variables
     private const float SUPERJUMP = 40;
     private IEnumerator stopSliding;
-
+   
     public bool usedJumpAbility =false;
     
     #endregion
@@ -113,12 +114,8 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGrounded());
           
         if (playerMovement.isPogo==true){
-          
-            
-           
-            _rb.velocity = Vector3.zero;
-               
-
+             
+            _rb.velocity = new Vector2(0, 0);
         }
     }
     #endregion
