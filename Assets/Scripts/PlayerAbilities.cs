@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class PlayerAbilities : MonoBehaviour
     #region Pogo variables
     private const float SUPERJUMP = 40;
     private IEnumerator stopSliding;
-
+   
     public bool usedJumpAbility =false;
     [SerializeField]private bool canJumpNextFrame = false;
     private float jumpFrameTimer = 0;
