@@ -9074,7 +9074,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coefficientOfFriction: 0.075
-  rainyFriction: 0
+  rainyFrictionUp: 0
+  rainyFrictionDown: 0
   forms:
   - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
   - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
@@ -11845,11 +11846,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5508952311522407324, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 33.27428
+      value: -2.7
       objectReference: {fileID: 0}
     - target: {fileID: 5508952311522407324, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22.378279
+      value: 32.4
       objectReference: {fileID: 0}
     - target: {fileID: 5508952311522407324, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11883,6 +11884,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5973143724877290152, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973143724877290152, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973143724877290152, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: offset.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: followSpeed
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: isFollowingPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8693518854204488112, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: m_Name
       value: Rain controller
@@ -11907,6 +11932,14 @@ PrefabInstance:
     - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: slipperyShit
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: rainyFrictionUp
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: rainyFrictionDown
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x

@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Physics physics;
     [Header("----Physics----")]
     [SerializeField]private float coefficientOfFriction;
-    [SerializeField]private float rainyFriction;
+    [SerializeField]private float rainyFrictionUp, rainyFrictionDown;
 
     private PlayerAbilities playerAbility;
     private float horizontalInput;
@@ -53,9 +53,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         physics = new Physics(GetComponent<Rigidbody2D>());
-        physics.setCoefficientOfFriction(coefficientOfFriction);
-        physics.setRainyFriction(rainyFriction);
-
         _spriteRender = GetComponent<SpriteRenderer>();
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
@@ -65,7 +62,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
-    
+        physics.setCoefficientOfFriction(coefficientOfFriction);
+        physics.setRainyFrictionUp(rainyFrictionUp);
+        physics.setRainyFrictionDown(rainyFrictionDown);
 
         maxForm = forms.Count-1;
         horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -214,6 +213,10 @@ public IEnumerator Jump()
     public int getFormInt(){return curForm;}
     public void setNewForm(AbilitySettingScriptable newForm){forms.Add(newForm);}
     public AbilitySettingScriptable getCurForm(){return forms[curForm];}
+    public float getRainyFrictionUp(){return rainyFrictionUp;}
+    public float getRainyFrictionDown(){return rainyFrictionDown;}
+    public void setRainyFrictionUp(float amount){rainyFrictionUp = amount;}
+    public void setRainyFrictionDown(float amount){rainyFrictionDown = amount;}
 
     //When particles collide with the player it turns on the function slippery shit making it harder for the player to go up
     //but easier to go down.

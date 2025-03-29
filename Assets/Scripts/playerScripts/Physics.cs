@@ -5,7 +5,7 @@ using UnityEngine;
 public class Physics : MonoBehaviour
 {
     private float coefficientOfFriction;
-    private float rainyFriction;
+    private float rainyFrictionDown, rainyFrictionUp;
     public Rigidbody2D _rb;
 
     public Physics(Rigidbody2D rb){
@@ -24,9 +24,14 @@ public class Physics : MonoBehaviour
     }
 
     public void slipperyShitFunction(){//Just applies a downward force in the y direction 
-        _rb.AddForce(new Vector2(0, -rainyFriction), ForceMode2D.Impulse);
+        if(_rb.velocity.y < 0){//Going down on the y axis
+            _rb.AddForce(new Vector2(0, -rainyFrictionDown), ForceMode2D.Impulse);
+        }else if(_rb.velocity.y > 0){//Going up on the y axis
+            _rb.AddForce(new Vector2(0, -rainyFrictionUp), ForceMode2D.Impulse);
+        }
     }
 
     public void setCoefficientOfFriction(float amount){ coefficientOfFriction = amount; }
-    public void setRainyFriction(float amount){ rainyFriction = amount; }
+    public void setRainyFrictionDown(float amount){ rainyFrictionDown = amount; }
+    public void setRainyFrictionUp(float amount){ rainyFrictionUp = amount; }
 }
