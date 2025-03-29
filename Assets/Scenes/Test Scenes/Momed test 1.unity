@@ -30562,10 +30562,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-      propertyPath: maxJumpFrameTimer
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: jumpSpeedX
       value: 12
@@ -30618,15 +30614,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'newPlayer '
       objectReference: {fileID: 0}
-    - target: {fileID: 8880783838240531236, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8880783838240531236, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 910783679}
   m_SourcePrefab: {fileID: 100100000, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+--- !u!1 &910783678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8880783838240531236, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+  m_PrefabInstance: {fileID: 910783677}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &910783679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910783678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abde6a51412a8c24f96aa0ec76f3ada0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &920459164
 GameObject:
   m_ObjectHideFlags: 0
