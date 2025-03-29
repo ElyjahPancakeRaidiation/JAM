@@ -1,17 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class RainController : MonoBehaviour
 {
-    [SerializeField]private ParticleSystem rainShit;//contains rain particles componenent
-    [SerializeField]private float amountOfParticles;
-    [SerializeField]private float speed;
+    [SerializeField, Tooltip("Rain shit is the actual particle itself. Will Always initially be set in the prefab(DONT TOUCH)")]
+    private ParticleSystem rainShit;//contains rain particles componenent
+
+    [SerializeField, Tooltip("As the name says this controls the amount of particlest that will show on screen")]
+    private float amountOfParticles;
+
+    [SerializeField, Tooltip("This controls the speed of the rain particle")]
+    private float speed;
+
+    [SerializeField, Tooltip("This is an offset to keep a certain amount of distance between the rain controller object and the player (mainly change the Y axis)")]
+    private Vector2 offset;
+
+    private Transform playerPos;
+
+    [SerializeField, Tooltip("If this is true this object will follow the player, if not it will be stationary")]
+    private bool isFollowingPlayer;
+    [SerializeField, Tooltip("this controls the speed the rain follows the player. It will only follow in the X direction so where ever you put it in the y it will stay there.")]
+    private float followSpeed;
+    private float refFloat;
 
     // Start is called before the first frame update
     void Start()
     {
-        if(rainShit == null){Debug.LogError("Rai shit particle system in null");}//saftey incase its null
+        if(rainShit == null){Debug.LogError("Rain shit particle system in null");}//saftey incase its null
+        playerPos = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         var emissions = rainShit.emission;
         var main = rainShit.main;
         emissions.rateOverTime = amountOfParticles;
@@ -21,6 +39,9 @@ public class RainController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float changeX = Mathf.SmoothDamp(transform.position.x, playerPos.position.x + offset.x, ref refFloat, followSpeed);
+        transform.position = new Vector3(changeX, transform.position.y);
+        
         var emissions = rainShit.emission;
         var main = rainShit.main;
         emissions.rateOverTime = amountOfParticles;
