@@ -19,6 +19,9 @@ TagManager:
   - ThoughtBubble
   - GM
   - DippingSoundTest
+  - GameManager
+  - RainShit
+  - Rain Controller
   layers:
   - Default
   - TransparentFX

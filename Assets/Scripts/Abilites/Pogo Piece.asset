@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Pogo Piece
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
-  movementSpeed: 0.5
+  movementSpeed: 13
   formName: Pogo
   formAddOn: 0
+  groundChecker: 1.2
   boxColliderSize: {x: 1, y: 2.2477503}
