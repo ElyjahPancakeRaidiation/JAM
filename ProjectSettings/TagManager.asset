@@ -20,6 +20,7 @@ TagManager:
   - GM
   - GameManager
   - RainShit
+  - Rain Controller
   layers:
   - Default
   - TransparentFX

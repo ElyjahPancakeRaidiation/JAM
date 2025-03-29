@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Testscript : MonoBehaviour
 {
+    RainController rain;
     // Start is called before the first frame update
     void Start()
     {
