@@ -79,15 +79,17 @@ public class DustScript : MonoBehaviour
             dustParticles.Stop();
         }
     }
+    public void playDustParticles(){
+        Debug.Log("playing dust particles");
+        StartCoroutine(createDust(horizontalInput));
+        dustParticles.Play();
+    }
     private IEnumerator createDust(float horizontalInput)
     {
         ParticleSystem.MainModule mainModule = dustParticles.main;
         ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = dustParticles.velocityOverLifetime;
         velocityOverLifetime.xMultiplier = Math.Abs(velocityOverLifetime.xMultiplier) * (horizontalInput * -1);
         ParticleSystem.EmissionModule emission = dustParticles.emission;
-        // Vector2 velocityDirection = Quaternion.Euler(0, 0, transform.eulerAngles.z) * new Vector2(baseVelocity.xMultiplier, baseVelocity.yMultiplier);
-        // baseVelocity.xMultiplier = velocityDirection.x;
-        // baseVelocity.yMultiplier = velocityDirection.y;
         while(shouldSkid){
             emission.rateOverTime = Math.Abs(rb.velocity.x) * emissionMultiplier;
             if(Input.GetKeyDown(KeyCode.Space)){
@@ -97,7 +99,13 @@ public class DustScript : MonoBehaviour
         }
         yield return new WaitForSeconds(timeDelay);
         recentlyJumped = false;
-        // baseVelocity.xMultiplier = xSpeed;
-        // baseVelocity.yMultiplier = ySpeed;
+    }
+    public void setParticleColor(Color color)
+    {
+        ParticleSystem.MainModule mainModule = dustParticles.main;
+        mainModule.startColor = color;
+    }
+    public bool getShouldSkid(){
+        return shouldSkid;
     }
 }

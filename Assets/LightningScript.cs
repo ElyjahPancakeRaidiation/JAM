@@ -28,6 +28,10 @@ public class LightningScript : MonoBehaviour
     [SerializeField] private float timeBetweenLightning;
     [SerializeField] private int chanceOfLightning; //chance of lightning per check out of 100
 
+    [SerializeField] private int maxCheekedUpAmt; //how many times the lightning can "cheek up" before stopping
+
+    
+
     void Start()
     {
         light2D = GetComponent<Light2D>();
@@ -49,7 +53,6 @@ public class LightningScript : MonoBehaviour
             if (player.transform.position.x >= lb.minX && player.transform.position.x <= lb.maxX)
             {
                 playerInBounds = true;
-                Debug.Log("Player in bounds");
                 return;
             }
         }
@@ -59,16 +62,24 @@ public class LightningScript : MonoBehaviour
         lightningActive = true;
         while (playerInBounds){
             int chance = new System.Random().Next(0, 100);
-            Debug.Log(chance);
-            if(chance < 50){ //50% chance of lightning every 5 sec
+            if(chance < chanceOfLightning){ 
+                int cheekedUpAmt = new System.Random().Next(1, maxCheekedUpAmt + 1); 
+                Debug.Log("Cheeked up: " + cheekedUpAmt);
                 playingLightning = true;
                 light2D.intensity = maxIntensity;
-                audioSource.Play();
                 float elapsedTime = 0.0f;
+                audioSource.Play();
+                cheekedUpAmt--;
                 while (light2D.intensity > 0.0f)
                 {
                     elapsedTime += Time.deltaTime;
                     light2D.intensity = Mathf.Lerp(maxIntensity, 0.0f, elapsedTime / lightningDuration);
+                    if(light2D.intensity <= maxIntensity/2.0f && cheekedUpAmt > 0){ //reset for each cheek clap
+                        light2D.intensity = maxIntensity;
+                        elapsedTime = 0.0f;
+                        audioSource.Play();
+                        cheekedUpAmt--;
+                    }
                     yield return null;
                 }
                 playingLightning = false;

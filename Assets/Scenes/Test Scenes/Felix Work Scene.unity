@@ -4533,6 +4533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDashes: 1
+  usedJumpAbility: 0
   groundCheckerDistance: 1.2
   groundMask:
     serializedVersion: 2
@@ -4560,6 +4561,7 @@ MonoBehaviour:
   withEasing: 0
   angularVelHalf: 0
   canJumpAgain: 1
+  isPogo: 0
   canJump: 1
   jumpSpeedX: 0
   jumpSpeedY: 0
@@ -4915,10 +4917,11 @@ MonoBehaviour:
   lightningBounds:
   - minX: 30
     maxX: 40
-  maxIntensity: 2
-  lightningDuration: 0.8
+  maxIntensity: 1
+  lightningDuration: 0.5
   timeBetweenLightning: 4
   chanceOfLightning: 50
+  maxCheekedUpAmt: 3
 --- !u!82 &729421965
 AudioSource:
   m_ObjectHideFlags: 0

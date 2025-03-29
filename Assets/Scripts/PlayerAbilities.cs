@@ -41,7 +41,6 @@ public class PlayerAbilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
         if(Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility){
             useFormsAbility(playerMovement.getCurForm().formName);
         }

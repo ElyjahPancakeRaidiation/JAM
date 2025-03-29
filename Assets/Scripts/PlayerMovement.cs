@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -114,11 +113,11 @@ public class PlayerMovement : MonoBehaviour
             isPogo = true;
         }
         else isPogo = false;
+        isGrounded = playerAbilities.isGrounded();
     }
 
     void FixedUpdate()
     {
-        isGrounded = playerAbilities.isGrounded();
         Friction();
         if(GetComponent<CircleCollider2D>().enabled){
             
@@ -168,27 +167,26 @@ public class PlayerMovement : MonoBehaviour
 
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
-                {
-                    if (playerAbility.isGrounded())
-                    {
-                        if (canJump)
-                        {   
-                            jumping = Jump();
-                            StartCoroutine(jumping);
-                           
-                            canJump = false;
-                        }
-                    }
-                    else{
-                        _rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
-                    }
+        {
+            if (playerAbility.isGrounded())
+            {
+                if (canJump)
+                {   
+                    jumping = Jump();
+                    StartCoroutine(jumping);
+                    
+                    canJump = false;
                 }
-
+            }
+            else{
+                _rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
+            }
+        }
     }
 public IEnumerator Jump() 
     {   
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
-        //impulse makes it so it's a strong force happening at once
+        //impulse makes it so it's a strong force happening at once wow
         _rb.AddForce(jumpForce, ForceMode2D.Impulse);
         
         
@@ -197,7 +195,7 @@ public IEnumerator Jump()
         
         //keep checking until the player touches the ground
 		yield return new WaitUntil (() => playerAbility.isGrounded());
-       stopSliding();
+        stopSliding();
         
         //and then allow the player to jump again
 		canJump = true;
@@ -206,15 +204,9 @@ public IEnumerator Jump()
   
     public void stopSliding(){
         //it now detects when its pogo. If switched to ball ability should be cancelledd
-        if (isPogo==true){
-             
-            if (playerAbility.isGrounded() /*&& playerAbility.usedJumpAbility ==false*/){
-             
-            _rb.velocity = Vector3.zero;
-            }
-
+        if (isPogo==true /* */){
+            _rb.velocity = new Vector3(0, 0, 0);
         }
-        
     }
 
     public float getInput(){return horizontalInput;}
@@ -234,5 +226,10 @@ public IEnumerator Jump()
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * _rb.velocity.y)));
     }
    
-    
+    public void setCoefficientOfFriction(float newCOF){ 
+        coefficientOfFriction = newCOF;
+    }
+    public float getCoefficientOfFriction(){ 
+        return coefficientOfFriction;
+    }
 }
