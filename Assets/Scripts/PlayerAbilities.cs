@@ -55,7 +55,7 @@ public class PlayerAbilities : MonoBehaviour
             }
         }
     
-        if(Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility){
+        if(Input.GetKeyDown(gm.playerAbilityKey) /* && canUseAbility*/){
             useFormsAbility(playerMovement.getCurForm().formName);
         }
 
