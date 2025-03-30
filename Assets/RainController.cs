@@ -55,11 +55,11 @@ public class RainController : MonoBehaviour
 
         if(outOfSight){
 
-            if(Camera.main.WorldToViewportPoint(transform.position).x < minCameraView){
+            if(Camera.main.WorldToViewportPoint(transform.position).x < minCameraView){//When the rain is to the left
                 rainShit.gameObject.SetActive(false);
                 isFollowingPlayer = true;
                 isOutOfSight = true;
-            }else if(Camera.main.WorldToViewportPoint(transform.position).x > maxCameraView){
+            }else if(Camera.main.WorldToViewportPoint(transform.position).x > maxCameraView){//When the rain is to the right
                 rainShit.gameObject.SetActive(false);
                 isFollowingPlayer = true;
                 isOutOfSight = true;

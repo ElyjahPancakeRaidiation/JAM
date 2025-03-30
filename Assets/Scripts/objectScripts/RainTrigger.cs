@@ -37,6 +37,7 @@ public class RainTrigger : MonoBehaviour
     {
         if(collision.CompareTag("Player")){
 
+            //if statement decides whether it should decrease or increase
             if(goal > rain.getAmountOfRain() && rainEnumerator == null){
                 rainEnumerator = StartCoroutine(rain.increaseAmountOfParticles(amount, goal));
             }else if(goal < rain.getAmountOfRain() && rainEnumerator == null){
@@ -48,7 +49,7 @@ public class RainTrigger : MonoBehaviour
                 collision.GetComponent<PlayerMovement>().setRainyFrictionDown(rainyFrictionDown);
             }
 
-            if(!rain.getIsOutOfSight()){
+            if(!rain.getIsOutOfSight()){//Makes it so it doesnt stop when the player goes through the trigger again
                 rain.setIsFollowingPlayer(isRainFollowingPlayer);
             }
             rain.setOutOfSight(stopRainWhenOutOfCamera);
