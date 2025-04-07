@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6912230088968807446}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: -60.874283, y: 8.821722, z: 0.4915715}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4602, y: 5.3014, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4878,3 +4878,6 @@ MonoBehaviour:
   rainShit: {fileID: 3428538067710082245}
   amountOfParticles: 650
   speed: 1.12
+  offset: {x: 0, y: 0}
+  isFollowingPlayer: 0
+  followSpeed: 0
