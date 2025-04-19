@@ -22,9 +22,11 @@ public class DustScript : MonoBehaviour
     [SerializeField] private float skidSpeed;
     [SerializeField] private float emissionMultiplier;
     [SerializeField] private float timeDelay;
-    [SerializeField] private bool recentlyJumped;
+    [SerializeField] private bool jumpedWhileSkidding;
      public float rotationSpeed = 10f;
     public LayerMask groundMask;
+    private bool generatingDust;
+
     [SerializeField]
 
     void Start()
@@ -47,7 +49,7 @@ public class DustScript : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         xOffset = Math.Abs(xOffset) * horizontalInput * -1;
         if(playerAbilities.isGrounded()){
-            if(!recentlyJumped){
+            if(!jumpedWhileSkidding && playerMovement.getCurForm().formName == "Ball"){
                 transform.position = new Vector2(player.transform.position.x - xOffset, player.transform.position.y - yOffset);
             }
         }
@@ -67,38 +69,36 @@ public class DustScript : MonoBehaviour
 
     public void checkForDust(){
         float speed = Math.Abs(rb.velocity.x);
-        if(speed >= skidSpeed && playerAbilities.isGrounded()){
+        if(speed >= skidSpeed && playerAbilities.isGrounded() && playerAbilities.recentlyJumped == false){
             shouldSkid = true;
-            if (playerMovement.getAcceleration() < 0 && ((horizontalInput == -1 && rb.velocity.x > 0) || (horizontalInput == 1 && rb.velocity.x < 0))){
+            if (playerMovement.getAcceleration() < 0 && ((horizontalInput == -1 && rb.velocity.x > 0) || (horizontalInput == 1 && rb.velocity.x < 0)) && !generatingDust && playerMovement.getCurForm().formName == "Ball"){
                 StartCoroutine(createDust(horizontalInput));
                 dustParticles.Play();
             }
         }
-        if ((-1.5f < speed && speed < 1.5f) || playerMovement.getAcceleration() > 0 || rb.velocity.x/Math.Abs(rb.velocity.x) == horizontalInput){
+        if ((-1.5f < speed && speed < 1.5f) || playerMovement.getAcceleration() > 0 || rb.velocity.x/Math.Abs(rb.velocity.x) == horizontalInput || playerMovement.getCurForm().formName != "Ball"){
+            Debug.Log("Stopping dust particles");
             shouldSkid = false;
             dustParticles.Stop();
         }
     }
-    public void playDustParticles(){
-        Debug.Log("playing dust particles");
-        StartCoroutine(createDust(horizontalInput));
-        dustParticles.Play();
-    }
     private IEnumerator createDust(float horizontalInput)
     {
+        generatingDust = true;
         ParticleSystem.MainModule mainModule = dustParticles.main;
         ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = dustParticles.velocityOverLifetime;
         velocityOverLifetime.xMultiplier = Math.Abs(velocityOverLifetime.xMultiplier) * (horizontalInput * -1);
         ParticleSystem.EmissionModule emission = dustParticles.emission;
-        while(shouldSkid){
+        while(shouldSkid && playerMovement.getCurForm().formName == "Ball"){
             emission.rateOverTime = Math.Abs(rb.velocity.x) * emissionMultiplier;
             if(Input.GetKeyDown(KeyCode.Space)){
-                recentlyJumped = true;
+                jumpedWhileSkidding = true;
             }
             yield return null;
         }
         yield return new WaitForSeconds(timeDelay);
-        recentlyJumped = false;
+        generatingDust = false;
+        jumpedWhileSkidding = false;
     }
     public void setParticleColor(Color color)
     {
