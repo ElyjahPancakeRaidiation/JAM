@@ -26,11 +26,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.29
+      value: 51.2
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.28
+      value: -7.35
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.z
@@ -111,9 +111,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coefficientOfFriction: 0.065
   rainyFriction: 1
+  isGrounded: 0
   forms:
   - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
   - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
+  dustScript: {fileID: 0}
   smoothStopSpeed: 0.2
   maxSpeedPoint: 7
   isEasingOn: 0
@@ -121,8 +123,12 @@ MonoBehaviour:
   canJumpAgain: 1
   isPogo: 0
   canJump: 1
-  jumpSpeedX: 0
-  jumpSpeedY: 0
+  jumpSpeedX: 12
+  jumpSpeedY: 8
+  screenSize: {x: 0, y: 0}
+  inputScreenPercent: 0.2
+  inputDetectionPercentX: 0.8
+  visualizeTouchArea: 1
 --- !u!114 &3885449311235757612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +143,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDashes: 1
   usedJumpAbility: 0
+  canJumpNextFrame: 0
+  maxJumpFrameTimer: 0
+  recentlyJumped: 0
   groundCheckerDistance: 1.2
   groundMask:
     serializedVersion: 2
