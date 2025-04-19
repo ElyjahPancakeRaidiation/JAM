@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
-{
+{   
+
+    
     private Physics physics;
     [Header("----Physics----")]
     [SerializeField]private float coefficientOfFriction;
@@ -71,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         //This prevents the easing from going above what its supposed to be
 
+      
         if(isEasingOn){
 
             if(withEasing){
@@ -177,6 +180,7 @@ public class PlayerMovement : MonoBehaviour
 public IEnumerator Jump() 
     {   
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
+        
         //impulse makes it so it's a strong force happening at once
         physics._rb.AddForce(jumpForce, ForceMode2D.Impulse);
         
