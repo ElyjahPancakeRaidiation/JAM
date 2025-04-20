@@ -91,12 +91,15 @@ public class CamControllerV2 : MonoBehaviour
 
         target = playerTarget.position + offset;
         transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, speed * Time.deltaTime);
-        transform.position = new Vector3
-        (
-            Mathf.Clamp(transform.position.x, leftLimit, rightLimit),
-            Mathf.Clamp(transform.position.y, downLimit, upLimit),
-            transform.position.z
-        );
+        if(leftLimit != 0 && rightLimit != 0 && upLimit != 0 && downLimit != 0){
+            transform.position = new Vector3
+            (
+                Mathf.Clamp(transform.position.x, leftLimit, rightLimit),
+                Mathf.Clamp(transform.position.y, downLimit, upLimit),
+                transform.position.z
+            );
+        }
+        
     }
 
     private void FollowObj(float speed){

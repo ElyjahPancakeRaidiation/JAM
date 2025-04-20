@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Physics : MonoBehaviour
+public class Physics
 {
     private float coefficientOfFriction;
     private float rainyFrictionDown, rainyFrictionUp;
@@ -14,10 +14,10 @@ public class Physics : MonoBehaviour
 
     public void Friction()
     {
-        // Air resistance opposes motion but in ball motion is reversed because rotation
+        
         // Grabs the sign of velocity and multiplies it by -1 to get opposite
-        int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(_rb.velocity.x / Mathf.Abs(_rb.velocity.x));
-        int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(_rb.velocity.y / Mathf.Abs(_rb.velocity.y));
+        int OppositedirectionMultipleX = -1 * (int)Mathf.Sign(_rb.velocity.x);
+        int OppositedirectionMultipleY = -1 * (int)Mathf.Sign(_rb.velocity.y);
         // Multiplies the direction then coefficient of air resistence and the velocity squared
         _rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(_rb.velocity.x * _rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * _rb.velocity.y)));

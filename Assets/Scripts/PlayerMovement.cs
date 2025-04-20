@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private float movementSpeed;
 
     [Header("----Player----")]
+    [SerializeField]private bool canControl;
     [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
@@ -57,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
+        canControl = true;
     }
 
     // Update is called once per frame
@@ -67,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
         physics.setRainyFrictionDown(rainyFrictionDown);
 
         maxForm = forms.Count-1;
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
         //This prevents the easing from going above what its supposed to be
 
         if(isEasingOn){
@@ -153,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void torsoMovement(){
-    
+        //电子游戏 - 人形摇杆
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
                 {
@@ -208,6 +210,7 @@ public IEnumerator Jump()
         
     }
 
+    public void setCanControl(bool value){canControl = value;}
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
     public int getFormInt(){return curForm;}
@@ -234,7 +237,7 @@ public IEnumerator Jump()
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if(!collision.gameObject.CompareTag("RainShit")){
+        if(collision.gameObject.CompareTag("RainShit")){
             if(turnEasingBackOn == null){
                 turnEasingBackOn = StartCoroutine(EasingBackOn());
             }
