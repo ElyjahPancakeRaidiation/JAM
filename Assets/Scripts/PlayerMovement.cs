@@ -175,6 +175,7 @@ public class PlayerMovement : MonoBehaviour
                     mainTouch = new MainTouch();
                     mainTouch.setOrigin(touch.position);
                     mainTouch.setFingerID(touch.fingerId);
+                    Debug.Log("Touch started: " + touch.fingerId);
                 }
             }
             if(mainTouch != null){ //if maintouch is initialized, update its position

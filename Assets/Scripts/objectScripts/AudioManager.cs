@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.Play();
+        //audioSource.Play();
     }
 
     // Update is called once per frame
