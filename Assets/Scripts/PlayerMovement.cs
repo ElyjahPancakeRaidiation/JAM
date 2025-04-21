@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
-{
+{   
+
+    
     private Physics physics;
     [Header("----Physics----")]
     [SerializeField]private float coefficientOfFriction;
@@ -14,12 +16,19 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
+    [SerializeField]private bool isGrounded;
 
+#region Player Settings
     [Header("----Player----")]
     [SerializeField]private bool canControl;
     [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
+    private PlayerAbilities playerAbilities;
+#endregion
+    
+    private GameObject _dustSpawner;
+    public DustScript dustScript;
 
     #region Ball settings
     [Header("Ball Settings")]
@@ -35,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     //IsEasing is a bool that can turn on or off the mechanic easing - this is mainly used for when the player is more slippery
     [SerializeField]private bool isEasingOn;
     [SerializeField]private float angularVelHalf;
+    private float lastVelocityX;
     private Coroutine turnEasingBackOn;
 
     #endregion
@@ -48,16 +58,42 @@ public class PlayerMovement : MonoBehaviour
     public bool canJump = true;
     public float jumpSpeedX, jumpSpeedY;
     #endregion
-
+    public class MainTouch{
+        public float fingerID;
+        public Vector2 origin;
+        public Vector2 touchPos;
+        public void setOrigin(Vector2 origin){
+            this.origin = origin;
+        }
+        public void setFingerID(float fingerID){
+            this.fingerID = fingerID;
+        }
+        public float getXDistance(){
+            return touchPos.x - origin.x;
+        }
+    }
+    public MainTouch mainTouch;
+    #region Mobile Settings
+    [Header("Mobile Settings")]
+    public Vector2 screenSize;
+    [SerializeField]public float inputScreenPercent;
+    [SerializeField]public float inputDetectionPercentX;
+    [SerializeField]private bool visualizeTouchArea;
+    #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        playerAbilities = GetComponent<PlayerAbilities>();
+        _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
+        dustScript = _dustSpawner.GetComponent<DustScript>();
         physics = new Physics(GetComponent<Rigidbody2D>());
         _spriteRender = GetComponent<SpriteRenderer>();
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
+
+        screenSize = new Vector2(Screen.width, Screen.height);
         canControl = true;
     }
 
@@ -69,9 +105,16 @@ public class PlayerMovement : MonoBehaviour
         physics.setRainyFrictionDown(rainyFrictionDown);
 
         maxForm = forms.Count-1;
+        #if UNITY_ANDROID
+            mobileInput();
+        #else
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        #endif
+
         if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
         //This prevents the easing from going above what its supposed to be
 
+      
         if(isEasingOn){
 
             if(withEasing){
@@ -117,22 +160,82 @@ public class PlayerMovement : MonoBehaviour
             isPogo = true;
         }
         else isPogo = false;
+        isGrounded = playerAbilities.isGrounded();
+        physics.setCoefficientOfFriction(coefficientOfFriction);
     }
 
+    private void mobileInput()
+    {
+        if(Input.touchCount > 0)
+        {
+            foreach(Touch touch in Input.touches)
+            {
+                if(touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x*inputDetectionPercentX) //if maintouch not initialized yet
+                {
+                    mainTouch = new MainTouch();
+                    mainTouch.setOrigin(touch.position);
+                    mainTouch.setFingerID(touch.fingerId);
+                }
+            }
+            if(mainTouch != null){ //if maintouch is initialized, update its position
+                updateMainTouch();
+                horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
+            }else{
+                horizontalInput = 0;
+            }
+        }else{
+            horizontalInput = 0;
+        }
+    }
+    private void updateMainTouch()
+    {
+        foreach (Touch touch in Input.touches)
+        {
+            if(touch.fingerId == mainTouch.fingerID)
+            {
+                if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    mainTouch = null;
+                }
+                else
+                {
+                    mainTouch.touchPos = touch.position;
+                }
+            }
+        }
+    }
+    private void OnGUI()
+    {
+        if(visualizeTouchArea){
+            GUI.color = new Color(0, 0, 0, 0.1f);
+            GUI.DrawTexture(new Rect(0, 0, screenSize.x * inputDetectionPercentX, screenSize.y), Texture2D.whiteTexture);
+            GUI.color = Color.white;
+        }
+    }
     void FixedUpdate()
     {
         physics.Friction();
         if(GetComponent<CircleCollider2D>().enabled){
             
             ballMovement();
-        }else if(GetComponent<BoxCollider2D>().enabled){
             
+        }else if(GetComponent<BoxCollider2D>().enabled){
             torsoMovement();
         }
-        
+        dustScript.checkForDust();
+        lastVelocityX = physics._rb.velocity.x;
     }
-
-    private void changeForm(){
+    public float getAcceleration(){
+        float aMultiplier; //acceleration multiplier
+        if (lastVelocityX < 0 && physics._rb.velocity.x < 0){
+            aMultiplier = -1;
+        }else{
+            aMultiplier = 1;
+        }
+        float avgAcceleration = aMultiplier * (physics._rb.velocity.x - lastVelocityX)/Time.deltaTime;
+        return avgAcceleration;
+    }
+    public void changeForm(){
         if(curForm == maxForm){
             curForm = 0;
         }else{
@@ -158,26 +261,27 @@ public class PlayerMovement : MonoBehaviour
         //电子游戏 - 人形摇杆
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
-                {
-                    if (playerAbility.isGrounded() && !playerAbility.getJumpNextFrame())
-                    {
-                        if (canJump)
-                        {   
-                            jumping = Jump();
-                            StartCoroutine(jumping);
-                           
-                            canJump = false;
-                        }
-                    }
-                    else{
-                        physics._rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
-                    }
+        {
+            if (playerAbility.isGrounded() && !playerAbility.getJumpNextFrame())
+            {
+                if (canJump)
+                {   
+                    jumping = Jump();
+                    StartCoroutine(jumping);
+                    
+                    canJump = false;
                 }
-
+            }
+            else{
+                physics._rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
+            }
+        }
     }
 public IEnumerator Jump() 
     {   
+        Debug.Log("Jumping");
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
+        
         //impulse makes it so it's a strong force happening at once
         physics._rb.AddForce(jumpForce, ForceMode2D.Impulse);
         
@@ -207,7 +311,6 @@ public IEnumerator Jump()
             }
 
         }
-        
     }
 
     public void setCanControl(bool value){canControl = value;}
@@ -233,6 +336,13 @@ public IEnumerator Jump()
                 turnEasingBackOn = null;
             }
         }
+    }
+   
+    public void setCoefficientOfFriction(float newCOF){ 
+        coefficientOfFriction = newCOF;
+    }
+    public float getCoefficientOfFriction(){ 
+        return coefficientOfFriction;
     }
 
     void OnCollisionExit2D(Collision2D collision)

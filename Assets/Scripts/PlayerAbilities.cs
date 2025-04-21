@@ -26,6 +26,8 @@ public class PlayerAbilities : MonoBehaviour
     [SerializeField]private bool canJumpNextFrame = false;
     private float jumpFrameTimer = 0;
     public float maxJumpFrameTimer;
+    public bool recentlyJumped;
+    private float rJumpedTimer = 0;
     
     #endregion
 
@@ -55,17 +57,25 @@ public class PlayerAbilities : MonoBehaviour
             }
         }
     
-        if(Input.GetKeyDown(gm.playerAbilityKey) /* && canUseAbility*/){
-            useFormsAbility(playerMovement.getCurForm().formName);
+        if(Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility){
+            recentlyJumped = true;
+            useFormsAbility();
         }
 
         if(isGrounded() && canJumpNextFrame){
-            useFormsAbility(playerMovement.getCurForm().formName);
+            useFormsAbility();
         }
-    
+        if (recentlyJumped){
+            rJumpedTimer += Time.deltaTime;
+            if(rJumpedTimer >= 0.8f){
+                recentlyJumped = false;
+                rJumpedTimer = 0;
+            }
+        }
     }
 
-    private void useFormsAbility(string formName){
+    public void useFormsAbility(){
+        String formName = playerMovement.getCurForm().formName;
         switch (formName)
         {
             case "Ball":
