@@ -106,12 +106,12 @@ public class PlayerMovement : MonoBehaviour
 
         maxForm = forms.Count-1;
         #if UNITY_ANDROID
-            mobileInput();
+            if(canControl){mobileInput();}
         #else
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
         #endif
 
-        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
+        // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
         //This prevents the easing from going above what its supposed to be
 
       
@@ -179,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
             }
             if(mainTouch != null){ //if maintouch is initialized, update its position
                 updateMainTouch();
-                horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
+                // horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
             }else{
                 horizontalInput = 0;
             }
@@ -200,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     mainTouch.touchPos = touch.position;
+                    horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
                 }
             }
         }

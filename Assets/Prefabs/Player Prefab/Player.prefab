@@ -66,6 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7834041589481651562}
   - component: {fileID: 2357058203806974699}
+  - component: {fileID: 6635077038626585809}
   - component: {fileID: 1484820306327863335}
   - component: {fileID: 3337410901015035955}
   - component: {fileID: 8463250702516011933}
@@ -113,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityKey: 32
+  usedAbility: 0
   dashingDuration: 0.3
   DASHPOWER: 10
   maxDashAmount: 1
@@ -138,6 +140,40 @@ MonoBehaviour:
   grabboostY: 4
   rightSide: {x: 1.52, y: 0.15}
   leftSide: {x: -1.51, y: 0.51}
+--- !u!114 &6635077038626585809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7944302752217619906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coefficientOfFriction: 0.075
+  rainyFrictionUp: 0
+  rainyFrictionDown: 0
+  isGrounded: 0
+  canControl: 0
+  forms:
+  - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
+  - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
+  dustScript: {fileID: 0}
+  smoothStopSpeed: 0.2
+  maxSpeedPoint: 7
+  isEasingOn: 0
+  angularVelHalf: 0
+  canJumpAgain: 1
+  isPogo: 0
+  canJump: 1
+  jumpSpeedX: 12
+  jumpSpeedY: 8
+  screenSize: {x: 0, y: 0}
+  inputScreenPercent: 0.2
+  inputDetectionPercentX: 0.8
+  visualizeTouchArea: 0
 --- !u!114 &1484820306327863335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,44 +189,29 @@ MonoBehaviour:
   formChangeKey: 304
   rightformChangeKey: 303
   devControl: 1
-  neareastSpawner: 0
-  timer: 0
-  maxTime: 7
-  textOffsetX: 1
-  textOffsetY: 0
-  spherePoint: {fileID: 2971793376097661198}
   gm: {fileID: 0}
   playerSpriteRender: {fileID: 2706923324837483880}
   playerFormSprite:
   - {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   - {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
-  anim: {fileID: 3241892106689099501}
-  jumpTime: 0.1
   AMS: {fileID: 0}
-  soundTrigger: {fileID: 0}
-  soundTriggerTwo: {fileID: 0}
-  circleCol: {fileID: 0}
   vineCol: {fileID: 0}
   spawner: {fileID: 0}
-  player: {fileID: 0}
   grabOn: {fileID: 0}
-  guideText: {fileID: 0}
-  thoughtBub: {fileID: 0}
-  thoughtBubble: {fileID: 0}
   cam: {fileID: 0}
   canMove: 1
   isMoving: 0
   rb: {fileID: 3337410901015035955}
   horizontal: 0
-  vertical: 0
   horiLatestInput: 0
-  vertLatestInput: 0
   speed: 15
   jumpSpeedX: 12
   jumpSpeedY: 8
   bonusRotationSpeed: -0
   rotChangePointMax: 0
   rotChangePointMin: 0
+  dustParticles: {fileID: 0}
+  dustMovement: {fileID: 0}
   interactRadius: 2
   interactMask:
     serializedVersion: 2
@@ -198,6 +219,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  respawnRadius: 0
+  respawnMask:
+    serializedVersion: 2
+    m_Bits: 0
   maxForm: 1
   curForm: 0
   ignoreResistences: 0

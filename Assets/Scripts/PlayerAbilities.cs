@@ -75,7 +75,7 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     public void useFormsAbility(){
-        String formName = playerMovement.getCurForm().formName;
+        string formName = playerMovement.getCurForm().formName;
         switch (formName)
         {
             case "Ball":

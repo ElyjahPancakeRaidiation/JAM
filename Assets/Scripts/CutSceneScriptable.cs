@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.EditorTools;
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Cutscene", menuName = "New Cutscene/Cutscene")]

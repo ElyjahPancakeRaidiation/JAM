@@ -133,6 +133,8 @@ public class TestManager : MonoBehaviour
         StartCoroutine(Transition(SceneManager.GetActiveScene().buildIndex));
     }
 
+    public void setIsPaused(bool val){isPaused = val;}
+
     //For button config it can be changed to just use the button function in unity instead of functions here....
 
     // public void ButtonConfig() 
