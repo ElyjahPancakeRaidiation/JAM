@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
     #region Mobile Settings
     [Header("Mobile Settings")]
     public Vector2 screenSize;
-    [SerializeField]public float inputScreenPercent;
+    [SerializeField]public float inputRange; //i think this is in pixels idk bru
     [SerializeField]public float inputDetectionPercentX;
     [SerializeField]private bool visualizeTouchArea;
     #endregion
@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         #else
         horizontalInput = Input.GetAxisRaw("Horizontal");
         #endif
-
+        Debug.Log(horizontalInput);
         //This prevents the easing from going above what its supposed to be
 
         if(isEasingOn){
@@ -175,7 +175,6 @@ public class PlayerMovement : MonoBehaviour
             }
             if(mainTouch != null){ //if maintouch is initialized, update its position
                 updateMainTouch();
-                horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
             }else{
                 horizontalInput = 0;
             }
@@ -196,6 +195,7 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     mainTouch.touchPos = touch.position;
+                    horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/inputRange, -1, 1); //screenSize.x * inputRange is the max distance the player can move their finger to get the max input of 1
                 }
             }
         }
