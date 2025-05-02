@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
-{
+{   
+
+    
     private Physics physics;
     [Header("----Physics----")]
     [SerializeField]private float coefficientOfFriction;
-    [SerializeField]private float rainyFriction;
+    [SerializeField]private float rainyFrictionUp, rainyFrictionDown;
 
     private PlayerAbilities playerAbility;
     private float horizontalInput;
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
 #region Player Settings
     [Header("----Player----")]
+    [SerializeField]private bool canControl;
     [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
@@ -85,31 +88,32 @@ public class PlayerMovement : MonoBehaviour
         _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
         dustScript = _dustSpawner.GetComponent<DustScript>();
         physics = new Physics(GetComponent<Rigidbody2D>());
-        physics.setCoefficientOfFriction(coefficientOfFriction);
-        physics.setRainyFriction(rainyFriction);
-
         _spriteRender = GetComponent<SpriteRenderer>();
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
 
         screenSize = new Vector2(Screen.width, Screen.height);
+        canControl = true;
     }
 
     // Update is called once per frame
     void Update()
     {  
-    
+        physics.setCoefficientOfFriction(coefficientOfFriction);
+        physics.setRainyFrictionUp(rainyFrictionUp);
+        physics.setRainyFrictionDown(rainyFrictionDown);
 
         maxForm = forms.Count-1;
         #if UNITY_ANDROID
-            mobileInput();
+            if(canControl){mobileInput();}
         #else
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
         #endif
         Debug.Log(horizontalInput);
         //This prevents the easing from going above what its supposed to be
 
+      
         if(isEasingOn){
 
             if(withEasing){
@@ -254,7 +258,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void torsoMovement(){
-    
+        //电子游戏 - 人形摇杆
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
         {
@@ -277,6 +281,7 @@ public IEnumerator Jump()
     {   
         Debug.Log("Jumping");
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
+        
         //impulse makes it so it's a strong force happening at once
         physics._rb.AddForce(jumpForce, ForceMode2D.Impulse);
         
@@ -308,11 +313,16 @@ public IEnumerator Jump()
         }
     }
 
+    public void setCanControl(bool value){canControl = value;}
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
     public int getFormInt(){return curForm;}
     public void setNewForm(AbilitySettingScriptable newForm){forms.Add(newForm);}
     public AbilitySettingScriptable getCurForm(){return forms[curForm];}
+    public float getRainyFrictionUp(){return rainyFrictionUp;}
+    public float getRainyFrictionDown(){return rainyFrictionDown;}
+    public void setRainyFrictionUp(float amount){rainyFrictionUp = amount;}
+    public void setRainyFrictionDown(float amount){rainyFrictionDown = amount;}
 
     //When particles collide with the player it turns on the function slippery shit making it harder for the player to go up
     //but easier to go down.
@@ -337,7 +347,7 @@ public IEnumerator Jump()
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if(!collision.gameObject.CompareTag("RainShit")){
+        if(collision.gameObject.CompareTag("RainShit")){
             if(turnEasingBackOn == null){
                 turnEasingBackOn = StartCoroutine(EasingBackOn());
             }
