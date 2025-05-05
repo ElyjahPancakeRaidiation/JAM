@@ -52,12 +52,12 @@ public class LoopingBackground : MonoBehaviour
         }
         
         if(isLooping){
-            if(curImage != null){curImage.GetComponent<MovingGround>().canMove = true;}
-            previousImage.GetComponent<MovingGround>().canMove = true;
+            if(curImage != null){curImage.GetComponent<MovingGround>().setCanMove(true);}
+            previousImage.GetComponent<MovingGround>().setCanMove(true);
             loopHill();
         }else{
-            if(curImage != null){curImage.GetComponent<MovingGround>().canMove = false;}
-            previousImage.GetComponent<MovingGround>().canMove = false;
+            if(curImage != null){curImage.GetComponent<MovingGround>().setCanMove(false);}
+            previousImage.GetComponent<MovingGround>().setCanMove(false);
         }
     }
 
@@ -91,8 +91,8 @@ public class LoopingBackground : MonoBehaviour
                 // Debug.Log("jaljadf;djs");
                 if(stopOnNext){
                     isLooping = false;
-                    curImage.GetComponent<MovingGround>().canMove = false;
-                    previousImage.GetComponent<MovingGround>().canMove = false;
+                    curImage.GetComponent<MovingGround>().setCanMove(false);
+                    previousImage.GetComponent<MovingGround>().setCanMove(false);
                     pushPlayer = true;
                 }
             }

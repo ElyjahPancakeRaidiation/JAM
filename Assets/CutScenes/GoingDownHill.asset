@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c81d7e2c8919004e9f663bfbea01fcc, type: 3}
-  m_Name: TestCut
+  m_Name: GoingDownHill
   m_EditorClassIdentifier: 
   cutSceneInfo:
   - actionType: 1
-    information: add(14, 6, 12)
+    information: addForce(2, -4, 6)
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 0.1

@@ -20,20 +20,23 @@ public class CutSceneManager : MonoBehaviour
     [Tooltip("The end position the actors will have at the end of their actions.")]
     [SerializeField]private GameObject[] endPositions;
 
-    public bool canPlayCutScene = false;
+    public bool playOnStart;
+    private bool canPlayCutScene = false;
     private bool isPlaying = false;
     //Ensures the current scene is finished before moving on to the next
     private bool canMoveOn = false;
+    private bool isFinished = false;
     private int sceneCounter = 0;
 
-    private void Start(){playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();}
+    private void Start(){
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        if(playOnStart){
+            canPlayCutScene = true;
+        }
+    }
 
     void FixedUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.F)){
-            canPlayCutScene = !canPlayCutScene;
-        }
-
         if(canPlayCutScene){
             if(!isPlaying){
                 sceneCounter = 0;
@@ -44,6 +47,7 @@ public class CutSceneManager : MonoBehaviour
 
     void StartCutscene(){
         isPlaying = true;
+        isFinished = false;
         playerMovement.setCanControl(false);
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
@@ -54,6 +58,7 @@ public class CutSceneManager : MonoBehaviour
             isPlaying = false;
             canPlayCutScene = false;
             playerMovement.setCanControl(true);
+            isFinished = true;
             yield break;
         }
 
@@ -223,8 +228,9 @@ public class CutSceneManager : MonoBehaviour
 
         return val;
     }
-    
-
+    public void playCutScene(){canPlayCutScene = true;}
+    public bool getIsPlaying(){return isPlaying;}
+    public bool getIsFinished(){return isFinished;}
 }
 
 

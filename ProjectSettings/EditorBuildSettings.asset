@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Test Scenes/Felix lvl 2 Test.unity
     guid: 47ceec731bec7384a8f6c1ced39af1d5
   - enabled: 1
+    path: Assets/Scenes/FInal Scenes/EndScreen.unity
+    guid: 011006450a773744691c79a3fbc62aa9
+  - enabled: 1
     path: Assets/Scenes/Test Scenes/E - irene lvl bible 1.unity
     guid: 892e19b4b1ca0724d9ceaa50db5343d9
   - enabled: 0
@@ -36,15 +39,12 @@ EditorBuildSettings:
     path: Assets/Scenes/FInal Scenes/Final Level3.unity
     guid: c63270e898f43f94bbcb1c8e17aa34af
   - enabled: 0
-    path: Assets/Scenes/FInal Scenes/EndScreen.unity
-    guid: 011006450a773744691c79a3fbc62aa9
-  - enabled: 0
     path: Assets/Scenes/FInal Scenes/obstacleCourse.unity
     guid: a8850029f9c7bda4b9031f59575f8be1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test Scenes/Felix Work Scene.unity
     guid: 11dc04773c10c8c41b17ab4b9735167d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test Scenes/Felix lvl 2 Test.unity
     guid: 47ceec731bec7384a8f6c1ced39af1d5
   m_configObjects: {}

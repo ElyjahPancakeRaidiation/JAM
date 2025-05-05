@@ -85,9 +85,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         playerAbilities = GetComponent<PlayerAbilities>();
+        physics = new Physics(GetComponent<Rigidbody2D>());
         _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
         dustScript = _dustSpawner.GetComponent<DustScript>();
-        physics = new Physics(GetComponent<Rigidbody2D>());
         _spriteRender = GetComponent<SpriteRenderer>();
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
@@ -105,13 +105,13 @@ public class PlayerMovement : MonoBehaviour
         physics.setRainyFrictionDown(rainyFrictionDown);
 
         maxForm = forms.Count-1;
-        #if UNITY_ANDROID
-            if(canControl){mobileInput();}
-        #else
-        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
-        #endif
-
+        // #if UNITY_ANDROID
+        //     if(canControl){mobileInput();}
+        // #else
         // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
+        // #endif
+
+        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
         //This prevents the easing from going above what its supposed to be
 
       
@@ -330,6 +330,7 @@ public IEnumerator Jump()
     //but easier to go down.
     void OnParticleCollision(GameObject other)
     {
+        //Debug.Log("i think woring");
         if(other.CompareTag("RainShit")){
             isEasingOn = false;
             physics.slipperyShitFunction();
