@@ -41089,7 +41089,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1327054839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49852,7 +49852,7 @@ MonoBehaviour:
   skidSpeed: 10
   emissionMultiplier: 10
   timeDelay: 1
-  recentlyJumped: 0
+  jumpedWhileSkidding: 0
   rotationSpeed: 10
   groundMask:
     serializedVersion: 2

@@ -102,7 +102,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {  
     
-
+        //conditional compilation checking for what platform it is and depending on that,
+        // the player input is handled accordingly
         maxForm = forms.Count-1;
         #if UNITY_ANDROID
             mobileInput();
@@ -167,17 +168,18 @@ public class PlayerMovement : MonoBehaviour
         if(Input.touchCount > 0)
         {
             foreach(Touch touch in Input.touches)
-            {
-                if(touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x*inputDetectionPercentX) //if maintouch not initialized yet
+            {    //if maintouch not initialized yet
+                if(touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x*inputDetectionPercentX)
                 {
                     mainTouch = new MainTouch();
                     mainTouch.setOrigin(touch.position);
                     mainTouch.setFingerID(touch.fingerId);
                 }
-            }
-            if(mainTouch != null){ //if maintouch is initialized, update its position
+            }   //if maintouch is initialized, update its position
+            if(mainTouch != null){ 
                 updateMainTouch();
-                horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
+                //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
+                horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); 
             }else{
                 horizontalInput = 0;
             }
