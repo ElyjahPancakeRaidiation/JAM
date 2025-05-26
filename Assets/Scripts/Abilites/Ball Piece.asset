@@ -16,4 +16,6 @@ MonoBehaviour:
   movementSpeed: 12
   formName: Ball
   formAddOn: 0
-  groundChecker: 1.2
+  groundChecker: {x: 0.15, y: 0.89}
+  isGroundedOffsetPosition: 0.15
+  positionOffsetforPlayersothattheledgecandetecttheplayersotherearenotsoftlocks: {x: 0, y: 0}

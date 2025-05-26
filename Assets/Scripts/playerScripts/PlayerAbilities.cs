@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerAbilities : MonoBehaviour
 {
     private PlayerMovement playerMovement;
+    private isGroundedScript isGroundedScript;
     private GameManager gm;
     private Rigidbody2D _rb;
 
@@ -38,6 +39,7 @@ public class PlayerAbilities : MonoBehaviour
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
         dashAmount = maxDashes;
@@ -62,7 +64,7 @@ public class PlayerAbilities : MonoBehaviour
             useFormsAbility();
         }
 
-        if(isGrounded() && canJumpNextFrame){
+        if(isGroundedScript.isGrounded() && canJumpNextFrame){
             useFormsAbility();
         }
         if (recentlyJumped){
@@ -87,7 +89,7 @@ public class PlayerAbilities : MonoBehaviour
             case "Pogo":
                 //Will have the mega jump and arms ability
                 canJumpNextFrame = true;
-                if(isGrounded()){
+                if(isGroundedScript.isGrounded()){
                     pogoAbility();
                     // if(usedJumpAbility==true){
                      
@@ -116,7 +118,7 @@ public class PlayerAbilities : MonoBehaviour
         //This function puts a short cool down when getting your dash back since if this isnt here it will
         //automatically give your dash allowing double dash
         yield return new WaitForSeconds(0.2f);
-        yield return new WaitUntil(() => isGrounded());
+        yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
 
@@ -137,7 +139,7 @@ public class PlayerAbilities : MonoBehaviour
     public IEnumerator preventSlide(){
         
         yield return new WaitForSeconds(.6f);
-        yield return new WaitUntil(() => isGrounded());
+        yield return new WaitUntil(() => isGroundedScript.isGrounded());
           
         if (playerMovement.isPogo==true){
 
