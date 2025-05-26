@@ -12,8 +12,14 @@ public class CutSceneScriptable : ScriptableObject
 
     [Serializable]
     public class CutSceneInfo{
-        public enum ActionType{MoveObj, AddForce, TurnObjectOn, TurnObjectOff, Wait};
+
+        public bool forCamera;
+
+        public enum ActionType { MoveObj, AddForce, TurnObjectOn, TurnObjectOff, Wait };
+        public enum CameraActiontype{MoveCamera, Wait};
+        
         public ActionType actionType;
+        public CameraActiontype cameraActionType;
 
         [Tooltip("MoveObj key: speed(number for amount of speed)-(number for amount of easing applied when the object stops) | AddForce key: add(x for force added in the x axis, y for force added in the y axis, z is for the power)")]
         public string information;

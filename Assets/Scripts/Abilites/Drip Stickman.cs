@@ -10,7 +10,7 @@ public class DripStickman : Torso
     {
         base.formSetting(_rb, _sr, _cir, _box);
         _box.GetComponent<BoxCollider2D>().size = _sr.size * boxSizeMultiplier;
-        _rb.gameObject.GetComponent<PlayerAbilities>().setGroundDistance(groundChecker);
+        // _rb.gameObject.GetComponent<PlayerAbilities>().setGroundDistance(groundChecker);
         
     }
 }

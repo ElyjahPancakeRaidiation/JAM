@@ -17,6 +17,6 @@ public class Torso : AbilitySettingScriptable
         _rb.freezeRotation = true;
         _rb.gameObject.transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
         _rb.gameObject.GetComponent<PlayerMovement>().setSpeed(movementSpeed);
-        _rb.gameObject.GetComponent<PlayerAbilities>().setGroundDistance(groundChecker);
+        // _rb.gameObject.GetComponent<PlayerAbilities>().setGroundDistance(groundChecker);
     }
 }

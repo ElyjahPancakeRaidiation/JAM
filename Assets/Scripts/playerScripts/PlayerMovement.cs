@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -108,10 +109,10 @@ public class PlayerMovement : MonoBehaviour
         // #if UNITY_ANDROID
         //     if(canControl){mobileInput();}
         // #else
-        // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
+        // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
         // #endif
 
-        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
+        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
         //This prevents the easing from going above what its supposed to be
 
       
@@ -318,10 +319,14 @@ public IEnumerator Jump()
     public void setCanControl(bool value){canControl = value;}
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
-    public int getFormInt(){return curForm;}
+    public float getMaxSpeedPoint(){return maxSpeedPoint;}
+    public Vector2 getCurVelocity(){ return physics._rb.velocity; }
+    public void setCurVelocity(Vector2 val){ physics._rb.velocity = val; }
+    public int getFormInt() { return curForm; }
     public void setNewForm(AbilitySettingScriptable newForm){forms.Add(newForm);}
     public AbilitySettingScriptable getCurForm(){return forms[curForm];}
-    public float getRainyFrictionUp(){return rainyFrictionUp;}
+    public List<AbilitySettingScriptable> getAllForms(){ return forms; }
+    public float getRainyFrictionUp() { return rainyFrictionUp; }
     public float getRainyFrictionDown(){return rainyFrictionDown;}
     public void setRainyFrictionUp(float amount){rainyFrictionUp = amount;}
     public void setRainyFrictionDown(float amount){rainyFrictionDown = amount;}
