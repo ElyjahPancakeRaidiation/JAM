@@ -20,7 +20,7 @@ public class Physics
         int OppositedirectionMultipleY = -1 * (int)Mathf.Sign(_rb.velocity.y);
         // Multiplies the direction then coefficient of air resistence and the velocity squared
         _rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(_rb.velocity.x * _rb.velocity.x),
-        OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * _rb.velocity.y)));
+        OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * _rb.velocity.y/4.3f)));
     }
 
     public void slipperyShitFunction(){//Just applies a downward force in the y direction 
