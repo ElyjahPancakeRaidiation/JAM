@@ -10,6 +10,8 @@ public class PlayerAbilities : MonoBehaviour
     private PlayerMovement playerMovement;
     private GameManager gm;
     private Rigidbody2D _rb;
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
 
     #region Dash variables
     private const float DASHPOWERX = 18, DASHPOWERY = 14;
@@ -40,6 +42,10 @@ public class PlayerAbilities : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
+
         dashAmount = maxDashes;
         canUseAbility = true;
     }
@@ -103,6 +109,7 @@ public class PlayerAbilities : MonoBehaviour
     #region Ball Ability
     private void dashAbility(){
         if(dashAmount > 0){
+            StartCoroutine(audioManagerV2.playPlayerSFX("Dashing"));
             _rb.velocity = Vector2.zero;
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
@@ -125,6 +132,7 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Pogo Ability
     private void pogoAbility(){
+        StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
         canJumpNextFrame = false;
         jumpFrameTimer = 0;
         _rb.AddForce(new Vector2(0, SUPERJUMP), ForceMode2D.Impulse);

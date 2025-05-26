@@ -18,9 +18,13 @@ public class PlayerMovement : MonoBehaviour
     private float movementSpeed;
     [SerializeField]private bool isGrounded;
 
-#region Player Settings
+    #region Player Settings
     [Header("----Player----")]
-    [SerializeField]private bool canControl;
+    //temp
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
+    //temp
+    [SerializeField] private bool canControl;
     [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
@@ -58,17 +62,25 @@ public class PlayerMovement : MonoBehaviour
     public bool canJump = true;
     public float jumpSpeedX, jumpSpeedY;
     #endregion
-    public class MainTouch{
+    private float lastVelocityY;
+    public float velocitySoundThreshold;
+    public bool checkingImpact;
+    
+    public class MainTouch
+    {
         public float fingerID;
         public Vector2 origin;
         public Vector2 touchPos;
-        public void setOrigin(Vector2 origin){
+        public void setOrigin(Vector2 origin)
+        {
             this.origin = origin;
         }
-        public void setFingerID(float fingerID){
+        public void setFingerID(float fingerID)
+        {
             this.fingerID = fingerID;
         }
-        public float getXDistance(){
+        public float getXDistance()
+        {
             return touchPos.x - origin.x;
         }
     }
@@ -89,6 +101,10 @@ public class PlayerMovement : MonoBehaviour
         dustScript = _dustSpawner.GetComponent<DustScript>();
         physics = new Physics(GetComponent<Rigidbody2D>());
         _spriteRender = GetComponent<SpriteRenderer>();
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
+
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
@@ -99,42 +115,48 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {  
+    {
         physics.setCoefficientOfFriction(coefficientOfFriction);
         physics.setRainyFrictionUp(rainyFrictionUp);
         physics.setRainyFrictionDown(rainyFrictionDown);
 
-        maxForm = forms.Count-1;
-        #if UNITY_ANDROID
-            if(canControl){mobileInput();}
-        #else
-        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}
-        #endif
-        Debug.Log(horizontalInput);
+        maxForm = forms.Count - 1;
+#if UNITY_ANDROID
+        if(canControl){mobileInput();}
+#else
+        if (canControl) { horizontalInput = Input.GetAxisRaw("Horizontal"); }
+#endif
         //This prevents the easing from going above what its supposed to be
 
-      
-        if(isEasingOn){
 
-            if(withEasing){
-                if(physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f){
+        if (isEasingOn)
+        {
+
+            if (withEasing)
+            {
+                if (physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f)
+                {
                     withEasing = false;
                 }
 
                 //This piece of code ensures that easing is never on when it doesn't have to be
                 //Since the angularvelocity is directyl related to the direction the player is rolling to.
-                if(oppositeInput == 1 && physics._rb.angularVelocity < 0){
+                if (oppositeInput == 1 && physics._rb.angularVelocity < 0)
+                {
                     withEasing = false;
-                } else if(oppositeInput == -1 && physics._rb.angularVelocity > 0){
+                }
+                else if (oppositeInput == -1 && physics._rb.angularVelocity > 0)
+                {
                     withEasing = false;
                 }
             }
-            if(withEasing && horizontalInput == oppositeInput){
+            if (withEasing && horizontalInput == oppositeInput)
+            {
                 Vector2 velocity = physics._rb.velocity;
                 //Smoothly brings down the velocity's x to a 0 making it a smooth stop when the player turns.
                 velocity.x = Mathf.SmoothDamp(velocity.x, 0, ref curFloat, smoothStopSpeed);
                 //This doesn't really do much although it is similar to what Tarin did with the player controller
-                angularVelHalf = -(physics._rb.angularVelocity/2) * 10;
+                angularVelHalf = -(physics._rb.angularVelocity / 2) * 10;
                 /*
                 This is used for the players rotation in the rigidbody mainly when its a ball. It's supposed to make sure the balls rotation is going 
                 the same as the players input however with further inspection this was done with the gravity
@@ -145,22 +167,31 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Change keybind so the player gets it from the game manager
-        if(Input.GetKeyDown(KeyCode.LeftShift)){
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
             changeForm();
             withEasing = false;
         }
 
         //Skips the form if it is a add on
-        if(forms[curForm].formAddOn){
+        if (forms[curForm].formAddOn)
+        {
             changeForm();
         }
 
-        if(forms[curForm].formName== "Pogo"){
+        if (forms[curForm].formName == "Pogo")
+        {
             isPogo = true;
         }
         else isPogo = false;
         isGrounded = playerAbilities.isGrounded();
         physics.setCoefficientOfFriction(coefficientOfFriction);
+        lastVelocityX = physics._rb.velocity.x;
+        lastVelocityY = physics._rb.velocity.y;
+        if (!playerAbilities.isGrounded() && !checkingImpact)
+        {
+            StartCoroutine(impactSound());
+        }
     }
 
     private void mobileInput()
@@ -215,15 +246,17 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         physics.Friction();
-        if(GetComponent<CircleCollider2D>().enabled){
-            
+        if (GetComponent<CircleCollider2D>().enabled)
+        {
+
             ballMovement();
-            
-        }else if(GetComponent<BoxCollider2D>().enabled){
+
+        }
+        else if (GetComponent<BoxCollider2D>().enabled)
+        {
             torsoMovement();
         }
         dustScript.checkForDust();
-        lastVelocityX = physics._rb.velocity.x;
     }
     public float getAcceleration(){
         float aMultiplier; //acceleration multiplier
@@ -312,8 +345,21 @@ public IEnumerator Jump()
 
         }
     }
+    public IEnumerator impactSound()
+    {
+        checkingImpact = true;
+        yield return new WaitUntil(() => playerAbility.isGrounded());
+        if (Mathf.Abs(lastVelocityY) > velocitySoundThreshold)
+        {
+            Debug.Log(audioManagerV2);
+            //make volume based on velocity
+            StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
+            //GetComponent<AudioSource>().Play();
+        }
+        checkingImpact = false;
+    }
 
-    public void setCanControl(bool value){canControl = value;}
+    public void setCanControl(bool value) { canControl = value; }
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
     public int getFormInt(){return curForm;}

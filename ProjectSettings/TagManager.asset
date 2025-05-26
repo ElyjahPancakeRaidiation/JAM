@@ -23,6 +23,7 @@ TagManager:
   - RainShit
   - Rain Controller
   - SplashParticles
+  - AudioManager
   layers:
   - Default
   - TransparentFX
