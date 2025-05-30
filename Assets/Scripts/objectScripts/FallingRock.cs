@@ -31,7 +31,7 @@ public class FallingRock : MonoBehaviour
 
     private void Start() {
 
-        for (int i = 0; i < rockObj.Length; i++)//Makes sure all of the rocks have not fallen.
+        for (int i = 0; i < rockObj.Length; i++)//Makes sure all of the rocks have not fallen. :)
         {
             rockRb[i] = rockObj[i].GetComponent<Rigidbody2D>();
             rockAnims[i] = rockObj[i].GetComponent<Animator>();
