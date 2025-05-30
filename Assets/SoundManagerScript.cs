@@ -30,19 +30,23 @@ public class SoundManagerScript : MonoBehaviour
         //}
     }
 
-    public void OnCollisionEnter2D(UnityEngine.Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (gameObject.CompareTag("Player"))
         {
 
-            DippingSoundTest.volume = Mathf.Clamp(DippingSoundTest.volume + 0.01f, 0f, 1f);
+            DippingSoundTest.volume = Mathf.Clamp(DippingSoundTest.volume + 0.1f, 0f, 1f);
 
         }
-        else
-        {
-            DippingSoundTest.volume = Mathf.Clamp(DippingSoundTest.volume - 0.01f, 0f, 1f);
-        }
+ 
+       
     }
+    public void OnTriggerExit2D(UnityEngine.Collider2D collision)
+    {
+
+            DippingSoundTest.volume = Mathf.Clamp(DippingSoundTest.volume - 0.1f, 0f, 1f);
+       }
+
 }
 
 
