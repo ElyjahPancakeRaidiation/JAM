@@ -19,7 +19,7 @@ public class PlayerAbilities : MonoBehaviour
     #endregion
 
     #region Pogo variables
-    private const float SUPERJUMP = 40;
+    private const float SUPERJUMP = 28;
     private IEnumerator stopSliding;
    
     public bool usedJumpAbility =false;
