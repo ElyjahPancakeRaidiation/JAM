@@ -21,6 +21,7 @@ public class CutSceneManager : MonoBehaviour
     [Tooltip("The end position the actors will have at the end of their actions.")]
     [SerializeField] private GameObject[] endPositions;
 
+    [SerializeField]private bool stopWhenSceneStarts;
     public bool playOnStart;
     private bool canPlayCutScene = false;
     private bool isPlaying = false;
@@ -55,18 +56,19 @@ public class CutSceneManager : MonoBehaviour
         isPlaying = true;
         isFinished = false;
         playerMovement.setCanControl(false);
-        StartCoroutine(easeObj(50));
+        if(stopWhenSceneStarts){ StartCoroutine(easeObj(50)); }
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
 
     private IEnumerator RunCutScene(CutSceneScriptable scene)
     {
+        Debug.Log("I'm still running Cutscene");
         //Base case to stop the loop when theres no more scenes
         if (sceneCounter == scene.cutSceneInfo.Length)
         {
             isPlaying = false;
             canPlayCutScene = false;
-            playerMovement.setCanControl(true);
+            // playerMovement.setCanControl(true);
             CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
             playerCamera.setFollowPlayer(true);
             isFinished = true;
@@ -83,6 +85,7 @@ public class CutSceneManager : MonoBehaviour
         {
             if (!scene.cutSceneInfo[sceneCounter].forCamera)
             {
+                //If it is not a scene for the camera use the objects action type enum
                 startAction(scene.cutSceneInfo[sceneCounter].actionType, scene);
             }
             else { startAction(scene.cutSceneInfo[sceneCounter].cameraActionType, scene); }
@@ -98,7 +101,7 @@ public class CutSceneManager : MonoBehaviour
         yield return new WaitUntil(() => canMoveOn);
         yield return new WaitForSecondsRealtime(scene.cutSceneInfo[sceneCounter].waitTime);
         sceneCounter++;
-        canMoveOn = false;
+        canMoveOn = false;//Resets the value for the new instance.
         //Do the actions it requires.
         StartCoroutine(RunCutScene(scene));
 
@@ -141,10 +144,13 @@ public class CutSceneManager : MonoBehaviour
     private void AddForceToObject(CutSceneScriptable c)
     {
         Vector3 amount = InfoToVector2(c.cutSceneInfo[sceneCounter].information);
+
         actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().AddForce(amount * amount.z, ForceMode2D.Impulse);
         Vector2 clampedVel = clampVelocity(actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().velocity, c.cutSceneInfo[sceneCounter].clampVelocity);
         actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().velocity = clampedVel;
 
+
+        //If it is not playing infinitely then move on to the next scene
         if (!c.cutSceneInfo[sceneCounter].infinite) { canMoveOn = true; }
     }
     private IEnumerator MoveObj(CutSceneScriptable c)
@@ -224,6 +230,7 @@ public class CutSceneManager : MonoBehaviour
 
     private IEnumerator easeObj(GameObject obj, float easingAmount = 0)//This function is for any object
     {
+        Debug.Log("SLOWING");
         if (easingAmount == 0) { easingAmount = 30; }
         Vector2 velocity = obj.GetComponent<Rigidbody2D>().velocity;
         if (Vector2.Distance(velocity, Vector2.zero) < 0.1f)

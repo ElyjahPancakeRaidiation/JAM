@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class LoopingBackGround1 : MonoBehaviour
@@ -14,6 +16,8 @@ public class LoopingBackGround1 : MonoBehaviour
     [SerializeField]protected bool isDependantOnXAxis;
 
     [SerializeField]protected Vector2 offset;
+    [SerializeField]protected Vector2 borderMaxOffset;
+    [SerializeField]protected Vector2 borderMinOffset; 
     [SerializeField]private Vector3 rotationOffset;
 
     public bool stopOnNext;
@@ -33,7 +37,7 @@ public class LoopingBackGround1 : MonoBehaviour
 
     //The direction of where the current background spawned
     private float curDir;
-    [SerializeField]private float earlyDeleteDistance;
+    private float earlyDeleteDistance;
     protected GameObject player;
 
     // Start is called before the first frame update
@@ -58,29 +62,38 @@ public class LoopingBackGround1 : MonoBehaviour
             Vector3 rightPosition = new Vector3(_previousCol.bounds.max.x + _previousCol.bounds.extents.x, previousImage.transform.position.y);
             Vector3 leftPosition = new Vector3(_previousCol.bounds.min.x - _previousCol.bounds.extents.x, previousImage.transform.position.y);
             //These two variables are the current images far right and left positions
-            float xMaxCurrentImage = Camera.main.WorldToViewportPoint(_previousCol.bounds.max).x;
-            float xMinCurrentImage = Camera.main.WorldToViewportPoint(_previousCol.bounds.min).x;
+            float xMaxCurrentImage = Camera.main.WorldToViewportPoint(_previousCol.bounds.max + (Vector3)borderMaxOffset).x;
+            float xMinCurrentImage = Camera.main.WorldToViewportPoint(_previousCol.bounds.min + (Vector3)borderMinOffset).x;
             
             spawnObjectAfterAnother(xMaxCurrentImage, xMinCurrentImage, rightPosition + (Vector3)offset, leftPosition + (Vector3)offset);//Need to change this to make it more accomidating for the x and y positions -- Note: Later
         }
     }
 
     public void CheckForCurrentImage(){
+        // Debug.Log(Camera.main.WorldToViewportPoint(borderMinOffset).y);
         float playerPosAxis = 0;
-        if(previousImage != null){
+        if (previousImage != null)
+        {
             float prevMinAxis;
             float prevMaxAxis;
-            if(isDependantOnXAxis){
+            if (isDependantOnXAxis)
+            {
                 playerPosAxis = player.transform.position.x;
-                prevMaxAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.max).x;
-                prevMinAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.min).x;
-            }else{
+                prevMaxAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.max + (Vector3)borderMaxOffset).x;
+                prevMinAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.min + (Vector3)borderMinOffset).x;
+            }
+            else
+            {
                 playerPosAxis = player.transform.position.y;
-                prevMaxAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.max).y;
-                prevMinAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.min).y;
+                prevMaxAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.max + (Vector3)borderMaxOffset).y;
+                prevMinAxis = Camera.main.WorldToViewportPoint(_previousCol.bounds.min + (Vector3)borderMinOffset).y;
             }
 
-            if(prevMinAxis > upperBoundLimit || prevMaxAxis < lowerBoundLimit){
+            // Debug.Log(prevMinAxis);
+            // Debug.Log(Camera.main.ViewportToWorldPoint(new Vector2(0, prevMinAxis)));
+
+            if (prevMinAxis > upperBoundLimit || prevMaxAxis < lowerBoundLimit)
+            {
                 GameObject.Destroy(previousImage);
                 previousImage = curImage;
                 _previousCol = previousImage.GetComponent<Collider2D>();
@@ -88,6 +101,7 @@ public class LoopingBackGround1 : MonoBehaviour
                 _currentCol = null;
                 curDir = 0;
             }
+        
         }
 
         //This block of code checks to see if the player goes backwards when theres an already loaded background ahead of them and deletes the current image.
@@ -99,15 +113,31 @@ public class LoopingBackGround1 : MonoBehaviour
             if(curDir == 0){curDir = Mathf.Sign(curImage.transform.position.x-playerPosAxis);}
 
             //If the player was heading left but went right
-            if(curDir == -1){
-                if((Mathf.Abs(curMaxAxis.x - Camera.main.ViewportToWorldPoint(new Vector3(lowerBoundLimit, 0)).x)) > 6){
+            var checkCurandLower = false;
+            var checkCurandUpper = false;
+
+            if (isDependantOnXAxis)
+            {
+                checkCurandLower = Mathf.Abs(curMaxAxis.x - Camera.main.ViewportToWorldPoint(new Vector3(lowerBoundLimit, 0)).x) > 6;
+                checkCurandUpper = Mathf.Abs(curMinAxis.x - Camera.main.ViewportToWorldPoint(new Vector3(upperBoundLimit, 0)).x) > 6;
+            }
+            else
+            {
+                checkCurandLower = Mathf.Abs(curMaxAxis.y - Camera.main.ViewportToWorldPoint(new Vector3(lowerBoundLimit, 0)).y) > 6;
+                checkCurandUpper = Mathf.Abs(curMinAxis.y - Camera.main.ViewportToWorldPoint(new Vector3(upperBoundLimit, 0)).y) > 6;
+            }
+
+            if (curDir == -1) {
+
+                if (checkCurandLower)
+                {
                     GameObject.Destroy(curImage);
                     curImage = null;
                     _currentCol = null;
                 }
-            }else{
+            } else {
                 //If the player was heading right but went left
-                if((Mathf.Abs(curMinAxis.x - Camera.main.ViewportToWorldPoint(new Vector3(upperBoundLimit, 0)).x)) > 6){
+                if (checkCurandUpper) {
                     GameObject.Destroy(curImage);
                     curImage = null;
                     _currentCol = null;
@@ -119,7 +149,7 @@ public class LoopingBackGround1 : MonoBehaviour
     public void spawnObjectAfterAnother(float maxCoord, float minCoord, Vector3 rightPosition, Vector3 leftPosition){
 
         //This section spawns the next image depending where the cameras borders are going.
-        if(maxCoord <= upperBoundLimit){//If the camera is going right next image to the right
+        if(maxCoord >= upperBoundLimit){//If the camera is going right next image to the right
             if(curImage == null){
                 curImage = Instantiate(imagePrefab, rightPosition, Quaternion.identity);
                 _currentCol = curImage.GetComponent<Collider2D>();
@@ -129,11 +159,15 @@ public class LoopingBackGround1 : MonoBehaviour
             }
         }
 
-        if(minCoord >= lowerBoundLimit){//If the camera is going left next image to the left
-            if(curImage == null){
+
+        if (minCoord <= lowerBoundLimit)
+        {//If the camera is going left next image to the left
+            if (curImage == null)
+            {
                 curImage = Instantiate(imagePrefab, leftPosition, Quaternion.identity);
                 _currentCol = curImage.GetComponent<Collider2D>();
-                if(stopOnNext){
+                if (stopOnNext)
+                {
                     isLooping = false;
                 }
             }

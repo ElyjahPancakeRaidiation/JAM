@@ -376,16 +376,111 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d6b75a2f60cf34681f390c35ea6b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 40
+  speed: 0
+  curSpeed: 0
   speedUpAmount: 4
   slowDownAmount: 0.5
   playerMaxSpeedPoint: 11
+  addedYOffsetMaxSpeed: 0
   offset: {x: 0, y: 0}
+  camStartSize: 0
   leftBorder: -1000
   rightBorder: 1000
   upBorder: 1000
   downBorder: -1000
-  camStartSize: 0
+--- !u!114 &122325233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122325226}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b934ae39a8939b4fba3b5e7419ec6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 15
+--- !u!1 &159992404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 159992406}
+  - component: {fileID: 159992405}
+  - component: {fileID: 159992407}
+  m_Layer: 0
+  m_Name: CamManTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &159992405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159992404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8deaa3879aff1244baffab79eba1f206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderMask:
+    serializedVersion: 2
+    m_Bits: 512
+  colliderSize: {x: 138.4, y: 105.8}
+  colliderOffsetSize: {x: 0, y: 0}
+  moveCamera: 1
+  changeSize: 1
+  keepNewSettings: 0
+  newCameraSize: 40
+  origCameraSize: 8
+  newSizeSpeed: 100
+  origSizeSpeed: 70
+  newPosition: {fileID: 390214401}
+  newPositionOffset: {x: 0, y: -11.5}
+  speedToPosition: 60
+  speedUpToOrigPosition: 0.4
+--- !u!4 &159992406
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159992404}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 283.8, y: -19.1, z: -0.6961888}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &159992407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159992404}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0df4bcef8e49843976163019737198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colSize: {x: 21.73, y: 20.97}
+  colMask:
+    serializedVersion: 2
+    m_Bits: 512
+  newPosition: {fileID: 390214401}
+  wantedSpeed: 70
+  oriSpeed: 70
 --- !u!1001 &168795074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -734,7 +829,7 @@ SpriteRenderer:
   m_Size: {x: 60, y: 95.10836}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &302738406
@@ -1017,6 +1112,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &390214401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 390214402}
+  m_Layer: 0
+  m_Name: newposition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &390214402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390214401}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 288.8, y: -2.5, z: -0.62895477}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &467214640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,7 +1943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &955915950
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2646,6 +2772,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7490272465439485032, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
       insertIndex: -1
       addedObject: {fileID: 122325227}
+    - targetCorrespondingSourceObject: {fileID: 7490272465439485032, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 122325233}
   m_SourcePrefab: {fileID: 100100000, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
 --- !u!1 &1680806538
 GameObject:
@@ -3202,7 +3331,7 @@ SpriteRenderer:
   m_Size: {x: 37.880863, y: 60.000004}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1763088500
@@ -3600,8 +3729,8 @@ Transform:
   m_GameObject: {fileID: 1852078964}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 177.50807, y: 69.692055, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 333, y: 35.2, z: 0}
+  m_LocalScale: {x: 2.3577, y: 2.3577, z: 2.3577}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4159,10 +4288,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1522227081}
   - {fileID: 523541119}
   - {fileID: 262136364}
-  - {fileID: 957133172}
   - {fileID: 223853039}
   - {fileID: 381618297}
   - {fileID: 7821219581733618499}
@@ -4182,3 +4309,7 @@ SceneRoots:
   - {fileID: 1852078967}
   - {fileID: 955915952}
   - {fileID: 1896146595}
+  - {fileID: 957133172}
+  - {fileID: 1522227081}
+  - {fileID: 159992406}
+  - {fileID: 390214402}

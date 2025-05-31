@@ -23,6 +23,7 @@ TagManager:
   - RainShit
   - Rain Controller
   - SplashParticles
+  - MovingGround
   layers:
   - Default
   - TransparentFX

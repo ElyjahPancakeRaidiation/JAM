@@ -113,30 +113,38 @@ public class PlayerMovement : MonoBehaviour
         // #endif
 
         if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
+        
+
         //This prevents the easing from going above what its supposed to be
 
-      
-        if(isEasingOn){
+        if (isEasingOn)
+        {
 
-            if(withEasing){
-                if(physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f){
+            if (withEasing)
+            {
+                if (physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f)
+                {
                     withEasing = false;
                 }
 
                 //This piece of code ensures that easing is never on when it doesn't have to be
                 //Since the angularvelocity is directyl related to the direction the player is rolling to.
-                if(oppositeInput == 1 && physics._rb.angularVelocity < 0){
+                if (oppositeInput == 1 && physics._rb.angularVelocity < 0)
+                {
                     withEasing = false;
-                } else if(oppositeInput == -1 && physics._rb.angularVelocity > 0){
+                }
+                else if (oppositeInput == -1 && physics._rb.angularVelocity > 0)
+                {
                     withEasing = false;
                 }
             }
-            if(withEasing && horizontalInput == oppositeInput){
+            if (withEasing && horizontalInput == oppositeInput)
+            {
                 Vector2 velocity = physics._rb.velocity;
                 //Smoothly brings down the velocity's x to a 0 making it a smooth stop when the player turns.
                 velocity.x = Mathf.SmoothDamp(velocity.x, 0, ref curFloat, smoothStopSpeed);
                 //This doesn't really do much although it is similar to what Tarin did with the player controller
-                angularVelHalf = -(physics._rb.angularVelocity/2) * 10;
+                angularVelHalf = -(physics._rb.angularVelocity / 2) * 10;
                 /*
                 This is used for the players rotation in the rigidbody mainly when its a ball. It's supposed to make sure the balls rotation is going 
                 the same as the players input however with further inspection this was done with the gravity
