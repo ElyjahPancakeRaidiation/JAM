@@ -24,6 +24,7 @@ TagManager:
   - Rain Controller
   - SplashParticles
   - MovingGround
+  - MovingGroundPoint
   layers:
   - Default
   - TransparentFX

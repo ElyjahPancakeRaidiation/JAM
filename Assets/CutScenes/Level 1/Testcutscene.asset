@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c81d7e2c8919004e9f663bfbea01fcc, type: 3}
-  m_Name: FinishedLoopingCutscene
+  m_Name: Testcutscene
   m_EditorClassIdentifier: 
   cutSceneInfo:
   - forCamera: 0
@@ -19,15 +19,15 @@ MonoBehaviour:
     information: 
     actorIndex: 0
     endPositionIndex: 0
-    waitTime: 0.01
+    waitTime: 4
     infinite: 0
     clampVelocity: {x: 0, y: 0}
   - forCamera: 0
     actionType: 1
     cameraActionType: 0
-    information: addForce(20, -1, 1)
+    information: addforce(40, 2, 30)
     actorIndex: 0
     endPositionIndex: 0
-    waitTime: 4
+    waitTime: 2
     infinite: 0
     clampVelocity: {x: 0, y: 0}

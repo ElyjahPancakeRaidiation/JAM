@@ -10,7 +10,7 @@ public class CameraOperator : MonoBehaviour
 
     private Camera _cam;
 
-    private const float DEFUALTPLAYERSPEED = 15;
+    private const float DEFUALTPLAYERSPEED = 8;
     [SerializeField] private float speed;
     [SerializeField]private float curSpeed;
 

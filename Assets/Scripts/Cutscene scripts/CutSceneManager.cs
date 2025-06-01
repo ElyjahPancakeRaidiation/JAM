@@ -69,13 +69,13 @@ public class CutSceneManager : MonoBehaviour
             isPlaying = false;
             canPlayCutScene = false;
             // playerMovement.setCanControl(true);
-            CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
-            playerCamera.setFollowPlayer(true);
+            // CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
+            // playerCamera.setFollowPlayer(true);
             isFinished = true;
             if (scene.cutSceneInfo[sceneCounter - 1].forCamera)
             {
-                playerCamera.setFollowPlayer(true);
-                playerCamera.setCanMove(true);
+                // playerCamera.setFollowPlayer(true);
+                // playerCamera.setCanMove(true);
             }
             yield break;
         }
@@ -145,11 +145,11 @@ public class CutSceneManager : MonoBehaviour
     {
         Vector3 amount = InfoToVector2(c.cutSceneInfo[sceneCounter].information);
 
-        actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().AddForce(amount * amount.z, ForceMode2D.Impulse);
+        actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().AddForce(new Vector2(amount.x * amount.z, amount.y * amount.z), ForceMode2D.Impulse);
         Vector2 clampedVel = clampVelocity(actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().velocity, c.cutSceneInfo[sceneCounter].clampVelocity);
         actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().velocity = clampedVel;
 
-
+        Debug.Log(amount);
         //If it is not playing infinitely then move on to the next scene
         if (!c.cutSceneInfo[sceneCounter].infinite) { canMoveOn = true; }
     }

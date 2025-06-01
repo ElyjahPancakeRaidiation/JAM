@@ -8,7 +8,7 @@ using UnityEngine;
 public class LoopingBackGround1 : MonoBehaviour
 {
     [SerializeField]protected GameObject imagePrefab;
-    protected GameObject curImage;
+    [SerializeField]protected GameObject curImage;
     [SerializeField]protected GameObject previousImage;
 
     private bool isLooping;
@@ -32,7 +32,7 @@ public class LoopingBackGround1 : MonoBehaviour
     [SerializeField, Range(-0.10f, 1.10f)]private float upperBoundLimit;
     [SerializeField, Range(-0.10f, 1.10f)]private float lowerBoundLimit;
 
-    protected Collider2D _currentCol;
+    [SerializeField]protected Collider2D _currentCol;
     protected Collider2D _previousCol;
 
     //The direction of where the current background spawned
@@ -110,7 +110,17 @@ public class LoopingBackGround1 : MonoBehaviour
             Vector2 curMinAxis;
             curMaxAxis = _currentCol.bounds.max;
             curMinAxis = _currentCol.bounds.min;
-            if(curDir == 0){curDir = Mathf.Sign(curImage.transform.position.x-playerPosAxis);}
+            if (curDir == 0)
+            {
+                if (isDependantOnXAxis)
+                {
+                    curDir = Mathf.Sign(curImage.transform.position.x - playerPosAxis);
+                }
+                else
+                {
+                    curDir = Mathf.Sign(curImage.transform.position.y - playerPosAxis);
+                }
+            }
 
             //If the player was heading left but went right
             var checkCurandLower = false;
@@ -123,26 +133,35 @@ public class LoopingBackGround1 : MonoBehaviour
             }
             else
             {
-                checkCurandLower = Mathf.Abs(curMaxAxis.y - Camera.main.ViewportToWorldPoint(new Vector3(lowerBoundLimit, 0)).y) > 6;
-                checkCurandUpper = Mathf.Abs(curMinAxis.y - Camera.main.ViewportToWorldPoint(new Vector3(upperBoundLimit, 0)).y) > 6;
+                checkCurandLower = Mathf.Abs(curMaxAxis.y - Camera.main.ViewportToWorldPoint(new Vector3(0, lowerBoundLimit)).y) > 6;
+                checkCurandUpper = Mathf.Abs(curMinAxis.y - Camera.main.ViewportToWorldPoint(new Vector3(0, upperBoundLimit)).y) > 6;
             }
 
-            if (curDir == -1) {
+            // Debug.Log(checkCurandLower);
+            // Debug.Log("Curmax: " + curMaxAxis); 
 
-                if (checkCurandLower)
-                {
-                    GameObject.Destroy(curImage);
-                    curImage = null;
-                    _currentCol = null;
-                }
-            } else {
-                //If the player was heading right but went left
-                if (checkCurandUpper) {
-                    GameObject.Destroy(curImage);
-                    curImage = null;
-                    _currentCol = null;
-                }
-            }
+            // if (curDir == -1)
+            // {
+
+            //     if (checkCurandLower)
+            //     {
+            //         GameObject.Destroy(curImage);
+            //         Debug.Log("Delteing curimage by going backwards?--curandlower--");
+            //         curImage = null;
+            //         _currentCol = null;
+            //     }
+            // }
+            // else
+            // {
+            //     //If the player was heading right but went left
+            //     if (checkCurandUpper)
+            //     {
+            //         GameObject.Destroy(curImage);
+            //         Debug.Log("Delteing curimage by going backwards?--curandupper--");
+            //         curImage = null;
+            //         _currentCol = null;
+            //     }
+            // }
         }
     }
 
@@ -152,6 +171,7 @@ public class LoopingBackGround1 : MonoBehaviour
         if(maxCoord >= upperBoundLimit){//If the camera is going right next image to the right
             if(curImage == null){
                 curImage = Instantiate(imagePrefab, rightPosition, Quaternion.identity);
+                Debug.Log("Spwaning curimage");
                 _currentCol = curImage.GetComponent<Collider2D>();
                 if(stopOnNext){
                     isLooping = false;

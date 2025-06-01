@@ -62,12 +62,6 @@ public class OtherLoop : LoopingBackGround1
             }
 
         }
-        
-        if(getIsLooping()){
-            
-            if(wantedAxisFreezePosition == 0){wantedAxisFreezePosition = player.transform.position.x;}
-            player.GetComponent<Rigidbody2D>().position = new Vector2(wantedAxisFreezePosition, player.GetComponent<Rigidbody2D>().position.y);
-        }
 
 
         if (getIsLooping())
@@ -93,6 +87,10 @@ public class OtherLoop : LoopingBackGround1
 
     void FixedUpdate()
     {
-        
+        if(getIsLooping()){
+            
+            if(wantedAxisFreezePosition == 0){wantedAxisFreezePosition = player.transform.position.x;}
+            player.GetComponent<Rigidbody2D>().position = new Vector2(wantedAxisFreezePosition, player.GetComponent<Rigidbody2D>().position.y);
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class MovingGround : MonoBehaviour
@@ -7,20 +8,20 @@ public class MovingGround : MonoBehaviour
     [SerializeField]private Vector2 vecSpeed;
     [SerializeField]private float totalSpeed;//Multiples to both the y and x
     [SerializeField]private bool canMove = true;
+    [SerializeField] private Transform point;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        
+        point = GameObject.FindGameObjectWithTag("MovingGroundPoint").GetComponent<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(canMove){
-            float speedX = vecSpeed.x * totalSpeed;
-            float speedY = vecSpeed.y * totalSpeed;
-            transform.position = new Vector3(transform.position.x + speedX * Time.deltaTime, transform.position.y + speedY * Time.deltaTime);
+        if (canMove)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, point.position, totalSpeed * Time.deltaTime);
         }
     }
 
