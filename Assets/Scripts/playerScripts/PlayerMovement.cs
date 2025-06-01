@@ -56,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isPogo = false;
     public IEnumerator jumping;
+
+    private IEnumerator hop;
     public bool canJump = true;
     public float jumpSpeedX, jumpSpeedY;
     #endregion
@@ -178,16 +180,16 @@ public class PlayerMovement : MonoBehaviour
         if(Input.touchCount > 0)
         {
             foreach(Touch touch in Input.touches)
-            {
-                if(touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x*inputDetectionPercentX) //if maintouch not initialized yet
+            {    //if maintouch not initialized yet
+                if(touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x*inputDetectionPercentX)
                 {
                     mainTouch = new MainTouch();
                     mainTouch.setOrigin(touch.position);
                     mainTouch.setFingerID(touch.fingerId);
                     Debug.Log("Touch started: " + touch.fingerId);
                 }
-            }
-            if(mainTouch != null){ //if maintouch is initialized, update its position
+            }   //if maintouch is initialized, update its position
+            if(mainTouch != null){ 
                 updateMainTouch();
                 // horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
             }else{
@@ -276,9 +278,11 @@ public class PlayerMovement : MonoBehaviour
             if (playerAbility.isGrounded() && !playerAbility.getJumpNextFrame())
             {
                 if (canJump)
-                {   
-                    jumping = Jump();
-                    StartCoroutine(jumping);
+                {
+                    // jumping = Jump();
+                    // StartCoroutine(jumping);
+                    hop = hopping();
+                    StartCoroutine(hop);
                     
                     canJump = false;
                 }
@@ -288,35 +292,53 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-public IEnumerator Jump() 
-    {   
-        Debug.Log("Jumping");
+    public IEnumerator Jump()
+    {
+        // Debug.Log("Jumping");
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
-        
-        //impulse makes it so it's a strong force happening at once
+
+        // impulse makes it so it's a strong force happening at once
         physics._rb.AddForce(jumpForce, ForceMode2D.Impulse);
-        
-        
+
+        // physics._rb.MovePosition(new Vector2(2,3));
         //wait .5 seconds before anything
         yield return new WaitForSeconds(.5f);
-        
+
         //keep checking until the player touches the ground
-		yield return new WaitUntil (() => playerAbility.isGrounded());
-        yield return new WaitForSeconds(.1f);
-        if(!playerAbility.getJumpNextFrame()){
-            stopSliding();
-        }
-        
+        yield return new WaitUntil(() => playerAbility.isGrounded());
+         canJump = true;
+        // yield return new WaitForSeconds(.1f);
+        // if(!playerAbility.getJumpNextFrame()){
+        //     stopSliding();
+        // }
+
         //and then allow the player to jump again
-		canJump = true;
+
     }
 
+    public float getHorizontalInput()
+    {
+        return horizontalInput;
+    }
+    public IEnumerator hopping()
+    {
+        Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
+        physics._rb.velocity = jumpForce;
+        yield return new WaitForSeconds(.5f);
+
+        //keep checking until the player touches the ground
+        yield return new WaitUntil(() => playerAbility.isGrounded());
+        canJump = true;
+    }
   
-    public void stopSliding(){
+    public void stopSliding()
+    {
         //it now detects when its pogo. If switched to ball ability should be cancelledd
-        if (isPogo==true){
-             
-            if (playerAbility.isGrounded()){
+        if (isPogo == true)
+        {
+
+            if (playerAbility.isGrounded())
+            {
 
                 physics._rb.velocity = Vector3.zero;
             }

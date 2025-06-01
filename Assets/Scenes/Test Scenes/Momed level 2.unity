@@ -12360,16 +12360,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e95224091503e14b959277ce9ffe8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camPos: {fileID: 1973762832}
-  camVec: {x: 143.1, y: 94.7}
+  camPos: {fileID: 0}
+  camVec: {x: 0, y: 0}
   playerMask:
     serializedVersion: 2
-    m_Bits: 512
-  zoomCameraAmount: 40
-  zoomCameraSpeed: 7.5
-  zoomBackCameraSpeed: 9
-  followSpeed: 1.8
-  comingBackSpeed: 0.9
+    m_Bits: 0
+  zoomCameraAmount: 0
+  zoomCameraSpeed: 0
+  zoomBackCameraSpeed: 0
+  followSpeed: 0
+  comingBackSpeed: 0
   followPlayer: 0
   keepChanges: 0
   activeController: 0
@@ -19145,6 +19145,19 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &499291311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499291309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafc0e63d05683b4eb162fc788712dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTarget: {fileID: 1773153314}
 --- !u!1 &500186815
 GameObject:
   m_ObjectHideFlags: 0
@@ -20436,18 +20449,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e95224091503e14b959277ce9ffe8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camPos: {fileID: 542473506}
-  camVec: {x: 34.3, y: 25.3}
+  camPos: {fileID: 0}
+  camVec: {x: 0, y: 0}
   playerMask:
     serializedVersion: 2
-    m_Bits: 512
-  zoomCameraAmount: 12
-  zoomCameraSpeed: 2
-  zoomBackCameraSpeed: 2
-  followSpeed: 0.94
-  comingBackSpeed: 0.7
+    m_Bits: 0
+  zoomCameraAmount: 0
+  zoomCameraSpeed: 0
+  zoomBackCameraSpeed: 0
+  followSpeed: 0
+  comingBackSpeed: 0
   followPlayer: 0
-  keepChanges: 1
+  keepChanges: 0
   activeController: 0
 --- !u!1 &544668729
 GameObject:
@@ -23956,18 +23969,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e95224091503e14b959277ce9ffe8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camPos: {fileID: 649017019}
-  camVec: {x: 83.6, y: 22.8}
+  camPos: {fileID: 0}
+  camVec: {x: 0, y: 0}
   playerMask:
     serializedVersion: 2
-    m_Bits: 512
-  zoomCameraAmount: 8
-  zoomCameraSpeed: 2.5
+    m_Bits: 0
+  zoomCameraAmount: 0
+  zoomCameraSpeed: 0
   zoomBackCameraSpeed: 0
-  followSpeed: 0.94
-  comingBackSpeed: 0.7
-  followPlayer: 1
-  keepChanges: 1
+  followSpeed: 0
+  comingBackSpeed: 0
+  followPlayer: 0
+  keepChanges: 0
   activeController: 0
 --- !u!1 &649351590
 GameObject:
@@ -28562,7 +28575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7944302752217619906, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29039,7 +29052,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &843275165
 Transform:
   m_ObjectHideFlags: 0
@@ -30563,8 +30576,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: height
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: jumpFrameTimer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: maxJumpFrameTimer
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: groundCheckerDistance
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274453785470385877, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_LinearDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274453785470385877, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_GravityScale
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274453785470385877, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: jumpSpeedX
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: jumpSpeedY
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: coefficientOfFriction
+      value: 0.065
       objectReference: {fileID: 0}
     - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: canJump
@@ -30580,11 +30629,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 43.2
+      value: 43
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 26.3
+      value: 25.2
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -30624,7 +30673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8880783838240531236, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31069,19 +31118,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e95224091503e14b959277ce9ffe8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camPos: {fileID: 930062478}
-  camVec: {x: 73, y: 39.9}
+  camPos: {fileID: 0}
+  camVec: {x: 0, y: 0}
   playerMask:
     serializedVersion: 2
-    m_Bits: 512
-  zoomCameraAmount: 20
-  zoomCameraSpeed: 3.92
-  zoomBackCameraSpeed: 3.27
-  followSpeed: 0.94
-  comingBackSpeed: 0.5
+    m_Bits: 0
+  zoomCameraAmount: 0
+  zoomCameraSpeed: 0
+  zoomBackCameraSpeed: 0
+  followSpeed: 0
+  comingBackSpeed: 0
   followPlayer: 0
   keepChanges: 0
-  activeController: 1
+  activeController: 0
 --- !u!1 &931878736
 GameObject:
   m_ObjectHideFlags: 0
@@ -31946,7 +31995,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &963941505
 Transform:
   m_ObjectHideFlags: 0
@@ -41089,7 +41138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1327054839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49849,11 +49898,11 @@ MonoBehaviour:
   yOffset: 0
   xOffset: 0
   shouldSkid: 0
-  skidSpeed: 10
+  skidSpeed: 7
   emissionMultiplier: 10
   timeDelay: 1
-  recentlyJumped: 0
-  rotationSpeed: 10
+  jumpedWhileSkidding: 0
+  rotationSpeed: 7
   groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -56504,7 +56553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1722908659
 Transform:
   m_ObjectHideFlags: 0
@@ -58209,6 +58258,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &1773153314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+  m_PrefabInstance: {fileID: 910783677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1785219952
 GameObject:
   m_ObjectHideFlags: 0
@@ -67825,17 +67879,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e95224091503e14b959277ce9ffe8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camPos: {fileID: 2096389364}
-  camVec: {x: 31.2, y: 39.9}
+  camPos: {fileID: 0}
+  camVec: {x: 0, y: 0}
   playerMask:
     serializedVersion: 2
-    m_Bits: 512
-  zoomCameraAmount: 3.58
-  zoomCameraSpeed: 2.5
-  zoomBackCameraSpeed: 3.27
-  followSpeed: 0.94
-  comingBackSpeed: 0.5
-  followPlayer: 1
+    m_Bits: 0
+  zoomCameraAmount: 0
+  zoomCameraSpeed: 0
+  zoomBackCameraSpeed: 0
+  followSpeed: 0
+  comingBackSpeed: 0
+  followPlayer: 0
   keepChanges: 0
   activeController: 0
 --- !u!1001 &2099577893
@@ -67886,6 +67940,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3990497907096205724, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
+      propertyPath: orthographic size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5974304457112685016, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
       propertyPath: cam
       value: 
@@ -67905,6 +67963,10 @@ PrefabInstance:
     - target: {fileID: 5974304457112685016, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
       propertyPath: leftLimit
       value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974304457112685016, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5974304457112685016, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
       propertyPath: rightLimit
@@ -67941,6 +68003,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7490272465439485032, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
       insertIndex: -1
       addedObject: {fileID: 499291310}
+    - targetCorrespondingSourceObject: {fileID: 7490272465439485032, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 499291311}
   m_SourcePrefab: {fileID: 100100000, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
 --- !u!1 &2100418207
 GameObject:

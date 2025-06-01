@@ -76,8 +76,8 @@ public class DustScript : MonoBehaviour
                 dustParticles.Play();
             }
         }
-        if ((-1.5f < speed && speed < 1.5f) || playerMovement.getAcceleration() > 0 || rb.velocity.x/Math.Abs(rb.velocity.x) == playerMovement.getInput() || playerMovement.getCurForm().formName != "Ball"){
-            Debug.Log("Stopping dust particles");
+        if ((-1.5f < speed && speed < 1.5f) || playerMovement.getAcceleration() > 0 || rb.velocity.x/Math.Abs(rb.velocity.x) == horizontalInput || playerMovement.getCurForm().formName != "Ball"){
+            // Debug.Log("Stopping dust particles");
             shouldSkid = false;
             dustParticles.Stop();
         }
