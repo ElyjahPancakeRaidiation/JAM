@@ -4315,6 +4315,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: inputRange
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: forms.Array.size
       value: 1
       objectReference: {fileID: 0}
