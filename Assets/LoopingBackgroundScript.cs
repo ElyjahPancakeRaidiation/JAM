@@ -8,11 +8,11 @@ public class LoopingBackgroundScript : MonoBehaviour
 
     private Camera _camera;
 
-    [SerializeField] private GameObject imageToLoop;
+    [SerializeField] private GameObject[] imageToLoop;
     [SerializeField] protected GameObject currentInstance;
     protected GameObject newInstance;
     [SerializeField] protected bool isDependantOnXAxis;
-    [SerializeField] private bool stopOnNext;
+    [SerializeField] protected bool stopOnNext;
     [SerializeField] private bool hasSpawnPosition;
     [SerializeField] private GameObject spawnPosition;
     [SerializeField] private Vector2 curMaxOffset;
@@ -20,9 +20,11 @@ public class LoopingBackgroundScript : MonoBehaviour
 
     protected bool canLoop;
     protected bool loopended;
+    private bool multipleObjects;
 
     [SerializeField] private float cameraUpperLimit;
     [SerializeField] private float cameraLowerLimit;
+    [SerializeField] private int maxWaitTime;
 
     private Vector2 curInstanceMax;
     private Vector2 curInstanceMin;
@@ -31,6 +33,7 @@ public class LoopingBackgroundScript : MonoBehaviour
     private Vector2 newInstanceMax;
     private Vector2 newInstanceMin;
     private Vector2 newInstanceExtents;
+    private Coroutine loopingCoroutine;
 
 
     private void OnValidate()
@@ -42,6 +45,7 @@ public class LoopingBackgroundScript : MonoBehaviour
     void Start()
     {
         loopended = false;
+        if (imageToLoop.Length > 1) { multipleObjects = true; }
         Updateinstances();
     }
 
@@ -95,7 +99,7 @@ public class LoopingBackgroundScript : MonoBehaviour
         }
     }
 
-    public virtual void CheckToSpawn()
+    public IEnumerator CheckToSpawnCoroutine()
     {
         if (!isDependantOnXAxis)
         {
@@ -107,23 +111,46 @@ public class LoopingBackgroundScript : MonoBehaviour
                 {
                     if (hasSpawnPosition)
                     {
-                        newInstance = Instantiate(imageToLoop, spawnPosition.transform.position, Quaternion.identity);
+                        if (multipleObjects)
+                        {
+                            newInstance = Instantiate(imageToLoop[0], spawnPosition.transform.position, Quaternion.identity);
+                        }
+                        else
+                        {
+                            int randomObj = Random.Range(0, imageToLoop.Length - 1);
+                            newInstance = Instantiate(imageToLoop[randomObj], spawnPosition.transform.position, Quaternion.identity);
+                        }
                     }
                     else
                     {
                         //Put in the automatic version.
                     }
                     Updateinstances();
-                    if (stopOnNext)
+                    if (stopOnNext && currentInstance != null && newInstance != null)
                     {
                         canLoop = false;
                         loopended = true;
                     }
+                    else if (!stopOnNext && multipleObjects)
+                    {
+
+                        yield return new WaitForSecondsRealtime(Random.Range(3, maxWaitTime));
+                    }
                 }
             }
         }
+
+        loopingCoroutine = null;
     }
-    
+
+    public virtual void CheckToSpawn()
+    {
+        if (loopingCoroutine == null)
+        {
+            loopingCoroutine = StartCoroutine(CheckToSpawnCoroutine());
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (isDependantOnXAxis)
@@ -142,6 +169,8 @@ public class LoopingBackgroundScript : MonoBehaviour
             Gizmos.DrawLine(lowerPosition1, lowerPosition2);
         }
     }
+
+    public void setStopOnNext(bool val){ stopOnNext = val; }
     
 
 }

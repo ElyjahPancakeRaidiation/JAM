@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level1LoopingBackground : LoopingBackgroundScript
+public class ForegroundLooper : LoopingBackgroundScript
 {
 
-    //This cutscene will play at the end of the loop(just adds force to the player giving it the feel of the player moving down a hill)
-    [SerializeField] private CutSceneManager endLoopCutscene;
-    [SerializeField] private GameObject treeCoverUpObj;
+    private GameObject player;
     [SerializeField] private GameObject freezePlayerPosition;
     [SerializeField] private float wiggleRoom;
-    private float wantedAxisFreezePosition;
-    private GameObject player;
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,12 +35,6 @@ public class Level1LoopingBackground : LoopingBackgroundScript
             canLoop = true;
         }
 
-        if (stopOnNext)
-        {
-            treeCoverUpObj.SetActive(true);
-        }
-
-
         if (canLoop)
         {
             Updateinstances();
@@ -53,33 +44,8 @@ public class Level1LoopingBackground : LoopingBackgroundScript
 
         if (loopended)
         {
-            currentInstance.GetComponent<MovingGround>().setCanMove(false);
-            newInstance.GetComponent<MovingGround>().setCanMove(false);
-        }
-
-        if (loopended && !endLoopCutscene.getIsFinished())
-        {
-            endLoopCutscene.playCutScene();
+            Destroy(currentInstance);
+            Destroy(newInstance);
         }
     }
-
-    public override void CheckToDelete()
-    {
-        base.CheckToDelete();
-    }
-
-    public override void CheckToSpawn()
-    {
-        base.CheckToSpawn();
-    }
-
-    private void FixedUpdate()
-    {
-        if (!loopended && canLoop)
-        {
-            if(wantedAxisFreezePosition == 0){wantedAxisFreezePosition = player.transform.position.x;}
-            player.GetComponent<Rigidbody2D>().position = new Vector2(wantedAxisFreezePosition, player.GetComponent<Rigidbody2D>().position.y);
-        }
-    }
-    
 }

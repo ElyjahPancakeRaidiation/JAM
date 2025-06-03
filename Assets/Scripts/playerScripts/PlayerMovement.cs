@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 #region Player Settings
     [Header("----Player----")]
     [SerializeField]private bool canControl;
-    [SerializeField]private List<AbilitySettingScriptable> forms;
+    public List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
     private PlayerAbilities playerAbilities;

@@ -19,14 +19,17 @@ public class isGroundedScript : MonoBehaviour
     //Called only when the inspector is changed.
     private void OnValidate()
     {
-        playersForms = player.GetComponent<PlayerMovement>().getAllForms();
-        curForm = player.GetComponent<PlayerMovement>().getFormInt();
+
+        // Debug.Log(player.GetComponent<PlayerMovement>().getAllForms());
+        // playersForms = player.GetComponent<PlayerMovement>().forms;
+        // curForm = player.GetComponent<PlayerMovement>().getFormInt();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        curForm = player.GetComponent<PlayerMovement>().getFormInt();
         //transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
 
     }
@@ -34,6 +37,7 @@ public class isGroundedScript : MonoBehaviour
     private void FixedUpdate()
     {
         transform.position = player.transform.position + new Vector3(0, -1 * (player.GetComponent<PlayerMovement>().getCurForm().groundChecker.y + .2f), 0);
+        curForm = player.GetComponent<PlayerMovement>().getFormInt();
         //groundCol = Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
 
     }

@@ -28,6 +28,6 @@ MonoBehaviour:
     information: addForce(20, -1, 1)
     actorIndex: 0
     endPositionIndex: 0
-    waitTime: 4
+    waitTime: 2
     infinite: 0
     clampVelocity: {x: 0, y: 0}

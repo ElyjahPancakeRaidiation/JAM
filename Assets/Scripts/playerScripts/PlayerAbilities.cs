@@ -57,10 +57,10 @@ public class PlayerAbilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
+
+
         Debug.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
-        
+
 
         if (canJumpNextFrame)
         {
@@ -93,7 +93,7 @@ public class PlayerAbilities : MonoBehaviour
         }
     }
 
- 
+
     public void useFormsAbility()
     {
         string formName = playerMovement.getCurForm().formName;
@@ -114,12 +114,12 @@ public class PlayerAbilities : MonoBehaviour
                 {
                     newJumpAbliity();
                     Debug.Log(isGroundedScript.isGrounded());
-                 }
+                }
 
-                    // pogoAbility();
+                // pogoAbility();
 
 
-                
+
                 break;
         }
     }
@@ -197,14 +197,14 @@ public class PlayerAbilities : MonoBehaviour
     private void newJumpAbliity()
 
     {
-   
-            canJumpNextFrame = false;
-            jumpFrameTimer = 0;
-            float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-            Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
-            _rb.velocity = Verticaldirection;
-            jumpTimerfr = 0;
-       
+
+        canJumpNextFrame = false;
+        jumpFrameTimer = 0;
+        float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
+        _rb.velocity = Verticaldirection;
+        jumpTimerfr = 0;
+
 
 
 
