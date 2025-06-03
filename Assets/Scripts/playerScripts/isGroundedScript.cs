@@ -46,7 +46,8 @@ public class isGroundedScript : MonoBehaviour
     {
 
         return Physics2D.OverlapBox(transform.position + (Vector3)player.GetComponent<PlayerMovement>().getCurForm().positionOffsetforPlayersothattheledgecandetecttheplayersotherearenotsoftlocks, player.GetComponent<PlayerMovement>().getCurForm().groundChecker, angle, groundLayer);
-    }
+    //     return Physics2D.OverlapBox(transform.position + offset, groundChecker, angle, groundLayer);
+     }
 
     // void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)vecScales[], player.GetComponent<PlayerMovement>().getCurForm().groundChecker);
     private void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].positionOffsetforPlayersothattheledgecandetecttheplayersotherearenotsoftlocks, playersForms[curForm].groundChecker);

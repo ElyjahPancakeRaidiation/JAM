@@ -110,13 +110,14 @@ public class PlayerAbilities : MonoBehaviour
                 canJumpNextFrame = true;
                 // StartCoroutine(newPogoAbliity());
 
-                if (isGroundedScript.isGrounded())
+                if (isGroundedScript.isGrounded() || playerMovement.coyoteTimer > 0)
                 {
                     newJumpAbliity();
+                    //   pogoAbility();
                     Debug.Log(isGroundedScript.isGrounded());
                 }
 
-                // pogoAbility();
+
 
 
 
@@ -186,14 +187,6 @@ public class PlayerAbilities : MonoBehaviour
 
     }
 
-    // private float getJumpTimer()
-    // {   
-    //     if (isGroundedScript.isGrounded())
-    //     {
-    //         jumpTimerfr += Time.deltaTime;
-    //     }
-    //     return jumpTimerfr;
-    // }
     private void newJumpAbliity()
 
     {
@@ -209,18 +202,18 @@ public class PlayerAbilities : MonoBehaviour
 
 
     }
-    public IEnumerator preventSlide()
-    {
+    // public IEnumerator preventSlide()
+    // {
 
-        yield return new WaitForSeconds(.6f);
-        yield return new WaitUntil(() => isGroundedScript.isGrounded());
+    //     yield return new WaitForSeconds(.6f);
+    //     yield return new WaitUntil(() => isGroundedScript.isGrounded());
 
-        if (playerMovement.isPogo == true)
-        {
+    //     if (playerMovement.isPogo == true)
+    //     {
 
-            _rb.velocity = Vector3.zero;
-        }
-    }
+    //         _rb.velocity = Vector3.zero;
+    //     }
+    // }
     #endregion
 
     //This is for when the player changes form it changes the distance of the ray cast.
@@ -232,13 +225,17 @@ public class PlayerAbilities : MonoBehaviour
 
     public bool isGrounded()
     {
-        //Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
+        // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
         RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
-        // Debug.DrawRay(transform.position, -Vector2.up, Color.green);
+        Debug.DrawRay(transform.position, -Vector2.up, Color.green);
         return ray;
+
     }
 
     public bool getJumpNextFrame() { return canJumpNextFrame; }
 
-
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
+    }
 }
