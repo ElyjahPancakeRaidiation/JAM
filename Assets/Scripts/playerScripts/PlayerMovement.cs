@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -60,18 +61,26 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator hop;
     public bool canJump = true;
     public float jumpSpeedX, jumpSpeedY;
+
+    public float coyoteTimer { get; private set; }
+
+    [SerializeField] private float floatTime;
     #endregion
-    public class MainTouch{
+    public class MainTouch
+    {
         public float fingerID;
         public Vector2 origin;
         public Vector2 touchPos;
-        public void setOrigin(Vector2 origin){
+        public void setOrigin(Vector2 origin)
+        {
             this.origin = origin;
         }
-        public void setFingerID(float fingerID){
+        public void setFingerID(float fingerID)
+        {
             this.fingerID = fingerID;
         }
-        public float getXDistance(){
+        public float getXDistance()
+        {
             return touchPos.x - origin.x;
         }
     }
@@ -102,7 +111,8 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {  
+    {
+        coyoteTimer -= Time.deltaTime;
         physics.setCoefficientOfFriction(coefficientOfFriction);
         physics.setRainyFrictionUp(rainyFrictionUp);
         physics.setRainyFrictionDown(rainyFrictionDown);
@@ -163,17 +173,18 @@ public class PlayerMovement : MonoBehaviour
             isPogo = true;
         }
         else isPogo = false;
-        isGrounded = playerAbilities.isGrounded();
+        isGrounded = playerAbilities.isGrounded(); //LMAO
         physics.setCoefficientOfFriction(coefficientOfFriction);
     }
 
+    
     private void mobileInput()
     {
-        if(Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
-            foreach(Touch touch in Input.touches)
+            foreach (Touch touch in Input.touches)
             {    //if maintouch not initialized yet
-                if(touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x*inputDetectionPercentX)
+                if (touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x * inputDetectionPercentX)
                 {
                     mainTouch = new MainTouch();
                     mainTouch.setOrigin(touch.position);
@@ -181,13 +192,18 @@ public class PlayerMovement : MonoBehaviour
                     Debug.Log("Touch started: " + touch.fingerId);
                 }
             }   //if maintouch is initialized, update its position
-            if(mainTouch != null){ 
+            if (mainTouch != null)
+            {
                 updateMainTouch();
                 // horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
-            }else{
+            }
+            else
+            {
                 horizontalInput = 0;
             }
-        }else{
+        }
+        else
+        {
             horizontalInput = 0;
         }
     }
@@ -314,6 +330,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public IEnumerator hopping()
     {
+        coyoteTimer = floatTime;
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
         physics._rb.velocity = jumpForce;
         yield return new WaitForSeconds(.5f);
@@ -323,21 +340,7 @@ public class PlayerMovement : MonoBehaviour
         canJump = true;
     }
   
-    public void stopSliding()
-    {
-        //it now detects when its pogo. If switched to ball ability should be cancelledd
-        if (isPogo == true)
-        {
-
-            if (playerAbility.isGrounded())
-            {
-
-                physics._rb.velocity = Vector3.zero;
-            }
-
-        }
-    }
-
+    
     public void setCanControl(bool value){canControl = value;}
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}

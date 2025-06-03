@@ -16,7 +16,7 @@ MonoBehaviour:
   movementSpeed: 13
   formName: Pogo
   formAddOn: 0
-  groundChecker: {x: 1.8, y: 1.1}
+  groundChecker: {x: 0.87, y: 0.53}
   isGroundedOffsetPosition: 0
-  positionOffsetforPlayersothattheledgecandetecttheplayersotherearenotsoftlocks: {x: -0.1, y: 0.35}
+  positionOffsetforPlayersothattheledgecandetecttheplayersotherearenotsoftlocks: {x: -0.06, y: -0.32}
   boxColliderSize: {x: 1, y: 2.2477503}
