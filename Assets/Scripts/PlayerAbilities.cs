@@ -169,6 +169,9 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     public bool getJumpNextFrame(){return canJumpNextFrame;}
-
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
 
 }

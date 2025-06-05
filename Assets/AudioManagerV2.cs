@@ -84,7 +84,8 @@ public class AudioManagerV2 : MonoBehaviour
         for (int i = 0; i < audioPoints.Count; i++)
         {
             AudioPoint ap = audioPoints[i];
-            ap.playerCollider = Physics2D.OverlapBox(ap.centerPoint, ap.detectionSize, 0, LayerMask.GetMask("Player"));
+            ap.playerCollider = Physics2D.OverlapBox(ap.centerPoint, ap.detectionSize, 0, LayerMask.GetMask("Player")); //this might be hindering performance, perhaps move this to oncollisionenter method or wtv
+            //************************************************************************************to felix in the future or whoever else is editing this code
             if (ap.playerCollider != null && !fading)
             {
                 if (ap.soloFadeIn) //if the boolean soloFade is checked, only one of the clips should be loaded
@@ -211,7 +212,7 @@ public class AudioManagerV2 : MonoBehaviour
             float trackLength = sfx.sfxClip.length;
             //fade in
 
-
+            //i didnt do this yet but idk if we're committing to this
 
             //fade out
             yield return new WaitForSeconds(trackLength - sfx.fadeLength); //wait for track to get to point where fade starts

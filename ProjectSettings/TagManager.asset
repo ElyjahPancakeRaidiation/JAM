@@ -24,6 +24,8 @@ TagManager:
   - Rain Controller
   - SplashParticles
   - AudioManager
+  - GlobalLighting
+  - Lightning
   layers:
   - Default
   - TransparentFX
