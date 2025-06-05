@@ -77,8 +77,8 @@ public class MovingPlatforms : MonoBehaviour
             }
             if (activePlatform != null)
             {
-                randomizeObstaclesInRange(collider.bounds.min.x + padding, activePlatform.GetComponent<PolygonCollider2D>().bounds.min.x, 0);
-                randomizeObstaclesInRange(activePlatform.GetComponent<PolygonCollider2D>().bounds.max.x, collider.bounds.max.x - padding, 1);
+                randomizeObstaclesInRange(collider.bounds.min.x + padding, activePlatform.GetComponent<PolygonCollider2D>().bounds.min.x);
+                randomizeObstaclesInRange(activePlatform.GetComponent<PolygonCollider2D>().bounds.max.x, collider.bounds.max.x - padding);
             }
             else
             {
@@ -99,37 +99,11 @@ public class MovingPlatforms : MonoBehaviour
         yield return StartCoroutine(puzzleLighting.startLighting(this));
         StartCoroutine(reloadPlatforms());
     }
-    public void randomizeObstaclesInRange(float start, float end, int half)
+    public void randomizeObstaclesInRange(float start, float end) 
     {
         float x = start + UnityEngine.Random.Range(0, rangeOfObstacleGap); //starting point
         while (x < end)
         {
-            //get a random number to choose between upper and lower obstacles, use this to affect the yOffset 
-
-            Verticality verticality = (Verticality)UnityEngine.Random.Range(0, 2); //choose randomly between upper and lower
-            List<GameObject> currentPrefabs = verticality == Verticality.UPPER ? upperPrefabObstacles : lowerPrefabObstacles;
-            int prefabIndex = UnityEngine.Random.Range(0, currentPrefabs.Count); //choose a random prefab obstacle from the list
-            float randomXGap = UnityEngine.Random.Range(0, rangeOfObstacleGap);
-            float randomYShift = UnityEngine.Random.Range(0, rangeOfVerticality);
-
-            Vector3 obstacleSize = currentPrefabs[prefabIndex].GetComponent<PolygonCollider2D>().bounds.size;
-            float alignmentYOffset = (verticality == Verticality.UPPER ? -1 : 1) * (obstacleSize.y/2 + randomYShift); //trying to get the surfaces to be aligned with the center of the puzzle bounds
-            float alignmentXOffset = obstacleSize.x / 2; //want to spawn gameobjects with lefthand surface touching the cursor's x, typically spawning objects centers them at that x coord
-            if (x + obstacleSize.x > end) { break; } //if the x position we're currently at will put the object out of bounds, break
-
-            Vector3 cursor = new Vector3(x + alignmentXOffset, collider.bounds.center.y - alignmentYOffset, 0); //thought of like a mouse cursor drag and dropping gameobjects
-
-            GameObject obstacle = loadObstacleWorldSpace(currentPrefabs[prefabIndex], cursor);
-            x += obstacleSize.x + randomXGap;
-        }
-    }
-    public void randomizeObstaclesInRange(float start, float end)
-    {
-        float x = start + UnityEngine.Random.Range(0, rangeOfObstacleGap); //starting point
-        while (x < end)
-        {
-            //get a random number to choose between upper and lower obstacles, use this to affect the yOffset 
-
             Verticality verticality = (Verticality)UnityEngine.Random.Range(0, 2); //choose randomly between upper and lower
             List<GameObject> currentPrefabs = verticality == Verticality.UPPER ? upperPrefabObstacles : lowerPrefabObstacles;
             int prefabIndex = UnityEngine.Random.Range(0, currentPrefabs.Count); //choose a random prefab obstacle from the list
@@ -139,10 +113,10 @@ public class MovingPlatforms : MonoBehaviour
 
             Vector3 obstacleSize = currentPrefabs[prefabIndex].GetComponent<PolygonCollider2D>().bounds.size;
             float alignmentYOffset = (verticality == Verticality.UPPER ? -1 : 1) * (obstacleSize.y/2 + randomYShift); //trying to get the surfaces to be aligned with the center of the puzzle bounds
-            float alignmentXOffset = obstacleSize.x / 2; //want to spawn gameobjects with lefthand surface touching the cursor's x, typically spawning objects centers them at that x coord
+            float alignmentXOffset = obstacleSize.x / 2; //want to spawn gameobjects with lefthand surface touching the cursor's x, typically spawning objects centers them at that coord
             if (x + obstacleSize.x > end) { break; } //if the x position we're currently at will put the object out of bounds, break
 
-            Vector3 cursor = new Vector3(x + alignmentXOffset, collider.bounds.center.y - alignmentYOffset, 0); //thought of like a mouse cursor drag and dropping gameobjects
+            Vector3 cursor = new Vector3(x + alignmentXOffset, collider.bounds.center.y - alignmentYOffset, 0); //thought of a mouse cursor drag and dropping gameobjects
 
             GameObject obstacle = loadObstacleWorldSpace(currentPrefabs[prefabIndex], cursor);
             x += obstacleSize.x + randomXGap;
