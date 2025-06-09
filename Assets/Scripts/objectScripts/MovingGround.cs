@@ -9,11 +9,12 @@ public class MovingGround : MonoBehaviour
     [SerializeField]private float totalSpeed;//Multiples to both the y and x
     [SerializeField]private bool canMove = true;
     [SerializeField] private Transform point;
+    [SerializeField] private string tagName;
 
 
     private void Awake()
     {
-        point = GameObject.FindGameObjectWithTag("MovingGroundPoint").GetComponent<Transform>();
+        point = GameObject.FindGameObjectWithTag(tagName).GetComponent<Transform>();
     }
 
     // Update is called once per frame

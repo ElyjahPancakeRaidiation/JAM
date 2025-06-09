@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.TerrainUtils;
 
 public class CutSceneManager : MonoBehaviour
 {
-    private PlayerMovement playerMovement;
+    [SerializeField] private PlayerMovement playerMovement;
 
     //A scriptable object containing all of the data for the scene
     [SerializeField] private CutSceneScriptable cutSceneToPlay;
@@ -21,7 +22,9 @@ public class CutSceneManager : MonoBehaviour
     [Tooltip("The end position the actors will have at the end of their actions.")]
     [SerializeField] private GameObject[] endPositions;
 
-    [SerializeField]private bool stopWhenSceneStarts;
+    [SerializeField] private UnityEvent[] inGameEvents;
+
+    [SerializeField] private bool stopWhenSceneStarts;
     public bool playOnStart;
     private bool canPlayCutScene = false;
     private bool isPlaying = false;
@@ -32,7 +35,7 @@ public class CutSceneManager : MonoBehaviour
 
     private void Start()
     {
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+
         if (playOnStart)
         {
             canPlayCutScene = true;
@@ -55,7 +58,7 @@ public class CutSceneManager : MonoBehaviour
     {
         isPlaying = true;
         isFinished = false;
-        playerMovement.setCanControl(false);
+        if(playerMovement != null){playerMovement.setCanControl(false);}
         if(stopWhenSceneStarts){ StartCoroutine(easeObj(50)); }
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
@@ -68,7 +71,7 @@ public class CutSceneManager : MonoBehaviour
         {
             isPlaying = false;
             canPlayCutScene = false;
-            playerMovement.setCanControl(true);
+            if(playerMovement != null){ playerMovement.setCanControl(true); }
             // CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
             // playerCamera.setFollowPlayer(true);
             isFinished = true;
@@ -123,6 +126,10 @@ public class CutSceneManager : MonoBehaviour
                 TurnOnObject(c);
                 break;
             case CutSceneScriptable.CutSceneInfo.ActionType.Wait:
+                canMoveOn = true;
+                break;
+            case CutSceneScriptable.CutSceneInfo.ActionType.Event:
+                inGameEvents[c.cutSceneInfo[sceneCounter].eventIndex].Invoke();
                 canMoveOn = true;
                 break;
         }

@@ -12,12 +12,16 @@ public class Level1LoopingBackground : LoopingBackgroundScript
     [SerializeField] private float wiggleRoom;
     private float wantedAxisFreezePosition;
     private GameObject player;
+    [SerializeField]private GameObject bigAssObjectAhhh;
+
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        currentInstance.GetComponent<MovingGround>().setCanMove(false);
+        currentObj = new ObjectInfo(startInstance, useCol);
+        newObj = new ObjectInfo(useCol);
+        currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
     }
 
     // Update is called once per frame
@@ -34,7 +38,9 @@ public class Level1LoopingBackground : LoopingBackgroundScript
         if (dist && !loopended)
         {
             //flingPlayerScript.player.transform.position = Vector2.Lerp(flingPlayerScript.player.transform.position, freezeobject.position, 3);
-            currentInstance.GetComponent<MovingGround>().setCanMove(true);
+            currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(true);
+            // bigAssObjectAhhh.SetActive(true);
+            bigAssObjectAhhh.GetComponent<MovingGround>().setCanMove(true);
             canLoop = true;
         }
 
@@ -43,18 +49,18 @@ public class Level1LoopingBackground : LoopingBackgroundScript
             treeCoverUpObj.SetActive(true);
         }
 
-
+        
         if (canLoop)
         {
-            Updateinstances();
             CheckToDelete();
             CheckToSpawn();
         }
 
         if (loopended)
         {
-            currentInstance.GetComponent<MovingGround>().setCanMove(false);
-            newInstance.GetComponent<MovingGround>().setCanMove(false);
+            currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
+            newObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
+            bigAssObjectAhhh.GetComponent<MovingGround>().setCanMove(false);
         }
 
         if (loopended && !endLoopCutscene.getIsFinished())

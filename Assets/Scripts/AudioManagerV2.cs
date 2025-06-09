@@ -37,19 +37,27 @@ public class AudioManagerV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < audioPoints.Count; i++){
-            AudioPoint ap = audioPoints[i];
-            ap.playerCollider = Physics2D.OverlapBox(ap.centerPoint, ap.detectionSize, 0, LayerMask.GetMask("Player"));
-            if(ap.playerCollider != null && !fading){
-                StartCoroutine(fadeVolume(ap));
+        if (audioPoints.Count != 0)
+        {
+            for (int i = 0; i < audioPoints.Count; i++)
+            {
+                AudioPoint ap = audioPoints[i];
+                ap.playerCollider = Physics2D.OverlapBox(ap.centerPoint, ap.detectionSize, 0, LayerMask.GetMask("Player"));
+                if (ap.playerCollider != null && !fading)
+                {
+                    StartCoroutine(fadeVolume(ap));
+                }
             }
         }
     }
     private void OnDrawGizmosSelected() {
-        foreach (AudioPoint ap in audioPoints){
+        if (audioPoints.Count != 0)
+        {
+            foreach (AudioPoint ap in audioPoints){
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(ap.centerPoint, ap.detectionSize);
             Gizmos.DrawLine(ap.centerPoint - new Vector2(0, ap.detectionSize.y/2), ap.centerPoint + new Vector2(0, ap.detectionSize.y/2));
+        }
         }
     }
     //for future reference, look into spatial blend and stereo pan

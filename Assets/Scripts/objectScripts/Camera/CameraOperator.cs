@@ -68,7 +68,10 @@ public class CameraOperator : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (canMove) { moveCamera(target); }
+        if (target != null)
+        {
+            if (canMove) { moveCamera(target); }
+        }
     }
 
 

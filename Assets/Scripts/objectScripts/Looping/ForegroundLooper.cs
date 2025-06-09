@@ -14,7 +14,9 @@ public class ForegroundLooper : LoopingBackgroundScript
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        currentInstance.GetComponent<MovingGround>().setCanMove(false);
+        currentObj = new ObjectInfo(startInstance, useCol);
+        newObj = new ObjectInfo(useCol);
+        currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
     }
 
     // Update is called once per frame
@@ -31,21 +33,20 @@ public class ForegroundLooper : LoopingBackgroundScript
         if (dist && !loopended)
         {
             //flingPlayerScript.player.transform.position = Vector2.Lerp(flingPlayerScript.player.transform.position, freezeobject.position, 3);
-            currentInstance.GetComponent<MovingGround>().setCanMove(true);
+            currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(true);
             canLoop = true;
         }
 
         if (canLoop)
         {
-            Updateinstances();
             CheckToDelete();
             CheckToSpawn();
         }
 
         if (loopended)
         {
-            Destroy(currentInstance);
-            Destroy(newInstance);
+            Destroy(currentObj.getCurObject());
+            Destroy(newObj.getCurObject());
         }
     }
 }

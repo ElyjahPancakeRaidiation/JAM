@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
+using UnityEditor.Build.Player;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -107,6 +108,9 @@ public class PlayerMovement : MonoBehaviour
 
         screenSize = new Vector2(Screen.width, Screen.height);
         canControl = true;
+
+        playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     // Update is called once per frame
@@ -264,14 +268,20 @@ public class PlayerMovement : MonoBehaviour
         float avgAcceleration = aMultiplier * (physics._rb.velocity.x - lastVelocityX)/Time.deltaTime;
         return avgAcceleration;
     }
-    public void changeForm(){
-        if(curForm == maxForm){
+    public void changeForm()
+    {
+        if (curForm == maxForm)
+        {
             curForm = 0;
-        }else{
+        }
+        else
+        {
             curForm++;
         }
 
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     private void ballMovement(){

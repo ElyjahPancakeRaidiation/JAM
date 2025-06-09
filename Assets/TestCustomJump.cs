@@ -1,29 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class TestCustomJump : MonoBehaviour
 {
-    public KeyCode playerAbilityKey;
-    public int sceneNum;
 
+    [SerializeField]private float hight;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-
-    public void changeScene(int sceneNum)
-    {
-        SceneManager.LoadScene(sceneNum);
+        
     }
 }

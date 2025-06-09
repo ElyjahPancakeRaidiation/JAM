@@ -25,6 +25,10 @@ TagManager:
   - SplashParticles
   - MovingGround
   - MovingGroundPoint
+  - Point1
+  - Point2
+  - Point3
+  - Point4
   layers:
   - Default
   - TransparentFX

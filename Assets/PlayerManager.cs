@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
-    public KeyCode playerAbilityKey;
-    public int sceneNum;
 
+    private PlayerMovement playerMovement;
+    private PlayerAbilities playerAbilities;
+    private isGroundedScript isGroundedScript;
 
     // Start is called before the first frame update
     void Start()
@@ -20,10 +20,6 @@ public class GameManager : MonoBehaviour
     {
 
     }
-
-
-    public void changeScene(int sceneNum)
-    {
-        SceneManager.LoadScene(sceneNum);
-    }
+    
+    
 }
