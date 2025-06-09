@@ -29,10 +29,9 @@ public class PlayerMovement : MonoBehaviour
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
     private PlayerAbilities playerAbilities;
-#endregion
-    
+    #endregion
+    [SerializeField] private GameObject prefabDustSpawner;
     private GameObject _dustSpawner;
-    public DustScript dustScript;
 
     #region Ball settings
     [Header("Ball Settings")]
@@ -97,8 +96,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         playerAbilities = GetComponent<PlayerAbilities>();
-        _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
-        dustScript = _dustSpawner.GetComponent<DustScript>();
+        _dustSpawner = Instantiate(prefabDustSpawner);
         physics = new Physics(GetComponent<Rigidbody2D>());
         _spriteRender = GetComponent<SpriteRenderer>();
 
@@ -256,7 +254,6 @@ public class PlayerMovement : MonoBehaviour
         {
             torsoMovement();
         }
-        dustScript.checkForDust();
     }
     public float getAcceleration(){
         float aMultiplier; //acceleration multiplier
@@ -351,7 +348,6 @@ public IEnumerator Jump()
         yield return new WaitUntil(() => playerAbility.isGrounded());
         if (Mathf.Abs(lastVelocityY) > velocitySoundThreshold)
         {
-            Debug.Log(audioManagerV2);
             //make volume based on velocity
             StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
             //GetComponent<AudioSource>().Play();

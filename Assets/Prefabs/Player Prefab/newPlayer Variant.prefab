@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
+    - target: {fileID: 2706923324837483880, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2706923324837483880, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1767478605
+      objectReference: {fileID: 0}
     - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_Constraints
       value: 0
@@ -24,13 +32,21 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: prefabDustSpawner
+      value: 
+      objectReference: {fileID: 8613837917271531883, guid: 65cacc0a62f0b89488ae28cce587bd48, type: 3}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: velocitySoundThreshold
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 51.2
+      value: -14.55
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.35
+      value: -168
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87,9 +103,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7944302752217619906, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       insertIndex: 2
-      addedObject: {fileID: 5429203499457902951}
-    - targetCorrespondingSourceObject: {fileID: 7944302752217619906, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-      insertIndex: 3
       addedObject: {fileID: 3885449311235757612}
   m_SourcePrefab: {fileID: 100100000, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
 --- !u!1 &8880783838240531236 stripped
@@ -97,38 +110,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7944302752217619906, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
   m_PrefabInstance: {fileID: 1513548786260885222}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5429203499457902951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8880783838240531236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coefficientOfFriction: 0.065
-  rainyFriction: 1
-  isGrounded: 0
-  forms:
-  - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
-  - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
-  dustScript: {fileID: 0}
-  smoothStopSpeed: 0.2
-  maxSpeedPoint: 7
-  isEasingOn: 0
-  angularVelHalf: 0
-  canJumpAgain: 1
-  isPogo: 0
-  canJump: 1
-  jumpSpeedX: 12
-  jumpSpeedY: 8
-  screenSize: {x: 0, y: 0}
-  inputScreenPercent: 0.2
-  inputDetectionPercentX: 0.8
-  visualizeTouchArea: 1
 --- !u!114 &3885449311235757612
 MonoBehaviour:
   m_ObjectHideFlags: 0
