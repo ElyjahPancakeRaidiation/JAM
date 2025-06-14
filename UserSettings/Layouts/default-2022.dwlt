@@ -1183,7 +1183,7 @@ MonoBehaviour:
     m_SaveData: []
     m_OverlaysVisible: 1
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: grass
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -1195,7 +1195,7 @@ MonoBehaviour:
     m_Folders:
     - Assets/Scripts/Abilites
     m_Globs: []
-    m_OriginalText: 
+    m_OriginalText: grass
     m_ImportLogFlags: 0
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
