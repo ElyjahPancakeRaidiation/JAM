@@ -113,9 +113,12 @@ MonoBehaviour:
   maxDashes: 1
   usedJumpAbility: 0
   canJumpNextFrame: 0
-  maxJumpFrameTimer: 0
+  jumpFrameTimer: 3
+  maxJumpFrameTimer: 0.3
   recentlyJumped: 0
-  groundCheckerDistance: 1.2
+  jumpTimerfr: 0
+  height: 13
+  groundCheckerDistance: 1.07
   groundMask:
     serializedVersion: 2
     m_Bits: 64

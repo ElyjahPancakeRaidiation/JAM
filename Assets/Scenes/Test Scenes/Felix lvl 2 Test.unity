@@ -13359,6 +13359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAbilityKey: 32
+  sceneNum: 0
 --- !u!1 &295256138
 GameObject:
   m_ObjectHideFlags: 0
@@ -15854,17 +15855,12 @@ MonoBehaviour:
     m_Bits: 512
   colliderSize: {x: 41.5, y: 20.6}
   colliderOffsetSize: {x: -1.61, y: 6.61}
-  moveCamera: 0
-  changeSize: 1
-  keepNewSettings: 0
-  newCameraSize: 5
-  origCameraSize: 8
-  newSizeSpeed: 50
-  origSizeSpeed: 50
-  newPosition: {fileID: 514097680}
-  newPositionOffset: {x: 0, y: 0}
-  speedToPosition: 70
-  speedUpToOrigPosition: 2
+  activationEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  deactivationEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &389368754
 Transform:
   m_ObjectHideFlags: 0
@@ -19085,18 +19081,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d6b75a2f60cf34681f390c35ea6b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  defualtSpeed: 0
   curSpeed: 0
+  zoomSpeed: 8
   speedUpAmount: 2
   slowDownAmount: 0.5
   playerMaxSpeedPoint: 11
-  addedYOffsetMaxSpeed: 0.2
   offset: {x: 0, y: 0}
   camStartSize: 0
   leftBorder: 0
   rightBorder: 0
   upBorder: 0
   downBorder: 0
+  farFromPlayer: 0
 --- !u!1 &500186815
 GameObject:
   m_ObjectHideFlags: 0
@@ -19964,17 +19961,12 @@ MonoBehaviour:
     m_Bits: 512
   colliderSize: {x: 138.4, y: 105.8}
   colliderOffsetSize: {x: 0, y: 0}
-  moveCamera: 1
-  changeSize: 1
-  keepNewSettings: 0
-  newCameraSize: 40
-  origCameraSize: 8
-  newSizeSpeed: 100
-  origSizeSpeed: 70
-  newPosition: {fileID: 527505405}
-  newPositionOffset: {x: 0, y: -11.5}
-  speedToPosition: 60
-  speedUpToOrigPosition: 0.4
+  activationEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  deactivationEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &527505408
 Transform:
   m_ObjectHideFlags: 0
@@ -21849,11 +21841,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3644020421861649297, guid: 50cb8f092d5a47142b925667431a8c25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -2.7478027
+      value: -3.24
       objectReference: {fileID: 0}
     - target: {fileID: 3644020421861649297, guid: 50cb8f092d5a47142b925667431a8c25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0004348755
+      value: -4.62
       objectReference: {fileID: 0}
     - target: {fileID: 3644020421861649297, guid: 50cb8f092d5a47142b925667431a8c25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -28039,17 +28031,12 @@ MonoBehaviour:
     m_Bits: 512
   colliderSize: {x: 41.5, y: 20.6}
   colliderOffsetSize: {x: -1.61, y: 6.61}
-  moveCamera: 1
-  changeSize: 1
-  keepNewSettings: 0
-  newCameraSize: 10
-  origCameraSize: 8
-  newSizeSpeed: 30
-  origSizeSpeed: 50
-  newPosition: {fileID: 514097680}
-  newPositionOffset: {x: 0, y: 0}
-  speedToPosition: 70
-  speedUpToOrigPosition: 2
+  activationEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  deactivationEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &789574264
 Transform:
   m_ObjectHideFlags: 0
@@ -35430,6 +35417,18 @@ PrefabInstance:
       propertyPath: m_Interpolate
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playersForms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playersForms.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
+    - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playersForms.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 403.7

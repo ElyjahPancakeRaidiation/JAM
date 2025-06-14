@@ -109,8 +109,8 @@ public class PlayerMovement : MonoBehaviour
         screenSize = new Vector2(Screen.width, Screen.height);
         canControl = true;
 
-        playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
-        playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
+        // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     // Update is called once per frame
@@ -280,8 +280,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
-        playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
-        playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
+        // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     private void ballMovement(){
