@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2.65
+      scalar: 3
       minScalar: 7.91
       maxCurve:
         serializedVersion: 2
@@ -4879,5 +4879,6 @@ MonoBehaviour:
   amountOfParticles: 650
   speed: 1.12
   offset: {x: 0, y: 0}
-  isFollowingPlayer: 0
-  followSpeed: 0
+  isFollowingPlayer: 1
+  followSpeed: 0.1
+  followPlayerYAxis: 0
