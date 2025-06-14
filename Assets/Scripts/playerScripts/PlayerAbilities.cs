@@ -33,7 +33,7 @@ public class PlayerAbilities : MonoBehaviour
 
     private bool jumpAgain;
 
-    public float jumpTimerfr;
+    
 
     [SerializeField] private float height;
 
@@ -41,6 +41,8 @@ public class PlayerAbilities : MonoBehaviour
 
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
+
+    public bool usedJump;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +54,7 @@ public class PlayerAbilities : MonoBehaviour
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
+        
     }
 
     // Update is called once per frame
@@ -110,15 +113,19 @@ public class PlayerAbilities : MonoBehaviour
                 canJumpNextFrame = true;
                 // StartCoroutine(newPogoAbliity());
 
-                if (isGroundedScript.isGrounded() || playerMovement.coyoteTimer > 0)
+                if (isGroundedScript.isGrounded())
                 {
+
                     newJumpAbliity();
+                    usedJump = true;
                     //   pogoAbility();
                     Debug.Log(isGroundedScript.isGrounded());
                 }
-
-
-
+                else if (playerMovement.coyoteTimer > 0) {
+                    StartCoroutine(JumpCoyoteTimer());
+                    newJumpAbliity();
+                    Debug.Log("playing");
+                }
 
 
                 break;
@@ -150,7 +157,12 @@ public class PlayerAbilities : MonoBehaviour
         dashAmount = maxDashes;
     }
 
+    private IEnumerator JumpCoyoteTimer()
+    {
+        yield return new WaitForSeconds(.05f);
+        playerMovement.coyoteTimer = 0;
 
+    }
     #endregion
 
     #region Pogo Ability
@@ -196,8 +208,7 @@ public class PlayerAbilities : MonoBehaviour
         float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
         _rb.velocity = Verticaldirection;
-        jumpTimerfr = 0;
-
+       
 
 
 
