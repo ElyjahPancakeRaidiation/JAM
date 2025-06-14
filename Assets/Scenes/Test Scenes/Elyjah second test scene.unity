@@ -291,14 +291,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagePrefab: {fileID: 8315260993153830687, guid: 02252df738a9a2d4e86d3860c0ffa1e8, type: 3}
+  curImage: {fileID: 0}
   previousImage: {fileID: 0}
   isDependantOnXAxis: 0
   offset: {x: 0, y: 0}
+  borderMaxOffset: {x: 0, y: 0}
+  borderMinOffset: {x: 0, y: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   stopOnNext: 0
   upperBoundLimit: 1.03
   lowerBoundLimit: -0.01
-  earlyDeleteDistance: 0
+  _currentCol: {fileID: 0}
 --- !u!61 &115886598
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -376,31 +379,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d6b75a2f60cf34681f390c35ea6b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  curSpeed: 0
+  defualtSpeed: 15
+  zoomSpeed: 8
   speedUpAmount: 4
   slowDownAmount: 0.5
   playerMaxSpeedPoint: 11
-  addedYOffsetMaxSpeed: 0
   offset: {x: 0, y: 0}
   camStartSize: 0
   leftBorder: -1000
   rightBorder: 1000
   upBorder: 1000
   downBorder: -1000
---- !u!114 &122325233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 122325226}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b934ae39a8939b4fba3b5e7419ec6ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 15
 --- !u!1 &159992404
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,14 +400,13 @@ GameObject:
   m_Component:
   - component: {fileID: 159992406}
   - component: {fileID: 159992405}
-  - component: {fileID: 159992407}
   m_Layer: 0
   m_Name: CamManTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &159992405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,17 +424,96 @@ MonoBehaviour:
     m_Bits: 512
   colliderSize: {x: 138.4, y: 105.8}
   colliderOffsetSize: {x: 0, y: 0}
-  moveCamera: 1
-  changeSize: 1
-  keepNewSettings: 0
-  newCameraSize: 40
-  origCameraSize: 8
-  newSizeSpeed: 100
-  origSizeSpeed: 70
-  newPosition: {fileID: 390214401}
-  newPositionOffset: {x: 0, y: -11.5}
-  speedToPosition: 60
-  speedUpToOrigPosition: 0.4
+  activationEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETCHANGINGOFFSETSPEED
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0.03
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETZOOMSPEED
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 200
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETCAMERAOFFSETX
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 9
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETCAMERAOFFSETY
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 10
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETCAMERASIZE
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 20
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  deactivationEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETCHANGINGOFFSETSPEED
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 8
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: DEFUALTSETTINGS
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 70
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &159992406
 Transform:
   m_ObjectHideFlags: 0
@@ -462,25 +529,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &159992407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 159992404}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0df4bcef8e49843976163019737198, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colSize: {x: 21.73, y: 20.97}
-  colMask:
-    serializedVersion: 2
-    m_Bits: 512
-  newPosition: {fileID: 390214401}
-  wantedSpeed: 70
-  oriSpeed: 70
 --- !u!1001 &168795074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -622,6 +670,10 @@ PrefabInstance:
     - target: {fileID: 1297714393132116820, guid: 39b6e7e2940b1664c8dc13a9980ab7ca, type: 3}
       propertyPath: m_Name
       value: Closed Sprite Shape (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297714393132116820, guid: 39b6e7e2940b1664c8dc13a9980ab7ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6072791514986312532, guid: 39b6e7e2940b1664c8dc13a9980ab7ca, type: 3}
       propertyPath: m_Creator
@@ -1293,10 +1345,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74c06d767afbf4faa77db6b72b18c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
   cutSceneToPlay: {fileID: 11400000, guid: 490647f2523ab414d967c51cad57d281, type: 2}
   actorObjects:
   - {fileID: 957133173}
   endPositions: []
+  inGameEvents: []
+  stopWhenSceneStarts: 0
   playOnStart: 0
 --- !u!4 &496172667
 Transform:
@@ -1578,14 +1633,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagePrefab: {fileID: 1297714393132116820, guid: 39b6e7e2940b1664c8dc13a9980ab7ca, type: 3}
+  curImage: {fileID: 0}
   previousImage: {fileID: 363713904}
   isDependantOnXAxis: 0
   offset: {x: 2.6, y: 0}
+  borderMaxOffset: {x: 0, y: 0}
+  borderMinOffset: {x: 0, y: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   stopOnNext: 0
   upperBoundLimit: 1.06
   lowerBoundLimit: -0.04
-  earlyDeleteDistance: 0
+  _currentCol: {fileID: 0}
   freezePlayerPosition: {fileID: 1370162615}
   wiggleRoom: 1.03
   shouldPlayerFreeze: 1
@@ -1846,6 +1904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Closed Sprite Shape
       objectReference: {fileID: 0}
+    - target: {fileID: 1297714393132116820, guid: 39b6e7e2940b1664c8dc13a9980ab7ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6072791514986312532, guid: 39b6e7e2940b1664c8dc13a9980ab7ca, type: 3}
       propertyPath: m_Creator
       value: 
@@ -1926,6 +1988,121 @@ Transform:
   m_Children: []
   m_Father: {fileID: 262136364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &852099682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 852099684}
+  - component: {fileID: 852099683}
+  m_Layer: 0
+  m_Name: CamManTest (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &852099683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852099682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8deaa3879aff1244baffab79eba1f206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderMask:
+    serializedVersion: 2
+    m_Bits: 512
+  colliderSize: {x: 138.4, y: 105.8}
+  colliderOffsetSize: {x: 0, y: 0}
+  activationEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETZOOMSPEED
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 100
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETCAMERASIZE
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 20
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: MOVETOTARGET
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 390214401}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 20
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: SETSPEED
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 70
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  deactivationEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 122325227}
+        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
+        m_MethodName: DEFUALTSETTINGS
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &852099684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852099682}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 283.8, y: -19.1, z: -0.6961888}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &955915949
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,10 +2178,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74c06d767afbf4faa77db6b72b18c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
   cutSceneToPlay: {fileID: 11400000, guid: 2504fc81d21201140adfb3c62b64b3e4, type: 2}
   actorObjects:
   - {fileID: 1896146594}
   endPositions: []
+  inGameEvents: []
+  stopWhenSceneStarts: 0
   playOnStart: 0
 --- !u!4 &955915952
 Transform:
@@ -2048,6 +2228,10 @@ PrefabInstance:
     - target: {fileID: 5429203499457902951, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6949816420192976251, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Radius
@@ -2479,10 +2663,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74c06d767afbf4faa77db6b72b18c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
   cutSceneToPlay: {fileID: 11400000, guid: 2504fc81d21201140adfb3c62b64b3e4, type: 2}
   actorObjects:
   - {fileID: 957133173}
   endPositions: []
+  inGameEvents: []
+  stopWhenSceneStarts: 0
   playOnStart: 1
 --- !u!4 &1326833081
 Transform:
@@ -2528,11 +2715,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74c06d767afbf4faa77db6b72b18c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
   cutSceneToPlay: {fileID: 11400000, guid: ba8b2b9b1d606d649b2d90fb74a11977, type: 2}
   actorObjects:
   - {fileID: 381618295}
   - {fileID: 557005000}
   endPositions: []
+  inGameEvents: []
+  stopWhenSceneStarts: 0
   playOnStart: 0
 --- !u!4 &1335454426
 Transform:
@@ -2772,9 +2962,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7490272465439485032, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
       insertIndex: -1
       addedObject: {fileID: 122325227}
-    - targetCorrespondingSourceObject: {fileID: 7490272465439485032, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 122325233}
   m_SourcePrefab: {fileID: 100100000, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
 --- !u!1 &1680806538
 GameObject:
@@ -4312,4 +4499,5 @@ SceneRoots:
   - {fileID: 957133172}
   - {fileID: 1522227081}
   - {fileID: 159992406}
+  - {fileID: 852099684}
   - {fileID: 390214402}

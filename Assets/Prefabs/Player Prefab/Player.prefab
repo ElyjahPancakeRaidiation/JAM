@@ -44,18 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5b83f9dfdc14d418c00254bec33d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersForms: []
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  rayScales:
-  - 0.45
-  - 1
-  - 1
+  rayScales: []
   timer: 0
-  vecScales:
-  - {x: 0.15, y: 0.3}
-  - {x: 0.18, y: 0.57}
-  - {x: 0, y: 0}
+  vecScales: []
+  curForm: 0
 --- !u!1 &7944302752217619906
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,6 +166,7 @@ MonoBehaviour:
   canJump: 1
   jumpSpeedX: 12
   jumpSpeedY: 8
+  floatTime: 0.8
   screenSize: {x: 0, y: 0}
   inputScreenPercent: 0.2
   inputDetectionPercentX: 0.8
