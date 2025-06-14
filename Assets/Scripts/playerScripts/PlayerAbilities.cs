@@ -9,7 +9,7 @@ using UnityEngine;
 public class PlayerAbilities : MonoBehaviour
 {
     private PlayerMovement playerMovement;
-    private isGroundedScript isGroundedScript;
+    public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
 
@@ -197,6 +197,8 @@ public class PlayerAbilities : MonoBehaviour
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
         _rb.velocity = Verticaldirection;
         jumpTimerfr = 0;
+
+
 
 
     }

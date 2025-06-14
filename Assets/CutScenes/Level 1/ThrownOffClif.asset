@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c81d7e2c8919004e9f663bfbea01fcc, type: 3}
+  m_Name: ThrownOffClif
+  m_EditorClassIdentifier: 
+  cutSceneInfo:
+  - forCamera: 0
+    actionType: 2
+    cameraActionType: 0
+    information: 
+    actorIndex: 1
+    endPositionIndex: 0
+    waitTime: 0.2
+    infinite: 0
+    clampVelocity: {x: 0, y: 0}
+    eventIndex: 0
+  - forCamera: 0
+    actionType: 1
+    cameraActionType: 0
+    information: addForce(25, 1.5, 15)
+    actorIndex: 0
+    endPositionIndex: 0
+    waitTime: 5
+    infinite: 0
+    clampVelocity: {x: 0, y: 0}
+    eventIndex: 0
+  - forCamera: 0
+    actionType: 5
+    cameraActionType: 0
+    information: 
+    actorIndex: 0
+    endPositionIndex: 0
+    waitTime: 2
+    infinite: 0
+    clampVelocity: {x: 0, y: 0}
+    eventIndex: 0

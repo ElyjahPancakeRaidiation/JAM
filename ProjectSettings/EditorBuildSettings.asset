@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/FInal Scenes/Main Menu.unity
     guid: fb7375b634608a849b70b4bd672a15c2
   - enabled: 1
+    path: Assets/Scenes/Test Scenes/irene lvl bible.unity
+    guid: b0af30e21ee79654cb69bd8b0fd5d667
+  - enabled: 1
     path: Assets/Scenes/Test Scenes/Elyjah Main Menu working scene.unity
     guid: c966041cbcc4902449d3476f950932ac
   - enabled: 0

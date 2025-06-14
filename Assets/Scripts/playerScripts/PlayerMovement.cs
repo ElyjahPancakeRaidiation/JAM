@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
+using UnityEditor.Build.Player;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -23,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 #region Player Settings
     [Header("----Player----")]
     [SerializeField]private bool canControl;
-    [SerializeField]private List<AbilitySettingScriptable> forms;
+    public List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
     private PlayerAbilities playerAbilities;
@@ -107,6 +108,9 @@ public class PlayerMovement : MonoBehaviour
 
         screenSize = new Vector2(Screen.width, Screen.height);
         canControl = true;
+
+        playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     // Update is called once per frame
@@ -125,30 +129,38 @@ public class PlayerMovement : MonoBehaviour
         // #endif
 
         if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
+        
+
         //This prevents the easing from going above what its supposed to be
 
-      
-        if(isEasingOn){
+        if (isEasingOn)
+        {
 
-            if(withEasing){
-                if(physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f){
+            if (withEasing)
+            {
+                if (physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f)
+                {
                     withEasing = false;
                 }
 
                 //This piece of code ensures that easing is never on when it doesn't have to be
                 //Since the angularvelocity is directyl related to the direction the player is rolling to.
-                if(oppositeInput == 1 && physics._rb.angularVelocity < 0){
+                if (oppositeInput == 1 && physics._rb.angularVelocity < 0)
+                {
                     withEasing = false;
-                } else if(oppositeInput == -1 && physics._rb.angularVelocity > 0){
+                }
+                else if (oppositeInput == -1 && physics._rb.angularVelocity > 0)
+                {
                     withEasing = false;
                 }
             }
-            if(withEasing && horizontalInput == oppositeInput){
+            if (withEasing && horizontalInput == oppositeInput)
+            {
                 Vector2 velocity = physics._rb.velocity;
                 //Smoothly brings down the velocity's x to a 0 making it a smooth stop when the player turns.
                 velocity.x = Mathf.SmoothDamp(velocity.x, 0, ref curFloat, smoothStopSpeed);
                 //This doesn't really do much although it is similar to what Tarin did with the player controller
-                angularVelHalf = -(physics._rb.angularVelocity/2) * 10;
+                angularVelHalf = -(physics._rb.angularVelocity / 2) * 10;
                 /*
                 This is used for the players rotation in the rigidbody mainly when its a ball. It's supposed to make sure the balls rotation is going 
                 the same as the players input however with further inspection this was done with the gravity
@@ -256,14 +268,20 @@ public class PlayerMovement : MonoBehaviour
         float avgAcceleration = aMultiplier * (physics._rb.velocity.x - lastVelocityX)/Time.deltaTime;
         return avgAcceleration;
     }
-    public void changeForm(){
-        if(curForm == maxForm){
+    public void changeForm()
+    {
+        if (curForm == maxForm)
+        {
             curForm = 0;
-        }else{
+        }
+        else
+        {
             curForm++;
         }
 
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     private void ballMovement(){

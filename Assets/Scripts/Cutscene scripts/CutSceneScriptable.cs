@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Cutscene", menuName = "New Cutscene/Cutscene")]
@@ -11,13 +10,14 @@ public class CutSceneScriptable : ScriptableObject
 
 
     [Serializable]
-    public class CutSceneInfo{
+    public class CutSceneInfo
+    {
 
         public bool forCamera;
 
-        public enum ActionType { MoveObj, AddForce, TurnObjectOn, TurnObjectOff, Wait };
-        public enum CameraActiontype{MoveCamera, Wait};
-        
+        public enum ActionType { MoveObj, AddForce, TurnObjectOn, TurnObjectOff, Wait, Event };
+        public enum CameraActiontype { MoveCamera, Wait };
+
         public ActionType actionType;
         public CameraActiontype cameraActionType;
 
@@ -30,7 +30,7 @@ public class CutSceneScriptable : ScriptableObject
 
         [Tooltip("This connects to the corosponding endposition index in Cut Scene Manager")]
         public int endPositionIndex;
-        
+
         //The amount of time to wait before moving on to the next action
         [Tooltip("The amount of time to wait before moving on to the next action")]
         public float waitTime;
@@ -39,5 +39,7 @@ public class CutSceneScriptable : ScriptableObject
 
         [Tooltip("Entering a number will clamp the x and y to that number. The minimum will be the negative of this number")]
         public Vector2 clampVelocity;
+        public int eventIndex;
+        
     }
 }

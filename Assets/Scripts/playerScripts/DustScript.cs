@@ -46,8 +46,8 @@ public class DustScript : MonoBehaviour
     }
     void Update()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        xOffset = Math.Abs(xOffset) * horizontalInput * -1;
+        // horizontalInput = Input.GetAxisRaw("Horizontal");
+        xOffset = Math.Abs(xOffset) * playerMovement.getInput() * -1;
         if(playerAbilities.isGrounded()){
             if(!jumpedWhileSkidding && playerMovement.getCurForm().formName == "Ball"){
                 transform.position = new Vector2(player.transform.position.x - xOffset, player.transform.position.y - yOffset);
@@ -71,8 +71,8 @@ public class DustScript : MonoBehaviour
         float speed = Math.Abs(rb.velocity.x);
         if(speed >= skidSpeed && playerAbilities.isGrounded() && playerAbilities.recentlyJumped == false){
             shouldSkid = true;
-            if (playerMovement.getAcceleration() < 0 && ((horizontalInput == -1 && rb.velocity.x > 0) || (horizontalInput == 1 && rb.velocity.x < 0)) && !generatingDust && playerMovement.getCurForm().formName == "Ball"){
-                StartCoroutine(createDust(horizontalInput));
+            if (playerMovement.getAcceleration() < 0 && ((playerMovement.getInput() == -1 && rb.velocity.x > 0) || (playerMovement.getInput() == 1 && rb.velocity.x < 0)) && !generatingDust && playerMovement.getCurForm().formName == "Ball"){
+                StartCoroutine(createDust(playerMovement.getInput()));
                 dustParticles.Play();
             }
         }

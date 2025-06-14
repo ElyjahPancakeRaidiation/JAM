@@ -28,6 +28,9 @@ public class RainTrigger : MonoBehaviour
 
     [SerializeField, Tooltip("When the player passes through this it will turn off the rain when players cam isn't looking at it. To turn the rain back on it must pass through another trigger with the bool off.")]
     private bool stopRainWhenOutOfCamera;
+    [SerializeField] private bool followPlayerYAxis;
+
+    
     
 
     // Start is called before the first frame update
@@ -53,7 +56,7 @@ public class RainTrigger : MonoBehaviour
                 rain.setIsFollowingPlayer(isRainFollowingPlayer);
             }
             rain.setOutOfSight(stopRainWhenOutOfCamera);
-
+            rain.setFollowPlayerYAxis(false);
         }
     }
 
