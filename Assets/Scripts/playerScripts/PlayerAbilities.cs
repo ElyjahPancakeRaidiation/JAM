@@ -14,7 +14,7 @@ public class PlayerAbilities : MonoBehaviour
     private Rigidbody2D _rb;
 
     #region Dash variables
-    private const float DASHPOWERX = 18, DASHPOWERY = 14;
+    private float DASHPOWERX = 18, DASHPOWERY = 14;
     [SerializeField] private int maxDashes;
     private int dashAmount;
     private bool canUseAbility;
