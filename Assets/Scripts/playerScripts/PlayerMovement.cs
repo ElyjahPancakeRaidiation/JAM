@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     public bool canJump = true;
     public float jumpSpeedX, jumpSpeedY;
 
-    public float coyoteTimer { get; private set; }
+    public float coyoteTimer { get; set; }
 
     [SerializeField] private float floatTime;
     #endregion
