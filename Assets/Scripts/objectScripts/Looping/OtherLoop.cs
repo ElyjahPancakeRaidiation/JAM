@@ -34,44 +34,52 @@ public class OtherLoop : LoopingBackGround1
             if(previousImage != null){previousImage.GetComponent<MovingGround>().setCanMove(false);}
             if(curImage != null){curImage.GetComponent<MovingGround>().setCanMove(false);}
         }
+        
         //Cur objective - Make the player only follow its y axis while being stuck in the x axis of another assigned object. This will be done with _rb.MovePosition.
         //How will we make it where once the player enters the vicinity of the object it will clamp the players x?
-        
-        if(shouldPlayerFreeze && !canFreezePlayer){
 
-            if(!freezePlayer){
+        if (shouldPlayerFreeze && !canFreezePlayer)
+        {
+
+            if (!freezePlayer)
+            {
                 var dist = false;
-                if(!isDependantOnXAxis){
+                if (!isDependantOnXAxis)
+                {
                     dist = Vector2.Distance(new Vector2(0, player.transform.position.y), new Vector2(0, freezePlayerPosition.transform.position.y)) < wiggleRoom;
-                }else{dist = Vector2.Distance(new Vector2(player.transform.position.x, 0), new Vector2(freezePlayerPosition.transform.position.x, 0)) < wiggleRoom;}
+                }
+                else { dist = Vector2.Distance(new Vector2(player.transform.position.x, 0), new Vector2(freezePlayerPosition.transform.position.x, 0)) < wiggleRoom; }
 
 
-                if(dist && !stopOnNext){
+                if (dist && !stopOnNext)
+                {
                     //flingPlayerScript.player.transform.position = Vector2.Lerp(flingPlayerScript.player.transform.position, freezeobject.position, 3);
                     previousImage.GetComponent<MovingGround>().setCanMove(true);
                     freezePlayer = true;
                     setIsLooping(true);
                 }
-                
+
             }
 
         }
-        
 
 
-        if(getIsLooping()){
+        if (getIsLooping())
+        {
             CheckForCurrentImage();
 
-            float maxCoord = Camera.main.WorldToViewportPoint(_previousCol.bounds.max).y; 
+            float maxCoord = Camera.main.WorldToViewportPoint(_previousCol.bounds.max).y;
             float minCoord = Camera.main.WorldToViewportPoint(_previousCol.bounds.min).y;
-            
-            Vector3 downPosition = new Vector3(_previousCol.bounds.max.x + offset.x, (_previousCol.bounds.min.y -_previousCol.bounds.extents.y)+offset.y);
+
+            Vector3 downPosition = new Vector3(_previousCol.bounds.max.x + _previousCol.bounds.extents.x + offset.x, _previousCol.bounds.min.y + offset.y);
             spawnObjectAfterAnother(maxCoord, minCoord, downPosition, downPosition);
         }
 
         if(stopOnNext && !wantedCutSceneObject.getIsFinished()){
-            if(previousImage != null && curImage != null){
+            if (previousImage != null && curImage != null)
+            {
                 wantedCutSceneObject.playCutScene();
+                shouldPlayerFreeze = false;
             }
         }
 
@@ -80,7 +88,7 @@ public class OtherLoop : LoopingBackGround1
     void FixedUpdate()
     {
         if(getIsLooping()){
-            // player.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.None;
+            
             if(wantedAxisFreezePosition == 0){wantedAxisFreezePosition = player.transform.position.x;}
             player.GetComponent<Rigidbody2D>().position = new Vector2(wantedAxisFreezePosition, player.GetComponent<Rigidbody2D>().position.y);
         }

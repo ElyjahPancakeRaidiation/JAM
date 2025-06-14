@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Ball Piece
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
-  movementSpeed: 12
+  movementSpeed: 30
   formName: Ball
   formAddOn: 0
-  groundChecker: {x: 0.15, y: 0.89}
-  isGroundedOffsetPosition: 0.15
-  positionOffsetforPlayersothattheledgecandetecttheplayersotherearenotsoftlocks: {x: 0, y: 0}
+  groundChecker: {x: 0.65, y: 0.3}
+  startPositionOffset: {x: 0, y: 0}

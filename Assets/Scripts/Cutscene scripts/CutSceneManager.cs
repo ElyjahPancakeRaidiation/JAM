@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.TerrainUtils;
 
 public class CutSceneManager : MonoBehaviour
 {
-    private PlayerMovement playerMovement;
+    [SerializeField] private PlayerMovement playerMovement;
 
     //A scriptable object containing all of the data for the scene
     [SerializeField] private CutSceneScriptable cutSceneToPlay;
@@ -21,6 +22,9 @@ public class CutSceneManager : MonoBehaviour
     [Tooltip("The end position the actors will have at the end of their actions.")]
     [SerializeField] private GameObject[] endPositions;
 
+    [SerializeField] private UnityEvent[] inGameEvents;
+
+    [SerializeField] private bool stopWhenSceneStarts;
     public bool playOnStart;
     private bool canPlayCutScene = false;
     private bool isPlaying = false;
@@ -31,7 +35,7 @@ public class CutSceneManager : MonoBehaviour
 
     private void Start()
     {
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+
         if (playOnStart)
         {
             canPlayCutScene = true;
@@ -54,38 +58,30 @@ public class CutSceneManager : MonoBehaviour
     {
         isPlaying = true;
         isFinished = false;
-        playerMovement.setCanControl(false);
-        StartCoroutine(easeObj(50));
+        if(playerMovement != null){playerMovement.setCanControl(false);}
+        if(stopWhenSceneStarts){ StartCoroutine(easeObj(50)); }
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
 
     private IEnumerator RunCutScene(CutSceneScriptable scene)
     {
+        Debug.Log("I'm still running Cutscene");
         //Base case to stop the loop when theres no more scenes
         if (sceneCounter == scene.cutSceneInfo.Length)
         {
             isPlaying = false;
             canPlayCutScene = false;
-            playerMovement.setCanControl(true);
+            if(playerMovement != null){ playerMovement.setCanControl(true); }
             CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
             playerCamera.setFollowPlayer(true);
             isFinished = true;
-            if (scene.cutSceneInfo[sceneCounter - 1].forCamera)
-            {
-                playerCamera.setFollowPlayer(true);
-                playerCamera.setCanMove(true);
-            }
             yield break;
         }
 
         //Loop through each of the scenes in the array cutscene info
         if (!scene.cutSceneInfo[sceneCounter].infinite)
         {
-            if (!scene.cutSceneInfo[sceneCounter].forCamera)
-            {
-                startAction(scene.cutSceneInfo[sceneCounter].actionType, scene);
-            }
-            else { startAction(scene.cutSceneInfo[sceneCounter].cameraActionType, scene); }
+            startAction(scene.cutSceneInfo[sceneCounter].actionType, scene);
         }
         else
         {
@@ -98,7 +94,7 @@ public class CutSceneManager : MonoBehaviour
         yield return new WaitUntil(() => canMoveOn);
         yield return new WaitForSecondsRealtime(scene.cutSceneInfo[sceneCounter].waitTime);
         sceneCounter++;
-        canMoveOn = false;
+        canMoveOn = false;//Resets the value for the new instance.
         //Do the actions it requires.
         StartCoroutine(RunCutScene(scene));
 
@@ -122,17 +118,9 @@ public class CutSceneManager : MonoBehaviour
             case CutSceneScriptable.CutSceneInfo.ActionType.Wait:
                 canMoveOn = true;
                 break;
-        }
-    }
-
-    private void startAction(CutSceneScriptable.CutSceneInfo.CameraActiontype e, CutSceneScriptable c){
-        switch (e)
-        {
-            case CutSceneScriptable.CutSceneInfo.CameraActiontype.MoveCamera:
-                StartCoroutine(MoveObj(actorObjects[c.cutSceneInfo[sceneCounter].actorIndex], InfoToFloat(c.cutSceneInfo[sceneCounter].information)));
-                break;
-            case CutSceneScriptable.CutSceneInfo.CameraActiontype.Wait:
-
+            case CutSceneScriptable.CutSceneInfo.ActionType.Event:
+                inGameEvents[c.cutSceneInfo[sceneCounter].eventIndex].Invoke();
+                canMoveOn = true;
                 break;
         }
     }
@@ -141,10 +129,11 @@ public class CutSceneManager : MonoBehaviour
     private void AddForceToObject(CutSceneScriptable c)
     {
         Vector3 amount = InfoToVector2(c.cutSceneInfo[sceneCounter].information);
-        actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().AddForce(amount * amount.z, ForceMode2D.Impulse);
+
+        actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().AddForce(new Vector2(amount.x * amount.z, amount.y * amount.z), ForceMode2D.Impulse);
         Vector2 clampedVel = clampVelocity(actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().velocity, c.cutSceneInfo[sceneCounter].clampVelocity);
         actorObjects[c.cutSceneInfo[sceneCounter].actorIndex].GetComponent<Rigidbody2D>().velocity = clampedVel;
-
+        //If it is not playing infinitely then move on to the next scene
         if (!c.cutSceneInfo[sceneCounter].infinite) { canMoveOn = true; }
     }
     private IEnumerator MoveObj(CutSceneScriptable c)
@@ -204,24 +193,6 @@ public class CutSceneManager : MonoBehaviour
     }
     #endregion
 
-    #region Camera
-
-    private IEnumerator MoveObj(GameObject targ, float speed)
-    {
-        CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
-
-        playerCamera.setSpeed(speed);
-        playerCamera.setFollowPlayer(false);
-        playerCamera.setTarget(targ);
-        playerCamera.setCanMove(true);
-
-        yield return new WaitUntil(() => Vector2.Distance(playerCamera.transform.position, targ.transform.position) > 0.3f);
-        canMoveOn = true;
-
-    }
-
-    #endregion
-
     private IEnumerator easeObj(GameObject obj, float easingAmount = 0)//This function is for any object
     {
         if (easingAmount == 0) { easingAmount = 30; }
@@ -242,7 +213,6 @@ public class CutSceneManager : MonoBehaviour
 
     private IEnumerator easeObj(float easingAmount = 0)//This is for the player
     {
-        Debug.Log("Running");
         if (easingAmount == 0) { easingAmount = 30; }
         Vector2 velocity = playerMovement.getCurVelocity();
         if (Vector2.Distance(velocity, Vector2.zero) < 0.1f){yield break;}

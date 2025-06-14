@@ -12,8 +12,7 @@ public abstract class AbilitySettingScriptable : ScriptableObject
     public string formName;
     public bool formAddOn = false;
     public Vector2 groundChecker;
-    public float isGroundedOffsetPosition;
-    public Vector2 positionOffsetforPlayersothattheledgecandetecttheplayersotherearenotsoftlocks;
+    public Vector2 startPositionOffset;
     
     //Customizable method that will hold the form settings for each piece
     public abstract void formSetting(Rigidbody2D rb, SpriteRenderer sr, Collider2D cir, Collider2D box);

@@ -16,7 +16,7 @@ public class TestManager : MonoBehaviour
     private GameObject pauseMenu;
     [SerializeField]private GameObject exitBallTransition;//exit ball transition relates to the games exit animation.
     //Also exit ball object starts off inactive making us have to store it manually in the inspector. Sucks ass.
-    private bool isPaused;
+    public static bool isPaused;
     [SerializeField]private AnimationClip mainMenuTransition;
 
     [Header("Player")]

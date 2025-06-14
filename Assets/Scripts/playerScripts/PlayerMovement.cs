@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
+using UnityEditor.Build.Player;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -22,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 #region Player Settings
     [Header("----Player----")]
     [SerializeField]private bool canControl;
-    [SerializeField]private List<AbilitySettingScriptable> forms;
+    public List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
     private PlayerAbilities playerAbilities;
@@ -56,20 +58,30 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isPogo = false;
     public IEnumerator jumping;
+
+    private IEnumerator hop;
     public bool canJump = true;
     public float jumpSpeedX, jumpSpeedY;
+
+    public float coyoteTimer { get; private set; }
+
+    [SerializeField] private float floatTime;
     #endregion
-    public class MainTouch{
+    public class MainTouch
+    {
         public float fingerID;
         public Vector2 origin;
         public Vector2 touchPos;
-        public void setOrigin(Vector2 origin){
+        public void setOrigin(Vector2 origin)
+        {
             this.origin = origin;
         }
-        public void setFingerID(float fingerID){
+        public void setFingerID(float fingerID)
+        {
             this.fingerID = fingerID;
         }
-        public float getXDistance(){
+        public float getXDistance()
+        {
             return touchPos.x - origin.x;
         }
     }
@@ -96,11 +108,15 @@ public class PlayerMovement : MonoBehaviour
 
         screenSize = new Vector2(Screen.width, Screen.height);
         canControl = true;
+
+        // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     // Update is called once per frame
     void Update()
-    {  
+    {
+        coyoteTimer -= Time.deltaTime;
         physics.setCoefficientOfFriction(coefficientOfFriction);
         physics.setRainyFrictionUp(rainyFrictionUp);
         physics.setRainyFrictionDown(rainyFrictionDown);
@@ -113,30 +129,38 @@ public class PlayerMovement : MonoBehaviour
         // #endif
 
         if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
+        
+
         //This prevents the easing from going above what its supposed to be
 
-      
-        if(isEasingOn){
+        if (isEasingOn)
+        {
 
-            if(withEasing){
-                if(physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f){
+            if (withEasing)
+            {
+                if (physics._rb.velocity.x >= -0.1f && physics._rb.velocity.x <= 0.1f)
+                {
                     withEasing = false;
                 }
 
                 //This piece of code ensures that easing is never on when it doesn't have to be
                 //Since the angularvelocity is directyl related to the direction the player is rolling to.
-                if(oppositeInput == 1 && physics._rb.angularVelocity < 0){
+                if (oppositeInput == 1 && physics._rb.angularVelocity < 0)
+                {
                     withEasing = false;
-                } else if(oppositeInput == -1 && physics._rb.angularVelocity > 0){
+                }
+                else if (oppositeInput == -1 && physics._rb.angularVelocity > 0)
+                {
                     withEasing = false;
                 }
             }
-            if(withEasing && horizontalInput == oppositeInput){
+            if (withEasing && horizontalInput == oppositeInput)
+            {
                 Vector2 velocity = physics._rb.velocity;
                 //Smoothly brings down the velocity's x to a 0 making it a smooth stop when the player turns.
                 velocity.x = Mathf.SmoothDamp(velocity.x, 0, ref curFloat, smoothStopSpeed);
                 //This doesn't really do much although it is similar to what Tarin did with the player controller
-                angularVelHalf = -(physics._rb.angularVelocity/2) * 10;
+                angularVelHalf = -(physics._rb.angularVelocity / 2) * 10;
                 /*
                 This is used for the players rotation in the rigidbody mainly when its a ball. It's supposed to make sure the balls rotation is going 
                 the same as the players input however with further inspection this was done with the gravity
@@ -161,31 +185,37 @@ public class PlayerMovement : MonoBehaviour
             isPogo = true;
         }
         else isPogo = false;
-        isGrounded = playerAbilities.isGrounded();
+        isGrounded = playerAbilities.isGrounded(); //LMAO
         physics.setCoefficientOfFriction(coefficientOfFriction);
     }
 
+    
     private void mobileInput()
     {
-        if(Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
-            foreach(Touch touch in Input.touches)
-            {
-                if(touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x*inputDetectionPercentX) //if maintouch not initialized yet
+            foreach (Touch touch in Input.touches)
+            {    //if maintouch not initialized yet
+                if (touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x * inputDetectionPercentX)
                 {
                     mainTouch = new MainTouch();
                     mainTouch.setOrigin(touch.position);
                     mainTouch.setFingerID(touch.fingerId);
                     Debug.Log("Touch started: " + touch.fingerId);
                 }
-            }
-            if(mainTouch != null){ //if maintouch is initialized, update its position
+            }   //if maintouch is initialized, update its position
+            if (mainTouch != null)
+            {
                 updateMainTouch();
                 // horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
-            }else{
+            }
+            else
+            {
                 horizontalInput = 0;
             }
-        }else{
+        }
+        else
+        {
             horizontalInput = 0;
         }
     }
@@ -238,14 +268,20 @@ public class PlayerMovement : MonoBehaviour
         float avgAcceleration = aMultiplier * (physics._rb.velocity.x - lastVelocityX)/Time.deltaTime;
         return avgAcceleration;
     }
-    public void changeForm(){
-        if(curForm == maxForm){
+    public void changeForm()
+    {
+        if (curForm == maxForm)
+        {
             curForm = 0;
-        }else{
+        }
+        else
+        {
             curForm++;
         }
 
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
+        // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
     private void ballMovement(){
@@ -261,61 +297,70 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void torsoMovement(){
-        //电子游戏 - 人形摇杆
+        //电子游戏 - 人形摇杆 <-death threat
+       // OR
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
         {
             if (playerAbility.isGrounded() && !playerAbility.getJumpNextFrame())
             {
                 if (canJump)
-                {   
-                    jumping = Jump();
-                    StartCoroutine(jumping);
-                    
+                {
+                    // jumping = Jump();
+                    // StartCoroutine(jumping);
+                    hop = hopping();
+                    StartCoroutine(hop);
+
                     canJump = false;
                 }
             }
-            else{
+            else
+            {
                 physics._rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
             }
         }
     }
-public IEnumerator Jump() 
-    {   
-        Debug.Log("Jumping");
+    public IEnumerator Jump()
+    {
+        // Debug.Log("Jumping");
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
-        
-        //impulse makes it so it's a strong force happening at once
+
+        // impulse makes it so it's a strong force happening at once
         physics._rb.AddForce(jumpForce, ForceMode2D.Impulse);
-        
-        
+
+        // physics._rb.MovePosition(new Vector2(2,3));
         //wait .5 seconds before anything
         yield return new WaitForSeconds(.5f);
-        
+
         //keep checking until the player touches the ground
-		yield return new WaitUntil (() => playerAbility.isGrounded());
-        yield return new WaitForSeconds(.1f);
-        if(!playerAbility.getJumpNextFrame()){
-            stopSliding();
-        }
-        
+        yield return new WaitUntil(() => playerAbility.isGrounded());
+         canJump = true;
+        // yield return new WaitForSeconds(.1f);
+        // if(!playerAbility.getJumpNextFrame()){
+        //     stopSliding();
+        // }
+
         //and then allow the player to jump again
-		canJump = true;
+
     }
 
+    public float getHorizontalInput()
+    {
+        return horizontalInput;
+    }
+    public IEnumerator hopping()
+    {
+        coyoteTimer = floatTime;
+        Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
+        physics._rb.velocity = jumpForce;
+        yield return new WaitForSeconds(.5f);
+
+        //keep checking until the player touches the ground
+        yield return new WaitUntil(() => playerAbility.isGrounded());
+        canJump = true;
+    }
   
-    public void stopSliding(){
-        //it now detects when its pogo. If switched to ball ability should be cancelledd
-        if (isPogo==true){
-             
-            if (playerAbility.isGrounded()){
-
-                physics._rb.velocity = Vector3.zero;
-            }
-
-        }
-    }
-
+    
     public void setCanControl(bool value){canControl = value;}
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
