@@ -7,8 +7,9 @@ using UnityEngine;
 public class MovingPlatforms : MonoBehaviour
 {
     [SerializeField] public List<GameObject> upperPrefabObstacles;
-    [SerializeField] public List<GameObject> lowerPrefabObstacles; 
+    [SerializeField] public List<GameObject> lowerPrefabObstacles;
     private GameObject activePlatform;
+    private GameObject player;
     [SerializeField] private new BoxCollider2D collider; //yo ima be honest i only put the new keyword so that vsc could SHUT UP
     private GameObject globalLight;
     private PuzzleLighting puzzleLighting;
@@ -18,6 +19,8 @@ public class MovingPlatforms : MonoBehaviour
     [SerializeField] private float timeBetweenLightning;
     [SerializeField] private float rangeOfObstacleGap;
     [SerializeField] private float rangeOfVerticality;
+    public bool inQueue = false;
+    public float queueTime = 2.0f;
     private enum Verticality
     {
         UPPER,
@@ -34,9 +37,23 @@ public class MovingPlatforms : MonoBehaviour
         collider = GetComponent<BoxCollider2D>();
         globalLight = GameObject.FindGameObjectWithTag("GlobalLighting");
         puzzleLighting = globalLight.GetComponent<PuzzleLighting>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
     void Update()
     {
+        if (!playerWithin && checkPlayerWithin() && !inQueue)
+        {
+            playerWithin = true;
+            StartCoroutine(initialize());
+            Debug.Log("Entered");
+        }
+        else if (playerWithin && !checkPlayerWithin() && !inQueue)
+        {
+            playerWithin = false;
+            StartCoroutine(end());
+            Debug.Log("exited");
+        }
+        playerWithin = checkPlayerWithin();
     }
     private GameObject loadObstacleWorldSpace(GameObject prefab, Vector3 position)
     {
@@ -44,25 +61,13 @@ public class MovingPlatforms : MonoBehaviour
         obstacle.AddComponent<PlatformScript>();
         return obstacle;
     }
-
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            playerWithin = true;
-            if (!playingReload)
-            {
-                StartCoroutine(initialize());
-            }
-        }
-    }
     private IEnumerator reloadPlatforms()
     {
         playingReload = true;
         while (playerWithin)
         {
-            //updateAllPlatforms();
             yield return new WaitForSeconds(timeBetweenLightning);
+            if (!playerWithin) { break; }
             activePlatform = null;
             foreach (Transform child in transform)
             {
@@ -96,10 +101,21 @@ public class MovingPlatforms : MonoBehaviour
     }
     private IEnumerator initialize()
     {
-        yield return StartCoroutine(puzzleLighting.startLighting(this));
+        inQueue = true;
+        yield return StartCoroutine(puzzleLighting.startLighting());
         StartCoroutine(reloadPlatforms());
+        inQueue = false;
     }
-    public void randomizeObstaclesInRange(float start, float end) 
+    private IEnumerator end()
+    {
+        inQueue = true;
+        Debug.Log("end ran");
+        StopCoroutine(reloadPlatforms());
+        yield return new WaitUntil(() => !puzzleLighting.playingLightning);
+        yield return StartCoroutine(puzzleLighting.stopLighting());
+        inQueue = false;
+    }
+    public void randomizeObstaclesInRange(float start, float end)
     {
         float x = start + UnityEngine.Random.Range(0, rangeOfObstacleGap); //starting point
         while (x < end)
@@ -112,7 +128,7 @@ public class MovingPlatforms : MonoBehaviour
 
 
             Vector3 obstacleSize = currentPrefabs[prefabIndex].GetComponent<PolygonCollider2D>().bounds.size;
-            float alignmentYOffset = (verticality == Verticality.UPPER ? -1 : 1) * (obstacleSize.y/2 + randomYShift); //trying to get the surfaces to be aligned with the center of the puzzle bounds
+            float alignmentYOffset = (verticality == Verticality.UPPER ? -1 : 1) * (obstacleSize.y / 2 + randomYShift); //trying to get the surfaces to be aligned with the center of the puzzle bounds
             float alignmentXOffset = obstacleSize.x / 2; //want to spawn gameobjects with lefthand surface touching the cursor's x, typically spawning objects centers them at that coord
             if (x + obstacleSize.x > end) { break; } //if the x position we're currently at will put the object out of bounds, break
 
@@ -122,8 +138,11 @@ public class MovingPlatforms : MonoBehaviour
             x += obstacleSize.x + randomXGap;
         }
     }
+    private bool checkPlayerWithin()
+    {
+        return Physics2D.OverlapBox(collider.bounds.center, collider.bounds.size, 0f, LayerMask.GetMask("Player")) != null;
+    }
 }
 
 //notes for tomorrow
-//check puzzlelighting script. we need to add a light2d component to player upon entering the puzzle area and make sure to remove it when leaving
-//maybe a fade for the intensity so it looks more smooth
+// why is initializing running more than once sometimes, works pretty well as of now
