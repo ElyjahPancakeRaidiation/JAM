@@ -10,30 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c81d7e2c8919004e9f663bfbea01fcc, type: 3}
-  m_Name: ThrownOffClif
+  m_Name: CaveFadeIn
   m_EditorClassIdentifier: 
   cutSceneInfo:
-  - actionType: 4
+  - actionType: 5
     information: 
     actorIndex: 0
     endPositionIndex: 0
-    waitTime: 2
-    infinite: 0
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
-  - actionType: 2
-    information: 
-    actorIndex: 1
-    endPositionIndex: 0
-    waitTime: 0.2
-    infinite: 0
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
-  - actionType: 1
-    information: addForce(25, 1.5, 15)
-    actorIndex: 0
-    endPositionIndex: 0
-    waitTime: 5
+    waitTime: 0
     infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0

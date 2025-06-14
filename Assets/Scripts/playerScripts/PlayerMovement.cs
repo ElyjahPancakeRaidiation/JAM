@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using UnityEditor.Build.Player;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -122,13 +119,13 @@ public class PlayerMovement : MonoBehaviour
         physics.setRainyFrictionDown(rainyFrictionDown);
 
         maxForm = forms.Count-1;
-        // #if UNITY_ANDROID
-        //     if(canControl){mobileInput();}
-        // #else
-        // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
-        // #endif
-
+        #if UNITY_ANDROID
+            if(canControl){mobileInput();}
+        #else
         if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
+        #endif
+
+        // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
         
 
         //This prevents the easing from going above what its supposed to be
