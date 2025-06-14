@@ -4,21 +4,15 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-
+    [SerializeField] private GameObject playerObj;
     private PlayerMovement playerMovement;
     private PlayerAbilities playerAbilities;
     private isGroundedScript isGroundedScript;
 
-    // Start is called before the first frame update
-    void Start()
+    public PlayerMovement getplayerMovement()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        if (playerMovement != null) { return playerMovement; }
+        return null;
     }
     
     

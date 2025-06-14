@@ -2,19 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class isGroundedScript : MonoBehaviour
 {
 
     [SerializeField] private GameObject objectToFollow;
+    [SerializeField] private Vector2 followOffset;
     private Vector2 startPosition, colSize;
     [SerializeField] LayerMask groundLayer;
     private float angle;
+    private void Start()
+    {
+        // staticRotation = transform.rotation;
+    }
 
     void Update()
     {
 
+        transform.position = objectToFollow.transform.position + (Vector3)followOffset;
     }
 
 
