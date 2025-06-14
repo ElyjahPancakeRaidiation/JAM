@@ -297,7 +297,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void torsoMovement(){
-        //电子游戏 - 人形摇杆
+        //电子游戏 - 人形摇杆 <-death threat
+       // OR
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
         {
@@ -309,11 +310,12 @@ public class PlayerMovement : MonoBehaviour
                     // StartCoroutine(jumping);
                     hop = hopping();
                     StartCoroutine(hop);
-                    
+
                     canJump = false;
                 }
             }
-            else{
+            else
+            {
                 physics._rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
             }
         }
