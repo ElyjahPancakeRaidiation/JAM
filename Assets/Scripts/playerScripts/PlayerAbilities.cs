@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using Unity.VisualScripting;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -244,6 +241,7 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     public bool getJumpNextFrame() { return canJumpNextFrame; }
+    public int getDashAmount() { return dashAmount; }
 
     private void OnDrawGizmos()
     {

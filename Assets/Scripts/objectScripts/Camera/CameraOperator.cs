@@ -1,12 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Lumin;
 
 public class CameraOperator : MonoBehaviour
 {
@@ -68,6 +64,7 @@ public class CameraOperator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (followPlayer)
         {
             CameraCatchUp();

@@ -10,6 +10,7 @@ using UnityEngine.TerrainUtils;
 public class CutSceneManager : MonoBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
+    private PlayerAbilities playerAbilities;
 
     //A scriptable object containing all of the data for the scene
     [SerializeField] private CutSceneScriptable cutSceneToPlay;
@@ -35,7 +36,7 @@ public class CutSceneManager : MonoBehaviour
 
     private void Start()
     {
-
+        if (playerMovement != null){playerAbilities = playerMovement.GetComponent<PlayerAbilities>();}
         if (playOnStart)
         {
             canPlayCutScene = true;
@@ -58,20 +59,28 @@ public class CutSceneManager : MonoBehaviour
     {
         isPlaying = true;
         isFinished = false;
-        if(playerMovement != null){playerMovement.setCanControl(false);}
-        if(stopWhenSceneStarts){ StartCoroutine(easeObj(50)); }
+        if (playerMovement != null)
+        {
+            playerMovement.setCanControl(false);
+            playerAbilities.setUseAbility(false);
+        }
+        
+        if (stopWhenSceneStarts) { StartCoroutine(easeObj(50)); }
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
 
     private IEnumerator RunCutScene(CutSceneScriptable scene)
     {
-        Debug.Log("I'm still running Cutscene");
         //Base case to stop the loop when theres no more scenes
         if (sceneCounter == scene.cutSceneInfo.Length)
         {
             isPlaying = false;
             canPlayCutScene = false;
-            if(playerMovement != null){ playerMovement.setCanControl(true); }
+            if (playerMovement != null)
+            {
+                playerMovement.setCanControl(true);
+                playerAbilities.setUseAbility(true);
+            }
             CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
             playerCamera.setFollowPlayer(true);
             isFinished = true;

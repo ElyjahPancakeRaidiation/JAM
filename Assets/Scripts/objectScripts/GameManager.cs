@@ -8,17 +8,16 @@ public class GameManager : MonoBehaviour
     public KeyCode playerAbilityKey;
     public int sceneNum;
 
+    [SerializeField] private bool hasSpawnPosition;
+    [SerializeField] private Transform playerSpawnPosition;
+    private GameObject player;
+
 
     // Start is called before the first frame update
     void Start()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        player = GameObject.FindGameObjectWithTag("Player");
+        if (hasSpawnPosition) { player.transform.position = playerSpawnPosition.position; }
     }
 
 

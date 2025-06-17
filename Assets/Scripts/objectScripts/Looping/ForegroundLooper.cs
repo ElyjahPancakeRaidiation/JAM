@@ -39,8 +39,8 @@ public class ForegroundLooper : LoopingBackgroundScript
 
         if (canLoop)
         {
-            CheckToDelete();
-            CheckToSpawn();
+            CheckToDelete(_camera.WorldToViewportPoint(currentObj.getBoundsMin() + (Vector3)curMinOffset), _camera.WorldToViewportPoint(currentObj.getBoundsMax() + (Vector3)curMaxOffset));
+            CheckToSpawn(_camera.WorldToViewportPoint(currentObj.getBoundsMin() + (Vector3)curMinOffset), _camera.WorldToViewportPoint(currentObj.getBoundsMax() + (Vector3)curMaxOffset));
         }
 
         if (loopended)

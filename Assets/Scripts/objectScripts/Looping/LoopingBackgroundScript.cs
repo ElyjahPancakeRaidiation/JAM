@@ -7,30 +7,30 @@ using UnityEngine;
 public class LoopingBackgroundScript : MonoBehaviour
 {
 
-    private Camera _camera;
+    protected Camera _camera;
 
-    [SerializeField] private GameObject[] imageToLoop;
+    [SerializeField] protected GameObject[] imageToLoop;
     [SerializeField] protected GameObject startInstance;
     [SerializeField] protected bool isDependantOnXAxis;
     [SerializeField] protected bool stopOnNext;
-    [SerializeField] private bool hasSpawnPosition;
-    [SerializeField] private GameObject spawnPosition;
-    [SerializeField] private Vector2 curMaxOffset;
-    [SerializeField] private Vector2 curMinOffset;
+    [SerializeField] protected bool hasSpawnPosition;
+    [SerializeField] protected GameObject spawnPosition;
+    [SerializeField] protected Vector2 curMaxOffset;
+    [SerializeField] protected Vector2 curMinOffset;
 
-    [SerializeField ]protected bool useCol;
-    [SerializeField ]private bool testBool;
-    protected bool canLoop;
+    [SerializeField ] protected bool useCol;
+    [SerializeField ] protected bool testBool;
+    [SerializeField] protected bool canLoop;
     protected bool loopended;
-    private bool multipleObjects;
-    [SerializeField] private bool exactEndPosition; 
+    protected bool multipleObjects;
+    [SerializeField] protected bool exactEndPosition; 
 
-    [SerializeField] private float cameraUpperLimit;
-    [SerializeField] private float cameraLowerLimit;
-    [SerializeField] private int maxWaitTime;
-    [SerializeField] Vector2 offsets;
+    [SerializeField] protected float cameraUpperLimit;
+    [SerializeField] protected float cameraLowerLimit;
+    [SerializeField] protected int maxWaitTime;
+    [SerializeField] protected Vector2 offsets;
 
-    private Coroutine loopingCoroutine;
+    protected Coroutine loopingCoroutine;
 
     public class ObjectInfo
     {
@@ -70,14 +70,14 @@ public class LoopingBackgroundScript : MonoBehaviour
 
             return curObject.GetComponent<SpriteRenderer>().bounds.max;
         }
-
+        public Vector3 getViewportMin(Camera _cam, Vector3 offset){ return _cam.WorldToViewportPoint(getBoundsMin() + offset); }
+        public Vector3 getViewportMax(Camera _cam, Vector3 offset){return _cam.WorldToViewportPoint(getBoundsMax() + offset); }
         public Vector3 SpawnCoordRight(Vector3 max, Vector3 min) { return max + (curObject.transform.position - min); }
         public Vector3 SpawnCoordLeft(Vector3 max, Vector3 min){return min + (curObject.transform.position - max);}
     }
 
     protected ObjectInfo currentObj;
     protected ObjectInfo newObj;
-
 
 
     private void OnValidate()
@@ -88,6 +88,7 @@ public class LoopingBackgroundScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _camera = Camera.main;
         loopended = false;
         if (imageToLoop.Length > 1) { multipleObjects = true; }
         currentObj = new ObjectInfo(startInstance, useCol);
@@ -99,21 +100,20 @@ public class LoopingBackgroundScript : MonoBehaviour
     {
         if (canLoop)
         {
-            CheckToDelete();
-            CheckToSpawn();
+            CheckToDelete(_camera.WorldToViewportPoint(currentObj.getBoundsMin() + (Vector3)curMinOffset), _camera.WorldToViewportPoint(currentObj.getBoundsMax() + (Vector3)curMaxOffset));
+            CheckToSpawn(_camera.WorldToViewportPoint(currentObj.getBoundsMin() + (Vector3)curMinOffset), _camera.WorldToViewportPoint(currentObj.getBoundsMax() + (Vector3)curMaxOffset));
         }
     }
 
-    public virtual void CheckToDelete()
+    public virtual void CheckToDelete(Vector3 min, Vector3 max)
     {
         if (!isDependantOnXAxis)
         {
             //For the Y axis
             if (newObj.getCurObject() != null)
             {
-                if (_camera.WorldToViewportPoint(currentObj.getBoundsMin() + (Vector3)curMinOffset).y > cameraUpperLimit)
+                if (min.y > cameraUpperLimit)
                 {
-                    Debug.Log("DAMN BRO STOP LICKKING SO LOUD");
                     Destroy(currentObj.getCurObject());
                     currentObj.setCurObject(newObj.getCurObject());
                     newObj.setCurObject(null);
@@ -124,8 +124,8 @@ public class LoopingBackgroundScript : MonoBehaviour
         {
             if (newObj.getCurObject() != null)
             {
-            
-                if (_camera.WorldToViewportPoint(currentObj.getBoundsMax() + (Vector3)curMaxOffset).x < cameraLowerLimit)
+
+                if (max.x < cameraLowerLimit)
                 {
                     Destroy(currentObj.getCurObject());
                     currentObj.setCurObject(newObj.getCurObject());
@@ -136,14 +136,14 @@ public class LoopingBackgroundScript : MonoBehaviour
         }
     }
 
-    public IEnumerator CheckToSpawnCoroutine()
+    public IEnumerator CheckToSpawnCoroutine(Vector3 min, Vector3 max)
     {
         if (!isDependantOnXAxis)
         {
             //For Y axis
             if (newObj.getCurObject() == null)
             {
-                if (_camera.WorldToViewportPoint(currentObj.getBoundsMax() + (Vector3)curMaxOffset).y > cameraUpperLimit)//Come back to this problem: will spawn no matter what if max.y > upper && min.y < lower
+                if (max.y > cameraUpperLimit)//Come back to this problem: will spawn no matter what if max.y > upper && min.y < lower
                 {
                     if (hasSpawnPosition)
                     {
@@ -152,7 +152,7 @@ public class LoopingBackgroundScript : MonoBehaviour
                             //41.3
                             float y = spawnPosition.transform.position.y;
                             if (testBool) { y = currentObj.SpawnCoordLeft(currentObj.getBoundsMax() + (Vector3)curMaxOffset, currentObj.getBoundsMin() + (Vector3)curMinOffset).y + offsets.y; }
-                            if(exactEndPosition && stopOnNext){y = spawnPosition.transform.position.y;}
+                            if (exactEndPosition && stopOnNext) { y = spawnPosition.transform.position.y; }
                             newObj.setCurObject(Instantiate(imageToLoop[0], new Vector2(spawnPosition.transform.position.x, y), Quaternion.identity));
                         }
                         else
@@ -166,7 +166,7 @@ public class LoopingBackgroundScript : MonoBehaviour
                     {
                         //Put in the automatic version.
                     }
-                    
+
                     if (stopOnNext && currentObj.getCurObject() != null && newObj.getCurObject() != null)
                     {
                         canLoop = false;
@@ -179,7 +179,7 @@ public class LoopingBackgroundScript : MonoBehaviour
                     }
                 }
             }
-            
+
         }
         else
         {
@@ -187,7 +187,7 @@ public class LoopingBackgroundScript : MonoBehaviour
             if (newObj.getCurObject() == null)
             {
 
-                if (_camera.WorldToViewportPoint(currentObj.getBoundsMax() + (Vector3)curMaxOffset).x < cameraUpperLimit)//Come back to this problem: will spawn no matter what if max.y > upper && min.y < lower
+                if (max.x < cameraUpperLimit)//Come back to this problem: will spawn no matter what if max.y > upper && min.y < lower
                 {
                     if (hasSpawnPosition)
                     {
@@ -195,7 +195,7 @@ public class LoopingBackgroundScript : MonoBehaviour
                         {
                             float x = currentObj.SpawnCoordRight(currentObj.getBoundsMax() + (Vector3)curMaxOffset, currentObj.getBoundsMin() + (Vector3)curMinOffset).x;
                             newObj.setCurObject(Instantiate(imageToLoop[0], new Vector2(x + offsets.x, spawnPosition.transform.position.y), Quaternion.identity));
-                            if(testBool){ TestManager.isPaused = true; }
+                            if (testBool) { TestManager.isPaused = true; }
                         }
                         else
                         {
@@ -205,9 +205,12 @@ public class LoopingBackgroundScript : MonoBehaviour
                     }
                     else
                     {
-                        //Put in the automatic version.
+
+                        float x = currentObj.SpawnCoordRight(currentObj.getBoundsMax() + (Vector3)curMaxOffset, currentObj.getBoundsMin() + (Vector3)curMinOffset).x;
+                        newObj.setCurObject(Instantiate(imageToLoop[0], new Vector2(x + offsets.x, currentObj.getCurObject().transform.position.y), Quaternion.identity));
+                        if (testBool) { TestManager.isPaused = true; }
                     }
-                    
+
                     if (stopOnNext && currentObj.getCurObject() != null && newObj.getCurObject() != null)
                     {
                         canLoop = false;
@@ -222,16 +225,18 @@ public class LoopingBackgroundScript : MonoBehaviour
             }
 
         }
+        Debug.Log("Min: " + min);
+        Debug.Log("Max: " + max);
 
         loopingCoroutine = null;
     }
 
-    public virtual void CheckToSpawn()
+    public virtual void CheckToSpawn(Vector3 min, Vector3 max)
     {
         if (imageToLoop.Length > 1) { multipleObjects = true; }
         if (loopingCoroutine == null)
         {
-            loopingCoroutine = StartCoroutine(CheckToSpawnCoroutine());
+            loopingCoroutine = StartCoroutine(CheckToSpawnCoroutine(min, max));
         }
     }
 
