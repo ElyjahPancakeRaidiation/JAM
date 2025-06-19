@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1349
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -823,9 +823,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 67.64728, y: 230.14125, z: 2.235978}
+    m_Target: {x: -149.9755, y: 117.443214, z: -0.51398474}
     speed: 2
-    m_Value: {x: 67.64728, y: 230.14125, z: 2.235978}
+    m_Value: {x: -149.9755, y: 117.443214, z: -0.51398474}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -875,9 +875,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 60.66737
+    m_Target: 320.7589
     speed: 2
-    m_Value: 60.66737
+    m_Value: 320.7589
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1112,9 +1112,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: fe820000
       m_LastClickedID: 0
-      m_ExpandedIDs: fcfaffff
+      m_ExpandedIDs: eafaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1264,7 +1264,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/playerScripts
+    - Assets/Scripts/playerScripts/Old Player Controller
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1272,16 +1272,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/playerScripts
+  - Assets/Scripts/playerScripts/Old Player Controller
   m_LastFoldersGridSize: 64
   m_LastProjectPath: C:\Users\tisha\Unity Projects\JAM
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 60}
-    m_SelectedIDs: 74820000
-    m_LastClickedID: 33396
-    m_ExpandedIDs: 0000000060820000628200006482000066820000688200006a8200006e820000708200007482000076820000d682000000ca9a3b
+    scrollPos: {x: 0, y: 176}
+    m_SelectedIDs: e2820000
+    m_LastClickedID: 33506
+    m_ExpandedIDs: 00000000628200006482000066820000688200006a8200006c8200006e82000070820000728200007482000076820000788200007a82000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1309,7 +1309,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000060820000628200006482000066820000688200006a8200006c8200006e8200007082000072820000748200007682000078820000
+    m_ExpandedIDs: 00000000628200006482000066820000688200006a8200006c8200006e82000070820000728200007482000076820000788200007a820000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
