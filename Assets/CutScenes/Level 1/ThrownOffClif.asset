@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: ThrownOffClif
   m_EditorClassIdentifier: 
   cutSceneInfo:
+  - actionType: 3
+    information: 
+    actorIndex: 1
+    endPositionIndex: 0
+    waitTime: 0
+    infinite: 0
+    clampVelocity: {x: 0, y: 0}
+    eventIndex: 0
   - actionType: 4
     information: 
     actorIndex: 0
@@ -26,6 +34,14 @@ MonoBehaviour:
     actorIndex: 1
     endPositionIndex: 0
     waitTime: 0.2
+    infinite: 0
+    clampVelocity: {x: 0, y: 0}
+    eventIndex: 0
+  - actionType: 5
+    information: 
+    actorIndex: 0
+    endPositionIndex: 0
+    waitTime: 0
     infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0

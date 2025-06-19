@@ -116,7 +116,6 @@ public class AudioManagerV2 : MonoBehaviour
             Gizmos.DrawWireCube(ap.centerPoint, ap.detectionSize);
             Gizmos.DrawLine(ap.centerPoint - new Vector2(0, ap.detectionSize.y / 2), ap.centerPoint + new Vector2(0, ap.detectionSize.y / 2));
         }
-        }
     }
     //for future reference, look into spatial blend and stereo pan
     private IEnumerator TransitionFade(AudioPoint ap)

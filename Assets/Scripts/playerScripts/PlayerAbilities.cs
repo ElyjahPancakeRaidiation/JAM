@@ -9,6 +9,8 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
@@ -48,6 +50,8 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
@@ -136,6 +140,7 @@ public class PlayerAbilities : MonoBehaviour
     {
         if (dashAmount > 0)
         {
+            StartCoroutine(audioManagerV2.playPlayerSFX("Dashing"));
             _rb.velocity = Vector2.zero;
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
@@ -165,6 +170,7 @@ public class PlayerAbilities : MonoBehaviour
     #region Pogo Ability
     private void pogoAbility()
     {
+        StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
         canJumpNextFrame = false;
         jumpFrameTimer = 0;
         // float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
@@ -242,6 +248,10 @@ public class PlayerAbilities : MonoBehaviour
 
     public bool getJumpNextFrame() { return canJumpNextFrame; }
     public int getDashAmount() { return dashAmount; }
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
 
     private void OnDrawGizmos()
     {

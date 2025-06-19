@@ -225,8 +225,6 @@ public class LoopingBackgroundScript : MonoBehaviour
             }
 
         }
-        Debug.Log("Min: " + min);
-        Debug.Log("Max: " + max);
 
         loopingCoroutine = null;
     }

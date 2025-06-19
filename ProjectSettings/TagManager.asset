@@ -28,10 +28,6 @@ TagManager:
   - Lightning
   - MovingGround
   - MovingGroundPoint
-  - Point1
-  - Point2
-  - Point3
-  - Point4
   layers:
   - Default
   - TransparentFX
@@ -69,14 +65,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 2923812663
+    locked: 0
   - name: Player
     uniqueID: 2527488691
     locked: 0
   - name: Ground
     uniqueID: 3633487871
-    locked: 0
-  - name: Background
-    uniqueID: 2923812663
     locked: 0
   - name: Foreground
     uniqueID: 3427709409
