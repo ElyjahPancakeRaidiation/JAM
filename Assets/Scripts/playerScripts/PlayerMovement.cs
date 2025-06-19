@@ -18,17 +18,20 @@ public class PlayerMovement : MonoBehaviour
     private float movementSpeed;
     [SerializeField]private bool isGrounded;
 
-#region Player Settings
+    #region Player Settings
     [Header("----Player----")]
-    [SerializeField]private bool canControl;
-    public List<AbilitySettingScriptable> forms;
+    //temp
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
+    //temp
+    [SerializeField] private bool canControl;
+    [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
     private PlayerAbilities playerAbilities;
-#endregion
-    
+    #endregion
+    [SerializeField] private GameObject prefabDustSpawner;
     private GameObject _dustSpawner;
-    public DustScript dustScript;
 
     #region Ball settings
     [Header("Ball Settings")]
@@ -64,6 +67,10 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float floatTime;
     #endregion
+    private float lastVelocityY;
+    public float velocitySoundThreshold;
+    public bool checkingImpact;
+    
     public class MainTouch
     {
         public float fingerID;
@@ -86,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     #region Mobile Settings
     [Header("Mobile Settings")]
     public Vector2 screenSize;
-    [SerializeField]public float inputScreenPercent;
+    [SerializeField]public float inputRange; //i think this is in pixels idk bru
     [SerializeField]public float inputDetectionPercentX;
     [SerializeField]private bool visualizeTouchArea;
     #endregion
@@ -95,10 +102,13 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         playerAbilities = GetComponent<PlayerAbilities>();
+        _dustSpawner = Instantiate(prefabDustSpawner);
         physics = new Physics(GetComponent<Rigidbody2D>());
-        _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
-        dustScript = _dustSpawner.GetComponent<DustScript>();
         _spriteRender = GetComponent<SpriteRenderer>();
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
+
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
@@ -118,17 +128,14 @@ public class PlayerMovement : MonoBehaviour
         physics.setRainyFrictionUp(rainyFrictionUp);
         physics.setRainyFrictionDown(rainyFrictionDown);
 
-        maxForm = forms.Count-1;
-        #if UNITY_ANDROID
-            if(canControl){mobileInput();}
-        #else
-        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
-        #endif
-
-        // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
-        
-
+        maxForm = forms.Count - 1;
+#if UNITY_ANDROID
+        if(canControl){mobileInput();}
+#else
+        if (canControl) { horizontalInput = Input.GetAxisRaw("Horizontal"); }
+#endif
         //This prevents the easing from going above what its supposed to be
+
 
         if (isEasingOn)
         {
@@ -168,22 +175,31 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Change keybind so the player gets it from the game manager
-        if(Input.GetKeyDown(KeyCode.LeftShift)){
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
             changeForm();
             withEasing = false;
         }
 
         //Skips the form if it is a add on
-        if(forms[curForm].formAddOn){
+        if (forms[curForm].formAddOn)
+        {
             changeForm();
         }
 
-        if(forms[curForm].formName== "Pogo"){
+        if (forms[curForm].formName == "Pogo")
+        {
             isPogo = true;
         }
         else isPogo = false;
         isGrounded = playerAbilities.isGrounded(); //LMAO
         physics.setCoefficientOfFriction(coefficientOfFriction);
+        lastVelocityX = physics._rb.velocity.x;
+        lastVelocityY = physics._rb.velocity.y;
+        if (!playerAbilities.isGrounded() && !checkingImpact)
+        {
+            StartCoroutine(impactSound());
+        }
     }
 
     
@@ -204,10 +220,7 @@ public class PlayerMovement : MonoBehaviour
             if (mainTouch != null)
             {
                 updateMainTouch();
-                // horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
-            }
-            else
-            {
+            }else{
                 horizontalInput = 0;
             }
         }
@@ -229,7 +242,7 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     mainTouch.touchPos = touch.position;
-                    horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
+                    horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/inputRange, -1, 1); //screenSize.x * inputRange is the max distance the player can move their finger to get the max input of 1
                 }
             }
         }
@@ -245,15 +258,16 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         physics.Friction();
-        if(GetComponent<CircleCollider2D>().enabled){
-            
+        if (GetComponent<CircleCollider2D>().enabled)
+        {
+
             ballMovement();
-            
-        }else if(GetComponent<BoxCollider2D>().enabled){
+
+        }
+        else if (GetComponent<BoxCollider2D>().enabled)
+        {
             torsoMovement();
         }
-        dustScript.checkForDust();
-        lastVelocityX = physics._rb.velocity.x;
     }
     public float getAcceleration(){
         float aMultiplier; //acceleration multiplier
@@ -356,9 +370,20 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitUntil(() => playerAbility.isGrounded());
         canJump = true;
     }
-  
-    
-    public void setCanControl(bool value){canControl = value;}
+    public IEnumerator impactSound()
+    {
+        checkingImpact = true;
+        yield return new WaitUntil(() => playerAbility.isGrounded());
+        if (Mathf.Abs(lastVelocityY) > velocitySoundThreshold)
+        {
+            //make volume based on velocity
+            StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
+            //GetComponent<AudioSource>().Play();
+        }
+        checkingImpact = false;
+    }
+
+    public void setCanControl(bool value) { canControl = value; }
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
     public float getMaxSpeedPoint(){return maxSpeedPoint;}

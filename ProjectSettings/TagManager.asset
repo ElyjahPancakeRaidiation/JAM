@@ -23,6 +23,9 @@ TagManager:
   - RainShit
   - Rain Controller
   - SplashParticles
+  - AudioManager
+  - GlobalLighting
+  - Lightning
   - MovingGround
   - MovingGroundPoint
   - Point1

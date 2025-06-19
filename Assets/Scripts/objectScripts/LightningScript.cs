@@ -7,10 +7,12 @@ using UnityEngine.Rendering.Universal;
 public class LightningScript : MonoBehaviour
 {
     [System.Serializable]
-    public class LightningBounds{
+    public class LightningBounds
+    {
         public float minX;
         public float maxX;
-        public LightningBounds(float minX, float maxX){
+        public LightningBounds(float minX, float maxX)
+        {
             this.minX = minX;
             this.maxX = maxX;
         }
@@ -20,7 +22,7 @@ public class LightningScript : MonoBehaviour
     private bool playerInBounds = false;
     private Light2D light2D;
     [SerializeField] private float maxIntensity;
-    [SerializeField]private float lightningDuration = 0.3f; //how long it takes for lighting to transition back to normal from a lightning strike
+    [SerializeField] private float lightningDuration = 0.3f; //how long it takes for lighting to transition back to normal from a lightning strike
     private bool lightningActive = false; //is the lightning coroutine currently running
     private AudioSource audioSource;
     private bool playingLightning; //is lightning currently playing
@@ -30,7 +32,7 @@ public class LightningScript : MonoBehaviour
 
     [SerializeField] private int maxCheekedUpAmt; //how many times the lightning can "cheek up" before stopping
 
-    
+
 
     void Start()
     {
@@ -42,7 +44,8 @@ public class LightningScript : MonoBehaviour
     void Update()
     {
         checkPlayerBounds();
-        if (playerInBounds && !lightningActive){
+        if (playerInBounds && !lightningActive)
+        {
             StartCoroutine(lightning());
         }
     }
@@ -58,12 +61,15 @@ public class LightningScript : MonoBehaviour
         }
         playerInBounds = false; //if player is not in any of the bounds, set to false
     }
-    private IEnumerator lightning(){
+    private IEnumerator lightning()
+    {
         lightningActive = true;
-        while (playerInBounds){
+        while (playerInBounds)
+        {
             int chance = new System.Random().Next(0, 100);
-            if(chance < chanceOfLightning){ 
-                int cheekedUpAmt = new System.Random().Next(1, maxCheekedUpAmt + 1); 
+            if (chance < chanceOfLightning)
+            {
+                int cheekedUpAmt = new System.Random().Next(1, maxCheekedUpAmt + 1);
                 Debug.Log("Cheeked up: " + cheekedUpAmt);
                 playingLightning = true;
                 light2D.intensity = maxIntensity;
@@ -74,7 +80,8 @@ public class LightningScript : MonoBehaviour
                 {
                     elapsedTime += Time.deltaTime;
                     light2D.intensity = Mathf.Lerp(maxIntensity, 0.0f, elapsedTime / lightningDuration);
-                    if(light2D.intensity <= maxIntensity/2.0f && cheekedUpAmt > 0){ //reset for each cheek clap
+                    if (light2D.intensity <= maxIntensity / 2.0f && cheekedUpAmt > 0)
+                    { //reset for each cheek clap
                         light2D.intensity = maxIntensity;
                         elapsedTime = 0.0f;
                         audioSource.Play();
