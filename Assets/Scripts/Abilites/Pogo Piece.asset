@@ -16,6 +16,6 @@ MonoBehaviour:
   movementSpeed: 13
   formName: Pogo
   formAddOn: 0
-  groundChecker: {x: 0.61, y: 0.56}
+  groundChecker: {x: 0.52, y: 0.56}
   startPositionOffset: {x: 0, y: 0}
-  boxColliderSize: {x: 1, y: 2.2477503}
+  boxColliderSize: {x: 1.430995, y: 2.24775}

@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using Unity.VisualScripting;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -12,9 +9,11 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
 
     #region Dash variables
-    private float DASHPOWERX = 18, DASHPOWERY = 14;
+    [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
     [SerializeField] private int maxDashes;
     private int dashAmount;
     private bool canUseAbility;
@@ -33,7 +32,7 @@ public class PlayerAbilities : MonoBehaviour
 
     private bool jumpAgain;
 
-    public float jumpTimerfr;
+    
 
     [SerializeField] private float height;
 
@@ -42,6 +41,8 @@ public class PlayerAbilities : MonoBehaviour
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
 
+    public bool usedJump;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,9 +50,12 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
+        
     }
 
     // Update is called once per frame
@@ -110,15 +114,19 @@ public class PlayerAbilities : MonoBehaviour
                 canJumpNextFrame = true;
                 // StartCoroutine(newPogoAbliity());
 
-                if (isGroundedScript.isGrounded() || playerMovement.coyoteTimer > 0)
+                if (isGroundedScript.isGrounded())
                 {
+
                     newJumpAbliity();
+                    usedJump = true;
                     //   pogoAbility();
                     Debug.Log(isGroundedScript.isGrounded());
                 }
-
-
-
+                else if (playerMovement.coyoteTimer > 0) {
+                    StartCoroutine(JumpCoyoteTimer());
+                    newJumpAbliity();
+                    Debug.Log("playing");
+                }
 
 
                 break;
@@ -132,6 +140,7 @@ public class PlayerAbilities : MonoBehaviour
     {
         if (dashAmount > 0)
         {
+            StartCoroutine(audioManagerV2.playPlayerSFX("Dashing"));
             _rb.velocity = Vector2.zero;
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
@@ -150,12 +159,18 @@ public class PlayerAbilities : MonoBehaviour
         dashAmount = maxDashes;
     }
 
+    private IEnumerator JumpCoyoteTimer()
+    {
+        yield return new WaitForSeconds(.05f);
+        playerMovement.coyoteTimer = 0;
 
+    }
     #endregion
 
     #region Pogo Ability
     private void pogoAbility()
     {
+        StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
         canJumpNextFrame = false;
         jumpFrameTimer = 0;
         // float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
@@ -196,8 +211,7 @@ public class PlayerAbilities : MonoBehaviour
         float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
         _rb.velocity = Verticaldirection;
-        jumpTimerfr = 0;
-
+       
 
 
 
@@ -233,6 +247,11 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     public bool getJumpNextFrame() { return canJumpNextFrame; }
+    public int getDashAmount() { return dashAmount; }
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
 
     private void OnDrawGizmos()
     {

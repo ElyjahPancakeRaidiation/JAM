@@ -1,12 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Lumin;
 
 public class CameraOperator : MonoBehaviour
 {
@@ -68,6 +64,7 @@ public class CameraOperator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (followPlayer)
         {
             CameraCatchUp();
@@ -125,22 +122,17 @@ public class CameraOperator : MonoBehaviour
         }
         else if (farFromPlayer && followPlayer)
         {
-            Debug.Log("Being called");
             HeadingTowardsPlayer();
         }
 
     }
     public void HeadingTowardsPlayer()
     {
-        if (curSpeed > defualtSpeed)
+        if (curSpeed > defualtSpeed && Vector2.Distance(transform.position, player.transform.position) > 1)
         {
-            if (Vector2.Distance(transform.position, player.transform.position) > 1)
-            {
-                curSpeed -= Mathf.Sqrt(player.GetComponent<Rigidbody2D>().angularVelocity) * increaseSpeedPercentage * Time.deltaTime;
-            }
+            curSpeed -= Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) * increaseSpeedPercentage * Time.deltaTime;
         }
-        else
-        {
+        else{
             farFromPlayer = false;
         }
     }
