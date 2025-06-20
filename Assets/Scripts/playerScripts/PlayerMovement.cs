@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
-    [SerializeField]private bool isGrounded;
+    [SerializeField] private bool isGrounded;
 
     #region Player Settings
     [Header("----Player----")]

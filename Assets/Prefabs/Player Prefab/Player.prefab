@@ -156,7 +156,7 @@ MonoBehaviour:
   forms:
   - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
   - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
-  dustScript: {fileID: 0}
+  prefabDustSpawner: {fileID: 0}
   smoothStopSpeed: 0.2
   maxSpeedPoint: 7
   isEasingOn: 0
@@ -167,8 +167,10 @@ MonoBehaviour:
   jumpSpeedX: 12
   jumpSpeedY: 8
   floatTime: 0.8
+  velocitySoundThreshold: 0
+  checkingImpact: 0
   screenSize: {x: 0, y: 0}
-  inputScreenPercent: 0.2
+  inputRange: 1
   inputDetectionPercentX: 0.8
   visualizeTouchArea: 0
 --- !u!114 &1484820306327863335
