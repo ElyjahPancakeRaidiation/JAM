@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 709437212310804831}
   - component: {fileID: 3990497907096205724}
   - component: {fileID: 9192252758658641890}
-  - component: {fileID: 5974304457112685016}
-  - component: {fileID: 7864303720385110649}
+  - component: {fileID: 4223043394689647367}
+  - component: {fileID: 6165606407862582085}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7490272465439485032}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.1, y: -0.6, z: -9.715861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,8 +44,8 @@ Camera:
   m_GameObject: {fileID: 7490272465439485032}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -83,7 +83,7 @@ Camera:
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 0
+  m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!81 &9192252758658641890
@@ -94,42 +94,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7490272465439485032}
   m_Enabled: 1
---- !u!114 &5974304457112685016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7490272465439485032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6281f57fda4ae4f499eb8a3fcde9df25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  speedToTarg: 0.1
-  objSpeed: 0
-  comingBackSpeed: 0
-  offset: {x: 0, y: 0, z: -10}
-  camDefaultFOV: 8
-  startingCamFOV: 8
-  notFollowingX: 0
-  notFollowingY: 0
-  leftLimit: 0
-  rightLimit: 0
-  upLimit: 0
-  downLimit: 0
-  playerTarget: {fileID: 0}
-  objTarget: {fileID: 0}
-  isFollowingPlayer: 1
-  isZoom: 0
-  isComingBack: 0
-  hasZoomed: 0
-  setBack: 0
-  setBackSpeed: 0
-  shakeAmount: 0
-  shakeTime: 0
---- !u!114 &7864303720385110649
+--- !u!114 &4223043394689647367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,3 +138,28 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &6165606407862582085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490272465439485032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d6b75a2f60cf34681f390c35ea6b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defualtSpeed: 15
+  curSpeed: 0
+  zoomSpeed: 8
+  speedUpAmount: 2
+  slowDownAmount: 0.5
+  playerMaxSpeedPoint: 11
+  offset: {x: 0, y: 0}
+  camStartSize: 0
+  leftBorder: 0
+  rightBorder: 0
+  upBorder: 0
+  downBorder: 0
+  farFromPlayer: 0

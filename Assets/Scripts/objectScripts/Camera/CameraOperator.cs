@@ -122,22 +122,17 @@ public class CameraOperator : MonoBehaviour
         }
         else if (farFromPlayer && followPlayer)
         {
-            Debug.Log("Being called");
             HeadingTowardsPlayer();
         }
 
     }
     public void HeadingTowardsPlayer()
     {
-        if (curSpeed > defualtSpeed)
+        if (curSpeed > defualtSpeed && Vector2.Distance(transform.position, player.transform.position) > 1)
         {
-            if (Vector2.Distance(transform.position, player.transform.position) > 1)
-            {
-                curSpeed -= Mathf.Sqrt(player.GetComponent<Rigidbody2D>().angularVelocity) * increaseSpeedPercentage * Time.deltaTime;
-            }
+            curSpeed -= Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) * increaseSpeedPercentage * Time.deltaTime;
         }
-        else
-        {
+        else{
             farFromPlayer = false;
         }
     }
