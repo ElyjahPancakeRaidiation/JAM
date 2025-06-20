@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {   
@@ -32,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     [SerializeField] private GameObject prefabDustSpawner;
     private GameObject _dustSpawner;
+
+    private UnityEvent playerImpact; //player lands on the ground w a certain amount of velocity/momentum
 
     #region Ball settings
     [Header("Ball Settings")]
@@ -97,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerAbilities = GetComponent<PlayerAbilities>();
         _dustSpawner = Instantiate(prefabDustSpawner);
+        playerImpact.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
         physics = new Physics(GetComponent<Rigidbody2D>());
         _spriteRender = GetComponent<SpriteRenderer>();
 
@@ -395,7 +399,15 @@ public IEnumerator Jump()
             }
         }
     }
-
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ground")){
+            if (collision.relativeVelocity.y > velocitySoundThreshold)
+            {
+                
+            }
+        }
+    }
     private IEnumerator EasingBackOn(){
         yield return new WaitForSeconds(2f);
         isEasingOn = true;
