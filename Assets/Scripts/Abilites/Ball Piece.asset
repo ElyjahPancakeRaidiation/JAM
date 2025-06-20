@@ -16,4 +16,5 @@ MonoBehaviour:
   movementSpeed: 12
   formName: Ball
   formAddOn: 0
-  groundChecker: 1.2
+  groundChecker: {x: 0.4, y: 0.3}
+  startPositionOffset: {x: 0, y: 0}

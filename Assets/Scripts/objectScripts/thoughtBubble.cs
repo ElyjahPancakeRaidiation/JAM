@@ -7,35 +7,57 @@ using UnityEngine.UI;
 
 public class thoughtBubble : MonoBehaviour
 {
-    public Image thoughtBub;//Change
-    private float timer;
-    [SerializeField]private float maxTime;
+    public GameObject thoughtBub;//Change
+    private PlayerAbilities playerAbilities;
+    private bool completed = false;
+
+    [SerializeField] private float maxTime;
+    [SerializeField] private Vector2 positionOffset;
+
+    private Coroutine thoughtTrigger;
+
     // Start is called before the first frame update
     void Start()
     {
-        thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
-        thoughtBub.enabled = false;
+        thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble");
+        ///
+        /// When player manager is added make sure to switch this out with the event instead, decouple this code.
+        /// 
+        playerAbilities = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAbilities>();
+        thoughtBub.gameObject.SetActive(false);
     }
 
-    private void OnTriggerStay2D(Collider2D collision){
-        if(collision.tag == "Player"){
-            timer += Time.deltaTime;
-            if (timer >= maxTime)
+    void Update()
+    {
+        thoughtBub.transform.position = playerAbilities.transform.position + (Vector3)positionOffset;
+        //Ensures that the bubble wont appear if the player has already pressed dash before.
+        if (playerAbilities.getDashAmount() < 1)
+        {
+            if (!completed)
             {
-                thoughtBub.enabled = true;
-            }else{
-                thoughtBub.enabled = false;
+                completed = true;
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            thoughtBub.enabled = false;
-            timer = 0;
+            if (thoughtTrigger == null && !completed) { thoughtTrigger = StartCoroutine(TriggerThought()); }
         }
+    }
+
+    private IEnumerator TriggerThought()
+    {
+        yield return new WaitForSecondsRealtime(maxTime);
+        if (!completed)
+        {
+            thoughtBub.gameObject.SetActive(true);
+            yield return new WaitUntil(() => playerAbilities.getDashAmount() < 1);
+        }
+        thoughtBub.gameObject.SetActive(false);
+        completed = true;
     }
     
     

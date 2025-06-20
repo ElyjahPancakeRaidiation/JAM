@@ -13,28 +13,12 @@ MonoBehaviour:
   m_Name: TestCut
   m_EditorClassIdentifier: 
   cutSceneInfo:
-  - actionType: 0
-    information: speed(10) -(70)
-    actorIndex: 0
-    endPositionIndex: 0
-    waitTime: 2
-  - actionType: 0
-    information: speed(10)-(90)
-    actorIndex: 0
-    endPositionIndex: 1
-    waitTime: 2
-  - actionType: 1
-    information: add(0, 8, 1)
+  - forCamera: 1
+    actionType: 0
+    cameraActionType: 0
+    information: f(1)
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 5
-  - actionType: 1
-    information: add(2, 5, 5)
-    actorIndex: 0
-    endPositionIndex: 0
-    waitTime: 2
-  - actionType: 0
-    information: speed(5)
-    actorIndex: 0
-    endPositionIndex: 2
-    waitTime: 2
+    infinite: 0
+    clampVelocity: {x: 0, y: 0}

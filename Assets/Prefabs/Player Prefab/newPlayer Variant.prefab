@@ -25,9 +25,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_GravityScale
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4822938141585243739, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: playersForms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822938141585243739, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: playersForms.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
+    - target: {fileID: 4822938141585243739, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: playersForms.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
     - target: {fileID: 5809341814163335841, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -39,6 +55,10 @@ PrefabInstance:
     - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: velocitySoundThreshold
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809341814163335841, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.2222223
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
@@ -122,12 +142,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e042c9a7d9667478f1e5ac0f961f9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DASHPOWERX: 18
+  DASHPOWERY: 14
   maxDashes: 1
   usedJumpAbility: 0
   canJumpNextFrame: 0
-  maxJumpFrameTimer: 0
+  jumpFrameTimer: 3
+  maxJumpFrameTimer: 0.3
   recentlyJumped: 0
-  groundCheckerDistance: 1.2
+  height: 13
+  groundCheckerDistance: 1.07
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  usedJump: 0
