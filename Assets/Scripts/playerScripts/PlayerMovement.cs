@@ -104,10 +104,11 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerImpact = new UnityEvent();
         playerAbilities = GetComponent<PlayerAbilities>();
         _dustSpawner = Instantiate(prefabDustSpawner);
-        playerImpact.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
         physics = new Physics(GetComponent<Rigidbody2D>());
+        playerImpact.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
         _spriteRender = GetComponent<SpriteRenderer>();
 
         audioManager = GameObject.FindGameObjectWithTag("AudioManager");

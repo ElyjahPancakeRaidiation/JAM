@@ -16,6 +16,8 @@ public class MovingPlatforms : MonoBehaviour
     private bool playerWithin = false;
     private bool playingReload = false;
     [SerializeField] private float padding;
+    [SerializeField] private float paddingLeft;
+    [SerializeField] private float paddingRight;
     [SerializeField] private float timeBetweenLightning;
     [SerializeField] private float rangeOfObstacleGap;
     [SerializeField] private float rangeOfVerticality;
@@ -82,12 +84,12 @@ public class MovingPlatforms : MonoBehaviour
             }
             if (activePlatform != null)
             {
-                randomizeObstaclesInRange(collider.bounds.min.x + padding, activePlatform.GetComponent<PolygonCollider2D>().bounds.min.x);
-                randomizeObstaclesInRange(activePlatform.GetComponent<PolygonCollider2D>().bounds.max.x, collider.bounds.max.x - padding);
+                randomizeObstaclesInRange(collider.bounds.min.x + paddingLeft, activePlatform.GetComponent<PolygonCollider2D>().bounds.min.x);
+                randomizeObstaclesInRange(activePlatform.GetComponent<PolygonCollider2D>().bounds.max.x, collider.bounds.max.x - paddingRight);
             }
             else
             {
-                randomizeObstaclesInRange(collider.bounds.min.x + padding, collider.bounds.max.x - padding);
+                randomizeObstaclesInRange(collider.bounds.min.x + paddingLeft, collider.bounds.max.x - paddingRight);
             }
             yield return StartCoroutine(puzzleLighting.lightning());
         }
@@ -96,8 +98,10 @@ public class MovingPlatforms : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.size - new Vector3(padding * 2, 0, 0));
-        Gizmos.DrawLine(collider.bounds.center - new Vector3(collider.bounds.size.x / 2 - padding, 0, 0), collider.bounds.center + new Vector3(collider.bounds.size.x / 2 - padding, 0, 0));
+        //Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.size - new Vector3(paddingLeft + paddingRight, 0, 0));
+        Gizmos.DrawLine(collider.bounds.center - new Vector3(collider.bounds.size.x / 2 - paddingLeft, -collider.bounds.min.y, 0), collider.bounds.center - new Vector3(collider.bounds.size.x / 2 - paddingLeft, -collider.bounds.max.y, 0));
+        Gizmos.DrawLine(collider.bounds.center + new Vector3(collider.bounds.size.x / 2 - paddingRight, collider.bounds.min.y, 0), collider.bounds.center + new Vector3(collider.bounds.size.x / 2 - paddingLeft, collider.bounds.max.y, 0));
+        Gizmos.DrawLine(collider.bounds.center - new Vector3(collider.bounds.size.x / 2 - paddingLeft, 0, 0), collider.bounds.center + new Vector3(collider.bounds.size.x / 2 - paddingRight, 0, 0));
     }
     private IEnumerator initialize()
     {
