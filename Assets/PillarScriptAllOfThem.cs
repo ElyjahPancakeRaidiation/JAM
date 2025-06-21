@@ -1,28 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class PillarScriptAllOfThem : MonoBehaviour
 {
-    public Vector2[] pillarsArray;
+    public Vector3[] pillarsArray;
+    
     public GameObject pillars;
+    public bool time;
+    public float timer;
     // Start is called before the first frame update
     void Start()
     {
-        
+        pillarSpawn();
     }
 
     // Update is called once per frame
     void Update()
     {
-        pillarSpawn();
+        StartCoroutine(pillarSpawn());
     }
 
-    void pillarSpawn()
+    public IEnumerator pillarSpawn()
     {
-        for (int i = 0; i < pillarsArray.Length; i++)
+        foreach (Transform Pillar in transform)
         {
-            Instantiate(pillars, pillarsArray[i], Quaternion.identity);
+
+            Debug.Log("Pillar Name: " + Pillar.gameObject);
+            yield return new WaitForSecondsRealtime(4);
+           
+            if (Pillar.gameObject != null)
+            {
+                Destroy(Pillar.gameObject);
+            }
+
+
         }
+
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        
     }
 }
+
+
+//try to get them to spawn while pressing a key first
