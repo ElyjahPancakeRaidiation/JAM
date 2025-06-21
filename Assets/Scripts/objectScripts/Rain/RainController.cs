@@ -27,8 +27,10 @@ public class RainController : MonoBehaviour
 
     [SerializeField, Tooltip("this controls the speed the rain follows the player. It will only follow in the X direction so where ever you put it in the y it will stay there.")]
     private float followSpeed;
+    [SerializeField] private bool followPlayerYAxis;
 
-    private float refFloat;
+    private float refFloatX;
+    private float refFloatY;
 
     //Tells the rain controller whether it should turn off the rain when out of sight of the camera
     private bool outOfSight, isOutOfSight;
@@ -37,7 +39,7 @@ public class RainController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(rainShit == null){Debug.LogError("Rain shit particle system in null");}//saftey incase its null
+        if (rainShit == null) { Debug.LogError("Rain shit particle system in null"); }//saftey incase its null
         playerPos = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         var emissions = rainShit.emission;
         var main = rainShit.main;
@@ -53,59 +55,80 @@ public class RainController : MonoBehaviour
     void Update()
     {
 
-        if(outOfSight){
+        if (outOfSight)
+        {
 
-            if(Camera.main.WorldToViewportPoint(transform.position).x < minCameraView){//When the rain is to the left
+            if (Camera.main.WorldToViewportPoint(transform.position).x < minCameraView)
+            {//When the rain is to the left
                 rainShit.gameObject.SetActive(false);
                 isFollowingPlayer = true;
                 isOutOfSight = true;
-            }else if(Camera.main.WorldToViewportPoint(transform.position).x > maxCameraView){//When the rain is to the right
+            }
+            else if (Camera.main.WorldToViewportPoint(transform.position).x > maxCameraView)
+            {//When the rain is to the right
                 rainShit.gameObject.SetActive(false);
                 isFollowingPlayer = true;
                 isOutOfSight = true;
             }
 
-        }else{
+        }
+        else
+        {
             rainShit.gameObject.SetActive(true);
             isOutOfSight = false;
         }
 
-        if(isFollowingPlayer){
-            float changeX = Mathf.SmoothDamp(transform.position.x, playerPos.position.x + offset.x, ref refFloat, followSpeed);
-            transform.position = new Vector3(changeX, transform.position.y);
+        if (isFollowingPlayer)
+        {
+            float changeX = Mathf.SmoothDamp(transform.position.x, playerPos.position.x + offset.x, ref refFloatX, followSpeed);
+            if (!followPlayerYAxis)
+            {
+                transform.position = new Vector3(changeX, transform.position.y);
+            }
+            else
+            {
+                float changeY = Mathf.SmoothDamp(transform.position.y, playerPos.position.y + offset.y, ref refFloatY, followSpeed);
+                transform.position = new Vector3(changeX, changeY);
+
+            }
         }
-        
+
         var emissions = rainShit.emission;
         var main = rainShit.main;
         emissions.rateOverTime = amountOfParticles;
         main.simulationSpeed = speed;
     }
 
-    public IEnumerator decreaseAmountOfParticles(float decreaseAmount, float goal){
-        
+    public IEnumerator decreaseAmountOfParticles(float decreaseAmount, float goal)
+    {
+
         // var emissions = rainShit.emission;
         // float rateOverTimeAmount = emissions.rateOverTime.constant;
 
-        if(amountOfParticles == 0){yield break;}//Make sure it doesnt go to the negatives
+        if (amountOfParticles == 0) { yield break; }//Make sure it doesnt go to the negatives
 
-        while(amountOfParticles > goal){
+        while (amountOfParticles > goal)
+        {
             amountOfParticles -= decreaseAmount * Time.deltaTime;
             yield return null;
         }
-        if(amountOfParticles < 0){amountOfParticles = 0;}
+        if (amountOfParticles < 0) { amountOfParticles = 0; }
     }
 
-    public IEnumerator increaseAmountOfParticles(float increaseAmount, float goal){
+    public IEnumerator increaseAmountOfParticles(float increaseAmount, float goal)
+    {
         // var emissions = rainShit.emission;
         // float rateOverTimeAmount = emissions.rateOverTime.constant;
-        while(amountOfParticles < goal){
+        while (amountOfParticles < goal)
+        {
             amountOfParticles += increaseAmount * Time.deltaTime;
             yield return null;
         }
     }
 
-    public void setIsFollowingPlayer(bool state){isFollowingPlayer = state;}
-    public void setOutOfSight(bool state){outOfSight = state;}
-    public float getAmountOfRain(){return amountOfParticles;}
-    public bool getIsOutOfSight(){return isOutOfSight;}
+    public void setIsFollowingPlayer(bool state) { isFollowingPlayer = state; }
+    public void setOutOfSight(bool state) { outOfSight = state; }
+    public float getAmountOfRain() { return amountOfParticles; }
+    public bool getIsOutOfSight() { return isOutOfSight; }
+    public void setFollowPlayerYAxis(bool val){ followPlayerYAxis = val; }
 }
