@@ -37,7 +37,7 @@ public class DustScriptV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!recentlyJumped){ moveToPlayer(); }
+        if (!recentlyJumped) { moveToPlayer(); }
         if (Input.GetKeyDown(gm.playerAbilityKey) && abilities.GetCanUseAbility()) //dont have particles follow player midair after jumping
         {
             StartCoroutine(onJump());
@@ -98,7 +98,7 @@ public class DustScriptV2 : MonoBehaviour
             var shape = dust.shape;
             //shape.rotation = new Vector3(shape.rotation.x, angle, shape.rotation.z);
             shape.rotation = Vector3.Lerp(shape.rotation, new Vector3(shape.rotation.x, shape.rotation.y, angle), Time.deltaTime * rotationSpeed);
-            
+
         }
     }
 
@@ -108,5 +108,23 @@ public class DustScriptV2 : MonoBehaviour
         yield return new WaitForSeconds(abilityDelayInSeconds);
         yield return new WaitUntil(() => abilities.isGrounded());
         recentlyJumped = false;
+    }
+    private void loadSkidParticles()
+    {
+
+    }
+    private void loadLandingParticles() //look at the reference in the scene for setting this up
+    {
+        var mainModule = dust.main;
+        mainModule.loop = false;
+
+        var emissionModule = dust.emission;
+        emissionModule.burstCount = 0;
+    }
+    public void playLandingParticles()
+    {
+        Debug.Log("player smacked the ground");
+        loadLandingParticles();
+        dust.Play();
     }
 }

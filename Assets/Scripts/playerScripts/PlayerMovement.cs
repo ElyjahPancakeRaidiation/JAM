@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {   
@@ -32,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     [SerializeField] private GameObject prefabDustSpawner;
     private GameObject _dustSpawner;
+
+    private UnityEvent playerImpact; //player lands on the ground w a certain amount of velocity/momentum
 
     #region Ball settings
     [Header("Ball Settings")]
@@ -101,9 +104,11 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerImpact = new UnityEvent();
         playerAbilities = GetComponent<PlayerAbilities>();
         _dustSpawner = Instantiate(prefabDustSpawner);
         physics = new Physics(GetComponent<Rigidbody2D>());
+        playerImpact.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
         _spriteRender = GetComponent<SpriteRenderer>();
 
         audioManager = GameObject.FindGameObjectWithTag("AudioManager");
@@ -428,7 +433,15 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ground")){
+            if (collision.relativeVelocity.y > velocitySoundThreshold)
+            {
+                
+            }
+        }
+    }
     private IEnumerator EasingBackOn(){
         yield return new WaitForSeconds(2f);
         isEasingOn = true;
