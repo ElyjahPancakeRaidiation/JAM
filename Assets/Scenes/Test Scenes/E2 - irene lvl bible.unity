@@ -14894,84 +14894,23 @@ MonoBehaviour:
     m_Bits: 512
   colliderSize: {x: 102.8, y: 22.9}
   colliderOffsetSize: {x: 0, y: 0}
-  activationEvents:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 416331453}
-        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
-        m_MethodName: SETCHANGINGOFFSETSPEED
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0.07
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 416331453}
-        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
-        m_MethodName: SETZOOMSPEED
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 100
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 416331453}
-        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
-        m_MethodName: SETCAMERAOFFSETX
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 30
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 416331453}
-        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
-        m_MethodName: SETCAMERAOFFSETY
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 15
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 416331453}
-        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
-        m_MethodName: SETCAMERASIZE
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 20
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  deactivationEvents:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 416331453}
-        m_TargetAssemblyTypeName: CameraOperator, Assembly-CSharp
-        m_MethodName: DEFUALTSETTINGS
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  moveToTarget: 0
+  changeCameraSize: 1
+  changeCameraOffset: 1
+  target: {fileID: 0}
+  newSpeed: 0
+  returningPercentageSpeed: 0
+  keepSpeedSettings: 0
+  newCameraSize: 20
+  cameraSizeSpeed: 100
+  returningSize: 8
+  returningSizeSpeed: 100
+  keepSizeSettings: 0
+  newCameraOffset: {x: 30, y: 15}
+  cameraOffsetSpeed: 0.07
+  returningCameraOffset: {x: 0, y: 0}
+  returningCameraOffsetSpeed: 0
+  keepOffsetSettings: 0
 --- !u!4 &548232372
 Transform:
   m_ObjectHideFlags: 0
@@ -39464,6 +39403,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Big hill camera manager
       objectReference: {fileID: 0}
+    - target: {fileID: 4305053470364344730, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: newCameraSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: returningSize
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: colliderSize.x
       value: 70
@@ -39471,6 +39422,22 @@ PrefabInstance:
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: colliderSize.y
       value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: cameraSizeSpeed
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: changeCameraSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: keepSizeSettings
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: returningSizeSpeed
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: activationEvents.m_PersistentCalls.m_Calls.Array.size
@@ -39950,10 +39917,6 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4274453785470385877, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-      propertyPath: m_Interpolate
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: canControl
       value: 1
@@ -39992,11 +39955,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 95.9
+      value: 466.5
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 208.6
+      value: 183.3
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.z

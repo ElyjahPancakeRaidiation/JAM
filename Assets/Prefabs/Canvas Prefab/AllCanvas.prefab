@@ -466,7 +466,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2000
   m_TargetDisplay: 0
 --- !u!114 &484577544489652248
 MonoBehaviour:
@@ -634,10 +634,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2702137891340603400}
   - {fileID: 591053385879973359}
   - {fileID: 5851208707633230369}
   - {fileID: 192658533929623812}
-  - {fileID: 2702137891340603400}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7756542661465380843

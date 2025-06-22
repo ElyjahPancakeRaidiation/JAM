@@ -39,14 +39,15 @@ public class PuzzleLighting : MonoBehaviour
     }
     public IEnumerator startLighting()
     {
+        // player.SetActive(true);
         yield return new WaitUntil(() => !playingOutro);
         playingIntro = true;
         float elapsedTime = 0;
-        addPlayerLight();
+        // addPlayerLight();
         while (elapsedTime < initialFadeTime)
         {
             globalLight.intensity = Mathf.Lerp(normalGlobalLight, 0, elapsedTime / initialFadeTime);
-            playerLight.intensity = Mathf.Lerp(0, maxPlayerLightIntensity, elapsedTime / initialFadeTime);
+            // playerLight.intensity = Mathf.Lerp(0, maxPlayerLightIntensity, elapsedTime / initialFadeTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -79,7 +80,6 @@ public class PuzzleLighting : MonoBehaviour
     }
     public void addPlayerLight()
     {
-        playerLight = player.AddComponent<Light2D>();
         playerLight.lightType = Light2D.LightType.Point;
         playerLight.intensity = 0;
         playerLight.blendStyleIndex = 0;
@@ -87,7 +87,7 @@ public class PuzzleLighting : MonoBehaviour
     }
     public void removePlayerLight() {
         Destroy(player.GetComponent<Light2D>());
-        playerLight = null;
+        // playerLight = null;
     }
     public IEnumerator stopLighting()
     {
@@ -95,7 +95,7 @@ public class PuzzleLighting : MonoBehaviour
         while (elapsedTime < initialFadeTime)
         {
             globalLight.intensity = Mathf.Lerp(0, normalGlobalLight, elapsedTime / initialFadeTime);
-            playerLight.intensity = Mathf.Lerp(maxPlayerLightIntensity, 0, elapsedTime / initialFadeTime);
+            // playerLight.intensity = Mathf.Lerp(maxPlayerLightIntensity, 0, elapsedTime / initialFadeTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

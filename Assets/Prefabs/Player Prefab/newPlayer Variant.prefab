@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
     - target: {fileID: 2706923324837483880, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2706923324837483880, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_SortingLayerID
@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5809341814163335841, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.2222223
+      objectReference: {fileID: 0}
     - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: prefabDustSpawner
       value: 
@@ -55,10 +59,6 @@ PrefabInstance:
     - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: velocitySoundThreshold
       value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5809341814163335841, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.2222223
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x

@@ -17,7 +17,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        if (hasSpawnPosition) { player.transform.position = playerSpawnPosition.position; }
+        if (hasSpawnPosition)
+        {
+            Camera.main.transform.position = playerSpawnPosition.position;
+            player.transform.position = playerSpawnPosition.position;
+        }
     }
 
 

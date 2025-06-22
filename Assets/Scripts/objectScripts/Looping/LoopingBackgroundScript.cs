@@ -35,10 +35,9 @@ public class LoopingBackgroundScript : MonoBehaviour
     public class ObjectInfo
     {
         private GameObject curObject;
-        private Bounds bounds;
         private bool useCol;
 
-        public ObjectInfo(bool useCol=false)
+        public ObjectInfo(bool useCol = false)
         {
             curObject = null;
             this.useCol = useCol;
