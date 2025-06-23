@@ -15,6 +15,7 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
+    [SerializeField] private float UNCHANGEDDASHY = 14;
     [SerializeField] private int maxDashes;
     private int dashAmount;
     private bool canUseAbility;
@@ -127,7 +128,6 @@ public class PlayerAbilities : MonoBehaviour
                     Debug.Log("playing");
                 }
 
-
                 break;
         }
     }
@@ -142,7 +142,18 @@ public class PlayerAbilities : MonoBehaviour
             _rb.velocity = Vector2.zero;
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
-            _rb.AddForce(new Vector2(playerMovement.getInput() * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
+            var horInput = playerMovement.getInput();
+
+            if (horInput != 0)
+            {
+                _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
+            }
+
+            if (horInput == 0)
+            {
+                _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
+            }
+            
             dashAmount--;
             if (dashAmount == 0) { StartCoroutine(dashAmountBack()); }
         }
@@ -156,30 +167,17 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-
-    private IEnumerator JumpCoyoteTimer()
-    {
-        yield return new WaitForSeconds(.05f);
-        playerMovement.coyoteTimer = 0;
-
-    }
+    
+   
     #endregion
 
     #region Pogo Ability
-    private void pogoAbility()
+    private IEnumerator JumpCoyoteTimer()
     {
-        canJumpNextFrame = false;
-        jumpFrameTimer = 0;
-        // float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-        _rb.AddForce(new Vector2(0, SUPERJUMP), ForceMode2D.Impulse);
-        // _rb.AddForce(new Vector2(0, jumpImpulse), ForceMode2D.Impulse);
-
-        // usedJumpAbility = true;
-        // stopSliding = preventSlide();
-        // StartCoroutine(stopSliding);
+        yield return new WaitForSeconds(.03f);
+        playerMovement.coyoteTimer = 0;
 
     }
-
     private IEnumerator newPogoAbliity()
 
     {
