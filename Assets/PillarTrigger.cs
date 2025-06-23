@@ -5,7 +5,7 @@ using UnityEngine;
 public class PillarTrigger : MonoBehaviour
 {
     Vector2 startingPosition;
-    [SerializeField] private int id;
+    
     [SerializeField] private float maxDistance;
     [SerializeField] private float time, startingTime;
 

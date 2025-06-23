@@ -1841,7 +1841,7 @@ MonoBehaviour:
   m_CornerAngleThreshold: 30
   m_ColliderDetail: 16
   m_ColliderOffset: 0
-  m_UpdateCollider: 1
+  m_UpdateCollider: 0
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 1
@@ -1991,7 +1991,21 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -5.180219, y: 4.067547}
+    - - {x: 4.58554, y: 4.067595}
+      - {x: 4.5434923, y: 3.5198138}
+      - {x: 4.4390917, y: 3.2043884}
+      - {x: 4.1893272, y: 2.6708794}
+      - {x: 3.7815917, y: 2.1637268}
+      - {x: 3.3155909, y: 1.8924156}
+      - {x: 2.8624406, y: 1.7217848}
+      - {x: 1.9520085, y: 1.7062321}
+      - {x: -0.5413728, y: 1.7051926}
+      - {x: -4.053937, y: 1.7443509}
+      - {x: -4.5260262, y: 1.895255}
+      - {x: -4.9309945, y: 2.2555978}
+      - {x: -5.0480638, y: 2.921889}
+      - {x: -4.883914, y: 4.0675445}
+      - {x: -5.180219, y: 4.067547}
       - {x: -5.2002306, y: 3.735725}
       - {x: -5.2801466, y: 3.2711947}
       - {x: -5.3072195, y: 2.8065622}
@@ -6425,11 +6439,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 90.3
+      value: 22.4
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -86.9
+      value: -77.7
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9048,7 +9062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3699941538711303648, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -28.400002
+      value: -33.9
       objectReference: {fileID: 0}
     - target: {fileID: 3699941538711303648, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9100,7 +9114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: newCameraSize
-      value: 19
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: returningSize
@@ -9116,11 +9130,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: cameraSizeSpeed
-      value: 100
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: changeCameraSize
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
+      propertyPath: changeCameraOffset
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4544730906980449063, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
       propertyPath: returningSizeSpeed
