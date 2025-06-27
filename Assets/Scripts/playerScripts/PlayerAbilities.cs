@@ -34,7 +34,7 @@ public class PlayerAbilities : MonoBehaviour
 
     private bool jumpAgain;
 
-    
+    public RaycastHit2D groundThingyMajiggy { get; private set; }
 
     [SerializeField] private float height;
 
@@ -243,10 +243,9 @@ public class PlayerAbilities : MonoBehaviour
     public bool isGrounded()
     {
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
-        RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
+        groundThingyMajiggy = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
         Debug.DrawRay(transform.position, -Vector2.up, Color.green);
-        return ray;
-
+        return groundThingyMajiggy;
     }
 
     public bool getJumpNextFrame() { return canJumpNextFrame; }

@@ -96,8 +96,8 @@ public class PlayerMovement : MonoBehaviour
     #region Mobile Settings
     [Header("Mobile Settings")]
     public Vector2 screenSize;
-    [SerializeField]public float inputRange; //i think this is in pixels idk bru
-    [SerializeField]public float inputDetectionPercentX;
+    [SerializeField]public float inputRange; //i think this is in pixels idk bru, how far player needs to drag
+    [SerializeField]public float inputDetectionPercentX; //this is percentage of screen that can be used for player input
     [SerializeField]private bool visualizeTouchArea;
     #endregion
 
@@ -364,6 +364,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //make volume based on velocity
             StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
+            playerImpact.Invoke();
             //GetComponent<AudioSource>().Play();
         }
         checkingImpact = false;
