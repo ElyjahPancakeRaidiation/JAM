@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -63,7 +64,6 @@ public class PlayerAbilities : MonoBehaviour
     void Update()
     {
 
-
         Debug.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
 
 
@@ -77,7 +77,8 @@ public class PlayerAbilities : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
+        //These two if statements do the same thing figure out in the future how to combine them
+        if (Input.GetKeyDown(gm.playerAbilityKey))
         {
             recentlyJumped = true;
             useFormsAbility();
@@ -87,6 +88,7 @@ public class PlayerAbilities : MonoBehaviour
         {
             useFormsAbility();
         }
+
         if (recentlyJumped)
         {
             rJumpedTimer += Time.deltaTime;
@@ -101,35 +103,38 @@ public class PlayerAbilities : MonoBehaviour
 
     public void useFormsAbility()
     {
-        string formName = playerMovement.getCurForm().formName;
-        switch (formName)
+        if (canUseAbility)
         {
-            case "Ball":
+            string formName = playerMovement.getCurForm().formName;
+            switch (formName)
+            {
+                case "Ball":
 
-                //Will have the dashing ability
+                    //Will have the dashing ability
 
-                dashAbility();
-                break;
-            case "Pogo":
-                //Will have the mega jump and arms ability
-                canJumpNextFrame = true;
-                // StartCoroutine(newPogoAbliity());
+                    dashAbility();
+                    break;
+                case "Pogo":
+                    //Will have the mega jump and arms ability
+                    canJumpNextFrame = true;
+                    // StartCoroutine(newPogoAbliity());
 
-                if (isGroundedScript.isGrounded())
-                {
+                    if (isGroundedScript.isGrounded())
+                    {
 
-                    newJumpAbliity();
-                    usedJump = true;
-                    //   pogoAbility();
-                    Debug.Log(isGroundedScript.isGrounded());
-                }
-                else if (playerMovement.coyoteTimer > 0) {
-                    StartCoroutine(JumpCoyoteTimer());
-                    newJumpAbliity();
-                    Debug.Log("playing");
-                }
+                        newJumpAbliity();
+                        usedJump = true;
+                        //   pogoAbility();
+                        Debug.Log(isGroundedScript.isGrounded());
+                    }
+                    else if (playerMovement.coyoteTimer > 0) {
+                        StartCoroutine(JumpCoyoteTimer());
+                        newJumpAbliity();
+                        Debug.Log("playing");
+                    }
 
-                break;
+                    break;
+            }
         }
     }
 
@@ -180,7 +185,6 @@ public class PlayerAbilities : MonoBehaviour
         playerMovement.coyoteTimer = 0;
 
     }
-        StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
     private IEnumerator newPogoAbliity()
 
     {
@@ -189,6 +193,7 @@ public class PlayerAbilities : MonoBehaviour
             canJumpNextFrame = false;
             jumpFrameTimer = 0;
             float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+            StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
             Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
             _rb.velocity = Verticaldirection;
             // _rb.AddForce(Verticaldirection);

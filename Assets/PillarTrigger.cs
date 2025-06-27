@@ -7,10 +7,12 @@ public class PillarTrigger : MonoBehaviour
     Vector2 startingPosition;
     
     [SerializeField] private float maxDistance;
-    [SerializeField] private float time, startingTime;
+    [SerializeField] private float time, startingTime, spawnBackTime;
 
     private Coroutine respawnCoro;
     private GameObject spriteObj;
+
+    private Animation disappearingAnimation;
 
     void OnValidate() => startingPosition = transform.position;
 
@@ -21,7 +23,7 @@ public class PillarTrigger : MonoBehaviour
         PillarManager.current.startTrigger += wrapperFallingPillar;
 
         startingPosition = transform.position;
-
+        disappearingAnimation = GetComponent<Animation>(); 
         //Gets the first child in the 
         spriteObj = transform.GetChild(0).gameObject;
     }
@@ -46,10 +48,13 @@ public class PillarTrigger : MonoBehaviour
     private IEnumerator PillarLoop()
     {
         yield return new WaitForSecondsRealtime(time);
+        disappearingAnimation.Play();
+        yield return new WaitForSecondsRealtime(disappearingAnimation.clip.length);
         spriteObj.SetActive(false);
         gameObject.transform.position = startingPosition;
-        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitForSecondsRealtime(spawnBackTime);
         spriteObj.SetActive(true);
+        spriteObj.GetComponent<SpriteRenderer>().color = new Color(spriteObj.GetComponent<SpriteRenderer>().color.r, spriteObj.GetComponent<SpriteRenderer>().color.g, spriteObj.GetComponent<SpriteRenderer>().color.b, 1);
         yield return FallingPillar();
         respawnCoro = null;
     }

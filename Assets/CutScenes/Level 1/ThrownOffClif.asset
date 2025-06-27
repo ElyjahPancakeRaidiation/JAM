@@ -18,38 +18,54 @@ MonoBehaviour:
     actorIndex: 1
     endPositionIndex: 0
     waitTime: 0
-    infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
+    infinite: 0
   - actionType: 4
     information: 
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 2
-    infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
+    infinite: 0
   - actionType: 2
     information: 
     actorIndex: 1
     endPositionIndex: 0
     waitTime: 0.2
-    infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
+    infinite: 0
   - actionType: 5
     information: 
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 0
-    infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
+    infinite: 0
   - actionType: 1
     information: addForce(25, 1.5, 15)
     actorIndex: 0
     endPositionIndex: 0
-    waitTime: 5
-    infinite: 0
+    waitTime: 16
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
+    infinite: 0
+  - actionType: 2
+    information: 
+    actorIndex: 2
+    endPositionIndex: 0
+    waitTime: 4
+    clampVelocity: {x: 0, y: 0}
+    eventIndex: 0
+    infinite: 0
+  - actionType: 3
+    information: 
+    actorIndex: 2
+    endPositionIndex: 0
+    waitTime: 0
+    clampVelocity: {x: 0, y: 0}
+    eventIndex: 0
+    infinite: 0

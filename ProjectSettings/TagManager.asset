@@ -28,6 +28,8 @@ TagManager:
   - Lightning
   - MovingGround
   - MovingGroundPoint
+  - MobileObj
+  - PCObj
   layers:
   - Default
   - TransparentFX

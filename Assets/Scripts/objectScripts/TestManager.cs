@@ -1,12 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class TestManager : MonoBehaviour
 {
-
-    [SerializeField]private int nextSceneNum;
+    public static event Action pauseEvent;
+    public static event Action unPauseEvent;
+    
+    
+    [SerializeField] private int nextSceneNum;
 
     [Header("Pause Menu")]
     [SerializeField]private Animator transitionAnim;
@@ -25,15 +31,9 @@ public class TestManager : MonoBehaviour
     private Transform player;
     private GameObject mobileControlPanel;
 
-    [Header("Audio")]
-    [SerializeField]private GameObject musicChanger;
-    [SerializeField]private GameObject musicChangerTwo;
-
     [Header("Level 3 Respawn")]
     [SerializeField]private Animator respawnAnim;
     [SerializeField]private AnimationClip respawnStart, respawnEnd;
-
-
     
     // Start is called before the first frame update
     
@@ -57,18 +57,6 @@ public class TestManager : MonoBehaviour
 
         isPaused = false;
 
-        //buttonCotainer = GameObject.Find("ContentArea");
-        //buttonCotainer.SetActive(false);//Must fix mainly for PC though
-
-        try//Some levels dont have music changers so we use a try and catch to get past the error.
-        {
-            musicChanger.SetActive(true);
-            musicChangerTwo.SetActive(true);
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError("Music changer variable is null");
-        }
     }
 
     private void Update() {
@@ -81,9 +69,11 @@ public class TestManager : MonoBehaviour
         if (isPaused)
         {
             Time.timeScale = 0;
+            if(pauseEvent != null){pauseEvent();}
             pauseMenu.SetActive(true);
         }else{
             Time.timeScale = 1;
+            if(unPauseEvent != null){unPauseEvent();}
             pauseMenu.SetActive(false);
         }
 		

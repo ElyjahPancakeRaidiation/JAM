@@ -140,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
         if (canControl) { horizontalInput = Input.GetAxisRaw("Horizontal"); }
 #endif
         //This prevents the easing from going above what its supposed to be
-
+        if(!canControl){ horizontalInput = 0; }
 
         if (isEasingOn)
         {
@@ -286,16 +286,19 @@ public class PlayerMovement : MonoBehaviour
     }
     public void changeForm()
     {
-        if (curForm == maxForm)
+        if (canControl)
         {
-            curForm = 0;
-        }
-        else
-        {
-            curForm++;
-        }
+            if (curForm == maxForm)
+            {
+                curForm = 0;
+            }
+            else
+            {
+                curForm++;
+            }
 
-        forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+            forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        }
         // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
         // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }

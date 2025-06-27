@@ -6,7 +6,28 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
-    public void PlayButton(int SceneNum) => SceneManager.LoadScene(SceneNum);
+    [SerializeField] private GameObject levelSelectorButton;
+
+    private void Start()
+    {
+        StartCoroutine(DelayStart());
+    }
+
+    private IEnumerator DelayStart()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        if (GameManager.current.completedGame)
+        {
+            levelSelectorButton.SetActive(true);
+            Debug.Log("On");
+        }
+        else
+        {
+            Debug.Log("off");
+
+            levelSelectorButton.SetActive(false);
+        }
+    }
 
     
 }

@@ -32,6 +32,10 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4822938141585243739, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: playersForms.Array.size
       value: 2
@@ -51,6 +55,14 @@ PrefabInstance:
     - target: {fileID: 5809341814163335841, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 2.2222223
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: floatTime
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: jumpSpeedX
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: prefabDustSpawner
@@ -144,14 +156,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DASHPOWERX: 18
   DASHPOWERY: 14
+  UNCHANGEDDASHY: 14
   maxDashes: 1
   usedJumpAbility: 0
   canJumpNextFrame: 0
   jumpFrameTimer: 3
   maxJumpFrameTimer: 0.3
   recentlyJumped: 0
-  height: 13
-  groundCheckerDistance: 1.07
+  height: 13.25
+  groundCheckerDistance: 1.15
   groundMask:
     serializedVersion: 2
     m_Bits: 64

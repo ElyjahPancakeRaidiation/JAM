@@ -83,7 +83,7 @@ public class CutSceneManager : MonoBehaviour
                 playerAbilities.setUseAbility(true);
             }
             CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
-            if(scene.cutSceneInfo[sceneCounter-1].actionType != CutSceneInfo.ActionType.CameraActions){playerCamera.setFollowPlayer(true);}
+            if(scene.cutSceneInfo[sceneCounter-1].actionType != CutSceneInfo.ActionType.CameraActions){playerCamera.followPlayer = true;}
             isFinished = true;
             yield break;
         }
@@ -98,11 +98,11 @@ public class CutSceneManager : MonoBehaviour
             while (scene.cutSceneInfo[sceneCounter].infinite)
             {
                 startAction(scene.cutSceneInfo[sceneCounter].actionType, scene);
-                yield return new WaitForSecondsRealtime(scene.cutSceneInfo[sceneCounter].waitTime);
+                yield return new WaitForSeconds(scene.cutSceneInfo[sceneCounter].waitTime);
             }
         }
         yield return new WaitUntil(() => canMoveOn);
-        yield return new WaitForSecondsRealtime(scene.cutSceneInfo[sceneCounter].waitTime);
+        yield return new WaitForSeconds(scene.cutSceneInfo[sceneCounter].waitTime);
         sceneCounter++;
         canMoveOn = false;//Resets the value for the new instance.
         //Do the actions it requires.
@@ -171,7 +171,7 @@ public class CutSceneManager : MonoBehaviour
                     _actorRb.AddForce(Vector2.left * speed);
                     Vector2 vel = clampVelocity(_actorRb.velocity, c.cutSceneInfo[sceneCounter].clampVelocity);
                     _actorRb.velocity = vel;
-                    yield return new WaitForSecondsRealtime(0.2f);
+                    yield return new WaitForSeconds(0.2f);
                 }
                 else if (dirFuck > 0)
                 {
@@ -179,7 +179,7 @@ public class CutSceneManager : MonoBehaviour
                     _actorRb.AddForce(Vector2.right * speed);
                     Vector2 vel = clampVelocity(_actorRb.velocity, c.cutSceneInfo[sceneCounter].clampVelocity);
                     _actorRb.velocity = vel;
-                    yield return new WaitForSecondsRealtime(0.2f);
+                    yield return new WaitForSeconds(0.2f);
                 }
             }
             else

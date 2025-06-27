@@ -9,6 +9,9 @@ public class LoopingBackgroundScript : MonoBehaviour
 
     protected Camera _camera;
 
+    //This is used specifically to display the lines on the camera.
+    [SerializeField] private Camera _displayCamera;
+
     [SerializeField] protected GameObject[] imageToLoop;
     [SerializeField] protected GameObject startInstance;
     [SerializeField] protected bool isDependantOnXAxis;
@@ -82,6 +85,7 @@ public class LoopingBackgroundScript : MonoBehaviour
     private void OnValidate()
     {
         _camera = Camera.main;
+        if(_displayCamera == null){_displayCamera = _camera;}
     }
 
     // Start is called before the first frame update
@@ -188,13 +192,12 @@ public class LoopingBackgroundScript : MonoBehaviour
 
                 if (max.x < cameraUpperLimit)//Come back to this problem: will spawn no matter what if max.y > upper && min.y < lower
                 {
+                    float x = currentObj.SpawnCoordRight(currentObj.getBoundsMax() + (Vector3)curMaxOffset, currentObj.getBoundsMin() + (Vector3)curMinOffset).x;
                     if (hasSpawnPosition)
                     {
                         if (!multipleObjects)
                         {
-                            float x = currentObj.SpawnCoordRight(currentObj.getBoundsMax() + (Vector3)curMaxOffset, currentObj.getBoundsMin() + (Vector3)curMinOffset).x;
                             newObj.setCurObject(Instantiate(imageToLoop[0], new Vector2(x + offsets.x, spawnPosition.transform.position.y), Quaternion.identity));
-                            if (testBool) { TestManager.isPaused = true; }
                         }
                         else
                         {
@@ -204,10 +207,7 @@ public class LoopingBackgroundScript : MonoBehaviour
                     }
                     else
                     {
-
-                        float x = currentObj.SpawnCoordRight(currentObj.getBoundsMax() + (Vector3)curMaxOffset, currentObj.getBoundsMin() + (Vector3)curMinOffset).x;
                         newObj.setCurObject(Instantiate(imageToLoop[0], new Vector2(x + offsets.x, currentObj.getCurObject().transform.position.y), Quaternion.identity));
-                        if (testBool) { TestManager.isPaused = true; }
                     }
 
                     if (stopOnNext && currentObj.getCurObject() != null && newObj.getCurObject() != null)
@@ -241,19 +241,19 @@ public class LoopingBackgroundScript : MonoBehaviour
     {
         if (isDependantOnXAxis)
         {
-            Vector2 upperPosition1 = _camera.ViewportToWorldPoint(new Vector2(cameraUpperLimit, _camera.rect.min.y));
-            Vector2 upperPosition2 = _camera.ViewportToWorldPoint(new Vector2(cameraUpperLimit, _camera.rect.max.y));
-            Vector2 lowerPosition1 = _camera.ViewportToWorldPoint(new Vector2(cameraLowerLimit, _camera.rect.min.y));
-            Vector2 lowerPosition2 = _camera.ViewportToWorldPoint(new Vector2(cameraLowerLimit, _camera.rect.max.y));
+            Vector2 upperPosition1 = _displayCamera.ViewportToWorldPoint(new Vector2(cameraUpperLimit, _displayCamera.rect.min.y));
+            Vector2 upperPosition2 = _displayCamera.ViewportToWorldPoint(new Vector2(cameraUpperLimit, _displayCamera.rect.max.y));
+            Vector2 lowerPosition1 = _displayCamera.ViewportToWorldPoint(new Vector2(cameraLowerLimit, _displayCamera.rect.min.y));
+            Vector2 lowerPosition2 = _displayCamera.ViewportToWorldPoint(new Vector2(cameraLowerLimit, _displayCamera.rect.max.y));
             Gizmos.DrawLine(upperPosition1, upperPosition2);
             Gizmos.DrawLine(lowerPosition1, lowerPosition2);
         }
         else
         {
-            Vector2 upperPosition1 = _camera.ViewportToWorldPoint(new Vector2(_camera.rect.min.x, cameraUpperLimit));
-            Vector2 upperPosition2 = _camera.ViewportToWorldPoint(new Vector2(_camera.rect.max.x, cameraUpperLimit));
-            Vector2 lowerPosition1 = _camera.ViewportToWorldPoint(new Vector2(_camera.rect.min.x, cameraLowerLimit));
-            Vector2 lowerPosition2 = _camera.ViewportToWorldPoint(new Vector2(_camera.rect.max.x, cameraLowerLimit));
+            Vector2 upperPosition1 = _displayCamera.ViewportToWorldPoint(new Vector2(_displayCamera.rect.min.x, cameraUpperLimit));
+            Vector2 upperPosition2 = _displayCamera.ViewportToWorldPoint(new Vector2(_displayCamera.rect.max.x, cameraUpperLimit));
+            Vector2 lowerPosition1 = _displayCamera.ViewportToWorldPoint(new Vector2(_displayCamera.rect.min.x, cameraLowerLimit));
+            Vector2 lowerPosition2 = _displayCamera.ViewportToWorldPoint(new Vector2(_displayCamera.rect.max.x, cameraLowerLimit));
             Gizmos.DrawLine(upperPosition1, upperPosition2);
             Gizmos.DrawLine(lowerPosition1, lowerPosition2);
         }

@@ -47,7 +47,7 @@ public class CameraManager : MonoBehaviour
     [Header("Cutscene settings")]
     private bool playAutomatically;
     [SerializeField] private float camWaitTime;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +57,6 @@ public class CameraManager : MonoBehaviour
     {
         if (playAutomatically)
         {
-            Debug.Log("FUCKAKSFKSD");
             StartCoroutine(PlayManagerAutomatically());
             playAutomatically = false;
         }
@@ -125,7 +124,6 @@ public class CameraManager : MonoBehaviour
 
     private IEnumerator PlayManagerAutomatically()
     {
-        Debug.Log("workijng??");
         activate();
         yield return new WaitForSecondsRealtime(camWaitTime);
         deactivate();

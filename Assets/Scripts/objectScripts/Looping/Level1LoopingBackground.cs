@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Level1LoopingBackground : LoopingBackgroundScript
 {
@@ -14,7 +15,7 @@ public class Level1LoopingBackground : LoopingBackgroundScript
     private float wantedAxisFreezePosition;
     private GameObject player;
     [SerializeField] private GameObject bigAssObjectAhhh;
-    [SerializeField] private Camera _staticCamera;
+    // [SerializeField] private Camera _staticCamera;
     private bool dist;
 
 
@@ -22,18 +23,19 @@ public class Level1LoopingBackground : LoopingBackgroundScript
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         currentObj = new ObjectInfo(startInstance, useCol);
         newObj = new ObjectInfo(startingNewObject, useCol);
         currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
         newObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
         bigAssObjectAhhh.GetComponent<MovingGround>().setCanMove(false);
-        _staticCamera.orthographicSize = _camera.orthographicSize;
+        // _staticCamera.orthographicSize = _camera.orthographicSize;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
         if (!loopended)
         {
             if (!canLoop)
@@ -49,16 +51,12 @@ public class Level1LoopingBackground : LoopingBackgroundScript
                     currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(true);
                     newObj.getCurObject().GetComponent<MovingGround>().setCanMove(true);
                     bigAssObjectAhhh.GetComponent<MovingGround>().setCanMove(true);
-                    _staticCamera.transform.position = player.transform.position;
                     canLoop = true;
                 }
             }
             else
             {
-                CheckToLoop(currentObj.getViewportMin(_staticCamera, curMinOffset),
-                currentObj.getViewportMax(_staticCamera, curMaxOffset),
-                newObj.getViewportMin(_staticCamera, curMinOffset),
-                newObj.getViewportMax(_staticCamera, curMaxOffset));
+                CheckToLoop(currentObj.getViewportMin(_camera, curMinOffset), newObj.getViewportMin(_camera, curMinOffset));
             }
         }
 
@@ -68,8 +66,13 @@ public class Level1LoopingBackground : LoopingBackgroundScript
         }
     }
 
-    private void CheckToLoop(Vector3 curMin, Vector3 curMax, Vector3 newMin, Vector3 newMax)
+    private void CheckToLoop(Vector3 curMin, Vector3 newMin)
     {
+        // if (!beingPlayed2)
+        // {
+        //     testtext.text += "I'M BEING PLAYED?!?!'";
+            
+        // }
         if (curMin.y > cameraUpperLimit && newMin.y >= cameraLowerLimit)
         {
             GameObject obj = currentObj.getCurObject();
@@ -84,18 +87,21 @@ public class Level1LoopingBackground : LoopingBackgroundScript
                 currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
                 newObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);
                 bigAssObjectAhhh.GetComponent<MovingGround>().setCanMove(false);
+                player.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.Interpolate;
             }
         }
-    
+
     }
 
     private void FixedUpdate()
     {
         if (!loopended && canLoop)
         {
+            if (player.GetComponent<Rigidbody2D>().interpolation == RigidbodyInterpolation2D.Interpolate) { player.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.None; }
             if (wantedAxisFreezePosition == 0) { wantedAxisFreezePosition = player.transform.position.x; }
             player.GetComponent<Rigidbody2D>().position = new Vector2(wantedAxisFreezePosition, player.GetComponent<Rigidbody2D>().position.y);
         }
     }
+
     
 }
