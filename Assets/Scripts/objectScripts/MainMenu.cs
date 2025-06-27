@@ -8,14 +8,9 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private GameObject levelSelectorButton;
 
-    private void Start()
-    {
-        StartCoroutine(DelayStart());
-    }
 
-    private IEnumerator DelayStart()
+    private void Update()
     {
-        yield return new WaitForSecondsRealtime(0.1f);
         if (GameManager.current.completedGame)
         {
             levelSelectorButton.SetActive(true);

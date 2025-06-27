@@ -34,23 +34,35 @@ public class TestManager : MonoBehaviour
     [Header("Level 3 Respawn")]
     [SerializeField]private Animator respawnAnim;
     [SerializeField]private AnimationClip respawnStart, respawnEnd;
-    
+
     // Start is called before the first frame update
+
+
+    private void Awake()
+    {
+        pauseEvent = null;
+        unPauseEvent = null;
+    }
     
-    private void Start() {
+    private void Start()
+    {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         pauseMenu = GameObject.Find("PauseCanvas");
         mobileControlPanel = GameObject.Find("MobileLayout") ?? null;
 
 
         playerController = player.GetComponent<PlayerController>();
-        if(respawnAnim != null){respawnAnim.gameObject.SetActive(false);}
+        if (respawnAnim != null) { respawnAnim.gameObject.SetActive(false); }
         exitBallTransition.SetActive(false);
 
-        if(mobileControlPanel != null){
-            if(isMobileControls){
+        if (mobileControlPanel != null)
+        {
+            if (isMobileControls)
+            {
                 mobileControlPanel.SetActive(true);
-            }else{
+            }
+            else
+            {
                 mobileControlPanel.SetActive(false);
             }
         }

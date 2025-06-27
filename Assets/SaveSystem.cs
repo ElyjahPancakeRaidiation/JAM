@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.IsolatedStorage;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,25 @@ public class SaveSystem : MonoBehaviour
     SaveSettings savedSettings;
     // weird weird;
 
+    private void SearchForFile(string path)
+    {
+
+        if (!File.Exists(path))
+        {
+            File.CreateText(path);
+            savedSettings = new SaveSettings();
+        }
+        else
+        {
+            FileInfo info = new FileInfo(dataPath);
+            string savedJson = File.ReadAllText(path);
+            if (info.Length != 0)
+            {
+                savedSettings = JsonUtility.FromJson<SaveSettings>(savedJson);
+            }else{ savedSettings = new SaveSettings(); }
+        }
+    }
+
     void Awake()
     {
         current = this;
@@ -22,16 +42,7 @@ public class SaveSystem : MonoBehaviour
         dataPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "SaveSettings.json";
         // nameDataPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "Names.json";
         //For windows datapath it should be in Appdata/localLow/defualtcompany/JustAMind
-        if (!File.Exists(dataPath))
-        {
-            File.CreateText(dataPath);
-            savedSettings = new SaveSettings();
-        }
-        else
-        {
-            string savedJson = File.ReadAllText(dataPath);
-            savedSettings = JsonUtility.FromJson<SaveSettings>(savedJson);
-        }
+        SearchForFile(dataPath);
 
         // if (!File.Exists(nameDataPath))
         // {
@@ -48,9 +59,10 @@ public class SaveSystem : MonoBehaviour
 
     private void Start()
     {
-
+        // savedSettings = new SaveSettings();
+        // SearchForFile(dataPath);
         GameManager.current.gameClose += SaveGame;
-        GameManager.current.completedGame = savedSettings.completedGame;
+        if (GameManager.current != null) { GameManager.current.completedGame = savedSettings.completedGame; }
         if (SceneManager.GetActiveScene().name == "EndScreen")
         {
             savedSettings.completedGame = true;
@@ -63,6 +75,15 @@ public class SaveSystem : MonoBehaviour
         //Converts the data into Json format to write to the text file.
         string contents = JsonUtility.ToJson(savedSettings);
         File.WriteAllText(dataPath, contents);
+    }
+
+    public void ResetGame()
+    {
+
+        savedSettings.completedGame = false;
+        SaveGame();
+        GameManager.current.completedGame = savedSettings.completedGame;
+
     }
     // public void SaveName()
     // {

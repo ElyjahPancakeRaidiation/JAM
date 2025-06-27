@@ -49,7 +49,7 @@ public class PuzzleLighting : MonoBehaviour
         while (elapsedTime < initialFadeTime)
         {
             globalLight.intensity = Mathf.Lerp(normalGlobalLight, 0, elapsedTime / initialFadeTime);
-            // playerLight.intensity = Mathf.Lerp(0, maxPlayerLightIntensity, elapsedTime / initialFadeTime);
+            playerLight.intensity = Mathf.Lerp(0, maxPlayerLightIntensity, elapsedTime / initialFadeTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -97,7 +97,7 @@ public class PuzzleLighting : MonoBehaviour
         while (elapsedTime < initialFadeTime)
         {
             globalLight.intensity = Mathf.Lerp(0, normalGlobalLight, elapsedTime / initialFadeTime);
-            // playerLight.intensity = Mathf.Lerp(maxPlayerLightIntensity, 0, elapsedTime / initialFadeTime);
+            playerLight.intensity = Mathf.Lerp(maxPlayerLightIntensity, 0, elapsedTime / initialFadeTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
