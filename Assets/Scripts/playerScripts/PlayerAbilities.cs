@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -14,6 +15,7 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
+    [SerializeField] private float UNCHANGEDDASHY = 14;
     [SerializeField] private int maxDashes;
     private int dashAmount;
     private bool canUseAbility;
@@ -62,7 +64,6 @@ public class PlayerAbilities : MonoBehaviour
     void Update()
     {
 
-
         Debug.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
 
 
@@ -76,7 +77,8 @@ public class PlayerAbilities : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
+        //These two if statements do the same thing figure out in the future how to combine them
+        if (Input.GetKeyDown(gm.playerAbilityKey))
         {
             recentlyJumped = true;
             useFormsAbility();
@@ -86,6 +88,7 @@ public class PlayerAbilities : MonoBehaviour
         {
             useFormsAbility();
         }
+
         if (recentlyJumped)
         {
             rJumpedTimer += Time.deltaTime;
@@ -100,36 +103,38 @@ public class PlayerAbilities : MonoBehaviour
 
     public void useFormsAbility()
     {
-        string formName = playerMovement.getCurForm().formName;
-        switch (formName)
+        if (canUseAbility)
         {
-            case "Ball":
+            string formName = playerMovement.getCurForm().formName;
+            switch (formName)
+            {
+                case "Ball":
 
-                //Will have the dashing ability
+                    //Will have the dashing ability
 
-                dashAbility();
-                break;
-            case "Pogo":
-                //Will have the mega jump and arms ability
-                canJumpNextFrame = true;
-                // StartCoroutine(newPogoAbliity());
+                    dashAbility();
+                    break;
+                case "Pogo":
+                    //Will have the mega jump and arms ability
+                    canJumpNextFrame = true;
+                    // StartCoroutine(newPogoAbliity());
 
-                if (isGroundedScript.isGrounded())
-                {
+                    if (isGroundedScript.isGrounded())
+                    {
 
-                    newJumpAbliity();
-                    usedJump = true;
-                    //   pogoAbility();
-                    Debug.Log(isGroundedScript.isGrounded());
-                }
-                else if (playerMovement.coyoteTimer > 0) {
-                    StartCoroutine(JumpCoyoteTimer());
-                    newJumpAbliity();
-                    Debug.Log("playing");
-                }
+                        newJumpAbliity();
+                        usedJump = true;
+                        //   pogoAbility();
+                        Debug.Log(isGroundedScript.isGrounded());
+                    }
+                    else if (playerMovement.coyoteTimer > 0) {
+                        StartCoroutine(JumpCoyoteTimer());
+                        newJumpAbliity();
+                        Debug.Log("playing");
+                    }
 
-
-                break;
+                    break;
+            }
         }
     }
 
@@ -144,7 +149,18 @@ public class PlayerAbilities : MonoBehaviour
             _rb.velocity = Vector2.zero;
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
-            _rb.AddForce(new Vector2(playerMovement.getInput() * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
+            var horInput = playerMovement.getInput();
+
+            if (horInput != 0)
+            {
+                _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
+            }
+
+            if (horInput == 0)
+            {
+                _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
+            }
+            
             dashAmount--;
             if (dashAmount == 0) { StartCoroutine(dashAmountBack()); }
         }
@@ -158,31 +174,17 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-
-    private IEnumerator JumpCoyoteTimer()
-    {
-        yield return new WaitForSeconds(.05f);
-        playerMovement.coyoteTimer = 0;
-
-    }
+    
+   
     #endregion
 
     #region Pogo Ability
-    private void pogoAbility()
+    private IEnumerator JumpCoyoteTimer()
     {
-        StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
-        canJumpNextFrame = false;
-        jumpFrameTimer = 0;
-        // float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-        _rb.AddForce(new Vector2(0, SUPERJUMP), ForceMode2D.Impulse);
-        // _rb.AddForce(new Vector2(0, jumpImpulse), ForceMode2D.Impulse);
-
-        // usedJumpAbility = true;
-        // stopSliding = preventSlide();
-        // StartCoroutine(stopSliding);
+        yield return new WaitForSeconds(.03f);
+        playerMovement.coyoteTimer = 0;
 
     }
-
     private IEnumerator newPogoAbliity()
 
     {
@@ -191,6 +193,7 @@ public class PlayerAbilities : MonoBehaviour
             canJumpNextFrame = false;
             jumpFrameTimer = 0;
             float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+            StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
             Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
             _rb.velocity = Verticaldirection;
             // _rb.AddForce(Verticaldirection);

@@ -65,7 +65,6 @@ public class MovingPlatforms : MonoBehaviour
     }
     private IEnumerator reloadPlatforms()
     {
-        playingReload = true;
         while (playerWithin)
         {
             yield return new WaitForSeconds(timeBetweenLightning);

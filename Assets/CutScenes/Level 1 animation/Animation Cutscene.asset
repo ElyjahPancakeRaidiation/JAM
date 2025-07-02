@@ -13,33 +13,19 @@ MonoBehaviour:
   m_Name: Animation Cutscene
   m_EditorClassIdentifier: 
   cutSceneInfo:
-  - forCamera: 0
-    actionType: 4
-    cameraActionType: 0
-    information: 
-    actorIndex: 0
-    endPositionIndex: 0
-    waitTime: 1
-    infinite: 0
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
-  - forCamera: 0
-    actionType: 2
-    cameraActionType: 0
+  - actionType: 2
     information: 
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 15
-    infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
-  - forCamera: 0
-    actionType: 5
-    cameraActionType: 0
+    infinite: 0
+  - actionType: 5
     information: 
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 0
-    infinite: 0
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
+    infinite: 0

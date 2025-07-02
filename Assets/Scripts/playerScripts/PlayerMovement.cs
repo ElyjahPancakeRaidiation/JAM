@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
-    [SerializeField]private bool isGrounded;
+    [SerializeField] private bool isGrounded;
 
     #region Player Settings
     [Header("----Player----")]
@@ -140,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
         if (canControl) { horizontalInput = Input.GetAxisRaw("Horizontal"); }
 #endif
         //This prevents the easing from going above what its supposed to be
-
+        if(!canControl){ horizontalInput = 0; }
 
         if (isEasingOn)
         {
@@ -286,16 +286,19 @@ public class PlayerMovement : MonoBehaviour
     }
     public void changeForm()
     {
-        if (curForm == maxForm)
+        if (canControl)
         {
-            curForm = 0;
-        }
-        else
-        {
-            curForm++;
-        }
+            if (curForm == maxForm)
+            {
+                curForm = 0;
+            }
+            else
+            {
+                curForm++;
+            }
 
-        forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+            forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        }
         // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
         // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
@@ -336,29 +339,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    public IEnumerator Jump()
-    {
-        // Debug.Log("Jumping");
-        Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
-
-        // impulse makes it so it's a strong force happening at once
-        physics._rb.AddForce(jumpForce, ForceMode2D.Impulse);
-
-        // physics._rb.MovePosition(new Vector2(2,3));
-        //wait .5 seconds before anything
-        yield return new WaitForSeconds(.5f);
-
-        //keep checking until the player touches the ground
-        yield return new WaitUntil(() => playerAbility.isGrounded());
-         canJump = true;
-        // yield return new WaitForSeconds(.1f);
-        // if(!playerAbility.getJumpNextFrame()){
-        //     stopSliding();
-        // }
-
-        //and then allow the player to jump again
-
-    }
+   
 
     public float getHorizontalInput()
     {
