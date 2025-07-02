@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DustScriptV2 : MonoBehaviour
 {
     private GameObject player;
     private ParticleSystem dust;
+    private ParticleSystem turningMode;
     private Rigidbody2D rb;
     private PlayerMovement movement;
     private PlayerAbilities abilities;
@@ -37,7 +40,11 @@ public class DustScriptV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!recentlyJumped) { moveToPlayer(); }
+        if (!recentlyJumped)
+        {
+            moveToPlayer();
+            //updateColor();
+        }
         if (Input.GetKeyDown(gm.playerAbilityKey) && abilities.GetCanUseAbility()) //dont have particles follow player midair after jumping
         {
             StartCoroutine(onJump());
@@ -51,12 +58,19 @@ public class DustScriptV2 : MonoBehaviour
     {
         transform.position = new Vector2(player.transform.position.x, player.transform.position.y + yOffset);
     }
+    private void updateColor()
+    {
+        var mainModule = dust.main;
+        Vector2 pixel = abilities.groundThingyMajiggy.point - new Vector2(0, 1);
+        var texture = abilities.groundThingyMajiggy.collider.gameObject.GetComponent<SpriteRenderer>().sprite.texture;
+        mainModule.startColor = texture.GetPixel((int)pixel.x, (int)pixel.y);
+    }
     private IEnumerator checkForSkidding()
     {
         generatingDust = true;
-        float lastVelocity = rb.velocity.x;
-        float movingDirection = 0;
-        float inputDirection = 0;
+        float movingDirection;
+        float inputDirection;
+        loadSkidParticles();
         while (abilities.isGrounded())
         {
             if (!dust.isPlaying)
@@ -77,7 +91,7 @@ public class DustScriptV2 : MonoBehaviour
             {
                 dust.Play();
             }
-            if (Mathf.Abs(rb.velocity.x) < minimumVelocity)
+            if (Mathf.Abs(rb.velocity.x) < minimumVelocity || Math.Sign(rb.velocity.x) == Math.Sign(inputDirection))
             {
                 dust.Stop();
             }
@@ -111,20 +125,60 @@ public class DustScriptV2 : MonoBehaviour
     }
     private void loadSkidParticles()
     {
+        var mainModule = dust.main;
+        mainModule.loop = true;
+        mainModule.startSize = new ParticleSystem.MinMaxCurve(0.2f, 0.3f);
+        mainModule.simulationSpace = ParticleSystemSimulationSpace.Local;
 
+        var emissionModule = dust.emission;
+        emissionModule.rateOverTimeMultiplier = 60;
+        emissionModule.burstCount = 0;
+        var shapeModule = dust.shape;
+        shapeModule.shapeType = ParticleSystemShapeType.Circle;
+        shapeModule.radius = 0.9f;
+        shapeModule.radiusThickness = 0.04f;
+        shapeModule.arc = 40f;
+        shapeModule.arcMode = ParticleSystemShapeMultiModeValue.Random;
+        shapeModule.arcSpread = 0;
+        shapeModule.rotation = new Vector3(90, 0, 0);
+        shapeModule.scale = new Vector3(1f, 1f, 1f);
     }
     private void loadLandingParticles() //look at the reference in the scene for setting this up
     {
         var mainModule = dust.main;
         mainModule.loop = false;
+        mainModule.startSpeed = 5;
+        mainModule.startSize = new ParticleSystem.MinMaxCurve(0.1f, 0.2f);
+        mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
 
         var emissionModule = dust.emission;
-        emissionModule.burstCount = 0;
+        emissionModule.rateOverTimeMultiplier = 0;
+        ParticleSystem.Burst burst = new()
+        {
+            count = 30,
+            cycleCount = 1
+        };
+        emissionModule.burstCount = 1;
+        emissionModule.SetBurst(0, burst);
+
+        var shapeModule = dust.shape;
+        shapeModule.shapeType = ParticleSystemShapeType.Cone;
+        shapeModule.angle = 16f;
+        shapeModule.radius = 0.6f;
+        shapeModule.radiusThickness = 0.2f;
+        shapeModule.arcMode = ParticleSystemShapeMultiModeValue.Random;
+        shapeModule.arc = 360f;
+        shapeModule.length = 1.2f;
+        shapeModule.rotation = new Vector3(50, 0, 0);
+        shapeModule.scale = new Vector3(1f, 0.26f, 1f);
+
     }
     public void playLandingParticles()
     {
         Debug.Log("player smacked the ground");
         loadLandingParticles();
+        moveToPlayer();
+        //updateColor();
         dust.Play();
     }
 }

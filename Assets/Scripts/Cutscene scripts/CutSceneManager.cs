@@ -25,6 +25,7 @@ public class CutSceneManager : MonoBehaviour
 
     [SerializeField] private UnityEvent[] inGameEvents;
 
+    [SerializeField] private float easeAmount;
     [SerializeField] private bool stopWhenSceneStarts;
     public bool playOnStart;
     private bool canPlayCutScene = false;
@@ -65,7 +66,7 @@ public class CutSceneManager : MonoBehaviour
             playerAbilities.setUseAbility(false);
         }
         
-        if (stopWhenSceneStarts) { StartCoroutine(easeObj(50)); }
+        if (stopWhenSceneStarts) { StartCoroutine(easeObj(easeAmount)); }
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
 
@@ -82,7 +83,7 @@ public class CutSceneManager : MonoBehaviour
                 playerAbilities.setUseAbility(true);
             }
             CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
-            playerCamera.setFollowPlayer(true);
+            if(scene.cutSceneInfo[sceneCounter-1].actionType != CutSceneInfo.ActionType.CameraActions){playerCamera.followPlayer = true;}
             isFinished = true;
             yield break;
         }
@@ -97,11 +98,11 @@ public class CutSceneManager : MonoBehaviour
             while (scene.cutSceneInfo[sceneCounter].infinite)
             {
                 startAction(scene.cutSceneInfo[sceneCounter].actionType, scene);
-                yield return new WaitForSecondsRealtime(scene.cutSceneInfo[sceneCounter].waitTime);
+                yield return new WaitForSeconds(scene.cutSceneInfo[sceneCounter].waitTime);
             }
         }
         yield return new WaitUntil(() => canMoveOn);
-        yield return new WaitForSecondsRealtime(scene.cutSceneInfo[sceneCounter].waitTime);
+        yield return new WaitForSeconds(scene.cutSceneInfo[sceneCounter].waitTime);
         sceneCounter++;
         canMoveOn = false;//Resets the value for the new instance.
         //Do the actions it requires.
@@ -109,32 +110,36 @@ public class CutSceneManager : MonoBehaviour
 
     }
 
-    private void startAction(CutSceneScriptable.CutSceneInfo.ActionType e, CutSceneScriptable c){
+    private void startAction(CutSceneInfo.ActionType e, CutSceneScriptable c){
         switch (e)
         {
-            case CutSceneScriptable.CutSceneInfo.ActionType.MoveObj:
+            case CutSceneInfo.ActionType.MoveObj:
                 StartCoroutine(MoveObj(c));
                 break;
-            case CutSceneScriptable.CutSceneInfo.ActionType.AddForce:
+            case CutSceneInfo.ActionType.AddForce:
                 AddForceToObject(c);
                 break;
-            case CutSceneScriptable.CutSceneInfo.ActionType.TurnObjectOff:
+            case CutSceneInfo.ActionType.TurnObjectOff:
                 TurnOffObject(c);
                 break;
-            case CutSceneScriptable.CutSceneInfo.ActionType.TurnObjectOn:
+            case CutSceneInfo.ActionType.TurnObjectOn:
                 TurnOnObject(c);
                 break;
-            case CutSceneScriptable.CutSceneInfo.ActionType.Wait:
+            case CutSceneInfo.ActionType.Wait:
                 canMoveOn = true;
                 break;
-            case CutSceneScriptable.CutSceneInfo.ActionType.Event:
+            case CutSceneInfo.ActionType.Event:
                 inGameEvents[c.cutSceneInfo[sceneCounter].eventIndex].Invoke();
+                canMoveOn = true;
+                break;
+            case CutSceneInfo.ActionType.CameraActions:
+                
                 canMoveOn = true;
                 break;
         }
     }
 
-    #region Objects
+    #region Cutscene actions
     private void AddForceToObject(CutSceneScriptable c)
     {
         Vector3 amount = InfoToVector2(c.cutSceneInfo[sceneCounter].information);
@@ -166,7 +171,7 @@ public class CutSceneManager : MonoBehaviour
                     _actorRb.AddForce(Vector2.left * speed);
                     Vector2 vel = clampVelocity(_actorRb.velocity, c.cutSceneInfo[sceneCounter].clampVelocity);
                     _actorRb.velocity = vel;
-                    yield return new WaitForSecondsRealtime(0.2f);
+                    yield return new WaitForSeconds(0.2f);
                 }
                 else if (dirFuck > 0)
                 {
@@ -174,7 +179,7 @@ public class CutSceneManager : MonoBehaviour
                     _actorRb.AddForce(Vector2.right * speed);
                     Vector2 vel = clampVelocity(_actorRb.velocity, c.cutSceneInfo[sceneCounter].clampVelocity);
                     _actorRb.velocity = vel;
-                    yield return new WaitForSecondsRealtime(0.2f);
+                    yield return new WaitForSeconds(0.2f);
                 }
             }
             else
@@ -228,7 +233,7 @@ public class CutSceneManager : MonoBehaviour
         // if(Vector2.Distance(velocity, new Vector2(0.5f, 0.5f)) < 0.2f){yield break;}
         velocity.x = Mathf.Lerp(velocity.x, 0, easingAmount * Time.deltaTime);
         velocity.y = Mathf.Lerp(velocity.y, 0, easingAmount * Time.deltaTime);
-        playerMovement.GetComponent<Rigidbody2D>().angularVelocity = Mathf.Lerp(playerMovement.GetComponent<Rigidbody2D>().angularVelocity, 0, 30 * Time.deltaTime);
+        playerMovement.GetComponent<Rigidbody2D>().angularVelocity = Mathf.Lerp(playerMovement.GetComponent<Rigidbody2D>().angularVelocity, 0, easeAmount * Time.deltaTime);
         playerMovement.GetComponent<Rigidbody2D>().velocity = velocity;
         yield return new WaitForSecondsRealtime(0.2f);
         StartCoroutine(easeObj());

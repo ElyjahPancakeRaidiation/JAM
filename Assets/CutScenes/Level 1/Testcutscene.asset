@@ -13,21 +13,19 @@ MonoBehaviour:
   m_Name: Testcutscene
   m_EditorClassIdentifier: 
   cutSceneInfo:
-  - forCamera: 0
-    actionType: 4
-    cameraActionType: 0
+  - actionType: 4
     information: 
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 4
     infinite: 0
     clampVelocity: {x: 0, y: 0}
-  - forCamera: 0
-    actionType: 1
-    cameraActionType: 0
+    eventIndex: 0
+  - actionType: 1
     information: addforce(40, 2, 30)
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 2
     infinite: 0
     clampVelocity: {x: 0, y: 0}
+    eventIndex: 0

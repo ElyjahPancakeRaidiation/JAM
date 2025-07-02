@@ -27,6 +27,8 @@ public class PuzzleLighting : MonoBehaviour
         globalLight = GetComponent<Light2D>();
         lightningLight = GameObject.FindGameObjectWithTag("Lightning").GetComponent<Light2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+        playerLight = player.GetComponent<Light2D>();
+        playerLight.pointLightOuterRadius = playerLightRadius;
 
         globalLight.intensity = normalGlobalLight;
         lightningLight.intensity = 0;
@@ -39,10 +41,11 @@ public class PuzzleLighting : MonoBehaviour
     }
     public IEnumerator startLighting()
     {
+        // player.SetActive(true);
         yield return new WaitUntil(() => !playingOutro);
         playingIntro = true;
         float elapsedTime = 0;
-        addPlayerLight();
+        //addPlayerLight();
         while (elapsedTime < initialFadeTime)
         {
             globalLight.intensity = Mathf.Lerp(normalGlobalLight, 0, elapsedTime / initialFadeTime);
@@ -79,7 +82,6 @@ public class PuzzleLighting : MonoBehaviour
     }
     public void addPlayerLight()
     {
-        playerLight = player.AddComponent<Light2D>();
         playerLight.lightType = Light2D.LightType.Point;
         playerLight.intensity = 0;
         playerLight.blendStyleIndex = 0;
@@ -87,7 +89,7 @@ public class PuzzleLighting : MonoBehaviour
     }
     public void removePlayerLight() {
         Destroy(player.GetComponent<Light2D>());
-        playerLight = null;
+        // playerLight = null;
     }
     public IEnumerator stopLighting()
     {
@@ -101,6 +103,6 @@ public class PuzzleLighting : MonoBehaviour
         }
         globalLight.intensity = normalGlobalLight;
         lightningLight.intensity = 0;
-        removePlayerLight();
+        //removePlayerLight();
     }
 }
