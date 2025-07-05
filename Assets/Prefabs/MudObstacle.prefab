@@ -217,4 +217,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultCOF: 0
-  mudCOF: 0.7
+  mudCOF: 0.9
+  splashLimit: 0
