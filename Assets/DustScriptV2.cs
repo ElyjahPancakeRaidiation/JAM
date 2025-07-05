@@ -25,6 +25,7 @@ public class DustScriptV2 : MonoBehaviour
     public bool playerSkidding;
     public bool generatingDust = false;
     public bool recentlyJumped = false;
+    private bool inMud;
 
     void Start()
     {
