@@ -119,7 +119,7 @@ public class PlayerAbilities : MonoBehaviour
 
                     newJumpAbliity();
                     usedJump = true;
-                    //   pogoAbility();
+                    // pogoAbility();
                     Debug.Log(isGroundedScript.isGrounded());
                 }
                 else if (playerMovement.coyoteTimer > 0) {
@@ -150,7 +150,8 @@ public class PlayerAbilities : MonoBehaviour
             }
 
             if (horInput == 0)
-            {
+            {   
+                
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
             }
             
@@ -167,62 +168,32 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-    
-   
+
+
     #endregion
 
     #region Pogo Ability
+    //this delay is so play can't infinitely jump while coyote timer is on. Otherwise you are able to double or even triple jump
+    //if you spam the jump key
     private IEnumerator JumpCoyoteTimer()
     {
         yield return new WaitForSeconds(.03f);
         playerMovement.coyoteTimer = 0;
 
     }
-    private IEnumerator newPogoAbliity()
-
-    {
-        if (isGrounded())
-        {
-            canJumpNextFrame = false;
-            jumpFrameTimer = 0;
-            float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-            Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
-            _rb.velocity = Verticaldirection;
-            // _rb.AddForce(Verticaldirection);
-
-        }
-
-        yield return new WaitForSeconds(0f);
-
-
-    }
+   
 
     private void newJumpAbliity()
 
     {
-
         canJumpNextFrame = false;
         jumpFrameTimer = 0;
-        float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
+        float jumpForce = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
         _rb.velocity = Verticaldirection;
        
-
-
-
     }
-    // public IEnumerator preventSlide()
-    // {
 
-    //     yield return new WaitForSeconds(.6f);
-    //     yield return new WaitUntil(() => isGroundedScript.isGrounded());
-
-    //     if (playerMovement.isPogo == true)
-    //     {
-
-    //         _rb.velocity = Vector3.zero;
-    //     }
-    // }
     #endregion
 
     //This is for when the player changes form it changes the distance of the ray cast.
