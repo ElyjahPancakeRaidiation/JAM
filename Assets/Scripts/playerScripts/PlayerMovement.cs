@@ -68,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float coyoteTimer { get; set; }
 
+    public isGroundedScript isGroundedHopping;
+
     [SerializeField] private float floatTime;
     #endregion
     private float lastVelocityY;
@@ -120,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
 
         screenSize = new Vector2(Screen.width, Screen.height);
         canControl = true;
+        isGroundedHopping = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
 
         // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
         // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
@@ -321,7 +324,9 @@ public class PlayerMovement : MonoBehaviour
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
         {
-            if (playerAbility.isGrounded() && !playerAbility.getJumpNextFrame())
+            var checkForground = isGroundedHopping.isGroundedForHopping();
+            var oldCheckforground = playerAbility.isGrounded();
+            if (checkForground /*oldCheckforground */ && !playerAbility.getJumpNextFrame())
             {
                 if (canJump)
                 {
@@ -353,7 +358,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         //keep checking until the player touches the ground
-        yield return new WaitUntil(() => playerAbility.isGrounded());
+        yield return new WaitUntil(() => isGroundedHopping.isGroundedForHopping()/*playerAbility.isGrounded()*/);
         canJump = true;
     }
     public IEnumerator impactSound()

@@ -30620,6 +30620,26 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_Size.x
+      value: 0.9876339
+      objectReference: {fileID: 0}
+    - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_Size.y
+      value: 2.2292075
+      objectReference: {fileID: 0}
+    - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.006183058
+      objectReference: {fileID: 0}
+    - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.4028784
+      objectReference: {fileID: 0}
     - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: floatTime
       value: 0.65
@@ -30666,11 +30686,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 418.9
+      value: 44.4
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -110.8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.z
