@@ -30,6 +30,11 @@ public class CameraManagerEditor : Editor
     SerializedProperty returningCameraOffset, returningCameraOffsetSpeed;
     SerializedProperty keepOffsetSettings;
 
+    SerializedProperty shakeCamera;
+    SerializedProperty shakeDuration;
+    SerializedProperty shakeStrength;
+    SerializedProperty repeat;
+
     SerializedProperty camWaitTime;
 
 
@@ -42,6 +47,11 @@ public class CameraManagerEditor : Editor
         moveToTarget = serializedObject.FindProperty(nameof(moveToTarget));
         changeCameraSize = serializedObject.FindProperty(nameof(changeCameraSize));
         changeCameraOffset = serializedObject.FindProperty(nameof(changeCameraOffset));
+        shakeCamera = serializedObject.FindProperty(nameof(shakeCamera));
+
+        shakeDuration = serializedObject.FindProperty(nameof(shakeDuration));
+        shakeStrength = serializedObject.FindProperty(nameof(shakeStrength));
+        repeat = serializedObject.FindProperty(nameof(repeat));
 
         camTarget = serializedObject.FindProperty(nameof(camTarget));
         newSpeed = serializedObject.FindProperty(nameof(newSpeed));
@@ -77,6 +87,7 @@ public class CameraManagerEditor : Editor
         VariableField(moveToTarget);
         VariableField(changeCameraSize);
         VariableField(changeCameraOffset);
+        VariableField(shakeCamera);
 
         if (moveToTarget.boolValue)
         {
@@ -113,6 +124,13 @@ public class CameraManagerEditor : Editor
             }
             VariableField(keepOffsetSettings);
 
+        }
+
+        if (shakeCamera.boolValue)
+        {
+            VariableField(shakeDuration);
+            VariableField(shakeStrength);
+            VariableField(repeat);
         }
 
         VariableField(camWaitTime);
