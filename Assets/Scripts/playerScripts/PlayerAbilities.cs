@@ -125,7 +125,7 @@ public class PlayerAbilities : MonoBehaviour
                         newJumpAbliity();
                         usedJump = true;
                         //   pogoAbility();
-                        Debug.Log(isGroundedScript.isGrounded());
+                        //Debug.Log(isGroundedScript.isGrounded());
                     }
                     else if (playerMovement.coyoteTimer > 0) {
                         StartCoroutine(JumpCoyoteTimer());
@@ -212,6 +212,7 @@ public class PlayerAbilities : MonoBehaviour
         canJumpNextFrame = false;
         jumpFrameTimer = 0;
         float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
         _rb.velocity = Verticaldirection;
        
@@ -239,7 +240,17 @@ public class PlayerAbilities : MonoBehaviour
     {
         this.canUseAbility = canUseAbility;
     }
-
+    public void setAbilityPower(float dashX, float dashY, float megaJump)
+    {
+        DASHPOWERX = dashX;
+        DASHPOWERY = dashY;
+        UNCHANGEDDASHY = dashY;
+        height = megaJump;
+    }
+    public Vector3 getAbilityPower()
+    {
+        return new Vector3(DASHPOWERX, DASHPOWERY, height);
+    }
     public bool isGrounded()
     {
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground

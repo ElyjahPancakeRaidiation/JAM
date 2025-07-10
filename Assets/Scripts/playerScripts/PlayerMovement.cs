@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerAbilities playerAbilities;
     #endregion
     [SerializeField] private GameObject prefabDustSpawner;
-    private GameObject _dustSpawner;
+    GameObject _dustSpawner;
 
     private UnityEvent playerImpact; //player lands on the ground w a certain amount of velocity/momentum
 
@@ -73,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
     private float lastVelocityY;
     public float velocitySoundThreshold;
     public bool checkingImpact;
-    
     public class MainTouch
     {
         public float fingerID;
@@ -360,16 +360,22 @@ public class PlayerMovement : MonoBehaviour
     {
         checkingImpact = true;
         yield return new WaitUntil(() => playerAbility.isGrounded());
-        if (Mathf.Abs(lastVelocityY) > velocitySoundThreshold)
+        Debug.Log(physics._rb.velocity.y);
+        if (Mathf.Abs(physics._rb.velocity.y) > velocitySoundThreshold)
         {
-            //make volume based on velocity
-            StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
+            StartCoroutine(audioManagerV2.playPlayerSFX("Landing")); //THIS WORKS BUT IDK WHY STUF STILL BREAKING MAN
             playerImpact.Invoke();
-            //GetComponent<AudioSource>().Play();
         }
         checkingImpact = false;
     }
-
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        // if (collision.relativeVelocity.y > velocitySoundThreshold)
+        // {
+        //     StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
+        //     playerImpact.Invoke();
+        // }
+    }
     public void setCanControl(bool value) { canControl = value; }
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
@@ -415,18 +421,19 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag("Ground")){
-            if (collision.relativeVelocity.y > velocitySoundThreshold)
-            {
-                
-            }
-        }
-    }
     private IEnumerator EasingBackOn(){
         yield return new WaitForSeconds(2f);
         isEasingOn = true;
     }
+    public Vector2 GetJumpSpeed()
+    {
+        return new Vector2(jumpSpeedX, jumpSpeedY);
+    }
 
+    // Setter for jumpSpeedX and jumpSpeedY from Vector2
+    public void SetJumpSpeed(Vector2 value)
+    {
+        jumpSpeedX = value.x;
+        jumpSpeedY = value.y;
+    }
 }
