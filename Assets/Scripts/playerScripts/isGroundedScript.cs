@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class isGroundedScript : MonoBehaviour
 {
     private GameObject player;
-    [SerializeField]private List<AbilitySettingScriptable> playersForms;
+    [SerializeField] private List<AbilitySettingScriptable> playersForms;
     [SerializeField] LayerMask groundLayer;
     public List<float> rayScales;
     public int timer;
@@ -30,6 +31,7 @@ public class isGroundedScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         curForm = player.GetComponent<PlayerMovement>().getFormInt();
+        
         //transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
 
     }
@@ -41,15 +43,35 @@ public class isGroundedScript : MonoBehaviour
         //groundCol = Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
 
     }
-
+    //isgrounded for ball and pogo jumping
     public bool isGrounded()
     {
 
         return Physics2D.OverlapBox(transform.position + (Vector3)player.GetComponent<PlayerMovement>().getCurForm().startPositionOffset, player.GetComponent<PlayerMovement>().getCurForm().groundChecker, angle, groundLayer);
-    //     return Physics2D.OverlapBox(transform.position + offset, groundChecker, angle, groundLayer);
-     }
-
+        //     return Physics2D.OverlapBox(transform.position + offset, groundChecker, angle, groundLayer);
+    }
+    //specifically for hopping
+    public bool isGroundedForHopping()
+    {
+        
+        return Physics2D.OverlapBox(transform.position + (Vector3)player.GetComponent<PlayerMovement>().getCurForm().hoppingStartPositionOffset, player.GetComponent<PlayerMovement>().getCurForm().hoppingGroundChecker, angle, groundLayer);
+    }
     // void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)vecScales[], player.GetComponent<PlayerMovement>().getCurForm().groundChecker);
-    //private void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].startPositionOffset, playersForms[curForm].groundChecker);
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].startPositionOffset, playersForms[curForm].groundChecker);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].hoppingStartPositionOffset, playersForms[curForm].hoppingGroundChecker);
 
+
+    }   
+
+    
+
+  
+    
+       
+       
+    
 }

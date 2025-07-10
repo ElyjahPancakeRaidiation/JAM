@@ -23,20 +23,21 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Pogo variables
     private const float SUPERJUMP = 28;
-    private IEnumerator stopSliding;
+  
 
     public bool usedJumpAbility = false;
     [SerializeField] private bool canJumpNextFrame = false;
     public float jumpFrameTimer = 0;
     public float maxJumpFrameTimer;
     public bool recentlyJumped;
-    private float rJumpedTimer = 0;
+    
 
     private bool jumpAgain;
 
     public RaycastHit2D groundThingyMajiggy { get; private set; }
+    public bool jumpedClicked;
 
-    [SerializeField] private float height;
+    [SerializeField] private float Jumpheight;
 
     #endregion
 
@@ -57,6 +58,7 @@ public class PlayerAbilities : MonoBehaviour
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
+        jumpedClicked = false;
         
     }
 
@@ -64,40 +66,13 @@ public class PlayerAbilities : MonoBehaviour
     void Update()
     {
 
-        Debug.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
 
-
-        if (canJumpNextFrame)
+        if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
         {
-            jumpFrameTimer += Time.deltaTime;
-            if (jumpFrameTimer >= maxJumpFrameTimer)
-            {
-                canJumpNextFrame = false;
-                jumpFrameTimer = 0;
-            }
-        }
-
-        //These two if statements do the same thing figure out in the future how to combine them
-        if (Input.GetKeyDown(gm.playerAbilityKey))
-        {
-            recentlyJumped = true;
+        
             useFormsAbility();
         }
 
-        if (isGroundedScript.isGrounded() && canJumpNextFrame)
-        {
-            useFormsAbility();
-        }
-
-        if (recentlyJumped)
-        {
-            rJumpedTimer += Time.deltaTime;
-            if (rJumpedTimer >= 0.8f)
-            {
-                recentlyJumped = false;
-                rJumpedTimer = 0;
-            }
-        }
     }
 
 
@@ -112,26 +87,24 @@ public class PlayerAbilities : MonoBehaviour
 
                     //Will have the dashing ability
 
-                    dashAbility();
-                    break;
-                case "Pogo":
-                    //Will have the mega jump and arms ability
-                    canJumpNextFrame = true;
-                    // StartCoroutine(newPogoAbliity());
+                dashAbility();
+                break;
+            case "Pogo":
+                //Will have the mega jump 
 
-                    if (isGroundedScript.isGrounded())
-                    {
 
-                        newJumpAbliity();
-                        usedJump = true;
-                        //   pogoAbility();
-                        //Debug.Log(isGroundedScript.isGrounded());
-                    }
-                    else if (playerMovement.coyoteTimer > 0) {
-                        StartCoroutine(JumpCoyoteTimer());
-                        newJumpAbliity();
-                        Debug.Log("playing");
-                    }
+                if (isGroundedScript.isGrounded())
+                {
+                    StartCoroutine(JumpAbility());
+                    
+            
+                }
+                else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65) {
+                    StartCoroutine(JumpCoyoteTimer());
+                
+                    StartCoroutine(JumpAbility());
+
+                }
 
                     break;
             }
@@ -150,14 +123,17 @@ public class PlayerAbilities : MonoBehaviour
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
-
+       
             if (horInput != 0)
             {
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
+               
+                
             }
 
             if (horInput == 0)
             {
+             
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
             }
             
@@ -174,64 +150,32 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-    
-   
+
+
     #endregion
 
     #region Pogo Ability
+    //this delay is so play can't infinitely jump while coyote timer is on. Otherwise you are able to double or even triple jump
+    //if you spam the jump key
     private IEnumerator JumpCoyoteTimer()
     {
         yield return new WaitForSeconds(.03f);
         playerMovement.coyoteTimer = 0;
 
     }
-    private IEnumerator newPogoAbliity()
+   
 
+ 
+    private IEnumerator JumpAbility()
     {
-        if (isGrounded())
-        {
-            canJumpNextFrame = false;
-            jumpFrameTimer = 0;
-            float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-            StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
-            Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
-            _rb.velocity = Verticaldirection;
-            // _rb.AddForce(Verticaldirection);
-
-        }
-
-        yield return new WaitForSeconds(0f);
-
-
-    }
-
-    private void newJumpAbliity()
-
-    {
-
-        canJumpNextFrame = false;
-        jumpFrameTimer = 0;
-        float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-        StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
-        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
+        jumpedClicked = true;
+        float jumpForce = Mathf.Sqrt(Jumpheight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
         _rb.velocity = Verticaldirection;
-       
-
-
-
+        yield return new WaitForSeconds(.1f);
+        jumpedClicked = false;
     }
-    // public IEnumerator preventSlide()
-    // {
 
-    //     yield return new WaitForSeconds(.6f);
-    //     yield return new WaitUntil(() => isGroundedScript.isGrounded());
-
-    //     if (playerMovement.isPogo == true)
-    //     {
-
-    //         _rb.velocity = Vector3.zero;
-    //     }
-    // }
     #endregion
 
     //This is for when the player changes form it changes the distance of the ray cast.
@@ -259,12 +203,6 @@ public class PlayerAbilities : MonoBehaviour
         return groundThingyMajiggy;
     }
 
-    public bool getJumpNextFrame() { return canJumpNextFrame; }
-    public int getDashAmount() { return dashAmount; }
-    public bool GetCanUseAbility()
-    {
-        return canUseAbility;
-    }
 
     private void OnDrawGizmos()
     {
