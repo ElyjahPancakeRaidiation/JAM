@@ -23,14 +23,14 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Pogo variables
     private const float SUPERJUMP = 28;
-  
+
 
     public bool usedJumpAbility = false;
     [SerializeField] private bool canJumpNextFrame = false;
     public float jumpFrameTimer = 0;
     public float maxJumpFrameTimer;
     public bool recentlyJumped;
-    
+
 
     private bool jumpAgain;
 
@@ -59,7 +59,7 @@ public class PlayerAbilities : MonoBehaviour
         canUseAbility = true;
         jumpAgain = true;
         jumpedClicked = false;
-        
+
     }
 
     // Update is called once per frame
@@ -69,7 +69,7 @@ public class PlayerAbilities : MonoBehaviour
 
         if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
         {
-        
+
             useFormsAbility();
         }
 
@@ -87,24 +87,25 @@ public class PlayerAbilities : MonoBehaviour
 
                     //Will have the dashing ability
 
-                dashAbility();
-                break;
-            case "Pogo":
-                //Will have the mega jump 
+                    dashAbility();
+                    break;
+                case "Pogo":
+                    //Will have the mega jump 
 
 
-                if (isGroundedScript.isGrounded())
-                {
-                    StartCoroutine(JumpAbility());
-                    
-            
-                }
-                else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65) {
-                    StartCoroutine(JumpCoyoteTimer());
-                
-                    StartCoroutine(JumpAbility());
+                    if (isGroundedScript.isGrounded())
+                    {
+                        StartCoroutine(JumpAbility());
 
-                }
+
+                    }
+                    else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65)
+                    {
+                        StartCoroutine(JumpCoyoteTimer());
+
+                        StartCoroutine(JumpAbility());
+
+                    }
 
                     break;
             }
@@ -119,24 +120,23 @@ public class PlayerAbilities : MonoBehaviour
         if (dashAmount > 0)
         {
             StartCoroutine(audioManagerV2.playPlayerSFX("Dashing"));
-            _rb.velocity = Vector2.zero;
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
-       
+
             if (horInput != 0)
             {
+                _rb.velocity = Vector2.zero;
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
-               
-                
             }
 
             if (horInput == 0)
             {
-             
-                _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
+
+                // _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
+                _rb.AddForce(new Vector2(_rb.velocity.x / 100, UNCHANGEDDASHY), ForceMode2D.Impulse);
             }
-            
+
             dashAmount--;
             if (dashAmount == 0) { StartCoroutine(dashAmountBack()); }
         }
@@ -163,9 +163,9 @@ public class PlayerAbilities : MonoBehaviour
         playerMovement.coyoteTimer = 0;
 
     }
-   
 
- 
+
+
     private IEnumerator JumpAbility()
     {
         jumpedClicked = true;
@@ -189,14 +189,15 @@ public class PlayerAbilities : MonoBehaviour
         DASHPOWERX = dashX;
         DASHPOWERY = dashY;
         UNCHANGEDDASHY = dashY;
-        height = megaJump;
+        Jumpheight = megaJump;
     }
     public Vector3 getAbilityPower()
     {
-        return new Vector3(DASHPOWERX, DASHPOWERY, height);
+        return new Vector3(DASHPOWERX, DASHPOWERY, Jumpheight);
     }
     public bool isGrounded()
     {
+        //im gonna fucking kill myslef
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
         groundThingyMajiggy = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
         Debug.DrawRay(transform.position, -Vector2.up, Color.green);
@@ -207,5 +208,13 @@ public class PlayerAbilities : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
+    }
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
+    public int getDashAmount()
+    {
+        return dashAmount;
     }
 }

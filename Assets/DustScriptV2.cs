@@ -51,6 +51,10 @@ public class DustScriptV2 : MonoBehaviour
         {
             StartCoroutine(onJump());
         }
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            debugLandingParticles();
+        }
         if (abilities.isGrounded() && !generatingDust)
         {
             StartCoroutine(checkForSkidding());
@@ -184,5 +188,9 @@ public class DustScriptV2 : MonoBehaviour
         loadSkidParticles();
         playingLanding = false;
         Debug.Log("ended ts");
+    }
+    private void debugLandingParticles()
+    {
+        playLandingParticles();
     }
 }
