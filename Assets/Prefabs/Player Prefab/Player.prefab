@@ -44,18 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5b83f9dfdc14d418c00254bec33d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersForms: []
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  rayScales:
-  - 0.45
-  - 1
-  - 1
+  rayScales: []
   timer: 0
-  vecScales:
-  - {x: 0.15, y: 0.3}
-  - {x: 0.18, y: 0.57}
-  - {x: 0, y: 0}
+  vecScales: []
+  curForm: 0
 --- !u!1 &7944302752217619906
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coefficientOfFriction: 0.075
+  coefficientOfFriction: 0.065
   rainyFrictionUp: 0
   rainyFrictionDown: 0
   isGrounded: 0
@@ -160,7 +156,7 @@ MonoBehaviour:
   forms:
   - {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
   - {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
-  dustScript: {fileID: 0}
+  prefabDustSpawner: {fileID: 0}
   smoothStopSpeed: 0.2
   maxSpeedPoint: 7
   isEasingOn: 0
@@ -170,8 +166,11 @@ MonoBehaviour:
   canJump: 1
   jumpSpeedX: 12
   jumpSpeedY: 8
+  floatTime: 0.8
+  velocitySoundThreshold: 0
+  checkingImpact: 0
   screenSize: {x: 0, y: 0}
-  inputScreenPercent: 0.2
+  inputRange: 1
   inputDetectionPercentX: 0.8
   visualizeTouchArea: 0
 --- !u!114 &1484820306327863335
@@ -304,7 +303,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7944302752217619906}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -329,7 +328,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.41214973}
+  m_Offset: {x: -0.037133455, y: -0.41214967}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -340,7 +339,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.2477503}
+  m_Size: {x: 1.6607406, y: 2.2477503}
   m_EdgeRadius: 0
 --- !u!212 &2706923324837483880
 SpriteRenderer:

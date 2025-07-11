@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FallingRock : MonoBehaviour
@@ -48,7 +49,7 @@ public class FallingRock : MonoBehaviour
 
         if (!initialRockFall)
         {
-            for (int i = 0; i < rockObj.Length; i++)//Constantly changes it's status wether it has fallen or not
+            for (int i = 0; i < rockObj.Length; i++)//Constantly changes it's status whether it has fallen or not
             {
                 if (!isRockFalling)
                 {
@@ -63,13 +64,12 @@ public class FallingRock : MonoBehaviour
             if (rockCast[i].collider == null)
             {
                 rockRb[i].bodyType = RigidbodyType2D.Static;
-                rockScript[i].hasRockFallen = true;
+                rockScript[i].hasRockFallen = true; 
             }else{
                 rockScript[i].hasRockFallen = false;
             }
         }
     }
-
     private IEnumerator InitialRockFalling(){
         
         isRockFalling = true;
@@ -101,7 +101,7 @@ public class FallingRock : MonoBehaviour
                 rockRb[i].gravityScale = gravityScales[i];
             }
         }
-
+       
         yield return new WaitUntil(() => allRocksFallen());
         for (int i = 0; i < rockScript.Length; i++)
         {
@@ -122,7 +122,7 @@ public class FallingRock : MonoBehaviour
                 return false;
             }
         }
-
+        //Look back at the timing for the pillars which they fall at a specific time which i belive is here and figure out this line of code
         return true;
     }
 

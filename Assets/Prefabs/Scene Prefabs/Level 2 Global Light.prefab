@@ -98,3 +98,5 @@ MonoBehaviour:
   initialFadeTime: 2
   strikeLengthIn: 0.1
   strikeLength: 1
+  maxPlayerLightIntensity: 0.3
+  playerLightRadius: 2
