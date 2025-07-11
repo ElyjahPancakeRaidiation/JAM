@@ -8,8 +8,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {   
-
-    
     private Physics physics;
     [Header("----Physics----")]
     [SerializeField]private float coefficientOfFriction;
@@ -54,18 +52,16 @@ public class PlayerMovement : MonoBehaviour
 
     #region PogoMovement
     [Header("Pogo Settings")]
-    public bool canJumpAgain = true;
+   
 
     public bool isPogo = false;
-    public IEnumerator jumping;
+  
 
-    private IEnumerator hop;
-    public bool canJump = true;
     public float jumpSpeedX, jumpSpeedY;
 
     public float coyoteTimer { get; set; }
 
-    public isGroundedScript isGroundedHopping;
+    private isGroundedScript isGroundedHopping;
 
     [SerializeField] private float floatTime;
     #endregion
@@ -306,18 +302,11 @@ public class PlayerMovement : MonoBehaviour
         if (horizontalInput != 0)
         {
             var checkForground = isGroundedHopping.isGroundedForHopping();
-            var oldCheckforground = playerAbility.isGrounded();
-            if (checkForground /*oldCheckforground */ && !playerAbility.getJumpNextFrame())
+       
+            if (checkForground && !playerAbility.jumpedClicked)
             {
-                if (canJump)
-                {
-                    // jumping = Jump();
-                    // StartCoroutine(jumping);
-                    hop = hopping();
-                    StartCoroutine(hop);
+                StartCoroutine(hopping());
 
-                    canJump = false;
-                }
             }
             else
             {
@@ -336,11 +325,11 @@ public class PlayerMovement : MonoBehaviour
         coyoteTimer = floatTime;
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
         physics._rb.velocity = jumpForce;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.6f);
 
         //keep checking until the player touches the ground
         yield return new WaitUntil(() => isGroundedHopping.isGroundedForHopping()/*playerAbility.isGrounded()*/);
-        canJump = true;
+    
     }
   
     
@@ -353,7 +342,8 @@ public class PlayerMovement : MonoBehaviour
     public int getFormInt() { return curForm; }
     public void setNewForm(AbilitySettingScriptable newForm){forms.Add(newForm);}
     public AbilitySettingScriptable getCurForm(){return forms[curForm];}
-    public List<AbilitySettingScriptable> getAllForms(){ return forms; }
+    
+    public List<AbilitySettingScriptable> getAllForms() { return forms; }
     public float getRainyFrictionUp() { return rainyFrictionUp; }
     public float getRainyFrictionDown(){return rainyFrictionDown;}
     public void setRainyFrictionUp(float amount){rainyFrictionUp = amount;}
