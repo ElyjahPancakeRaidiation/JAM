@@ -65,6 +65,9 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float floatTime;
     #endregion
+
+    [SerializeField] private GameObject rightArm, leftArm;
+
     public class MainTouch
     {
         public float fingerID;
@@ -95,7 +98,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // rightArm.SetActive(false);
+        // leftArm.SetActive(false);
         playerAbilities = GetComponent<PlayerAbilities>();
+        
         physics = new Physics(GetComponent<Rigidbody2D>());
         _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
         dustScript = _dustSpawner.GetComponent<DustScript>();
@@ -339,7 +345,7 @@ public class PlayerMovement : MonoBehaviour
     public float getMaxSpeedPoint(){return maxSpeedPoint;}
     public Vector2 getCurVelocity(){ return physics._rb.velocity; }
     public void setCurVelocity(Vector2 val){ physics._rb.velocity = val; }
-    public int getFormInt() { return curForm; }
+    public int getFormInt() {return curForm;}
     public void setNewForm(AbilitySettingScriptable newForm){forms.Add(newForm);}
     public AbilitySettingScriptable getCurForm(){return forms[curForm];}
     
@@ -348,6 +354,11 @@ public class PlayerMovement : MonoBehaviour
     public float getRainyFrictionDown(){return rainyFrictionDown;}
     public void setRainyFrictionUp(float amount){rainyFrictionUp = amount;}
     public void setRainyFrictionDown(float amount){rainyFrictionDown = amount;}
+    public void turnOnArms()
+    {
+        rightArm.SetActive(true);
+        leftArm.SetActive(true);
+    }
 
     //When particles collide with the player it turns on the function slippery shit making it harder for the player to go up
     //but easier to go down.

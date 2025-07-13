@@ -159,8 +159,14 @@ public class PlayerAbilities : MonoBehaviour
         playerMovement.coyoteTimer = 0;
 
     }
-   
 
+    public void ArmAbillty()
+    {
+        
+    }
+
+    //i need to get current form and check if that form is 0, but i can also check for case ball.
+    
  
     private IEnumerator JumpAbility()
     {
