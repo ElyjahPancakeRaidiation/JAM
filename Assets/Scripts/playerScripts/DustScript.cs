@@ -53,7 +53,10 @@ public class DustScript : MonoBehaviour
                 transform.position = new Vector2(player.transform.position.x - xOffset, player.transform.position.y - yOffset);
             }
         }
-        surfaceAlignment();
+        if (!generatingDust)
+        {
+            surfaceAlignment();
+        }
     }
 
     private void surfaceAlignment()

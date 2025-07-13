@@ -1,12 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Lumin;
 
 public class CameraOperator : MonoBehaviour
 {
@@ -25,7 +21,7 @@ public class CameraOperator : MonoBehaviour
     [SerializeField] private float speedUpAmount = 2;
     [SerializeField] private float slowDownAmount = 0.5f;
     private float increaseSpeedPercentage;
-    
+
     //This is the max speed point for the player, for the camera instead
     [SerializeField] private float playerMaxSpeedPoint;
     [SerializeField] private Vector2 offset;
@@ -41,16 +37,30 @@ public class CameraOperator : MonoBehaviour
     [SerializeField]
     private float leftBorder, rightBorder, upBorder, downBorder;
 
-    private bool canMove = true, followPlayer = true;
+    /// <summary>
+    /// These two bools use auto-property which is basically this line of code but in a smaller version
+    /// private bool canMove;
+    /// public bool canMove{
+    ///     get{return canMove;}
+    ///     set{canMove = value;}
+    /// }
+    /// After doing research people typically use properties over fields to make changes to the implimination instead of changing the visible surface of the class
+    /// Yes that line was directly copied from reddit. 
+    /// </summary>
+    public bool canMove { get; set; } = true;
+    public bool followPlayer { get; set; } = true;
+
     [SerializeField] private bool farFromPlayer;
     private GameObject target;
 
     private Vector2 refVec = Vector2.zero;
     private float refFloat = 0;
 
+    public bool staticXPosition{ get; set; }
+    public bool staticYPosition{ get; set; }
+
     private Coroutine changingSizeEnumerator;
-    private Coroutine changingOffsetXEnumerator;
-    private Coroutine changingOffsetYEnumerator;
+    private Coroutine changingOffsetEnumerator;
 
 
     // Start is called before the first frame update
@@ -68,10 +78,20 @@ public class CameraOperator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // float screenAspect = (float)Screen.width/Screen.height;
+        // float camHeight = _cam.orthographicSize * 2f;
+        // Bounds bounds = new(
+        //     _cam.transform.position,
+        //     new Vector2(camHeight * screenAspect, camHeight)
+        // );
+        // Debug.Log("Min: " + bounds.min); 
+
         if (followPlayer)
         {
             CameraCatchUp();
-        } else {
+        }
+        else
+        {
             if (!farFromPlayer)
             {
                 if (Vector2.Distance(transform.position, player.transform.position) > 10)
@@ -80,9 +100,7 @@ public class CameraOperator : MonoBehaviour
                 }
             }
         }
-    }
-    void FixedUpdate()
-    {
+
         if (target != null)
         {
             if (canMove) { moveCamera(target); }
@@ -94,8 +112,8 @@ public class CameraOperator : MonoBehaviour
     {
 
         //Have it offset a little by the y axis when it gets to max speed.
-        float xSmoothDamp = Mathf.SmoothDamp(transform.position.x, target.transform.position.x + offset.x, ref refVec.x, curSpeed * Time.deltaTime);
-        float ySmoothDamp = Mathf.SmoothDamp(transform.position.y, target.transform.position.y + offset.y, ref refVec.y, (curSpeed * Time.deltaTime) + 0.1f);
+        float xSmoothDamp = (!staticXPosition) ? Mathf.SmoothDamp(transform.position.x, target.transform.position.x + offset.x, ref refVec.x, curSpeed * Time.deltaTime) : transform.position.x;
+        float ySmoothDamp = (!staticYPosition) ? Mathf.SmoothDamp(transform.position.y, target.transform.position.y + offset.y, ref refVec.y, (curSpeed * Time.deltaTime) + 0.1f) : transform.position.y;
 
         //If the borders are 0 then the camera can go anywere. Otherwise clamp the camera between the specficied borders
         if (leftBorder != 0 && rightBorder != 0 && upBorder != 0 && downBorder != 0)
@@ -125,19 +143,15 @@ public class CameraOperator : MonoBehaviour
         }
         else if (farFromPlayer && followPlayer)
         {
-            Debug.Log("Being called");
             HeadingTowardsPlayer();
         }
 
     }
     public void HeadingTowardsPlayer()
     {
-        if (curSpeed > defualtSpeed)
+        if (curSpeed > defualtSpeed && Vector2.Distance(transform.position, player.transform.position) > 1)
         {
-            if (Vector2.Distance(transform.position, player.transform.position) > 1)
-            {
-                curSpeed -= Mathf.Sqrt(player.GetComponent<Rigidbody2D>().angularVelocity) * increaseSpeedPercentage * Time.deltaTime;
-            }
+            curSpeed -= Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) * increaseSpeedPercentage * Time.deltaTime;
         }
         else
         {
@@ -147,31 +161,32 @@ public class CameraOperator : MonoBehaviour
 
     public void MOVETOTARGET(GameObject target)
     {
-        if (target != player)
+        if (target != player && target != null)
         {
             followPlayer = false;
-        }else{
+        }
+        else if (target == null)
+        {
+            followPlayer = true;
+        }
+        else
+        {
             followPlayer = true;
         }
         this.target = target;
     }
     public void SETSPEED(float speed) => curSpeed = speed;
-    public void SETDEFUALTSPEED(float defualtSpeed) => this.defualtSpeed = defualtSpeed;
     public void SETINCREASESPEEDPERC(float percentage) => increaseSpeedPercentage = percentage;
     public void SETCAMERASIZE(float cameraSize)
     {
         if (changingSizeEnumerator != null) { StopCoroutine(changingSizeEnumerator); }
         changingSizeEnumerator = StartCoroutine(changeCameraSize(cameraSize, zoomSpeed));
     }
-    public void SETCAMERAOFFSETX(float x)
+
+    public void SETCAMERAOFFSET(Vector2 newOffset)
     {
-        if (changingOffsetXEnumerator != null) { StopCoroutine(changingOffsetXEnumerator); }
-        changingOffsetXEnumerator = StartCoroutine(changeCameraOffsetX(x, changingOffsetSpeed));
-    }
-    public void SETCAMERAOFFSETY(float y)
-    {
-        if (changingOffsetYEnumerator != null) { StopCoroutine(changingOffsetYEnumerator); }
-        changingOffsetYEnumerator = StartCoroutine(changeCameraOffsetY(y, changingOffsetSpeed));
+        if (changingOffsetEnumerator != null) { StopCoroutine(changingOffsetEnumerator); }
+        changingOffsetEnumerator = StartCoroutine(changeCameraOffset(newOffset, changingOffsetSpeed));
     }
     public void SETCHANGINGOFFSETSPEED(float val) => changingOffsetSpeed = val;
     public void SETZOOMSPEED(float changingSizeSpeed) => this.zoomSpeed = changingSizeSpeed;
@@ -179,31 +194,17 @@ public class CameraOperator : MonoBehaviour
     {
         followPlayer = true;
         target = player;
-
         SETCAMERASIZE(camStartSize);
-
-        SETCAMERAOFFSETX(defualtOffset.x);
-        SETCAMERAOFFSETY(defualtOffset.y);
-
-    }
-    public void SETDEFUALTOFFSETX(float newOffset) => defualtOffset.x = newOffset;
-    public void SETDEFUALTOFFSETY(float newOffset) => defualtOffset.y = newOffset;
-
-    //Setters
-    public void setFollowPlayer(bool val) => followPlayer = val;
-    public void setCanMove(bool val) => canMove = val;
-    public void setSpeed(float val)
-    {
-        defualtSpeed = val;
-        resetCurSpeed();
-    }
-
+        SETCAMERAOFFSET(defualtOffset);
+    } 
+    public void SETDEFUALTOFFSET(Vector2 newOffset) => defualtOffset = newOffset;
     //Slowly brings the current speed value back to the speed value.
-    public void resetCurSpeed() => curSpeed = Mathf.Lerp(curSpeed, defualtSpeed, slowDownAmount * Time.deltaTime);
+    private void resetCurSpeed() => curSpeed = Mathf.Lerp(curSpeed, defualtSpeed, slowDownAmount * Time.deltaTime);
 
     //This is to check if the player has gone past the cameras max speed threshold for the player in either the x or y axis.
-    public bool getPastMaxSpeedPoint(PlayerMovement player) { return ((player.getCurVelocity().x >= playerMaxSpeedPoint || player.getCurVelocity().x <= -playerMaxSpeedPoint) || (player.getCurVelocity().y >= playerMaxSpeedPoint || player.getCurVelocity().y <= -playerMaxSpeedPoint)); }
+    private bool getPastMaxSpeedPoint(PlayerMovement player) { return ((player.getCurVelocity().x >= playerMaxSpeedPoint || player.getCurVelocity().x <= -playerMaxSpeedPoint) || (player.getCurVelocity().y >= playerMaxSpeedPoint || player.getCurVelocity().y <= -playerMaxSpeedPoint)); }
 
+    //IEnumerators
     private IEnumerator changeCameraSize(float wantedFOV, float fovSpeed)
     {
 
@@ -215,23 +216,12 @@ public class CameraOperator : MonoBehaviour
 
     }
 
-    private IEnumerator changeCameraOffsetX(float newOffset, float changingOffsetSpeed)
+    private IEnumerator changeCameraOffset(Vector2 newOffset, float changingOffsetSpeed)
     {
-        //Makes sure when the players offset changes it doesn't move at an increase speed
-        if(newOffset != defualtOffset.x){curSpeed = defualtSpeed;}
-        while (offset.x != newOffset)
+        if (newOffset != defualtOffset) { curSpeed = defualtSpeed; }
+        while (offset != newOffset)
         {
-            offset = Vector2.MoveTowards(offset, new Vector2(newOffset, offset.y), changingOffsetSpeed);
-            yield return null;
-        }
-    }
-    private IEnumerator changeCameraOffsetY(float newOffset, float changingOffsetSpeed)
-    {
-        //Makes sure when the players offset changes it doesn't move at an increase speed
-        if(newOffset != defualtOffset.y){curSpeed = defualtSpeed;}
-        while (offset.y != newOffset)
-        {
-            offset = Vector2.MoveTowards(offset, new Vector2(offset.x, newOffset), changingOffsetSpeed);
+            offset = Vector2.MoveTowards(offset, newOffset, changingOffsetSpeed);
             yield return null;
         }
     }

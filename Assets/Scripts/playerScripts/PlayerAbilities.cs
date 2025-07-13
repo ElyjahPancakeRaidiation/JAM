@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using Unity.VisualScripting;
-using UnityEditor.Callbacks;
+using TMPro;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -12,6 +10,8 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
@@ -53,6 +53,8 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
@@ -76,12 +78,14 @@ public class PlayerAbilities : MonoBehaviour
 
     public void useFormsAbility()
     {
-        string formName = playerMovement.getCurForm().formName;
-        switch (formName)
+        if (canUseAbility)
         {
-            case "Ball":
+            string formName = playerMovement.getCurForm().formName;
+            switch (formName)
+            {
+                case "Ball":
 
-                //Will have the dashing ability
+                    //Will have the dashing ability
 
                 dashAbility();
                 break;
@@ -102,7 +106,8 @@ public class PlayerAbilities : MonoBehaviour
 
                 }
 
-                break;
+                    break;
+            }
         }
     }
 
@@ -186,14 +191,23 @@ public class PlayerAbilities : MonoBehaviour
     {
         this.canUseAbility = canUseAbility;
     }
-
+    public void setAbilityPower(float dashX, float dashY, float megaJump)
+    {
+        DASHPOWERX = dashX;
+        DASHPOWERY = dashY;
+        UNCHANGEDDASHY = dashY;
+        height = megaJump;
+    }
+    public Vector3 getAbilityPower()
+    {
+        return new Vector3(DASHPOWERX, DASHPOWERY, height);
+    }
     public bool isGrounded()
     {
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
-        RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
+        groundThingyMajiggy = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
         Debug.DrawRay(transform.position, -Vector2.up, Color.green);
-        return ray;
-
+        return groundThingyMajiggy;
     }
 
 

@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 569778489588872154}
   m_Layer: 0
   m_Name: MobileLayout 1
-  m_TagString: Untagged
+  m_TagString: MobileObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

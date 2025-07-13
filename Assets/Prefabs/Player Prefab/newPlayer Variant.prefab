@@ -12,17 +12,29 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
+    - target: {fileID: 2706923324837483880, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2706923324837483880, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1767478605
+      objectReference: {fileID: 0}
     - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_Constraints
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_Interpolate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_GravityScale
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3337410901015035955, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4822938141585243739, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: playersForms.Array.size
@@ -40,13 +52,33 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5809341814163335841, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.2222223
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: floatTime
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: jumpSpeedX
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: prefabDustSpawner
+      value: 
+      objectReference: {fileID: 8613837917271531883, guid: 65cacc0a62f0b89488ae28cce587bd48, type: 3}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: velocitySoundThreshold
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 51.2
+      value: -14.55
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.35
+      value: -168
       objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.z
@@ -131,9 +163,8 @@ MonoBehaviour:
   jumpFrameTimer: 3
   maxJumpFrameTimer: 0.3
   recentlyJumped: 0
-  jumpedClicked: 0
-  Jumpheight: 0
-  groundCheckerDistance: 1.07
+  height: 13.25
+  groundCheckerDistance: 1.15
   groundMask:
     serializedVersion: 2
     m_Bits: 64

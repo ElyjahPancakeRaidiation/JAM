@@ -26150,6 +26150,18 @@ PrefabInstance:
       propertyPath: rainyFriction
       value: 5.7
       objectReference: {fileID: 0}
+    - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playersForms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playersForms.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a9e934f4c187b84a91ced88bc185de2, type: 2}
+    - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playersForms.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f5b79c81b056c64984b4ef6e7c38320, type: 2}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 30.31

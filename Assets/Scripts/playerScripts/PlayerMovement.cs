@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using UnityEditor.Build.Player;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {   
@@ -17,19 +16,24 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
-    [SerializeField]private bool isGrounded;
+    [SerializeField] private bool isGrounded;
 
-#region Player Settings
+    #region Player Settings
     [Header("----Player----")]
-    [SerializeField]private bool canControl;
-    public List<AbilitySettingScriptable> forms;
+    //temp
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
+    //temp
+    [SerializeField] private bool canControl;
+    [SerializeField]private List<AbilitySettingScriptable> forms;
     private int maxForm, curForm;
     private SpriteRenderer _spriteRender;
     private PlayerAbilities playerAbilities;
-#endregion
-    
-    private GameObject _dustSpawner;
-    public DustScript dustScript;
+    #endregion
+    [SerializeField] private GameObject prefabDustSpawner;
+    GameObject _dustSpawner;
+
+    private UnityEvent playerImpact; //player lands on the ground w a certain amount of velocity/momentum
 
     #region Ball settings
     [Header("Ball Settings")]
@@ -68,6 +72,9 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private GameObject rightArm, leftArm;
 
+    private float lastVelocityY;
+    public float velocitySoundThreshold;
+    public bool checkingImpact;
     public class MainTouch
     {
         public float fingerID;
@@ -90,8 +97,8 @@ public class PlayerMovement : MonoBehaviour
     #region Mobile Settings
     [Header("Mobile Settings")]
     public Vector2 screenSize;
-    [SerializeField]public float inputScreenPercent;
-    [SerializeField]public float inputDetectionPercentX;
+    [SerializeField]public float inputRange; //i think this is in pixels idk bru, how far player needs to drag
+    [SerializeField]public float inputDetectionPercentX; //this is percentage of screen that can be used for player input
     [SerializeField]private bool visualizeTouchArea;
     #endregion
 
@@ -100,12 +107,17 @@ public class PlayerMovement : MonoBehaviour
     {
         // rightArm.SetActive(false);
         // leftArm.SetActive(false);
+        playerImpact = new UnityEvent();
         playerAbilities = GetComponent<PlayerAbilities>();
         
+        _dustSpawner = Instantiate(prefabDustSpawner);
         physics = new Physics(GetComponent<Rigidbody2D>());
-        _dustSpawner = GameObject.FindGameObjectWithTag("Dust");
-        dustScript = _dustSpawner.GetComponent<DustScript>();
+        playerImpact.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
         _spriteRender = GetComponent<SpriteRenderer>();
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
+
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
         playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
@@ -126,17 +138,14 @@ public class PlayerMovement : MonoBehaviour
         physics.setRainyFrictionUp(rainyFrictionUp);
         physics.setRainyFrictionDown(rainyFrictionDown);
 
-        maxForm = forms.Count-1;
-        // #if UNITY_ANDROID
-        //     if(canControl){mobileInput();}
-        // #else
-        // if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
-        // #endif
-
-        if(canControl){horizontalInput = Input.GetAxisRaw("Horizontal");}else{ horizontalInput = 0; }
-        
-
+        maxForm = forms.Count - 1;
+#if UNITY_ANDROID
+        if(canControl){mobileInput();}
+#else
+        if (canControl) { horizontalInput = Input.GetAxisRaw("Horizontal"); }
+#endif
         //This prevents the easing from going above what its supposed to be
+        if(!canControl){ horizontalInput = 0; }
 
         if (isEasingOn)
         {
@@ -176,22 +185,31 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Change keybind so the player gets it from the game manager
-        if(Input.GetKeyDown(KeyCode.LeftShift)){
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
             changeForm();
             withEasing = false;
         }
 
         //Skips the form if it is a add on
-        if(forms[curForm].formAddOn){
+        if (forms[curForm].formAddOn)
+        {
             changeForm();
         }
 
-        if(forms[curForm].formName== "Pogo"){
+        if (forms[curForm].formName == "Pogo")
+        {
             isPogo = true;
         }
         else isPogo = false;
         isGrounded = playerAbilities.isGrounded(); //LMAO
         physics.setCoefficientOfFriction(coefficientOfFriction);
+        lastVelocityX = physics._rb.velocity.x;
+        lastVelocityY = physics._rb.velocity.y;
+        if (!playerAbilities.isGrounded() && !checkingImpact)
+        {
+            StartCoroutine(impactSound());
+        }
     }
 
     
@@ -212,10 +230,7 @@ public class PlayerMovement : MonoBehaviour
             if (mainTouch != null)
             {
                 updateMainTouch();
-                // horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
-            }
-            else
-            {
+            }else{
                 horizontalInput = 0;
             }
         }
@@ -237,7 +252,7 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     mainTouch.touchPos = touch.position;
-                    horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/(screenSize.x * inputScreenPercent), -1, 1); //screenSize.x * inputScreenPercent is the max distance the player can move their finger to get the max input of 1
+                    horizontalInput = Mathf.Clamp(mainTouch.getXDistance()/inputRange, -1, 1); //screenSize.x * inputRange is the max distance the player can move their finger to get the max input of 1
                 }
             }
         }
@@ -253,15 +268,16 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         physics.Friction();
-        if(GetComponent<CircleCollider2D>().enabled){
-            
+        if (GetComponent<CircleCollider2D>().enabled)
+        {
+
             ballMovement();
-            
-        }else if(GetComponent<BoxCollider2D>().enabled){
+
+        }
+        else if (GetComponent<BoxCollider2D>().enabled)
+        {
             torsoMovement();
         }
-        dustScript.checkForDust();
-        lastVelocityX = physics._rb.velocity.x;
     }
     public float getAcceleration(){
         float aMultiplier; //acceleration multiplier
@@ -275,16 +291,19 @@ public class PlayerMovement : MonoBehaviour
     }
     public void changeForm()
     {
-        if (curForm == maxForm)
+        if (canControl)
         {
-            curForm = 0;
-        }
-        else
-        {
-            curForm++;
-        }
+            if (curForm == maxForm)
+            {
+                curForm = 0;
+            }
+            else
+            {
+                curForm++;
+            }
 
-        forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+            forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
+        }
         // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
         // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
@@ -337,9 +356,27 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitUntil(() => isGroundedHopping.isGroundedForHopping()/*playerAbility.isGrounded()*/);
     
     }
-  
-    
-    public void setCanControl(bool value){canControl = value;}
+    public IEnumerator impactSound()
+    {
+        checkingImpact = true;
+        yield return new WaitUntil(() => playerAbility.isGrounded());
+        Debug.Log(physics._rb.velocity.y);
+        if (Mathf.Abs(physics._rb.velocity.y) > velocitySoundThreshold)
+        {
+            StartCoroutine(audioManagerV2.playPlayerSFX("Landing")); //THIS WORKS BUT IDK WHY STUF STILL BREAKING MAN
+            playerImpact.Invoke();
+        }
+        checkingImpact = false;
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        // if (collision.relativeVelocity.y > velocitySoundThreshold)
+        // {
+        //     StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
+        //     playerImpact.Invoke();
+        // }
+    }
+    public void setCanControl(bool value) { canControl = value; }
     public float getInput(){return horizontalInput;}
     public void setSpeed(float speed){movementSpeed = speed;}
     public float getMaxSpeedPoint(){return maxSpeedPoint;}
@@ -390,10 +427,19 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
     private IEnumerator EasingBackOn(){
         yield return new WaitForSeconds(2f);
         isEasingOn = true;
     }
+    public Vector2 GetJumpSpeed()
+    {
+        return new Vector2(jumpSpeedX, jumpSpeedY);
+    }
 
+    // Setter for jumpSpeedX and jumpSpeedY from Vector2
+    public void SetJumpSpeed(Vector2 value)
+    {
+        jumpSpeedX = value.x;
+        jumpSpeedY = value.y;
+    }
 }
