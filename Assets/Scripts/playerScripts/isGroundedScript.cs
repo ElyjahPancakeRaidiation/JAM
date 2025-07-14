@@ -23,16 +23,16 @@ public class isGroundedScript : MonoBehaviour
     {
 
         // Debug.Log(player.GetComponent<PlayerMovement>().getAllForms());
-       
+        // playersForms = player.GetComponent<PlayerMovement>().forms;
+        // curForm = player.GetComponent<PlayerMovement>().getFormInt();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
         player = GameObject.FindGameObjectWithTag("Player");
         curForm = player.GetComponent<PlayerMovement>().getFormInt();
-        
         
         //transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
 
@@ -58,7 +58,7 @@ public class isGroundedScript : MonoBehaviour
 
         return Physics2D.OverlapBox(transform.position + (Vector3)player.GetComponent<PlayerMovement>().getCurForm().startPositionOffset, player.GetComponent<PlayerMovement>().getCurForm().groundChecker, angle, groundLayer);
         //     return Physics2D.OverlapBox(transform.position + offset, groundChecker, angle, groundLayer);
-    }
+    } 
     //specifically for hopping
     public bool isGroundedForHopping()
     {
