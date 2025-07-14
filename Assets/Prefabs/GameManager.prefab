@@ -93,5 +93,5 @@ MonoBehaviour:
   playerAbilityKey: 32
   hasSpawnPosition: 1
   playerSpawnPosition: {fileID: 0}
-  build: 0
+  build: 1
   clipToPlay: {fileID: 0}

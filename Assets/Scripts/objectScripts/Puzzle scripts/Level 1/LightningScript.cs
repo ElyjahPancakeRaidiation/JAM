@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+[RequireComponent(typeof(Light2D), typeof(AudioSource))]
 public class LightningScript : MonoBehaviour
 {
     [System.Serializable]
@@ -70,6 +71,7 @@ public class LightningScript : MonoBehaviour
             if (chance < chanceOfLightning)
             {
                 int cheekedUpAmt = new System.Random().Next(1, maxCheekedUpAmt + 1);
+                //Cheeked up is diabolical - E
                 Debug.Log("Cheeked up: " + cheekedUpAmt);
                 playingLightning = true;
                 light2D.intensity = maxIntensity;

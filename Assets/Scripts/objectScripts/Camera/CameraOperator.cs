@@ -11,20 +11,28 @@ public class CameraOperator : MonoBehaviour
     private GameObject player;
 
     [SerializeField] private float defualtSpeed;
-    [SerializeField] private float curSpeed;
+    private float curSpeed;
 
     //Used for how fast the camera should zoom in or out.
     [SerializeField, Tooltip("How fast the camera will zome in and out this is mainly changed in the manager")]
     private float zoomSpeed = 8;
 
     [Header("       Camera speed and position settigns      ")]
-    [SerializeField] private float speedUpAmount = 2;
-    [SerializeField] private float slowDownAmount = 0.5f;
+    //Controls how fast the camera is when trying to catch up to the player
+    private float speedUpAmount = 2;
+    //Controls how fast the camera is when going back to its normal speed
+    private float slowDownAmount = 0.5f;
+
+    //This is for the camera manager to control how fast the camera will go back to the player after focusing on a seperate object.
     private float increaseSpeedPercentage;
 
     //This is the max speed point for the player, for the camera instead
     [SerializeField] private float playerMaxSpeedPoint;
+
+    //Offset from the currently focused object's position
     [SerializeField] private Vector2 offset;
+
+    //How fast the offset changes when the camera manager activates
     private float changingOffsetSpeed;
     private Vector2 defualtOffset;
 
@@ -50,14 +58,15 @@ public class CameraOperator : MonoBehaviour
     public bool canMove { get; set; } = true;
     public bool followPlayer { get; set; } = true;
 
-    [SerializeField] private bool farFromPlayer;
+    private bool farFromPlayer;
     private GameObject target;
 
     private Vector2 refVec = Vector2.zero;
     private float refFloat = 0;
 
-    public bool staticXPosition{ get; set; }
-    public bool staticYPosition{ get; set; }
+    //static position bools is used to shut off a cameras axis that is following the player
+    public bool staticXPosition { get; set; }
+    public bool staticYPosition { get; set; }
 
     private Coroutine changingSizeEnumerator;
     private Coroutine changingOffsetEnumerator;
@@ -147,7 +156,7 @@ public class CameraOperator : MonoBehaviour
         }
 
     }
-    public void HeadingTowardsPlayer()
+    private void HeadingTowardsPlayer()
     {
         if (curSpeed > defualtSpeed && Vector2.Distance(transform.position, player.transform.position) > 1)
         {
@@ -159,7 +168,11 @@ public class CameraOperator : MonoBehaviour
         }
     }
 
-    public void MOVETOTARGET(GameObject target)
+    public void shakeCamera(float duration, float strength)
+    {
+        StartCoroutine(CameraShake(duration, strength));
+    }
+    public void moveToTarget(GameObject target)
     {
         if (target != player && target != null)
         {
@@ -175,29 +188,21 @@ public class CameraOperator : MonoBehaviour
         }
         this.target = target;
     }
-    public void SETSPEED(float speed) => curSpeed = speed;
-    public void SETINCREASESPEEDPERC(float percentage) => increaseSpeedPercentage = percentage;
-    public void SETCAMERASIZE(float cameraSize)
+    public void setSpeed(float speed) => curSpeed = speed;
+    public void setIncreaseSpeedPerc(float percentage) => increaseSpeedPercentage = percentage;
+    public void setCameraSize(float cameraSize)
     {
         if (changingSizeEnumerator != null) { StopCoroutine(changingSizeEnumerator); }
-        changingSizeEnumerator = StartCoroutine(changeCameraSize(cameraSize, zoomSpeed));
+        changingSizeEnumerator = StartCoroutine(ChangeCameraSize(cameraSize, zoomSpeed));
     }
 
-    public void SETCAMERAOFFSET(Vector2 newOffset)
+    public void setCameraOffset(Vector2 newOffset)
     {
         if (changingOffsetEnumerator != null) { StopCoroutine(changingOffsetEnumerator); }
-        changingOffsetEnumerator = StartCoroutine(changeCameraOffset(newOffset, changingOffsetSpeed));
+        changingOffsetEnumerator = StartCoroutine(ChangeCameraOffset(newOffset, changingOffsetSpeed));
     }
-    public void SETCHANGINGOFFSETSPEED(float val) => changingOffsetSpeed = val;
-    public void SETZOOMSPEED(float changingSizeSpeed) => this.zoomSpeed = changingSizeSpeed;
-    public void DEFUALTSETTINGS()
-    {
-        followPlayer = true;
-        target = player;
-        SETCAMERASIZE(camStartSize);
-        SETCAMERAOFFSET(defualtOffset);
-    } 
-    public void SETDEFUALTOFFSET(Vector2 newOffset) => defualtOffset = newOffset;
+    public void setChangingOffsetSpeed(float val) => changingOffsetSpeed = val;
+    public void setZoomSpeed(float changingSizeSpeed) => this.zoomSpeed = changingSizeSpeed;
     //Slowly brings the current speed value back to the speed value.
     private void resetCurSpeed() => curSpeed = Mathf.Lerp(curSpeed, defualtSpeed, slowDownAmount * Time.deltaTime);
 
@@ -205,7 +210,7 @@ public class CameraOperator : MonoBehaviour
     private bool getPastMaxSpeedPoint(PlayerMovement player) { return ((player.getCurVelocity().x >= playerMaxSpeedPoint || player.getCurVelocity().x <= -playerMaxSpeedPoint) || (player.getCurVelocity().y >= playerMaxSpeedPoint || player.getCurVelocity().y <= -playerMaxSpeedPoint)); }
 
     //IEnumerators
-    private IEnumerator changeCameraSize(float wantedFOV, float fovSpeed)
+    private IEnumerator ChangeCameraSize(float wantedFOV, float fovSpeed)
     {
 
         while (_cam.orthographicSize != wantedFOV)
@@ -216,7 +221,7 @@ public class CameraOperator : MonoBehaviour
 
     }
 
-    private IEnumerator changeCameraOffset(Vector2 newOffset, float changingOffsetSpeed)
+    private IEnumerator ChangeCameraOffset(Vector2 newOffset, float changingOffsetSpeed)
     {
         if (newOffset != defualtOffset) { curSpeed = defualtSpeed; }
         while (offset != newOffset)
@@ -225,5 +230,36 @@ public class CameraOperator : MonoBehaviour
             yield return null;
         }
     }
+
+    private IEnumerator CameraShake(float duration, float strength)
+    {
+        float time = 0;
+        //this takes place of the strength variable so it can change its value while not affecting the strength variable in the inspector
+        float curStrength = strength;
+        //ref variables are for the smoothdamps
+        float refStrengthVel = 0;
+
+        while (time < duration || curStrength > 0.1f)
+        {
+            //lowers the strength to zero so its a smooth transition
+            if (time > duration - 2f)
+            {
+                curStrength = Mathf.SmoothDamp(curStrength, 0, ref refStrengthVel, 1.5f);
+            }
+            else
+            {
+                curStrength = strength;
+            }
+            float randX = UnityEngine.Random.value - 0.5f;
+            float randY = UnityEngine.Random.value - 0.5f;
+            float randZ = UnityEngine.Random.value - 0.5f;
+            transform.localEulerAngles = new Vector3(randX, randY, randZ) * curStrength;
+            //Bro who ever is reading this and hasn't seen the camera shake go look at that shit now, funny as hell (we dont curse.).
+            time += Time.deltaTime;
+            yield return null;
+        }
+        transform.localEulerAngles = Vector3.zero;
+    }
+
 
 }
