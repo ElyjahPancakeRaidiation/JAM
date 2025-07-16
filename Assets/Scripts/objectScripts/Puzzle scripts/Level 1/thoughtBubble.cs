@@ -48,10 +48,10 @@ public class thoughtBubble : MonoBehaviour
         yield return new WaitForSecondsRealtime(maxTime);
         if (!completed)
         {
-            triggerThoughtBubble(true, positionOffset);
+            if (triggerThoughtBubble != null) { triggerThoughtBubble(true, positionOffset); }
             yield return new WaitUntil(() => playerAbilities.getDashAmount() < 1);
         }
-        triggerThoughtBubble(false, positionOffset);
+        if (triggerThoughtBubble!=null){triggerThoughtBubble(false, positionOffset);}
         completed = true;
     }
     

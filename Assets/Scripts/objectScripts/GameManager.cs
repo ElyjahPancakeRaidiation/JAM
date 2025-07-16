@@ -166,17 +166,23 @@ public class GameManager : MonoBehaviour
     //Both enumerators waits until their transition animation ends before switching scenes
     private IEnumerator TransitionChangeScene(int sceneNum)
     {
-        allCanvasObj._transitionsAnim.SetBool("IdleOnStart", false);
-        allCanvasObj._transitionsAnim.SetTrigger("SceneTransition");
-        yield return new WaitForSecondsRealtime(allCanvasObj.sceneTransitionEndClip.length);
+        if (allCanvasObj != null)
+        {
+            allCanvasObj._transitionsAnim.SetBool("IdleOnStart", false);
+            allCanvasObj._transitionsAnim.SetTrigger("SceneTransition");
+            yield return new WaitForSecondsRealtime(allCanvasObj.sceneTransitionEndClip.length);
+        }
         changeSceneInstant(sceneNum);
     }
 
     private IEnumerator MainMenuChangeScene()
     {
-        allCanvasObj._transitionsAnim.SetBool("IdleOnStart", false);
-        allCanvasObj._transitionsAnim.SetTrigger("MainMenuTransition");
-        yield return new WaitForSecondsRealtime(allCanvasObj.mainMenuTransitionClip.length);
+        if (!allCanvasObj)
+        {
+            allCanvasObj._transitionsAnim.SetBool("IdleOnStart", false);
+            allCanvasObj._transitionsAnim.SetTrigger("MainMenuTransition");
+            yield return new WaitForSecondsRealtime(allCanvasObj.mainMenuTransitionClip.length);
+        }
         changeSceneInstant(0);
     }
 
