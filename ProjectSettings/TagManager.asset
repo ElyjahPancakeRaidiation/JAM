@@ -30,6 +30,7 @@ TagManager:
   - MovingGroundPoint
   - MobileObj
   - PCObj
+  - AllCanvas
   layers:
   - Default
   - TransparentFX

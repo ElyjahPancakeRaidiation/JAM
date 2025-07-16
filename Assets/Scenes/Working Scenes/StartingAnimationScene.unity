@@ -306,7 +306,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAbilityKey: 0
+  pauseKey: 0
+  sceneNum: 0
   hasSpawnPosition: 0
+  onStartTransition: 1
+  canPause: 1
   playerSpawnPosition: {fileID: 0}
   build: 0
   clipToPlay: {fileID: 0}
@@ -411,6 +415,10 @@ PrefabInstance:
       propertyPath: inGameEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1568091336}
+    - target: {fileID: 4334148466135264138, guid: f2b12f2d9158e2d408810d2ae4d9399b, type: 3}
+      propertyPath: inGameEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: changeSceneInstant
+      objectReference: {fileID: 0}
     - target: {fileID: 9167094591487382404, guid: f2b12f2d9158e2d408810d2ae4d9399b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -85.87472

@@ -17,7 +17,7 @@ public class TestManager : MonoBehaviour
     [Header("Pause Menu")]
     [SerializeField]private Animator transitionAnim;
     [SerializeField]private AnimationClip start, end;
-    public static bool transitioned;
+    // public static bool transitioned;
     private GameObject buttonCotainer;
     private GameObject pauseMenu;
     [SerializeField]private GameObject exitBallTransition;//exit ball transition relates to the games exit animation.
@@ -94,12 +94,15 @@ public class TestManager : MonoBehaviour
     //Gamemanger also acts as a scene transitioner for the player
     private void OnTriggerEnter2D(Collider2D other) {StartCoroutine(Transition(nextSceneNum));}
 
-    private IEnumerator Transition(int scene){
+
+
+    private IEnumerator Transition(int scene)
+    {
         transitionAnim.SetTrigger("Transition");
-        transitioned = true;
+        // transitioned = true;
         yield return new WaitForSeconds(start.length);
         SceneManager.LoadScene(scene);
-        transitioned = false;
+        // transitioned = false;
     }
 
     public IEnumerator RespawnLevel3(){
@@ -118,10 +121,10 @@ public class TestManager : MonoBehaviour
     private IEnumerator ExitTransition(){
         //exit = false;
         exitBallTransition.SetActive(true);
-        transitioned = true;
+        // transitioned = true;
         yield return new WaitForSeconds(mainMenuTransition.length);
         SceneManager.LoadScene(0);
-        transitioned = false;
+        // transitioned = false;
     }
 
     //Buttons for the main menu

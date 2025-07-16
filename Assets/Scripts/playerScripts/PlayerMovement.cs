@@ -70,6 +70,16 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float floatTime;
     #endregion
+
+    #region Arm movement variables
+
+    [Header("Arm")]
+    [SerializeField]private GameObject leftArm;
+    [SerializeField]private GameObject rightArm;
+    public bool hasArms;
+
+    #endregion
+    
     private float lastVelocityY;
     public float velocitySoundThreshold;
     public bool checkingImpact;

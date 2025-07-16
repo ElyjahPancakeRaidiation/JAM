@@ -40,6 +40,22 @@ public class PlayerAbilities : MonoBehaviour
 
     #endregion
 
+    #region Arm variables
+    [Header("Arms Variables")]
+
+    [SerializeField] private HingeJoint2D hinge;
+    private Collider2D armCol;
+    [SerializeField] private LayerMask vineLayer;
+    [SerializeField] private float armColRadius;
+
+    public bool isConnected;
+
+    [SerializeField] private float boostX, boostY, grabBoostX, grabboostY;//For the boost of the swing
+    [SerializeField] private Vector2 rightSide, leftSide;
+    private Vector2 side;//The offical position of where the hinge anchor is going to be
+
+    #endregion
+
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
 
@@ -57,7 +73,8 @@ public class PlayerAbilities : MonoBehaviour
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
-        
+        hinge = GetComponent<HingeJoint2D>();
+
     }
 
     // Update is called once per frame
@@ -127,12 +144,15 @@ public class PlayerAbilities : MonoBehaviour
                         //   pogoAbility();
                         Debug.Log(isGroundedScript.isGrounded());
                     }
-                    else if (playerMovement.coyoteTimer > 0) {
+                    else if (playerMovement.coyoteTimer > 0)
+                    {
                         StartCoroutine(JumpCoyoteTimer());
                         newJumpAbliity();
                         Debug.Log("playing");
                     }
-
+                    break;
+                case "Arm":
+                    StartCoroutine(Swinging());
                     break;
             }
         }
@@ -160,7 +180,7 @@ public class PlayerAbilities : MonoBehaviour
             {
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
             }
-            
+
             dashAmount--;
             if (dashAmount == 0) { StartCoroutine(dashAmountBack()); }
         }
@@ -174,8 +194,8 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-    
-   
+
+
     #endregion
 
     #region Pogo Ability
@@ -214,7 +234,7 @@ public class PlayerAbilities : MonoBehaviour
         float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
         _rb.velocity = Verticaldirection;
-       
+
 
 
 
@@ -258,5 +278,84 @@ public class PlayerAbilities : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, .5f, 0), armColRadius);
     }
+    
+    #region Arm Ability
+
+    private void Grab(){
+
+        if (armCol != null)
+        {
+            if (IsVineDirRight(armCol.transform.position))
+            {
+                side = rightSide;
+            }
+            else{
+                side = leftSide;
+            }
+
+            if (!isConnected)
+            {
+                if (playerMovement.getFormInt() == 1)
+                {
+                    _rb.freezeRotation = true;
+                }
+            }
+            else
+            {
+                _rb.freezeRotation = false;
+            }
+        }
+    }
+
+    IEnumerator Swinging(){
+        if (!isConnected)
+        {
+            if (!isGrounded())
+            {
+                playerMovement.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+                hinge.enabled = true;
+                hinge.autoConfigureConnectedAnchor = false;
+                hinge.useLimits = true;
+                Vector2 vec = armCol.GetComponent<vinetest>().transformTest.localPosition;
+                hinge.connectedBody = armCol.GetComponent<Rigidbody2D>();
+                hinge.anchor = side;
+                hinge.connectedAnchor = vec;
+                armCol.GetComponent<vinetest>().onVine = true;
+                _rb.AddForce(new Vector2(playerMovement.getHorizontalInput() * grabBoostX, grabboostY), ForceMode2D.Impulse);
+                isConnected = !isConnected;
+                    
+                yield return new WaitForEndOfFrame();
+                StopCoroutine(Swinging());
+            }
+        }
+        else
+        {
+
+            hinge.connectedBody = null;
+            hinge.enabled = false;
+            _rb.AddForce(new Vector2(playerMovement.getHorizontalInput() * boostX, boostY), ForceMode2D.Impulse);
+            gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+            armCol.GetComponent<vinetest>().onVine = false;
+            isConnected = !isConnected;
+            StopCoroutine(Swinging());
+        }
+    }
+
+    bool IsVineDirRight(Vector2 vine){
+        if (vine.x > transform.position.x)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    void FixedUpdate() {
+        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, .5f, 0), armColRadius, vineLayer);
+    }
+
+
+    #endregion
 }

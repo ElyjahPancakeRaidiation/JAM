@@ -82,7 +82,7 @@ public class Abilities : MonoBehaviour
         switch (PlayerController.playerForm)
         {
             case PlayerController.playerForms.Ball:
-                Dash();
+                // Dash();
                 break;
             case PlayerController.playerForms.Pogo:
                 //Have the functions for pogos abilities
@@ -111,33 +111,33 @@ public class Abilities : MonoBehaviour
     }
     
     #region Ball abilites
-    private void Dash(){
-        if (!TestManager.transitioned)
-        {
-            if (Input.GetKeyDown(abilityKey) || usedAbility)
-            {
-                tryingToDash = true;
-                attemptingToDashTimer = 0;
-                usedAbility = false;
-            }
-            if (tryingToDash)
-            {
-                attemptingToDashTimer += Time.deltaTime;
-                if (attemptingToDashTimer > dashInputForgivenessTime)
-                {
-                    tryingToDash = false;
-                }
-            }
-            if (tryingToDash && !isDashing && player.horiLatestInput != 0)
-            {
-                if (dashAmount > 0 || bonusCharges > 0)
-                {
-                    StartCoroutine(Dashing(dashingDuration));
-                    StartCoroutine(ignoreResistences());
-                }
-            }
-        }
-    }
+    // private void Dash(){
+    //     if (!TestManager.transitioned)
+    //     {
+    //         if (Input.GetKeyDown(abilityKey) || usedAbility)
+    //         {
+    //             tryingToDash = true;
+    //             attemptingToDashTimer = 0;
+    //             usedAbility = false;
+    //         }
+    //         if (tryingToDash)
+    //         {
+    //             attemptingToDashTimer += Time.deltaTime;
+    //             if (attemptingToDashTimer > dashInputForgivenessTime)
+    //             {
+    //                 tryingToDash = false;
+    //             }
+    //         }
+    //         if (tryingToDash && !isDashing && player.horiLatestInput != 0)
+    //         {
+    //             if (dashAmount > 0 || bonusCharges > 0)
+    //             {
+    //                 StartCoroutine(Dashing(dashingDuration));
+    //                 StartCoroutine(ignoreResistences());
+    //             }
+    //         }
+    //     }
+    // }
 
     public void abilitiesButton(){
         if(!usedAbility){
