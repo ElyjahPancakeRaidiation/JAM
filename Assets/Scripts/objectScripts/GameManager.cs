@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MainMenuChangeScene()
     {
-        if (!allCanvasObj)
+        if (allCanvasObj != null)
         {
             allCanvasObj._transitionsAnim.SetBool("IdleOnStart", false);
             allCanvasObj._transitionsAnim.SetTrigger("MainMenuTransition");

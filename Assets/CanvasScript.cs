@@ -49,7 +49,7 @@ public class CanvasScript : MonoBehaviour
         if(pauseCanvas!=null){pauseCanvas.SetActive(!pauseCanvas.activeSelf);}
     }
 
-    private void SetActiveThoughtBubble(bool isActive, Vector2 offset)
+    private void SetActiveThoughtBubble(bool isActive)
     {
         thoughtBubbleObj.SetActive(isActive);
         isThoughtBubbleFollow = isActive;

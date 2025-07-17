@@ -5,7 +5,7 @@ using System;
 
 public class thoughtBubble : MonoBehaviour
 {
-    public static event Action<bool, Vector2> triggerThoughtBubble;
+    public static event Action<bool> triggerThoughtBubble;
     private PlayerAbilities playerAbilities;
     private bool completed = false;
 
@@ -48,10 +48,10 @@ public class thoughtBubble : MonoBehaviour
         yield return new WaitForSecondsRealtime(maxTime);
         if (!completed)
         {
-            if (triggerThoughtBubble != null) { triggerThoughtBubble(true, positionOffset); }
+            if (triggerThoughtBubble != null) { triggerThoughtBubble(true); }
             yield return new WaitUntil(() => playerAbilities.getDashAmount() < 1);
         }
-        if (triggerThoughtBubble!=null){triggerThoughtBubble(false, positionOffset);}
+        if (triggerThoughtBubble!=null){triggerThoughtBubble(false);}
         completed = true;
     }
     

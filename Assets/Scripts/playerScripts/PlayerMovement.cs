@@ -125,7 +125,6 @@ public class PlayerMovement : MonoBehaviour
         audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
 
         forms[curForm].formSetting(physics._rb, _spriteRender, GetComponent<CircleCollider2D>(), GetComponent<BoxCollider2D>());
-        playerAbility = GetComponent<PlayerAbilities>();
         isEasingOn = true;
 
         screenSize = new Vector2(Screen.width, Screen.height);
