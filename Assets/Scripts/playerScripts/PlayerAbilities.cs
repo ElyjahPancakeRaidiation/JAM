@@ -10,6 +10,7 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
+    private HingeJoint2D arms;
     private GameObject audioManager;
     private AudioManagerV2 audioManagerV2;
 
@@ -43,7 +44,7 @@ public class PlayerAbilities : MonoBehaviour
 
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
-
+    [SerializeField] private bool hasArms;
     public bool usedJump;
 
     // Start is called before the first frame update
@@ -53,13 +54,15 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
+        arms = GetComponent<HingeJoint2D>();
+        arms.enabled = false;
         audioManager = GameObject.FindGameObjectWithTag("AudioManager");
         audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
         jumpedClicked = false;
-
+        hasArms = true;
     }
 
     // Update is called once per frame
@@ -81,37 +84,70 @@ public class PlayerAbilities : MonoBehaviour
         if (canUseAbility)
         {
             string formName = playerMovement.getCurForm().formName;
-            switch (formName)
+            if (!playerMovement.currentVine)
             {
-                case "Ball":
+                switch (formName)
+                {
+                    case "Ball":
 
-                    //Will have the dashing ability
+                        //Will have the dashing ability
 
-                    dashAbility();
-                    break;
-                case "Pogo":
-                    //Will have the mega jump 
-
-
-                    if (isGroundedScript.isGrounded())
-                    {
-                        StartCoroutine(JumpAbility());
+                        dashAbility();
+                        break;
+                    case "Pogo":
+                        //Will have the mega jump 
 
 
-                    }
-                    else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65)
-                    {
-                        StartCoroutine(JumpCoyoteTimer());
+                        if (isGroundedScript.isGrounded())
+                        {
+                            StartCoroutine(JumpAbility());
 
-                        StartCoroutine(JumpAbility());
 
-                    }
+                        }
+                        else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65)
+                        {
+                            StartCoroutine(JumpCoyoteTimer());
 
-                    break;
+                            StartCoroutine(JumpAbility());
+
+                        }
+                        else
+                        {
+                            //not grounded, so at this point the only thing ability key will do is potentially grab vines
+                            Debug.Log("Getting ran?");
+                            if (hasArms)
+                            {
+                                checkForVines();
+                            }
+                        }
+
+                        break;
+                }
+            }
+            else
+            {
+                detach();
             }
         }
     }
 
+    private void checkForVines()
+    {
+        Debug.Log("inside check for vines");
+        Collider2D collider = Physics2D.OverlapBox(gameObject.transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, LayerMask.GetMask("Vine"));
+        if (collider)
+        {
+            arms.enabled = true;
+            arms.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
+            playerMovement.currentVine = collider.transform.parent;
+        }
+    }
+    private void detach()
+    {
+        arms.connectedBody = null;
+        arms.enabled = false;
+        playerMovement.currentVine = null;
+    }
 
 
     #region Ball Ability

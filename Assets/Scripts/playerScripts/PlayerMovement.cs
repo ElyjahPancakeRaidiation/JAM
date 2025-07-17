@@ -99,7 +99,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float inputDetectionPercentX; //this is percentage of screen that can be used for player input
     [SerializeField] private bool visualizeTouchArea;
     #endregion
-
+    #region VineMovement
+    [Header("Vine Settings")]
+    public float swingForce;
+    public Transform currentVine;
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
@@ -271,7 +275,14 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (GetComponent<BoxCollider2D>().enabled)
         {
-            torsoMovement();
+            if (currentVine)
+            {
+                vineMovement();
+            }
+            else
+            {
+                torsoMovement();
+            }
         }
     }
     public float getAcceleration()
@@ -342,8 +353,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-
+    private void vineMovement()
+    {
+        physics._rb.AddRelativeForce(new Vector2(horizontalInput, 0) * swingForce);
+    }
     public float getHorizontalInput()
     {
         return horizontalInput;
@@ -363,7 +376,7 @@ public class PlayerMovement : MonoBehaviour
     {
         checkingImpact = true;
         yield return new WaitUntil(() => groundedScript.isGrounded());
-        Debug.Log(physics._rb.velocity.y);
+        //Debug.Log(physics._rb.velocity.y);
         if (Mathf.Abs(physics._rb.velocity.y) > velocitySoundThreshold)
         {
             StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
