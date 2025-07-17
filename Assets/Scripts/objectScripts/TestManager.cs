@@ -92,7 +92,10 @@ public class TestManager : MonoBehaviour
     }
 
     //Gamemanger also acts as a scene transitioner for the player
-    private void OnTriggerEnter2D(Collider2D other) {StartCoroutine(Transition(nextSceneNum));}
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player")) { StartCoroutine(Transition(nextSceneNum)); }
+    }
 
 
 

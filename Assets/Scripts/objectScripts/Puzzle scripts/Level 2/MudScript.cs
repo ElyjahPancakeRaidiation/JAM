@@ -6,28 +6,31 @@ public class MudScript : MonoBehaviour
 {
     private PolygonCollider2D _collider;
     private GameObject player;
-    private PlayerMovement playerMovement;
-    private PlayerAbilities playerAbilities;
-    private GameObject splashObject;
+    private PlayerMovement pm;
+    private PlayerAbilities pa;
     private ParticleSystem mudParticles;
-    private AudioSource audio;
-    [SerializeField]private float defaultCOF;
+    private bool playerWithin;
+    //Default values that are saved on start
+    private float defaultCOF;
+    private Vector2 defaultPogoSpeed;
+    private Vector3 defaultAbilityPower; //x is dashx, y is dashy, and z is the height of the megajump
+    ///////////////////////////////////////////
+    
     [SerializeField] private float mudCOF;
-    [SerializeField]private float splashLimit;
+    [SerializeField] private float dashPowerModifier;
+    [SerializeField] private float splashLimit;
 
     void Start()
-    {  
+    {
         _collider = GetComponent<PolygonCollider2D>();
         player = GameObject.FindGameObjectWithTag("Player");
-        playerMovement = player.GetComponent<PlayerMovement>();
-        playerAbilities = player.GetComponent<PlayerAbilities>();
-        audio = GetComponent<AudioSource>();
+        pm = player.GetComponent<PlayerMovement>();
+        pa = player.GetComponent<PlayerAbilities>();
 
-        splashObject = GameObject.FindGameObjectWithTag("SplashParticles");
-        mudParticles = splashObject.GetComponent<ParticleSystem>();
-        audio = splashObject.GetComponent<AudioSource>();
-
-        defaultCOF = playerMovement.getCoefficientOfFriction(); // Store the default coefficient of friction
+        defaultCOF = pm.getCoefficientOfFriction(); // Store the default coefficient of friction
+        defaultPogoSpeed = pm.GetJumpSpeed();
+        defaultAbilityPower = pa.getAbilityPower();
+        //Debug.Log(defaultAbilityPower.z);
     }
     void Update()
     {
@@ -36,30 +39,26 @@ public class MudScript : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-            Debug.Log("bro in the mud");
-            splashObject.transform.position = new Vector2(collision.transform.position.x, collision.transform.position.y - 0.5f);
-            float ySpeed = Mathf.Abs(collision.GetComponent<Rigidbody2D>().velocity.y);
-            if(ySpeed > splashLimit){
-                if(!audio.isPlaying)
-                {
-                    audio.Play();
-                }
-                var emitParams = new ParticleSystem.EmitParams();
-                emitParams.startColor = new Color(0.60f, 0.2f, 0.0f); //change this so that we get the color from the sprite renderer
-                emitParams.startSize = 0.2f;
-                mudParticles.Emit(emitParams, (int)ySpeed); 
+            //Debug.Log("GHHGEOFGKIJOAIHNFA");
+            if (pm.getCoefficientOfFriction() != mudCOF)
+            {
+                pm.setCoefficientOfFriction(mudCOF);
+                pm.SetJumpSpeed(defaultPogoSpeed*0.5f);
+                pa.setAbilityPower(defaultAbilityPower.x * dashPowerModifier, defaultAbilityPower.y * dashPowerModifier, defaultAbilityPower.z * (dashPowerModifier/2f));
             }
-            playerMovement.setCoefficientOfFriction(mudCOF);
-            playerAbilities.setUseAbility(false);
         }
     }
     public void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            Debug.Log("bro out of the mud");
-            playerMovement.setCoefficientOfFriction(defaultCOF);
-            playerAbilities.setUseAbility(true);
+            if (pm.getCoefficientOfFriction() != defaultCOF)
+            {
+                pm.setCoefficientOfFriction(defaultCOF);
+                pm.SetJumpSpeed(defaultPogoSpeed);
+                pa.setAbilityPower(defaultAbilityPower.x, defaultAbilityPower.y, defaultAbilityPower.z);
+            }
         }
     }
 }
+//gotta emit particles based on entering mud, and change from disabling abilities to simply altering their strength

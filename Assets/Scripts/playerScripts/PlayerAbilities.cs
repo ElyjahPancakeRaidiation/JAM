@@ -10,6 +10,7 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
+    private HingeJoint2D arms;
     private GameObject audioManager;
     private AudioManagerV2 audioManagerV2;
 
@@ -23,20 +24,21 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Pogo variables
     private const float SUPERJUMP = 28;
-    private IEnumerator stopSliding;
+
 
     public bool usedJumpAbility = false;
     [SerializeField] private bool canJumpNextFrame = false;
     public float jumpFrameTimer = 0;
     public float maxJumpFrameTimer;
     public bool recentlyJumped;
-    private float rJumpedTimer = 0;
+
 
     private bool jumpAgain;
 
     public RaycastHit2D groundThingyMajiggy { get; private set; }
+    public bool jumpedClicked;
 
-    [SerializeField] private float height;
+    [SerializeField] private float Jumpheight;
 
     #endregion
 
@@ -58,7 +60,7 @@ public class PlayerAbilities : MonoBehaviour
 
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
-
+    [SerializeField] private bool hasArms;
     public bool usedJump;
 
     // Start is called before the first frame update
@@ -68,53 +70,28 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
+        arms = GetComponent<HingeJoint2D>();
+        arms.enabled = false;
         audioManager = GameObject.FindGameObjectWithTag("AudioManager");
         audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
-        hinge = GetComponent<HingeJoint2D>();
-
+        jumpedClicked = false;
+        hasArms = true;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        Debug.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
 
-
-        if (canJumpNextFrame)
+        if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
         {
-            jumpFrameTimer += Time.deltaTime;
-            if (jumpFrameTimer >= maxJumpFrameTimer)
-            {
-                canJumpNextFrame = false;
-                jumpFrameTimer = 0;
-            }
-        }
 
-        //These two if statements do the same thing figure out in the future how to combine them
-        if (Input.GetKeyDown(gm.playerAbilityKey))
-        {
-            recentlyJumped = true;
             useFormsAbility();
         }
 
-        if (isGroundedScript.isGrounded() && canJumpNextFrame)
-        {
-            useFormsAbility();
-        }
-
-        if (recentlyJumped)
-        {
-            rJumpedTimer += Time.deltaTime;
-            if (rJumpedTimer >= 0.8f)
-            {
-                recentlyJumped = false;
-                rJumpedTimer = 0;
-            }
-        }
     }
 
 
@@ -123,41 +100,70 @@ public class PlayerAbilities : MonoBehaviour
         if (canUseAbility)
         {
             string formName = playerMovement.getCurForm().formName;
-            switch (formName)
+            if (!playerMovement.currentVine)
             {
-                case "Ball":
+                switch (formName)
+                {
+                    case "Ball":
 
-                    //Will have the dashing ability
+                        //Will have the dashing ability
 
-                    dashAbility();
-                    break;
-                case "Pogo":
-                    //Will have the mega jump and arms ability
-                    canJumpNextFrame = true;
-                    // StartCoroutine(newPogoAbliity());
+                        dashAbility();
+                        break;
+                    case "Pogo":
+                        //Will have the mega jump 
 
-                    if (isGroundedScript.isGrounded())
-                    {
 
-                        newJumpAbliity();
-                        usedJump = true;
-                        //   pogoAbility();
-                        Debug.Log(isGroundedScript.isGrounded());
-                    }
-                    else if (playerMovement.coyoteTimer > 0)
-                    {
-                        StartCoroutine(JumpCoyoteTimer());
-                        newJumpAbliity();
-                        Debug.Log("playing");
-                    }
-                    break;
-                case "Arm":
-                    StartCoroutine(Swinging());
-                    break;
+                        if (isGroundedScript.isGrounded())
+                        {
+                            StartCoroutine(JumpAbility());
+
+
+                        }
+                        else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65)
+                        {
+                            StartCoroutine(JumpCoyoteTimer());
+
+                            StartCoroutine(JumpAbility());
+
+                        }
+                        else
+                        {
+                            //not grounded, so at this point the only thing ability key will do is potentially grab vines
+                            Debug.Log("Getting ran?");
+                            if (hasArms)
+                            {
+                                checkForVines();
+                            }
+                        }
+
+                        break;
+                }
+            }
+            else
+            {
+                detach();
             }
         }
     }
 
+    private void checkForVines()
+    {
+        Debug.Log("inside check for vines");
+        Collider2D collider = Physics2D.OverlapBox(gameObject.transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, LayerMask.GetMask("Vine"));
+        if (collider)
+        {
+            arms.enabled = true;
+            arms.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
+            playerMovement.currentVine = collider.transform.parent;
+        }
+    }
+    private void detach()
+    {
+        arms.connectedBody = null;
+        arms.enabled = false;
+        playerMovement.currentVine = null;
+    }
 
 
     #region Ball Ability
@@ -166,19 +172,21 @@ public class PlayerAbilities : MonoBehaviour
         if (dashAmount > 0)
         {
             StartCoroutine(audioManagerV2.playPlayerSFX("Dashing"));
-            _rb.velocity = Vector2.zero;
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
 
             if (horInput != 0)
             {
+                _rb.velocity = Vector2.zero;
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
             }
 
             if (horInput == 0)
             {
-                _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
+
+                // _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
+                _rb.AddForce(new Vector2(_rb.velocity.x / 100, UNCHANGEDDASHY), ForceMode2D.Impulse);
             }
 
             dashAmount--;
@@ -199,58 +207,27 @@ public class PlayerAbilities : MonoBehaviour
     #endregion
 
     #region Pogo Ability
+    //this delay is so play can't infinitely jump while coyote timer is on. Otherwise you are able to double or even triple jump
+    //if you spam the jump key
     private IEnumerator JumpCoyoteTimer()
     {
         yield return new WaitForSeconds(.03f);
         playerMovement.coyoteTimer = 0;
 
     }
-    private IEnumerator newPogoAbliity()
 
+
+
+    private IEnumerator JumpAbility()
     {
-        if (isGrounded())
-        {
-            canJumpNextFrame = false;
-            jumpFrameTimer = 0;
-            float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-            StartCoroutine(audioManagerV2.playPlayerSFX("Jumping"));
-            Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
-            _rb.velocity = Verticaldirection;
-            // _rb.AddForce(Verticaldirection);
-
-        }
-
-        yield return new WaitForSeconds(0f);
-
-
-    }
-
-    private void newJumpAbliity()
-
-    {
-
-        canJumpNextFrame = false;
-        jumpFrameTimer = 0;
-        float jumpImpulse = Mathf.Sqrt(height * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpImpulse);
+        jumpedClicked = true;
+        float jumpForce = Mathf.Sqrt(Jumpheight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
         _rb.velocity = Verticaldirection;
-
-
-
-
+        yield return new WaitForSeconds(.1f);
+        jumpedClicked = false;
     }
-    // public IEnumerator preventSlide()
-    // {
 
-    //     yield return new WaitForSeconds(.6f);
-    //     yield return new WaitUntil(() => isGroundedScript.isGrounded());
-
-    //     if (playerMovement.isPogo == true)
-    //     {
-
-    //         _rb.velocity = Vector3.zero;
-    //     }
-    // }
     #endregion
 
     //This is for when the player changes form it changes the distance of the ray cast.
@@ -259,26 +236,38 @@ public class PlayerAbilities : MonoBehaviour
     {
         this.canUseAbility = canUseAbility;
     }
-
+    public void setAbilityPower(float dashX, float dashY, float megaJump)
+    {
+        DASHPOWERX = dashX;
+        DASHPOWERY = dashY;
+        UNCHANGEDDASHY = dashY;
+        Jumpheight = megaJump;
+    }
+    public Vector3 getAbilityPower()
+    {
+        return new Vector3(DASHPOWERX, DASHPOWERY, Jumpheight);
+    }
     public bool isGrounded()
     {
+        //im gonna fucking kill myslef
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
         groundThingyMajiggy = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
         Debug.DrawRay(transform.position, -Vector2.up, Color.green);
         return groundThingyMajiggy;
     }
 
-    public bool getJumpNextFrame() { return canJumpNextFrame; }
-    public int getDashAmount() { return dashAmount; }
-    public bool GetCanUseAbility()
-    {
-        return canUseAbility;
-    }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0, .5f, 0), armColRadius);
+    }
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
+    public int getDashAmount()
+    {
+        return dashAmount;
     }
     
     #region Arm Ability

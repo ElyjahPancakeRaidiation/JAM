@@ -126,7 +126,7 @@ public class AudioManagerV2 : MonoBehaviour
     {
         fading = true;
         float maxDistance = ap.detectionSize.x;
-        float direction = (ap.playerCollider.transform.position.x < ap.centerPoint.x ? 1 : -1);
+        float direction = ap.playerCollider.transform.position.x < ap.centerPoint.x ? 1 : -1;
         float xEndPoint = direction * ap.detectionSize.x / 2 + ap.centerPoint.x; //so this should represen the opposite end of the overlap box from where the player entered
 
         if (direction == 1)
