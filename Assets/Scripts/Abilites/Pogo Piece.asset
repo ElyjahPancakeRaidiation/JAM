@@ -20,4 +20,6 @@ MonoBehaviour:
   hoppingGroundChecker: {x: 0.57, y: 0.47}
   startPositionOffset: {x: -0.058, y: 0.21}
   hoppingStartPositionOffset: {x: -0.06, y: 0.67}
+  armStartPositionOffset: {x: -0.04, y: 2.21}
+  armSizeChecker: {x: 2.88, y: 1.53}
   boxColliderSize: {x: 1.1, y: 2.25}

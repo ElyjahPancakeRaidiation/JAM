@@ -42,7 +42,7 @@ public class isGroundedScript : MonoBehaviour
     {
 
 
-        //only applying when the form is ball, otherwise when changing the groundchecker collider, in pogo, it changes for both
+        //only applying when the form is ball, otherwise when changing the groundchecker collider size, in pogo, it changes for both
         //the jump and hopping. With this if statement, the two colliders are independent of each other.
         if (playersForms[curForm] == playersForms[0])
         {   //this locks the hitbox collider and prevents it from rolling with the ball
@@ -65,6 +65,11 @@ public class isGroundedScript : MonoBehaviour
         
         return Physics2D.OverlapBox(transform.position + (Vector3)player.GetComponent<PlayerMovement>().getCurForm().hoppingStartPositionOffset, player.GetComponent<PlayerMovement>().getCurForm().hoppingGroundChecker, angle, groundLayer);
     }
+
+    public bool isArmsColliding()
+    {
+        return Physics2D.OverlapBox(transform.position + (Vector3)player.GetComponent<PlayerMovement>().getCurForm().armStartPositionOffset, player.GetComponent<PlayerMovement>().getCurForm().armSizeChecker, angle, groundLayer);
+    }
     // void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)vecScales[], player.GetComponent<PlayerMovement>().getCurForm().groundChecker);
     private void OnDrawGizmos()
     {
@@ -72,6 +77,8 @@ public class isGroundedScript : MonoBehaviour
         Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].startPositionOffset, playersForms[curForm].groundChecker);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].hoppingStartPositionOffset, playersForms[curForm].hoppingGroundChecker);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].armStartPositionOffset, playersForms[curForm].armSizeChecker);
 
 
     }   

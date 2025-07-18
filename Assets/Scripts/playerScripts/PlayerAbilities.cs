@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+
+using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -10,19 +12,16 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
-    private GameObject audioManager;
-    private AudioManagerV2 audioManagerV2;
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
-    [SerializeField] private float UNCHANGEDDASHY = 14;
+    [SerializeField] private float  UNCHANGEDDASHY = 3.3f;
     [SerializeField] private int maxDashes;
     private int dashAmount;
     private bool canUseAbility;
     #endregion
 
     #region Pogo variables
-    private const float SUPERJUMP = 28;
   
 
     public bool usedJumpAbility = false;
@@ -36,7 +35,7 @@ public class PlayerAbilities : MonoBehaviour
 
     public bool jumpedClicked;
 
-    [SerializeField] private float Jumpheight;
+    [SerializeField] private float jumpHeight;
 
     #endregion
 
@@ -53,8 +52,6 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
-        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
-        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
@@ -78,36 +75,35 @@ public class PlayerAbilities : MonoBehaviour
 
     public void useFormsAbility()
     {
-        if (canUseAbility)
+        string formName = playerMovement.getCurForm().formName;
+        switch (formName)
         {
-            string formName = playerMovement.getCurForm().formName;
-            switch (formName)
-            {
-                case "Ball":
+            case "Ball":
 
-                    //Will have the dashing ability
+                //Will have the dashing ability
 
                 dashAbility();
                 break;
             case "Pogo":
                 //Will have the mega jump 
 
-
+                
                 if (isGroundedScript.isGrounded())
                 {
                     StartCoroutine(JumpAbility());
                     
-            
                 }
                 else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65) {
                     StartCoroutine(JumpCoyoteTimer());
                 
                     StartCoroutine(JumpAbility());
-
+                }
+                if (playerMovement.getArmsActive())
+                {
+                    
                 }
 
-                    break;
-            }
+                break;
         }
     }
 
@@ -122,7 +118,7 @@ public class PlayerAbilities : MonoBehaviour
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
-       
+            
             if (horInput != 0)
             {   _rb.velocity = Vector2.zero;
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
@@ -133,8 +129,10 @@ public class PlayerAbilities : MonoBehaviour
             if (horInput == 0)
             {
 
-                // _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
-                _rb.AddForce(new Vector2(_rb.velocity.x / 100, UNCHANGEDDASHY), ForceMode2D.Impulse);
+                _rb.velocity = new Vector2(_rb.velocity.x, 0);
+                //Returns the maximum of one of the values. This is so vertical dash is smoother.
+                 _rb.AddForce(new Vector2(_rb.velocity.x/100, Mathf.Max(UNCHANGEDDASHY,
+                              _rb.velocity.y + UNCHANGEDDASHY * .5f)), ForceMode2D.Impulse);
     
             }
             
@@ -151,8 +149,25 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-
-
+    public void setAbilityPower(float dashX, float dashY, float megaJump)
+    {
+        DASHPOWERX = dashX;
+        DASHPOWERY = dashY;
+        UNCHANGEDDASHY = dashY;
+        jumpHeight = megaJump;
+    }
+    public Vector3 getAbilityPower()
+    {
+        return new Vector3(DASHPOWERX, DASHPOWERY, jumpHeight);
+    }
+    public int getDashAmount()
+    {
+        return dashAmount;
+    }
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
     #endregion
 
     #region Pogo Ability
@@ -176,7 +191,7 @@ public class PlayerAbilities : MonoBehaviour
     private IEnumerator JumpAbility()
     {
         jumpedClicked = true;
-        float jumpForce = Mathf.Sqrt(Jumpheight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        float jumpForce = Mathf.Sqrt(jumpHeight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
         _rb.velocity = Verticaldirection;
         yield return new WaitForSeconds(.1f);
@@ -191,23 +206,14 @@ public class PlayerAbilities : MonoBehaviour
     {
         this.canUseAbility = canUseAbility;
     }
-    public void setAbilityPower(float dashX, float dashY, float megaJump)
-    {
-        DASHPOWERX = dashX;
-        DASHPOWERY = dashY;
-        UNCHANGEDDASHY = dashY;
-        height = megaJump;
-    }
-    public Vector3 getAbilityPower()
-    {
-        return new Vector3(DASHPOWERX, DASHPOWERY, height);
-    }
+
     public bool isGrounded()
     {
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
-        groundThingyMajiggy = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
+        RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
         Debug.DrawRay(transform.position, -Vector2.up, Color.green);
-        return groundThingyMajiggy;
+        return ray;
+
     }
 
 

@@ -13,7 +13,8 @@ public class Ball : AbilitySettingScriptable
         _sr.sprite = sprite;
         _rb.freezeRotation = false;
         _rb.gameObject.GetComponent<PlayerMovement>().setSpeed(movementSpeed);
-   
+        _box.gameObject.GetComponent<PlayerMovement>().turnOffArms();
+            
         // _rb.gameObject.GetComponent<PlayerAbilities>().setGroundDistance(groundChecker);
     }
 
