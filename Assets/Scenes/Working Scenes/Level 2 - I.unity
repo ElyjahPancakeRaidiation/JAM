@@ -3262,6 +3262,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2498500075671031753, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2897679923762317833, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_LocalScale.y
       value: 2.9309127
@@ -3306,6 +3310,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3562193591722360703, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 409951821}
+    - target: {fileID: 3562193591722360703, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1858146590}
+    - target: {fileID: 3562193591722360703, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: setIsPaused
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562193591722360703, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
     - target: {fileID: 3926967166625142155, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3313,6 +3333,10 @@ PrefabInstance:
     - target: {fileID: 3926967166625142155, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: useFormsAbility
+      objectReference: {fileID: 0}
+    - target: {fileID: 4127490226924715528, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4639196425597308546, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_Layer
@@ -3453,7 +3477,7 @@ PrefabInstance:
     - target: {fileID: 7755439727338693880, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
-      objectReference: {fileID: 412073407}
+      objectReference: {fileID: 0}
     - target: {fileID: 8119187026695699424, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 1
@@ -3483,11 +3507,6 @@ RectTransform:
 --- !u!95 &412073406 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6450244694734109025, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
-  m_PrefabInstance: {fileID: 412073403}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &412073407 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1450967568930581186, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
   m_PrefabInstance: {fileID: 412073403}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &433348099
@@ -10363,6 +10382,7 @@ MonoBehaviour:
   easeAmount: 20
   stopWhenSceneStarts: 1
   playOnStart: 0
+  useCutsceneBars: 1
 --- !u!4 &1419745168
 Transform:
   m_ObjectHideFlags: 0
@@ -12388,11 +12408,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 266.2
+      value: 277.4
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -110.3
+      value: -115.6
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.z

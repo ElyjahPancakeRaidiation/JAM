@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Piece", menuName = "Ball Piece/New Ball")]
-public class Ball : AbilitySettingScriptable
-{
 
+[CreateAssetMenu(fileName = "Arm", menuName = "Arm Piece/New Arm")]
+public class Arm : Torso
+{
+    // Start is called before the first frame update
     public override void formSetting(Rigidbody2D _rb, SpriteRenderer _sr, Collider2D _cir, Collider2D _box)
     {
         _box.enabled = false;
@@ -13,8 +14,8 @@ public class Ball : AbilitySettingScriptable
         _sr.sprite = sprite;
         _rb.freezeRotation = false;
         _rb.gameObject.GetComponent<PlayerMovement>().setSpeed(movementSpeed);
-        _box.gameObject.GetComponent<PlayerMovement>().turnOffArms();
-            
+        _box.gameObject.GetComponent<PlayerMovement>().turnOnArms();
+
         // _rb.gameObject.GetComponent<PlayerAbilities>().setGroundDistance(groundChecker);
     }
 

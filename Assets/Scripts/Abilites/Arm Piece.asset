@@ -9,17 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8559a223c80f2648a52491cdd681018, type: 3}
-  m_Name: Pogo Piece
+  m_Script: {fileID: 11500000, guid: 695f7ba897778784bb70331002636d80, type: 3}
+  m_Name: Arm Piece
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
   movementSpeed: 8
-  formName: Pogo
+  formName: TorsoArms
   formAddOn: 0
   groundChecker: {x: 0.57, y: 1.24}
   hoppingGroundChecker: {x: 0.57, y: 0.47}
   startPositionOffset: {x: -0.058, y: 0.21}
   hoppingStartPositionOffset: {x: -0.06, y: 0.67}
-  armStartPositionOffset: {x: -0.04, y: 2.21}
-  armSizeChecker: {x: 2.88, y: 1.53}
-  boxColliderSize: {x: 1.1, y: 2.25}
+  armStartPositionOffset: {x: 0, y: 0}
+  armSizeChecker: {x: 0, y: 0}
+  boxColliderSize: {x: 1.1, y: 0}

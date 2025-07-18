@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
-
-
     private Physics physics;
     [Header("----Physics----")]
     [SerializeField] private float coefficientOfFriction;
@@ -65,10 +63,20 @@ public class PlayerMovement : MonoBehaviour
     public float jumpSpeedX, jumpSpeedY;
 
     public float coyoteTimer { get; set; }
+   
+    private isGroundedScript isGroundedBox;  //the functions in this object are box-shaped, hence the name
 
     private isGroundedScript groundedScript;
 
     [SerializeField] private float floatTime;
+    #endregion
+
+    #region Arm 
+    [Header("Arm Settings")]
+    [SerializeField] private bool hasArms;
+    [SerializeField] private GameObject rightArm, leftArm;
+    private bool isArmsActive;
+
     #endregion
     private float lastVelocityY;
     public float velocitySoundThreshold;
@@ -107,8 +115,12 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // rightArm.SetActive(false);
+        // leftArm.SetActive(false);
+
         playerImpact = new UnityEvent();
         playerAbilities = GetComponent<PlayerAbilities>();
+
         _dustSpawner = Instantiate(prefabDustSpawner);
         physics = new Physics(GetComponent<Rigidbody2D>());
         playerImpact.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
@@ -269,9 +281,7 @@ public class PlayerMovement : MonoBehaviour
         physics.Friction();
         if (GetComponent<CircleCollider2D>().enabled)
         {
-
             ballMovement();
-
         }
         else if (GetComponent<BoxCollider2D>().enabled)
         {
@@ -368,9 +378,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
         physics._rb.velocity = jumpForce;
         yield return new WaitForSeconds(.6f);
-
-        //keep checking until the player touches the ground
-        yield return new WaitUntil(() => groundedScript.isGroundedForHopping()/*playerAbility.groundedScript()*/);
+        yield return new WaitUntil(() => isGroundedBox.isGroundedForHopping());
 
     }
     public IEnumerator impactSound()
@@ -393,6 +401,8 @@ public class PlayerMovement : MonoBehaviour
         //     playerImpact.Invoke();
         // }
     }
+    public bool getArms() {return hasArms;}
+    public bool getArmsActive() { return isArmsActive; }
     public void setCanControl(bool value) { canControl = value; }
     public float getInput() { return horizontalInput; }
     public void setSpeed(float speed) { movementSpeed = speed; }
@@ -402,11 +412,31 @@ public class PlayerMovement : MonoBehaviour
     public int getFormInt() { return curForm; }
     public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
     public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
+    public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
+    public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
+
     public List<AbilitySettingScriptable> getAllForms() { return forms; }
     public float getRainyFrictionUp() { return rainyFrictionUp; }
     public float getRainyFrictionDown() { return rainyFrictionDown; }
     public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
     public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }
+    public float getRainyFrictionDown() { return rainyFrictionDown; }
+    public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
+    public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }
+    public void turnOnArms()
+    {
+        rightArm.SetActive(true);
+        leftArm.SetActive(true);
+        isArmsActive = true;
+
+    }
+
+    public void turnOffArms()
+    {
+        rightArm.SetActive(false);
+        leftArm.SetActive(false);
+        isArmsActive = false;
+    }
 
     //When particles collide with the player it turns on the function slippery shit making it harder for the player to go up
     //but easier to go down.

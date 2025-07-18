@@ -45,8 +45,16 @@ public class CameraManager : MonoBehaviour
     public bool keepOffsetSettings;
 
     [Header("Cutscene settings")]
-    private bool playAutomatically;
     [SerializeField] private float camWaitTime;
+    private bool playAutomatically;
+
+    [Header("Effects")]
+    public bool shakeCamera;
+    public float shakeDuration;
+    public float shakeStrength;
+    //if true it will repeat the effect when ever the player enters the area
+    public bool repeat = false;
+    private bool effectsActivated = false;//Track whether it was activated already or not
 
     // Start is called before the first frame update
     void Start()
@@ -84,21 +92,34 @@ public class CameraManager : MonoBehaviour
     {
         if (moveToTarget)
         {
-            camOperator.MOVETOTARGET(camTarget);
-            camOperator.SETSPEED(newSpeed);
-            camOperator.SETINCREASESPEEDPERC(returningPercentageSpeed);
+            camOperator.moveToTarget(camTarget);
+            camOperator.setSpeed(newSpeed);
+            camOperator.setIncreaseSpeedPerc(returningPercentageSpeed);
         }
 
         if (changeCameraSize)
         {
-            camOperator.SETZOOMSPEED(cameraSizeSpeed);
-            camOperator.SETCAMERASIZE(newCameraSize);
+            camOperator.setZoomSpeed(cameraSizeSpeed);
+            camOperator.setCameraSize(newCameraSize);
         }
 
         if (changeCameraOffset)
         {
-            camOperator.SETCHANGINGOFFSETSPEED(cameraOffsetSpeed);
-            camOperator.SETCAMERAOFFSET(newCameraOffset);
+            camOperator.setChangingOffsetSpeed(cameraOffsetSpeed);
+            camOperator.setCameraOffset(newCameraOffset);
+        }
+
+        if (shakeCamera)
+        {
+            if (!effectsActivated)
+            {
+                camOperator.shakeCamera(shakeDuration, shakeStrength);
+                effectsActivated = true;
+            }
+            else if(effectsActivated && repeat)
+            {
+                camOperator.shakeCamera(shakeDuration, shakeStrength);
+            }
         }
     }
 
@@ -106,19 +127,19 @@ public class CameraManager : MonoBehaviour
     {
         if (moveToTarget && !keepSpeedSettings)
         {
-            camOperator.MOVETOTARGET(GameObject.FindGameObjectWithTag("Player"));//Null will set it to player
+            camOperator.moveToTarget(GameObject.FindGameObjectWithTag("Player"));//Null will set it to player
         }
 
         if (changeCameraSize && !keepSizeSettings)
         {
-            camOperator.SETZOOMSPEED(returningSizeSpeed);
-            camOperator.SETCAMERASIZE(returningSize);
+            camOperator.setZoomSpeed(returningSizeSpeed);
+            camOperator.setCameraSize(returningSize);
         }
 
         if (changeCameraOffset && !keepOffsetSettings)
         {
-            camOperator.SETCHANGINGOFFSETSPEED(returningCameraOffsetSpeed);
-            camOperator.SETCAMERAOFFSET(returningCameraOffset);
+            camOperator.setChangingOffsetSpeed(returningCameraOffsetSpeed);
+            camOperator.setCameraOffset(returningCameraOffset);
         }
     }
 

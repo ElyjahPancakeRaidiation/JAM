@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+
+using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -16,14 +18,14 @@ public class PlayerAbilities : MonoBehaviour
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
-    [SerializeField] private float UNCHANGEDDASHY = 14;
+    [SerializeField] private float  UNCHANGEDDASHY = 3.3f;
     [SerializeField] private int maxDashes;
     private int dashAmount;
     private bool canUseAbility;
     #endregion
 
     #region Pogo variables
-    private const float SUPERJUMP = 28;
+  
 
 
     public bool usedJumpAbility = false;
@@ -38,7 +40,7 @@ public class PlayerAbilities : MonoBehaviour
     public RaycastHit2D groundThingyMajiggy { get; private set; }
     public bool jumpedClicked;
 
-    [SerializeField] private float Jumpheight;
+    [SerializeField] private float jumpHeight;
 
     #endregion
 
@@ -82,7 +84,8 @@ public class PlayerAbilities : MonoBehaviour
 
     public void useFormsAbility()
     {
-        if (canUseAbility)
+        string formName = playerMovement.getCurForm().formName;
+        switch (formName)
         {
             string formName = playerMovement.getCurForm().formName;
             if (!playerMovement.currentVine)
@@ -160,7 +163,7 @@ public class PlayerAbilities : MonoBehaviour
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
-       
+            
             if (horInput != 0)
             {
                 _rb.velocity = Vector2.zero;
@@ -189,8 +192,25 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-
-
+    public void setAbilityPower(float dashX, float dashY, float megaJump)
+    {
+        DASHPOWERX = dashX;
+        DASHPOWERY = dashY;
+        UNCHANGEDDASHY = dashY;
+        jumpHeight = megaJump;
+    }
+    public Vector3 getAbilityPower()
+    {
+        return new Vector3(DASHPOWERX, DASHPOWERY, jumpHeight);
+    }
+    public int getDashAmount()
+    {
+        return dashAmount;
+    }
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
     #endregion
 
     #region Pogo Ability
@@ -203,12 +223,18 @@ public class PlayerAbilities : MonoBehaviour
 
     }
 
+    public void ArmAbillty()
+    {
+        
+    }
 
-
+    //i need to get current form and check if that form is 0, but i can also check for case ball.
+    
+ 
     private IEnumerator JumpAbility()
     {
         jumpedClicked = true;
-        float jumpForce = Mathf.Sqrt(Jumpheight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        float jumpForce = Mathf.Sqrt(jumpHeight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
         _rb.velocity = Verticaldirection;
         yield return new WaitForSeconds(.1f);
