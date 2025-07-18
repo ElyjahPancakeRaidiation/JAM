@@ -51,6 +51,10 @@ public class DustScriptV2 : MonoBehaviour
         {
             StartCoroutine(onJump());
         }
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            debugLandingParticles();
+        }
         if (abilities.isGrounded() && !generatingDust)
         {
             StartCoroutine(checkForSkidding());
@@ -169,7 +173,7 @@ public class DustScriptV2 : MonoBehaviour
     }
     public void playLandingParticles()
     {
-        Debug.Log("player smacked the ground");
+        //Debug.Log("player smacked the ground");
         playingLanding = true;
         loadLandingParticles();
         moveToPlayer();
@@ -183,6 +187,10 @@ public class DustScriptV2 : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         loadSkidParticles();
         playingLanding = false;
-        Debug.Log("ended ts");
+        //Debug.Log("ended ts");
+    }
+    private void debugLandingParticles()
+    {
+        playLandingParticles();
     }
 }

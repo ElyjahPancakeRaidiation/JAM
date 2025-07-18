@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     //Movement will be set through the forms different scriptables
     private float movementSpeed;
-    [SerializeField] private bool isGrounded;
 
     #region Player Settings
     [Header("----Player----")]
@@ -67,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
    
     private isGroundedScript isGroundedBox;  //the functions in this object are box-shaped, hence the name
 
+    private isGroundedScript groundedScript;
+
     [SerializeField] private float floatTime;
     #endregion
 
@@ -106,7 +107,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float inputDetectionPercentX; //this is percentage of screen that can be used for player input
     [SerializeField] private bool visualizeTouchArea;
     #endregion
-
+    #region VineMovement
+    [Header("Vine Settings")]
+    public float swingForce;
+    public Transform currentVine;
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
@@ -130,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
         screenSize = new Vector2(Screen.width, Screen.height);
         canControl = true;
-        isGroundedBox = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
+        groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
 
         // playerAbilities.isGroundedScript.setStartPosition((Vector2)transform.position + forms[curForm].startPositionOffset);
         // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
@@ -208,14 +213,11 @@ public class PlayerMovement : MonoBehaviour
             isPogo = true;
         }
         else isPogo = false;
-
         physics.setCoefficientOfFriction(coefficientOfFriction);
-        lastVelocityX = physics._rb.velocity.x;
-        lastVelocityY = physics._rb.velocity.y;
-        // if (!playerAbilities.isGrounded() && !checkingImpact)
-        // {
-        //     StartCoroutine(impactSound());
-        // }
+        if (!groundedScript.isGrounded() && !checkingImpact)
+        {
+            StartCoroutine(impactSound());
+        }
     }
 
 
@@ -236,7 +238,9 @@ public class PlayerMovement : MonoBehaviour
             if (mainTouch != null)
             {
                 updateMainTouch();
-            } else {
+            }
+            else
+            {
                 horizontalInput = 0;
             }
         }
@@ -265,7 +269,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnGUI()
     {
-        if (visualizeTouchArea) {
+        if (visualizeTouchArea)
+        {
             GUI.color = new Color(0, 0, 0, 0.1f);
             GUI.DrawTexture(new Rect(0, 0, screenSize.x * inputDetectionPercentX, screenSize.y), Texture2D.whiteTexture);
             GUI.color = Color.white;
@@ -280,14 +285,25 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (GetComponent<BoxCollider2D>().enabled)
         {
-            torsoMovement();
+            if (currentVine)
+            {
+                vineMovement();
+            }
+            else
+            {
+                torsoMovement();
+            }
         }
     }
-    public float getAcceleration() {
+    public float getAcceleration()
+    {
         float aMultiplier; //acceleration multiplier
-        if (lastVelocityX < 0 && physics._rb.velocity.x < 0) {
+        if (lastVelocityX < 0 && physics._rb.velocity.x < 0)
+        {
             aMultiplier = -1;
-        } else {
+        }
+        else
+        {
             aMultiplier = 1;
         }
         float avgAcceleration = aMultiplier * (physics._rb.velocity.x - lastVelocityX) / Time.deltaTime;
@@ -312,25 +328,29 @@ public class PlayerMovement : MonoBehaviour
         // playerAbilities.isGroundedScript.setColSize(forms[curForm].groundChecker);
     }
 
-    private void ballMovement() {
+    private void ballMovement()
+    {
         physics._rb.AddForce(new Vector2(horizontalInput * movementSpeed * Time.deltaTime, 0), ForceMode2D.Impulse);
 
-        if (physics._rb.velocity.x <= -maxSpeedPoint || physics._rb.velocity.x >= maxSpeedPoint) {
+        if (physics._rb.velocity.x <= -maxSpeedPoint || physics._rb.velocity.x >= maxSpeedPoint)
+        {
             oppositeInput = -1 * (physics._rb.velocity.x / Mathf.Abs(physics._rb.velocity.x));
-            if (horizontalInput != oppositeInput) {
+            if (horizontalInput != oppositeInput)
+            {
                 withEasing = true;
             }
         }
 
     }
 
-    private void torsoMovement() {
+    private void torsoMovement()
+    {
         //电子游戏 - 人形摇杆 <-death threat
         // OR
         //Or also just use add force and do some corotines(Will probably try this first)
         if (horizontalInput != 0)
         {
-            var checkForground = isGroundedBox.isGroundedForHopping();
+            var checkForground = groundedScript.isGroundedForHopping();
 
             if (checkForground && !playerAbility.jumpedClicked)
             {
@@ -343,8 +363,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-
+    private void vineMovement()
+    {
+         
+        physics._rb.AddRelativeForce(new Vector2(horizontalInput, 0) * swingForce);
+    }
     public float getHorizontalInput()
     {
         return horizontalInput;
@@ -361,11 +384,11 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator impactSound()
     {
         checkingImpact = true;
-        yield return new WaitUntil(() => playerAbility.isGrounded());
-        Debug.Log(physics._rb.velocity.y);
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        //Debug.Log(physics._rb.velocity.y);
         if (Mathf.Abs(physics._rb.velocity.y) > velocitySoundThreshold)
         {
-            StartCoroutine(audioManagerV2.playPlayerSFX("Landing")); //THIS WORKS BUT IDK WHY STUF STILL BREAKING MAN
+            StartCoroutine(audioManagerV2.playPlayerSFX("Landing"));
             playerImpact.Invoke();
         }
         checkingImpact = false;
@@ -389,9 +412,14 @@ public class PlayerMovement : MonoBehaviour
     public int getFormInt() { return curForm; }
     public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
     public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
+    public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
+    public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
 
     public List<AbilitySettingScriptable> getAllForms() { return forms; }
     public float getRainyFrictionUp() { return rainyFrictionUp; }
+    public float getRainyFrictionDown() { return rainyFrictionDown; }
+    public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
+    public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }
     public float getRainyFrictionDown() { return rainyFrictionDown; }
     public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
     public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }
@@ -415,32 +443,39 @@ public class PlayerMovement : MonoBehaviour
     void OnParticleCollision(GameObject other)
     {
         //Debug.Log("i think woring");
-        if (other.CompareTag("RainShit")) {
+        if (other.CompareTag("RainShit"))
+        {
             isEasingOn = false;
             physics.slipperyShitFunction();
-            if (turnEasingBackOn != null) {//This if statement ensures that easing is not turned back on while rain is hiting the player.
+            if (turnEasingBackOn != null)
+            {//This if statement ensures that easing is not turned back on while rain is hiting the player.
                 StopCoroutine(turnEasingBackOn);
                 turnEasingBackOn = null;
             }
         }
     }
 
-    public void setCoefficientOfFriction(float newCOF) {
+    public void setCoefficientOfFriction(float newCOF)
+    {
         coefficientOfFriction = newCOF;
     }
-    public float getCoefficientOfFriction() {
+    public float getCoefficientOfFriction()
+    {
         return coefficientOfFriction;
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("RainShit")) {
-            if (turnEasingBackOn == null) {
+        if (collision.gameObject.CompareTag("RainShit"))
+        {
+            if (turnEasingBackOn == null)
+            {
                 turnEasingBackOn = StartCoroutine(EasingBackOn());
             }
         }
     }
-    private IEnumerator EasingBackOn() {
+    private IEnumerator EasingBackOn()
+    {
         yield return new WaitForSeconds(2f);
         isEasingOn = true;
     }
@@ -455,4 +490,5 @@ public class PlayerMovement : MonoBehaviour
         jumpSpeedX = value.x;
         jumpSpeedY = value.y;
     }
+    
 }

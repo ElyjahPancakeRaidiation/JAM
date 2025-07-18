@@ -12,6 +12,9 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
+    private HingeJoint2D arms;
+    private GameObject audioManager;
+    private AudioManagerV2 audioManagerV2;
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
@@ -24,15 +27,17 @@ public class PlayerAbilities : MonoBehaviour
     #region Pogo variables
   
 
+
     public bool usedJumpAbility = false;
     [SerializeField] private bool canJumpNextFrame = false;
     public float jumpFrameTimer = 0;
     public float maxJumpFrameTimer;
     public bool recentlyJumped;
-    
+
 
     private bool jumpAgain;
 
+    public RaycastHit2D groundThingyMajiggy { get; private set; }
     public bool jumpedClicked;
 
     [SerializeField] private float jumpHeight;
@@ -41,7 +46,7 @@ public class PlayerAbilities : MonoBehaviour
 
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
-
+    [SerializeField] private bool hasArms;
     public bool usedJump;
 
     // Start is called before the first frame update
@@ -52,11 +57,15 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
+        arms = GetComponent<HingeJoint2D>();
+        arms.enabled = false;
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
+        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
         canUseAbility = true;
         jumpAgain = true;
         jumpedClicked = false;
-        
+        hasArms = true;
     }
 
     // Update is called once per frame
@@ -66,7 +75,7 @@ public class PlayerAbilities : MonoBehaviour
 
         if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
         {
-        
+
             useFormsAbility();
         }
 
@@ -78,35 +87,71 @@ public class PlayerAbilities : MonoBehaviour
         string formName = playerMovement.getCurForm().formName;
         switch (formName)
         {
-            case "Ball":
-
-                //Will have the dashing ability
-
-                dashAbility();
-                break;
-            case "Pogo":
-                //Will have the mega jump 
-
-                
-                if (isGroundedScript.isGrounded())
+            string formName = playerMovement.getCurForm().formName;
+            if (!playerMovement.currentVine)
+            {
+                switch (formName)
                 {
-                    StartCoroutine(JumpAbility());
-                    
-                }
-                else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65) {
-                    StartCoroutine(JumpCoyoteTimer());
-                
-                    StartCoroutine(JumpAbility());
-                }
-                if (playerMovement.getArmsActive())
-                {
-                    
-                }
+                    case "Ball":
 
-                break;
+                        //Will have the dashing ability
+
+                        dashAbility();
+                        break;
+                    case "Pogo":
+                        //Will have the mega jump 
+
+
+                        if (isGroundedScript.isGrounded())
+                        {
+                            StartCoroutine(JumpAbility());
+
+
+                        }
+                        else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65)
+                        {
+                            StartCoroutine(JumpCoyoteTimer());
+
+                            StartCoroutine(JumpAbility());
+
+                        }
+                        else
+                        {
+                            //not grounded, so at this point the only thing ability key will do is potentially grab vines
+                            Debug.Log("Getting ran?");
+                            if (hasArms)
+                            {
+                                checkForVines();
+                            }
+                        }
+
+                        break;
+                }
+            }
+            else
+            {
+                detach();
+            }
         }
     }
 
+    private void checkForVines()
+    {
+        Debug.Log("inside check for vines");
+        Collider2D collider = Physics2D.OverlapBox(gameObject.transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, LayerMask.GetMask("Vine"));
+        if (collider)
+        {
+            arms.enabled = true;
+            arms.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
+            playerMovement.currentVine = collider.transform.parent;
+        }
+    }
+    private void detach()
+    {
+        arms.connectedBody = null;
+        arms.enabled = false;
+        playerMovement.currentVine = null;
+    }
 
 
     #region Ball Ability
@@ -114,13 +159,14 @@ public class PlayerAbilities : MonoBehaviour
     {
         if (dashAmount > 0)
         {
-            
+            StartCoroutine(audioManagerV2.playPlayerSFX("Dashing"));
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
             
             if (horInput != 0)
-            {   _rb.velocity = Vector2.zero;
+            {
+                _rb.velocity = Vector2.zero;
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
                
                 
@@ -129,13 +175,10 @@ public class PlayerAbilities : MonoBehaviour
             if (horInput == 0)
             {
 
-                _rb.velocity = new Vector2(_rb.velocity.x, 0);
-                //Returns the maximum of one of the values. This is so vertical dash is smoother.
-                 _rb.AddForce(new Vector2(_rb.velocity.x/100, Mathf.Max(UNCHANGEDDASHY,
-                              _rb.velocity.y + UNCHANGEDDASHY * .5f)), ForceMode2D.Impulse);
-    
+                // _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
+                _rb.AddForce(new Vector2(_rb.velocity.x / 100, UNCHANGEDDASHY), ForceMode2D.Impulse);
             }
-            
+
             dashAmount--;
             if (dashAmount == 0) { StartCoroutine(dashAmountBack()); }
         }
@@ -206,19 +249,35 @@ public class PlayerAbilities : MonoBehaviour
     {
         this.canUseAbility = canUseAbility;
     }
-
+    public void setAbilityPower(float dashX, float dashY, float megaJump)
+    {
+        DASHPOWERX = dashX;
+        DASHPOWERY = dashY;
+        UNCHANGEDDASHY = dashY;
+        Jumpheight = megaJump;
+    }
+    public Vector3 getAbilityPower()
+    {
+        return new Vector3(DASHPOWERX, DASHPOWERY, Jumpheight);
+    }
     public bool isGrounded()
     {
+        //im gonna fucking kill myslef
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
-        RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
-        Debug.DrawRay(transform.position, -Vector2.up, Color.green);
-        return ray;
-
+        return isGroundedScript.isGrounded();
     }
 
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
+    }
+    public bool GetCanUseAbility()
+    {
+        return canUseAbility;
+    }
+    public int getDashAmount()
+    {
+        return dashAmount;
     }
 }

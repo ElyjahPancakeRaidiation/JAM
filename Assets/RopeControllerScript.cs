@@ -34,40 +34,8 @@ public class RopeControllerScript : MonoBehaviour
         {
             Fire();
         }
-        if (Input.GetMouseButtonDown(1))
-        {
-            DestroyImmediate(rope);
-        }
     }
 
-    void LateUpdate()
-    {
-        if (rope != null)
-        {
-            linerender.enabled = true;
-            linerender.SetVertexCount(2);
-            linerender.SetPosition(0, ropeShooting.transform.position);
-            linerender.SetPosition(1, rope.connectedAnchor);
-
-        }
-        else
-        {
-            linerender.enabled = false;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (rope != null)
-        {
-            if (ropeframeCount > maxRopeframecount)
-            {
-                DestroyImmediate(rope);
-                ropeframeCount = 0;
-
-            }
-        }
-    }
     //using a raycast to detect if anything has been hit
     void Fire()
     {
@@ -88,7 +56,6 @@ public class RopeControllerScript : MonoBehaviour
             newRope.enabled = true;
             DestroyImmediate(rope);
             rope = newRope;
-            ropeframeCount = 0;
         }
     }
 }
