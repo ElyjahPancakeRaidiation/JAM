@@ -30,7 +30,7 @@ public class MudScript : MonoBehaviour
         defaultCOF = pm.getCoefficientOfFriction(); // Store the default coefficient of friction
         defaultPogoSpeed = pm.GetJumpSpeed();
         defaultAbilityPower = pa.getAbilityPower();
-        Debug.Log(defaultAbilityPower.z);
+        //Debug.Log(defaultAbilityPower.z);
     }
     void Update()
     {
@@ -39,7 +39,7 @@ public class MudScript : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-            Debug.Log("GHHGEOFGKIJOAIHNFA");
+            //Debug.Log("GHHGEOFGKIJOAIHNFA");
             if (pm.getCoefficientOfFriction() != mudCOF)
             {
                 pm.setCoefficientOfFriction(mudCOF);
