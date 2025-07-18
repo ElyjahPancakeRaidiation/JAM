@@ -238,9 +238,7 @@ public class PlayerAbilities : MonoBehaviour
     {
         //im gonna fucking kill myslef
         // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
-        groundThingyMajiggy = Physics2D.Raycast(transform.position, -Vector2.up, groundCheckerDistance, groundMask);
-        Debug.DrawRay(transform.position, -Vector2.up, Color.green);
-        return groundThingyMajiggy;
+        return isGroundedScript.isGrounded();
     }
 
 

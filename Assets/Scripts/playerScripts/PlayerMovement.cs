@@ -355,6 +355,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void vineMovement()
     {
+         
         physics._rb.AddRelativeForce(new Vector2(horizontalInput, 0) * swingForce);
     }
     public float getHorizontalInput()
