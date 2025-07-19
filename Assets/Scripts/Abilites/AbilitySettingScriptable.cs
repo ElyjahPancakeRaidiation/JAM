@@ -12,11 +12,13 @@ public abstract class AbilitySettingScriptable : ScriptableObject
     public string formName;
     public bool formAddOn = false;
     public Vector2 groundChecker;
-
     public Vector2 hoppingGroundChecker;
     public Vector2 startPositionOffset;
 
-    public Vector2 startPositionOffsetforHopping;
+    public Vector2 hoppingStartPositionOffset;
+    
+    public Vector2 armStartPositionOffset;
+    public Vector2 armSizeChecker;
 
     //Customizable method that will hold the form settings for each piece
     public abstract void formSetting(Rigidbody2D rb, SpriteRenderer sr, Collider2D cir, Collider2D box);

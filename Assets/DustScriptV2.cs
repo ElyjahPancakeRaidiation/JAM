@@ -26,6 +26,7 @@ public class DustScriptV2 : MonoBehaviour
     public bool generatingDust = false;
     public bool recentlyJumped = false;
     private bool inMud;
+    private bool playingLanding;
 
     void Start()
     {
@@ -50,6 +51,10 @@ public class DustScriptV2 : MonoBehaviour
         {
             StartCoroutine(onJump());
         }
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            debugLandingParticles();
+        }
         if (abilities.isGrounded() && !generatingDust)
         {
             StartCoroutine(checkForSkidding());
@@ -59,20 +64,12 @@ public class DustScriptV2 : MonoBehaviour
     {
         transform.position = new Vector2(player.transform.position.x, player.transform.position.y + yOffset);
     }
-    private void updateColor()
-    {
-        var mainModule = dust.main;
-        Vector2 pixel = abilities.groundThingyMajiggy.point - new Vector2(0, 1);
-        var texture = abilities.groundThingyMajiggy.collider.gameObject.GetComponent<SpriteRenderer>().sprite.texture;
-        mainModule.startColor = texture.GetPixel((int)pixel.x, (int)pixel.y);
-    }
     private IEnumerator checkForSkidding()
     {
         generatingDust = true;
         float movingDirection;
         float inputDirection;
-        loadSkidParticles();
-        while (abilities.isGrounded())
+        while (abilities.isGrounded() && !playingLanding)
         {
             if (!dust.isPlaying)
             {
@@ -176,10 +173,24 @@ public class DustScriptV2 : MonoBehaviour
     }
     public void playLandingParticles()
     {
-        Debug.Log("player smacked the ground");
+        //Debug.Log("player smacked the ground");
+        playingLanding = true;
         loadLandingParticles();
         moveToPlayer();
         //updateColor();
         dust.Play();
+        StartCoroutine(ResetParticle());
+    }
+
+    private IEnumerator ResetParticle()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        loadSkidParticles();
+        playingLanding = false;
+        //Debug.Log("ended ts");
+    }
+    private void debugLandingParticles()
+    {
+        playLandingParticles();
     }
 }

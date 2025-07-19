@@ -13491,7 +13491,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAbilityKey: 32
-  sceneNum: 0
+  hasSpawnPosition: 0
+  playerSpawnPosition: {fileID: 0}
+  build: 0
+  clipToPlay: {fileID: 0}
 --- !u!1 &295256138
 GameObject:
   m_ObjectHideFlags: 0
@@ -29081,7 +29084,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58445310a4ed39646aa226a7b66a4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerFormNum: 1
 --- !u!61 &843275167
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -29778,15 +29780,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1981411322}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 2.5
-  bodyCol: {fileID: 1558991202}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 760936333}
 --- !u!50 &862034209
 Rigidbody2D:
   serializedVersion: 4
@@ -30576,9 +30569,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3499816936792255374, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499816936792255374, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: height
       value: 13.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: maxDashes
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: DASHPOWERX
@@ -30587,6 +30592,14 @@ PrefabInstance:
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: DASHPOWERY
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: Jumpheight
+      value: 13.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: jumpHeight
+      value: 13.25
       objectReference: {fileID: 0}
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: jumpFrameTimer
@@ -30622,11 +30635,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Size.x
-      value: 0.9876339
+      value: 0.9233093
       objectReference: {fileID: 0}
     - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Size.y
-      value: 2.2292075
+      value: 2.244222
       objectReference: {fileID: 0}
     - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Enabled
@@ -30634,12 +30647,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Offset.x
-      value: -0.006183058
+      value: -0.07833187
       objectReference: {fileID: 0}
     - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Offset.y
       value: -0.4028784
       objectReference: {fileID: 0}
+    - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: hasArms
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: leftArm
+      value: 
+      objectReference: {fileID: 1822490959}
+    - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: rightArm
+      value: 
+      objectReference: {fileID: 1562180698}
     - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: floatTime
       value: 0.65
@@ -39077,6 +39102,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1222506734
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.024742
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.909515
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.4349538
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406752026164359725, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_Name
+      value: AudioManagerV2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
 --- !u!1 &1225735860
 GameObject:
   m_ObjectHideFlags: 0
@@ -45099,15 +45181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1154664373}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 1.5
-  bodyCol: {fileID: 1433619399}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 660574032}
 --- !u!95 &1459231671
 Animator:
   serializedVersion: 5
@@ -47848,6 +47921,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.1434326, y: 25.53981}
   m_EdgeRadius: 0
+--- !u!1 &1562180698 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1438646360885530129, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+  m_PrefabInstance: {fileID: 910783677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1562566033
 GameObject:
   m_ObjectHideFlags: 0
@@ -48658,6 +48736,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1592560352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1592560354}
+  - component: {fileID: 1592560353}
+  m_Layer: 0
+  m_Name: Square
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1592560353
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592560352}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1592560354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592560352}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 42.36, y: 0.94, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1594756904
 GameObject:
   m_ObjectHideFlags: 0
@@ -54987,15 +55149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1225735861}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 2
-  bodyCol: {fileID: 118111739}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 1114010658}
 --- !u!50 &1646131647
 Rigidbody2D:
   serializedVersion: 4
@@ -59407,6 +59560,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1822490959 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5656216100363277551, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+  m_PrefabInstance: {fileID: 910783677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1825994100
 GameObject:
   m_ObjectHideFlags: 0
@@ -60624,57 +60782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ea3a3de72117748ac98031d0cf9f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockObj:
-  - {fileID: 2072392209}
-  - {fileID: 862034205}
-  - {fileID: 1646131643}
-  - {fileID: 1459231668}
-  rockRb:
-  - {fileID: 2072392213}
-  - {fileID: 862034209}
-  - {fileID: 1646131647}
-  - {fileID: 1459231672}
-  rockStartPos:
-  - {fileID: 1019567506}
-  - {fileID: 1981411322}
-  - {fileID: 1225735861}
-  - {fileID: 1154664373}
-  rockScript:
-  - {fileID: 2072392212}
-  - {fileID: 862034208}
-  - {fileID: 1646131646}
-  - {fileID: 1459231670}
-  gravityScales:
-  - 3
-  - 2.5
-  - 2
-  - 1.5
-  rockFallDelay: -2.8
-  rockShakingTime: 2
-  respawnTimer: 2
-  rockRespawnTime: 0
-  rockCastDistance:
-  - 47.9
-  - 46.4
-  - 43.3
-  - 49.4
-  rockMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  rockAnims:
-  - {fileID: 2072392211}
-  - {fileID: 862034207}
-  - {fileID: 1646131645}
-  - {fileID: 1459231671}
-  rockAnimClip:
-  - {fileID: 7400000, guid: 5d6ade1ec5d8aab40a4be7e872d3462d, type: 2}
-  - {fileID: 7400000, guid: 69f17e60cd930b244a27ebb40c724af3, type: 2}
-  - {fileID: 7400000, guid: 2f78bb811376ff644968fe41eec0538c, type: 2}
-  lights:
-  - {fileID: 1453388213}
-  - {fileID: 760936334}
-  - {fileID: 1114010659}
-  - {fileID: 660574034}
 --- !u!61 &1861800669
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -67083,15 +67190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1019567506}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 3
-  bodyCol: {fileID: 750551668}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 1453388212}
 --- !u!50 &2072392213
 Rigidbody2D:
   serializedVersion: 4
@@ -69202,3 +69300,5 @@ SceneRoots:
   - {fileID: 910783677}
   - {fileID: 623948148}
   - {fileID: 1635596529}
+  - {fileID: 1592560354}
+  - {fileID: 1222506734}

@@ -23,7 +23,7 @@ public class DustScript : MonoBehaviour
     [SerializeField] private float emissionMultiplier;
     [SerializeField] private float timeDelay;
     [SerializeField] private bool jumpedWhileSkidding;
-     public float rotationSpeed = 10f;
+    public float rotationSpeed = 10f;
     public LayerMask groundMask;
     private bool generatingDust;
 

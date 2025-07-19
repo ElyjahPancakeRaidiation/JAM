@@ -16,8 +16,10 @@ MonoBehaviour:
   movementSpeed: 8
   formName: Pogo
   formAddOn: 0
-  groundChecker: {x: 0.53, y: 0.56}
-  hoppingGroundChecker: {x: 0.53, y: 0.55}
-  startPositionOffset: {x: -0.05, y: -0.12}
-  startPositionOffsetforHopping: {x: -0.05, y: 0.11}
-  boxColliderSize: {x: 1, y: 2.2477503}
+  groundChecker: {x: 0.57, y: 1.24}
+  hoppingGroundChecker: {x: 0.57, y: 0.47}
+  startPositionOffset: {x: -0.058, y: 0.21}
+  hoppingStartPositionOffset: {x: -0.06, y: 0.67}
+  armStartPositionOffset: {x: -0.04, y: 2.21}
+  armSizeChecker: {x: 2.88, y: 1.53}
+  boxColliderSize: {x: 1.1, y: 2.25}

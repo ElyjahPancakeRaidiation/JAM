@@ -163,7 +163,8 @@ MonoBehaviour:
   jumpFrameTimer: 3
   maxJumpFrameTimer: 0.3
   recentlyJumped: 0
-  height: 13.25
+  jumpedClicked: 0
+  Jumpheight: 13.25
   groundCheckerDistance: 1.15
   groundMask:
     serializedVersion: 2

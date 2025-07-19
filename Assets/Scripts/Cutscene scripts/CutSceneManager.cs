@@ -34,10 +34,19 @@ public class CutSceneManager : MonoBehaviour
     private bool canMoveOn = false;
     private bool isFinished = false;
     private int sceneCounter = 0;
+    public static UnityEvent startCutsceneEvent;
+    public static UnityEvent endCutsceneEvent;
+    [SerializeField] private bool useCutsceneBars = true;
+
+    void Awake()
+    {
+        startCutsceneEvent = new UnityEvent();
+        endCutsceneEvent = new UnityEvent();
+    }
 
     private void Start()
     {
-        if (playerMovement != null){playerAbilities = playerMovement.GetComponent<PlayerAbilities>();}
+        if (playerMovement != null) { playerAbilities = playerMovement.GetComponent<PlayerAbilities>(); }
         if (playOnStart)
         {
             canPlayCutScene = true;
@@ -67,6 +76,7 @@ public class CutSceneManager : MonoBehaviour
         }
         
         if (stopWhenSceneStarts) { StartCoroutine(easeObj(easeAmount)); }
+        if(startCutsceneEvent != null && useCutsceneBars){ startCutsceneEvent.Invoke(); }
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
 
@@ -75,6 +85,7 @@ public class CutSceneManager : MonoBehaviour
         //Base case to stop the loop when theres no more scenes
         if (sceneCounter == scene.cutSceneInfo.Length)
         {
+            if(startCutsceneEvent != null && useCutsceneBars){ endCutsceneEvent.Invoke(); }
             isPlaying = false;
             canPlayCutScene = false;
             if (playerMovement != null)
