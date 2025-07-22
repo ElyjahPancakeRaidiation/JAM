@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using Unity.VisualScripting;
-using UnityEditor.Callbacks;
+using TMPro;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
@@ -12,20 +10,20 @@ public class PlayerAbilities : MonoBehaviour
     public isGroundedScript isGroundedScript { get; private set; }
     private GameManager gm;
     private Rigidbody2D _rb;
-    private HingeJoint2D arms;
+    private HingeJoint2D armJoint;
     private GameObject audioManager;
     private AudioManagerV2 audioManagerV2;
 
     #region Dash variables
     [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
-    [SerializeField] private float  UNCHANGEDDASHY = 3.3f;
+    [SerializeField] private float UNCHANGEDDASHY = 14;
     [SerializeField] private int maxDashes;
     private int dashAmount;
     private bool canUseAbility;
     #endregion
 
     #region Pogo variables
-  
+    private const float SUPERJUMP = 28;
 
 
     public bool usedJumpAbility = false;
@@ -40,13 +38,17 @@ public class PlayerAbilities : MonoBehaviour
     public RaycastHit2D groundThingyMajiggy { get; private set; }
     public bool jumpedClicked;
 
-    [SerializeField] private float jumpHeight;
+    [SerializeField] private float Jumpheight;
 
     #endregion
 
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
+    #region Arm variable stuff
     [SerializeField] private bool hasArms;
+    [SerializeField] private float armGrabZone; //zone where when ability button is pressed player grabs onto potential arms
+    [SerializeField] private float armDetectionZone; //zone where when vine gameobjects enter, the nearest arm will begin to point towards it
+    #endregion
     public bool usedJump;
 
     // Start is called before the first frame update
@@ -57,8 +59,8 @@ public class PlayerAbilities : MonoBehaviour
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
-        arms = GetComponent<HingeJoint2D>();
-        arms.enabled = false;
+        armJoint = GetComponent<HingeJoint2D>();
+        armJoint.enabled = false;
         audioManager = GameObject.FindGameObjectWithTag("AudioManager");
         audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
         dashAmount = maxDashes;
@@ -84,8 +86,7 @@ public class PlayerAbilities : MonoBehaviour
 
     public void useFormsAbility()
     {
-        string formName = playerMovement.getCurForm().formName;
-        switch (formName)
+        if (canUseAbility)
         {
             string formName = playerMovement.getCurForm().formName;
             if (!playerMovement.currentVine)
@@ -137,19 +138,24 @@ public class PlayerAbilities : MonoBehaviour
 
     private void checkForVines()
     {
-        Debug.Log("inside check for vines");
-        Collider2D collider = Physics2D.OverlapBox(gameObject.transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, LayerMask.GetMask("Vine"));
-        if (collider)
+        GameObject[] armsArray = GameObject.FindGameObjectsWithTag("Arm");
+        Debug.Log(armsArray.Length);
+        foreach (GameObject arm in armsArray)
         {
-            arms.enabled = true;
-            arms.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
-            playerMovement.currentVine = collider.transform.parent;
+            Collider2D collider = Physics2D.OverlapCircle(arm.transform.position, armGrabZone, LayerMask.GetMask("Vine"));
+            if (collider)
+            {
+                armJoint.enabled = true;
+                armJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
+                armJoint.connectedAnchor = arm.GetComponent<SpriteRenderer>().bounds.size;
+                playerMovement.currentVine = collider.transform.parent;
+            }
         }
     }
     private void detach()
     {
-        arms.connectedBody = null;
-        arms.enabled = false;
+        armJoint.connectedBody = null;
+        armJoint.enabled = false;
         playerMovement.currentVine = null;
     }
 
@@ -163,7 +169,7 @@ public class PlayerAbilities : MonoBehaviour
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
-            
+       
             if (horInput != 0)
             {
                 _rb.velocity = Vector2.zero;
@@ -192,25 +198,8 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-    public void setAbilityPower(float dashX, float dashY, float megaJump)
-    {
-        DASHPOWERX = dashX;
-        DASHPOWERY = dashY;
-        UNCHANGEDDASHY = dashY;
-        jumpHeight = megaJump;
-    }
-    public Vector3 getAbilityPower()
-    {
-        return new Vector3(DASHPOWERX, DASHPOWERY, jumpHeight);
-    }
-    public int getDashAmount()
-    {
-        return dashAmount;
-    }
-    public bool GetCanUseAbility()
-    {
-        return canUseAbility;
-    }
+
+
     #endregion
 
     #region Pogo Ability
@@ -223,18 +212,12 @@ public class PlayerAbilities : MonoBehaviour
 
     }
 
-    public void ArmAbillty()
-    {
-        
-    }
 
-    //i need to get current form and check if that form is 0, but i can also check for case ball.
-    
- 
+
     private IEnumerator JumpAbility()
     {
         jumpedClicked = true;
-        float jumpForce = Mathf.Sqrt(jumpHeight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+        float jumpForce = Mathf.Sqrt(Jumpheight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
         Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
         _rb.velocity = Verticaldirection;
         yield return new WaitForSeconds(.1f);
