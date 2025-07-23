@@ -627,6 +627,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: rainShit
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8693518854204488112, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: m_Name
       value: Rain controller
@@ -1477,6 +1481,7 @@ MonoBehaviour:
   rainyFrictionDown: 0
   isRainFollowingPlayer: 0
   stopRainWhenOutOfCamera: 0
+  followPlayerYAxis: 0
 --- !u!61 &141776368
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3718,6 +3723,7 @@ MonoBehaviour:
   rainyFrictionDown: 0.08
   isRainFollowingPlayer: 1
   stopRainWhenOutOfCamera: 0
+  followPlayerYAxis: 0
 --- !u!61 &378681386
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3789,7 +3795,7 @@ PrefabInstance:
     - target: {fileID: 3452200436577710335, guid: a9d9e5ad4288f5b4c9127ba8183ec018, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5971499116106750658}
+      objectReference: {fileID: 0}
     - target: {fileID: 3452200436577710335, guid: a9d9e5ad4288f5b4c9127ba8183ec018, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: useFormsAbility
@@ -3797,7 +3803,7 @@ PrefabInstance:
     - target: {fileID: 4179159977376007685, guid: a9d9e5ad4288f5b4c9127ba8183ec018, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 875777662}
+      objectReference: {fileID: 0}
     - target: {fileID: 4179159977376007685, guid: a9d9e5ad4288f5b4c9127ba8183ec018, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: setIsPaused
@@ -3889,7 +3895,7 @@ PrefabInstance:
     - target: {fileID: 8895168348696758254, guid: a9d9e5ad4288f5b4c9127ba8183ec018, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5971499116106750657}
+      objectReference: {fileID: 0}
     - target: {fileID: 8895168348696758254, guid: a9d9e5ad4288f5b4c9127ba8183ec018, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: changeForm
@@ -3904,17 +3910,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 987716052869828534, guid: a9d9e5ad4288f5b4c9127ba8183ec018, type: 3}
   m_PrefabInstance: {fileID: 396346736}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &416331448 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5974304457112685016, guid: ce827a2edd530504fb1b0f59ac479b20, type: 3}
-  m_PrefabInstance: {fileID: 942365031}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207662651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6281f57fda4ae4f499eb8a3fcde9df25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &416331449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3996,6 +3991,7 @@ MonoBehaviour:
   rainyFrictionDown: 0.07
   isRainFollowingPlayer: 1
   stopRainWhenOutOfCamera: 0
+  followPlayerYAxis: 0
 --- !u!61 &434372738
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6789,6 +6785,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAbilityKey: 32
+  pauseKey: 0
+  sceneNum: 0
+  hasSpawnPosition: 0
+  onStartTransition: 1
+  canPause: 1
+  playerSpawnPosition: {fileID: 0}
+  build: 0
 --- !u!1 &790647612
 GameObject:
   m_ObjectHideFlags: 0
@@ -10464,6 +10467,7 @@ MonoBehaviour:
   rainyFrictionDown: 0.09
   isRainFollowingPlayer: 1
   stopRainWhenOutOfCamera: 0
+  followPlayerYAxis: 0
 --- !u!61 &1208694043
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17931,6 +17935,7 @@ MonoBehaviour:
   rainyFrictionDown: 1
   isRainFollowingPlayer: 1
   stopRainWhenOutOfCamera: 0
+  followPlayerYAxis: 0
 --- !u!61 &1370788430
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -34132,28 +34137,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
---- !u!114 &5971499116106750657 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-  m_PrefabInstance: {fileID: 5971499116106750656}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5971499116106750658 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-  m_PrefabInstance: {fileID: 5971499116106750656}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e042c9a7d9667478f1e5ac0f961f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6382550642177537859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34165,15 +34148,15 @@ PrefabInstance:
     - target: {fileID: 1484820306327863335, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: AMS
       value: 
-      objectReference: {fileID: 1321454975}
+      objectReference: {fileID: 0}
     - target: {fileID: 1484820306327863335, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: cam
       value: 
-      objectReference: {fileID: 416331448}
+      objectReference: {fileID: 0}
     - target: {fileID: 1484820306327863335, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: thoughtBub
       value: 
-      objectReference: {fileID: 1385979266}
+      objectReference: {fileID: 0}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
       value: -92.052216

@@ -12,8 +12,7 @@ public class DustScriptV2 : MonoBehaviour
     private ParticleSystem dust;
     private ParticleSystem turningMode;
     private Rigidbody2D rb;
-    private PlayerMovement movement;
-    private PlayerAbilities abilities;
+    private PlayerManager playerManager;
     private GameManager gm;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float rotationSpeed;
@@ -30,11 +29,9 @@ public class DustScriptV2 : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        rb = player.GetComponent<Rigidbody2D>();
-        movement = player.GetComponent<PlayerMovement>();
-        abilities = player.GetComponent<PlayerAbilities>();
-        gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        player = playerManager.gameObject;
+        rb = playerManager._rb;
 
         dust = GetComponent<ParticleSystem>();
     }
@@ -47,15 +44,15 @@ public class DustScriptV2 : MonoBehaviour
             moveToPlayer();
             //updateColor();
         }
-        if (Input.GetKeyDown(gm.playerAbilityKey) && abilities.GetCanUseAbility()) //dont have particles follow player midair after jumping
+        if (Input.GetKeyDown(playerManager.playerAbilityKey) && playerManager.PlayerAbility().GetCanUseAbility()) //dont have particles follow player midair after jumping
         {
             StartCoroutine(onJump());
         }
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(playerManager.playerSwitchFormKey))
         {
             debugLandingParticles();
         }
-        if (abilities.isGrounded() && !generatingDust)
+        if (playerManager.GlobalIsGrounded() && !generatingDust)
         {
             StartCoroutine(checkForSkidding());
         }
@@ -69,7 +66,7 @@ public class DustScriptV2 : MonoBehaviour
         generatingDust = true;
         float movingDirection;
         float inputDirection;
-        while (abilities.isGrounded() && !playingLanding)
+        while (playerManager.GlobalIsGrounded() && !playingLanding)
         {
             if (!dust.isPlaying)
             {
@@ -78,7 +75,7 @@ public class DustScriptV2 : MonoBehaviour
 
 
             movingDirection = rb.velocity.x == 0 ? 0 : Mathf.Sign(rb.velocity.x); //direction you're moving
-            inputDirection = Input.GetAxisRaw("Horizontal"); //this probably needs to be replaced
+            inputDirection = playerManager.GetHorizontalInput(); //this probably needs to be replaced
 
             //align emission to moving direction:
             var shape = dust.shape;
@@ -118,7 +115,7 @@ public class DustScriptV2 : MonoBehaviour
     {
         recentlyJumped = true;
         yield return new WaitForSeconds(abilityDelayInSeconds);
-        yield return new WaitUntil(() => abilities.isGrounded());
+        yield return new WaitUntil(() => playerManager.GlobalIsGrounded());
         recentlyJumped = false;
     }
     private void loadSkidParticles()
@@ -173,7 +170,7 @@ public class DustScriptV2 : MonoBehaviour
     }
     public void playLandingParticles()
     {
-        //Debug.Log("player smacked the ground");
+        // Debug.Log("player smacked the ground");
         playingLanding = true;
         loadLandingParticles();
         moveToPlayer();

@@ -31,6 +31,8 @@ TagManager:
   - MobileObj
   - PCObj
   - AllCanvas
+  - Player Left Arm
+  - Player Right Arm
   layers:
   - Default
   - TransparentFX

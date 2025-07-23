@@ -27,7 +27,7 @@ public class CameraOperator : MonoBehaviour
     private float increaseSpeedPercentage;
 
     //This is the max speed point for the player, for the camera instead
-    [SerializeField] private float playerMaxSpeedPoint;
+    [SerializeField] private float objectsMaxSpeedPoint;
 
     //Offset from the currently focused object's position
     [SerializeField] private Vector2 offset;
@@ -138,7 +138,7 @@ public class CameraOperator : MonoBehaviour
 
         if (!farFromPlayer && followPlayer)
         {
-            if (getPastMaxSpeedPoint(player.GetComponent<PlayerMovement>()))
+            if (GetPastMaxSpeedPoint())
             {
                 if (curSpeed > 0.2f)
                 {
@@ -205,10 +205,18 @@ public class CameraOperator : MonoBehaviour
     public void setZoomSpeed(float changingSizeSpeed) => this.zoomSpeed = changingSizeSpeed;
     //Slowly brings the current speed value back to the speed value.
     private void resetCurSpeed() => curSpeed = Mathf.Lerp(curSpeed, defualtSpeed, slowDownAmount * Time.deltaTime);
+    private bool GetPastMaxSpeedPoint()
+    {
+        Rigidbody2D _rb = target.GetComponent<Rigidbody2D>();
+        if (target == null)
+        {
+            return false;
+        }
+        var checkXVelocity = _rb.velocity.x >= objectsMaxSpeedPoint || _rb.velocity.x <= -objectsMaxSpeedPoint;
+        var checkYVelocity = _rb.velocity.y >= objectsMaxSpeedPoint || _rb.velocity.y <= -objectsMaxSpeedPoint;
+        return (checkXVelocity || checkYVelocity);
 
-    //This is to check if the player has gone past the cameras max speed threshold for the player in either the x or y axis.
-    private bool getPastMaxSpeedPoint(PlayerMovement player) { return ((player.getCurVelocity().x >= playerMaxSpeedPoint || player.getCurVelocity().x <= -playerMaxSpeedPoint) || (player.getCurVelocity().y >= playerMaxSpeedPoint || player.getCurVelocity().y <= -playerMaxSpeedPoint)); }
-
+    }
     //IEnumerators
     private IEnumerator ChangeCameraSize(float wantedFOV, float fovSpeed)
     {

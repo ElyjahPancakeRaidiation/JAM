@@ -6,7 +6,7 @@ using System;
 public class thoughtBubble : MonoBehaviour
 {
     public static event Action<bool> triggerThoughtBubble;
-    private PlayerAbilities playerAbilities;
+    private PlayerManager playerManager;
     private bool completed = false;
 
     [SerializeField] private float maxTime;
@@ -20,19 +20,8 @@ public class thoughtBubble : MonoBehaviour
         ///
         /// When player manager is added make sure to switch this out with the event instead, decouple this code.
         /// 
-        playerAbilities = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAbilities>();
-    }
-
-    void Update()
-    {
-        //Ensures that the bubble wont appear if the player has already pressed dash before.
-        if (playerAbilities.getDashAmount() < 1)
-        {
-            if (!completed)
-            {
-                completed = true;
-            }
-        }
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        playerManager.PlayerAbility().GetAbilityEvent()?.AddListener(HasUsedAbility);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -49,10 +38,15 @@ public class thoughtBubble : MonoBehaviour
         if (!completed)
         {
             if (triggerThoughtBubble != null) { triggerThoughtBubble(true); }
-            yield return new WaitUntil(() => playerAbilities.getDashAmount() < 1);
+            yield return new WaitUntil(() => completed);
         }
-        if (triggerThoughtBubble!=null){triggerThoughtBubble(false);}
+        if (triggerThoughtBubble != null) { triggerThoughtBubble(false); }
+    }
+
+    private void HasUsedAbility()
+    {
         completed = true;
+        playerManager.PlayerAbility().GetAbilityEvent()?.RemoveListener(HasUsedAbility);
     }
     
     

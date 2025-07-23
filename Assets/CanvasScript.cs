@@ -10,7 +10,7 @@ public class CanvasScript : MonoBehaviour
     private bool isThoughtBubbleFollow;
 
     private GameObject player;
-    public Animator _transitionsAnim{ get; set; }
+    public Animator _transitionsAnim { get; set; }
 
     [SerializeField] public AnimationClip sceneTransitionEndClip;
     [SerializeField] public AnimationClip mainMenuTransitionClip;
@@ -27,8 +27,8 @@ public class CanvasScript : MonoBehaviour
         _transitionsAnim = TransitionCanvas.GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
 
-        if(pauseCanvas !=null){pauseCanvas.SetActive(false);}
-        if(thoughtBubbleObj!=null){thoughtBubbleObj.SetActive(false);}
+        if (pauseCanvas != null) { pauseCanvas.SetActive(false); }
+        if (thoughtBubbleObj != null) { thoughtBubbleObj.SetActive(false); }
 
         thoughtBubble.triggerThoughtBubble += SetActiveThoughtBubble;
         GameManager.current.pauseEvent += setActivePauseCanvas;
@@ -46,12 +46,20 @@ public class CanvasScript : MonoBehaviour
 
     private void setActivePauseCanvas()
     {
-        if(pauseCanvas!=null){pauseCanvas.SetActive(!pauseCanvas.activeSelf);}
+        if (pauseCanvas != null) { pauseCanvas.SetActive(!pauseCanvas.activeSelf); }
     }
 
     private void SetActiveThoughtBubble(bool isActive)
     {
         thoughtBubbleObj.SetActive(isActive);
         isThoughtBubbleFollow = isActive;
+    }
+    
+
+    private void OnDestroy()
+    {
+        thoughtBubble.triggerThoughtBubble -= SetActiveThoughtBubble;
+        GameManager.current.pauseEvent -= setActivePauseCanvas;
+        GameManager.current.unPauseEvent -= setActivePauseCanvas;
     }
 }

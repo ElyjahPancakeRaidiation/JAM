@@ -843,7 +843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defualtSpeed: 15
   zoomSpeed: 8
-  playerMaxSpeedPoint: 11
+  objectsMaxSpeedPoint: 0
   offset: {x: 0, y: 0}
   camStartSize: 0
   leftBorder: -160.3
@@ -3213,7 +3213,7 @@ PrefabInstance:
     - target: {fileID: 3926967166625142155, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1882112407}
+      objectReference: {fileID: 0}
     - target: {fileID: 3926967166625142155, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: useFormsAbility
@@ -3333,7 +3333,7 @@ PrefabInstance:
     - target: {fileID: 7126438060696773274, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1882112406}
+      objectReference: {fileID: 0}
     - target: {fileID: 7126438060696773274, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: changeForm
@@ -4058,6 +4058,54 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4305053470364344730, guid: 8c59655fd798f474aa7effd2b4bb3641, type: 3}
   m_PrefabInstance: {fileID: 506258975}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &532554271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 532554273}
+  - component: {fileID: 532554272}
+  m_Layer: 0
+  m_Name: PlayerIsGrounded
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &532554272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532554271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5b83f9dfdc14d418c00254bec33d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followObj: {fileID: 1882112408}
+  mask:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!4 &532554273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532554271}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 201.5686, y: 218.34479, z: -0.35838372}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &554028928
 GameObject:
   m_ObjectHideFlags: 0
@@ -10208,7 +10256,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74c06d767afbf4faa77db6b72b18c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 1882112406}
   cutSceneToPlay: {fileID: 11400000, guid: beafb56fd8681f34a916b445508383f1, type: 2}
   actorObjects: []
   endPositions: []
@@ -12286,6 +12333,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: audioManager
+      value: 
+      objectReference: {fileID: 2025413664}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: groundedScript
+      value: 
+      objectReference: {fileID: 532554272}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 446f6b1a39a09f04a8ec37f0bae58a9d, type: 2}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 152d6b9f3de3f6b449e29d8fddc3bad7, type: 2}
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: DASHPOWERY
       value: 17
@@ -12346,28 +12413,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1882112409}
   m_SourcePrefab: {fileID: 100100000, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
---- !u!114 &1882112406 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-  m_PrefabInstance: {fileID: 1882112405}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1882112408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1882112407 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-  m_PrefabInstance: {fileID: 1882112405}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1882112408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e042c9a7d9667478f1e5ac0f961f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1882112408 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8880783838240531236, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
@@ -13227,6 +13272,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+--- !u!114 &2025413664 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+  m_PrefabInstance: {fileID: 2025413663}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b413fc2bdb94c438fa6b029737c485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2037393352
 GameObject:
   m_ObjectHideFlags: 0
@@ -13994,6 +14050,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1882112405}
+  - {fileID: 532554273}
   - {fileID: 1174320109}
   - {fileID: 1486333879}
   - {fileID: 909881841}
