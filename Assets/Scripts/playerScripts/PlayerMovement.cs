@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     //The lower the number the faster it stops
     [SerializeField] private float smoothStopSpeed;
     [SerializeField] private float maxSpeedPoint;
+     [SerializeField] private float angularSpeedfr;
     private float oppositeInput;
     //Only used for a ref for the smoothDamp variable
     private float curFloat;
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float coyoteTimer { get; set; }
    
-    private isGroundedScript isGroundedBox;  //the functions in this object are box-shaped, hence the name
+    //the functions in this object are box-shaped, hence the name
 
     private isGroundedScript groundedScript;
 
@@ -75,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Arm Settings")]
     [SerializeField] private bool hasArms;
     [SerializeField] private GameObject rightArm, leftArm;
-    private bool isArmsActive;
+    private bool isArmsActive; 
 
     #endregion
     private float lastVelocityY;
@@ -278,10 +279,11 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        physics.Friction();
+      physics.Friction();
         if (GetComponent<CircleCollider2D>().enabled)
         {
             ballMovement();
+         
         }
         else if (GetComponent<BoxCollider2D>().enabled)
         {
@@ -343,6 +345,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+  
     private void torsoMovement()
     {
         //电子游戏 - 人形摇杆 <-death threat
@@ -378,7 +381,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
         physics._rb.velocity = jumpForce;
         yield return new WaitForSeconds(.6f);
-        yield return new WaitUntil(() => isGroundedBox.isGroundedForHopping());
+        yield return new WaitUntil(() => groundedScript.isGroundedForHopping());
 
     }
     public IEnumerator impactSound()
@@ -412,14 +415,10 @@ public class PlayerMovement : MonoBehaviour
     public int getFormInt() { return curForm; }
     public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
     public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
-    public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
-    public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
-
+  
+   
     public List<AbilitySettingScriptable> getAllForms() { return forms; }
     public float getRainyFrictionUp() { return rainyFrictionUp; }
-    public float getRainyFrictionDown() { return rainyFrictionDown; }
-    public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
-    public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }
     public float getRainyFrictionDown() { return rainyFrictionDown; }
     public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
     public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }

@@ -25,7 +25,6 @@ public class PlayerAbilities : MonoBehaviour
     #endregion
 
     #region Pogo variables
-  
 
 
     public bool usedJumpAbility = false;
@@ -53,7 +52,6 @@ public class PlayerAbilities : MonoBehaviour
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
-        
         isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _rb = GetComponent<Rigidbody2D>();
@@ -71,23 +69,16 @@ public class PlayerAbilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
         if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
         {
-
             useFormsAbility();
         }
-
     }
-
 
     public void useFormsAbility()
     {
         string formName = playerMovement.getCurForm().formName;
-        switch (formName)
-        {
-            string formName = playerMovement.getCurForm().formName;
+           
             if (!playerMovement.currentVine)
             {
                 switch (formName)
@@ -95,7 +86,6 @@ public class PlayerAbilities : MonoBehaviour
                     case "Ball":
 
                         //Will have the dashing ability
-
                         dashAbility();
                         break;
                     case "Pogo":
@@ -105,15 +95,12 @@ public class PlayerAbilities : MonoBehaviour
                         if (isGroundedScript.isGrounded())
                         {
                             StartCoroutine(JumpAbility());
-
-
                         }
                         else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65)
                         {
                             StartCoroutine(JumpCoyoteTimer());
 
                             StartCoroutine(JumpAbility());
-
                         }
                         else
                         {
@@ -124,7 +111,7 @@ public class PlayerAbilities : MonoBehaviour
                                 checkForVines();
                             }
                         }
-
+                        
                         break;
                 }
             }
@@ -132,10 +119,10 @@ public class PlayerAbilities : MonoBehaviour
             {
                 detach();
             }
-        }
+        
     }
 
-    private void checkForVines()
+    private void checkForVines()//hell nah
     {
         Debug.Log("inside check for vines");
         Collider2D collider = Physics2D.OverlapBox(gameObject.transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, LayerMask.GetMask("Vine"));
@@ -146,7 +133,7 @@ public class PlayerAbilities : MonoBehaviour
             playerMovement.currentVine = collider.transform.parent;
         }
     }
-    private void detach()
+    private void detach() //mf named their function detach without lowercase
     {
         arms.connectedBody = null;
         arms.enabled = false;
@@ -163,20 +150,20 @@ public class PlayerAbilities : MonoBehaviour
             //based of the horizontal input -1, 0, 1
             //0 will now only go up might be good for more movement combinations?
             var horInput = playerMovement.getInput();
-            
+
             if (horInput != 0)
             {
                 _rb.velocity = Vector2.zero;
                 _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
-               
+            
                 
             }
 
             if (horInput == 0)
             {
+                _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y / 2);
 
-                // _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
-                _rb.AddForce(new Vector2(_rb.velocity.x / 100, UNCHANGEDDASHY), ForceMode2D.Impulse);
+                _rb.AddForce(new Vector2(_rb.velocity.x / 100, Mathf.Max(UNCHANGEDDASHY, (_rb.velocity.y *-1) + UNCHANGEDDASHY)), ForceMode2D.Impulse);
             }
 
             dashAmount--;
@@ -249,17 +236,7 @@ public class PlayerAbilities : MonoBehaviour
     {
         this.canUseAbility = canUseAbility;
     }
-    public void setAbilityPower(float dashX, float dashY, float megaJump)
-    {
-        DASHPOWERX = dashX;
-        DASHPOWERY = dashY;
-        UNCHANGEDDASHY = dashY;
-        Jumpheight = megaJump;
-    }
-    public Vector3 getAbilityPower()
-    {
-        return new Vector3(DASHPOWERX, DASHPOWERY, Jumpheight);
-    }
+    
     public bool isGrounded()
     {
         //im gonna fucking kill myslef
@@ -272,12 +249,6 @@ public class PlayerAbilities : MonoBehaviour
     {
         Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
     }
-    public bool GetCanUseAbility()
-    {
-        return canUseAbility;
-    }
-    public int getDashAmount()
-    {
-        return dashAmount;
-    }
+  
+ 
 }

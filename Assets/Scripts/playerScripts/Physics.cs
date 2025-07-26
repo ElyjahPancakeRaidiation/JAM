@@ -20,7 +20,7 @@ public class Physics
         int OppositedirectionMultipleX = -1 * (int)Mathf.Sign(_rb.velocity.x);
         int OppositedirectionMultipleY = -1 * (int)Mathf.Sign(_rb.velocity.y);
         // Multiplies the direction then coefficient of air resistence and the velocity squared
-        _rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(_rb.velocity.x * _rb.velocity.x),
+        _rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(_rb.velocity.x *_rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * (_rb.velocity.y/4.27f))));
     }
 
