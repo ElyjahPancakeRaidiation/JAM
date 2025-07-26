@@ -242,7 +242,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.white;
         Gizmos.DrawWireCube(transform.position + (Vector3)globalGroundColPointOffset, globalGroundColSize);
     }
 

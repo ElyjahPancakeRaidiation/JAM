@@ -16,19 +16,24 @@ public class TorsoForm : PlayerFormsScriptables
     public float jumpHeight;
     [SerializeField] private float floatTime;
     [SerializeField] private Vector2 boxColliderSize;
-    [SerializeField] private Vector2 groundColliderSize;
+    [SerializeField] private Vector2 hoppingGroundColliderSize;
+    [SerializeField] private Vector2 hoppingGroundOffsetSize;
+
+    [SerializeField] private Vector2 jumpGroundColliderSize;
+    [SerializeField] private Vector2 jumpGroundOffsetSize;
 
     [Header("Arm variables")]
     //This states the scene in which the arm will be activated in
     [SerializeField] private int[] armsActiveScene;
     [SerializeField] private bool hasArms;
     [SerializeField] private float swingForce;
-    
-    
+
+
     #endregion
 
     public override void changeForm(Rigidbody2D _rb, SpriteRenderer _spr, Collider2D _circleCol, Collider2D _boxCol)
     {
+        if(functionality!=null){ functionality.changeFormFunctionality(); }
         _boxCol.enabled = true;
         _boxCol.GetComponent<BoxCollider2D>().size = boxColliderSize;
         _circleCol.enabled = false;
@@ -81,8 +86,7 @@ public class TorsoForm : PlayerFormsScriptables
             {
                 rightArm = GameObject.FindGameObjectWithTag("Player Right Arm");
                 leftArm = GameObject.FindGameObjectWithTag("Player Left Arm");
-                rightArm?.SetActive(false);
-                leftArm?.SetActive(false);
+                SetArms(false);
                 arms = GetComponent<HingeJoint2D>();
                 if (arms == null) { arms = gameObject.AddComponent<HingeJoint2D>(); }
                 arms.enabled = false;
@@ -93,14 +97,18 @@ public class TorsoForm : PlayerFormsScriptables
         public override void UpdateMethodMovement()
         {
             coyoteTimer -= Time.deltaTime;
-
-
         }
 
-        // public override void UpdateMethodAbility()
-        // {
-        //     base.UpdateMethodAbility();
-        // }
+        private void Update()
+        {
+            //Only using this for the visual and nothing important like movement wise or collider
+            //This ensures that there isn't to many updates running at the same time in the player
+            var isCurrentForm = playerManager.GetCurPlayerForm().formName == torsoVar.formName;
+            if (isCurrentForm)
+            {
+                SetArms(true);
+            }else{ SetArms(false); }
+        }
 
         public override void FormMovement()
         {
@@ -115,7 +123,10 @@ public class TorsoForm : PlayerFormsScriptables
         }
 
         public override void FormAbility() { JumpAbility(); }
-
+        public override void changeFormFunctionality()
+        {
+            SetArms(true);
+        }
 
         #region Movement methods
         //Movement methods
@@ -123,11 +134,10 @@ public class TorsoForm : PlayerFormsScriptables
         {
             if (playerManager.GetHorizontalInput() != 0)
             {
-                var checkForground = playerManager.IsGrounded().isGroundedBox(transform.position, torsoVar.groundPointOffset, torsoVar.groundColliderSize);
+                var checkForground = playerManager.IsGrounded().isGroundedBox(transform.position, torsoVar.hoppingGroundOffsetSize, torsoVar.hoppingGroundColliderSize);
                 if (checkForground && !jumpedClicked)
                 {
                     StartCoroutine(Hopping());
-
                 }
                 else
                 {
@@ -148,7 +158,7 @@ public class TorsoForm : PlayerFormsScriptables
         {
             if (!currentVine)
             {
-                if (playerManager.IsGrounded().isGroundedBox(transform.position, torsoVar.groundPointOffset, torsoVar.groundColliderSize))
+                if (playerManager.IsGrounded().isGroundedBox(transform.position, torsoVar.jumpGroundOffsetSize, torsoVar.jumpGroundColliderSize))
                 {
                     StartCoroutine(JumpAbilityIEnumerator());
                 }
@@ -200,7 +210,7 @@ public class TorsoForm : PlayerFormsScriptables
             _rb.velocity = jumpForce;
             yield return new WaitForSeconds(.6f);
             //keep checking until the player touches the ground
-            yield return new WaitUntil(() => playerManager.IsGrounded().isGroundedBox(transform.position, torsoVar.groundPointOffset, torsoVar.groundColliderSize)/*playerAbility.groundedScript()*/);
+            yield return new WaitUntil(() => playerManager.IsGrounded().isGroundedBox(transform.position, torsoVar.hoppingGroundOffsetSize, torsoVar.hoppingGroundColliderSize)/*playerAbility.groundedScript()*/);
         }
 
         #endregion
@@ -208,7 +218,9 @@ public class TorsoForm : PlayerFormsScriptables
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireCube(transform.position + (Vector3)torsoVar.groundPointOffset, torsoVar.groundColliderSize);
+            Gizmos.DrawWireCube(transform.position + (Vector3)torsoVar.hoppingGroundOffsetSize, torsoVar.hoppingGroundColliderSize);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(transform.position + (Vector3)torsoVar.jumpGroundOffsetSize, torsoVar.jumpGroundColliderSize);
         }
 
         //Felix arms method
@@ -228,6 +240,16 @@ public class TorsoForm : PlayerFormsScriptables
             arms.connectedBody = null;
             arms.enabled = false;
             currentVine = null;
+        }
+
+        private void SetArms(bool activeStatus)
+        {
+            rightArm?.SetActive(activeStatus);
+            leftArm?.SetActive(activeStatus);
+        }
+
+        private bool IsArmsActive() {
+            return rightArm.activeSelf && leftArm.activeSelf;
         }
         
 

@@ -21,7 +21,6 @@ public abstract class PlayerFormsScriptables : ScriptableObject
     public abstract void changeForm(Rigidbody2D _rb, SpriteRenderer _spr, Collider2D _circleCol, Collider2D _boxCol);
     //Adds the scriptables designated functionality script that inheirts from FormFunctionality
     public abstract void addComponent(GameObject thisObject);
-
     //Removes its scriptables designated functionality script
     public void removeComponent()
     {
@@ -29,6 +28,11 @@ public abstract class PlayerFormsScriptables : ScriptableObject
         {
             Destroy(functionality);
         }
+    }
+    public void ChangeFormFunctionality()
+    {
+        //This is incase you want a specific action to happen everytime you change form
+        functionality.changeFormFunctionality();
     }
     public bool isFunctionalityNull() { return functionality == null; }
     public void restartFormFunctionality(GameObject thisObject)
@@ -52,10 +56,12 @@ public abstract class PlayerFormsScriptables : ScriptableObject
             _rb = playerManager._rb;
 
         }
+        
+        public virtual void changeFormFunctionality() {}
 
         //update movement and ability are virtual methods meaning scripts that inheirt from it do not require these methods
-        public virtual void UpdateMethodMovement(){}
-        public virtual void UpdateMethodAbility(){}
+        public virtual void UpdateMethodMovement() { }
+        public virtual void UpdateMethodAbility() {}
         public abstract void FormMovement();
         public abstract void FormAbility();
 

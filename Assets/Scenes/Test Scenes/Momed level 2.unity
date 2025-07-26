@@ -13491,7 +13491,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAbilityKey: 32
+  pauseKey: 0
   sceneNum: 0
+  hasSpawnPosition: 0
+  onStartTransition: 1
+  canPause: 1
+  playerSpawnPosition: {fileID: 0}
+  build: 0
 --- !u!1 &295256138
 GameObject:
   m_ObjectHideFlags: 0
@@ -29081,7 +29087,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58445310a4ed39646aa226a7b66a4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerFormNum: 1
 --- !u!61 &843275167
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -29778,15 +29783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1981411322}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 2.5
-  bodyCol: {fileID: 1558991202}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 760936333}
 --- !u!50 &862034209
 Rigidbody2D:
   serializedVersion: 4
@@ -30576,6 +30572,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: groundedScript
+      value: 
+      objectReference: {fileID: 1718672019}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 446f6b1a39a09f04a8ec37f0bae58a9d, type: 2}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2f5f15ca6a5e7a845b416ee073353fc2, type: 2}
+    - target: {fileID: 3499816936792255374, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499816936792255374, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: height
       value: 13.25
@@ -45107,15 +45127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1154664373}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 1.5
-  bodyCol: {fileID: 1433619399}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 660574032}
 --- !u!95 &1459231671
 Animator:
   serializedVersion: 5
@@ -50043,7 +50054,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   rb: {fileID: 0}
-  playerMovement: {fileID: 0}
   yOffset: 0
   xOffset: 0
   shouldSkid: 0
@@ -55079,15 +55089,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1225735861}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 2
-  bodyCol: {fileID: 118111739}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 1114010658}
 --- !u!50 &1646131647
 Rigidbody2D:
   serializedVersion: 4
@@ -55167,6 +55168,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1647267009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8880783838240531236, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+  m_PrefabInstance: {fileID: 910783677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1647741052
 GameObject:
   m_ObjectHideFlags: 0
@@ -56686,6 +56692,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1718672018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1718672020}
+  - component: {fileID: 1718672019}
+  m_Layer: 0
+  m_Name: IsGrounded
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1718672019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718672018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5b83f9dfdc14d418c00254bec33d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followObj: {fileID: 1647267009}
+  mask:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!4 &1718672020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718672018}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 276.8325, y: -115.70116, z: 0.47957152}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1722908658
 GameObject:
   m_ObjectHideFlags: 0
@@ -60716,57 +60770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ea3a3de72117748ac98031d0cf9f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockObj:
-  - {fileID: 2072392209}
-  - {fileID: 862034205}
-  - {fileID: 1646131643}
-  - {fileID: 1459231668}
-  rockRb:
-  - {fileID: 2072392213}
-  - {fileID: 862034209}
-  - {fileID: 1646131647}
-  - {fileID: 1459231672}
-  rockStartPos:
-  - {fileID: 1019567506}
-  - {fileID: 1981411322}
-  - {fileID: 1225735861}
-  - {fileID: 1154664373}
-  rockScript:
-  - {fileID: 2072392212}
-  - {fileID: 862034208}
-  - {fileID: 1646131646}
-  - {fileID: 1459231670}
-  gravityScales:
-  - 3
-  - 2.5
-  - 2
-  - 1.5
-  rockFallDelay: -2.8
-  rockShakingTime: 2
-  respawnTimer: 2
-  rockRespawnTime: 0
-  rockCastDistance:
-  - 47.9
-  - 46.4
-  - 43.3
-  - 49.4
-  rockMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  rockAnims:
-  - {fileID: 2072392211}
-  - {fileID: 862034207}
-  - {fileID: 1646131645}
-  - {fileID: 1459231671}
-  rockAnimClip:
-  - {fileID: 7400000, guid: 5d6ade1ec5d8aab40a4be7e872d3462d, type: 2}
-  - {fileID: 7400000, guid: 69f17e60cd930b244a27ebb40c724af3, type: 2}
-  - {fileID: 7400000, guid: 2f78bb811376ff644968fe41eec0538c, type: 2}
-  lights:
-  - {fileID: 1453388213}
-  - {fileID: 760936334}
-  - {fileID: 1114010659}
-  - {fileID: 660574034}
 --- !u!61 &1861800669
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -67175,15 +67178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 1019567506}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 1861800668}
-  hasRockFallen: 1
-  rockFallDelay: 1
-  gravityScale: 3
-  bodyCol: {fileID: 750551668}
-  groundCol: {fileID: 226765621}
-  lightObj: {fileID: 1453388212}
 --- !u!50 &2072392213
 Rigidbody2D:
   serializedVersion: 4
@@ -69295,3 +69289,4 @@ SceneRoots:
   - {fileID: 623948148}
   - {fileID: 1635596529}
   - {fileID: 1592560354}
+  - {fileID: 1718672020}
