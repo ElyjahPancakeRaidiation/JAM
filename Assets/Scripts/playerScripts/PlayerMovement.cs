@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Arm 
-    [Header("Arm Settings")]
+    [Header("Arm Settings")] //BTW I think the mass of the vine segments need to be half the mass of the player to be fluid
     [SerializeField] private bool hasArms;
     [SerializeField] private GameObject rightArm, leftArm;
     private bool isArmsActive;
@@ -108,8 +108,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     #region VineMovement
     [Header("Vine Settings")]
-    public float swingForce;
-    public Transform currentVine;
+    public float swingForce; //players force applied perpendicular to the vector pointed to the hook of the vine
+    public Transform currentVine; //the vine that the player is currently attached to
     #endregion
     // Start is called before the first frame update
     void Start()
@@ -197,6 +197,10 @@ public class PlayerMovement : MonoBehaviour
         //Change keybind so the player gets it from the game manager
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
+            if (currentVine)
+            {
+                playerAbilities.Detach();
+            }
             changeForm();
             withEasing = false;
         }
@@ -277,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        physics.Friction();
+        if(!currentVine){physics.Friction();} //i think friction was making vine movement a little wonky but this could be removed idk
         if (GetComponent<CircleCollider2D>().enabled)
         {
             ballMovement();
@@ -362,10 +366,24 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    private void vineMovement()
+    private void vineMovement() //needs to be ran whenever player is on a hook (like ballmovement and torsomovement)
     {
-         
-        physics._rb.AddRelativeForce(new Vector2(horizontalInput, 0) * swingForce);
+        Vector2 directionToHook = currentVine.GetComponent<Vine>().hook.transform.position - transform.position;
+        float angle = Vector2.Angle(Vector2.down, directionToHook.normalized) * Mathf.Deg2Rad;
+        float angleFactor = Mathf.Sin(angle);
+        physics._rb.AddRelativeForce(horizontalInput * -1 * Vector2.Perpendicular(directionToHook).normalized * Mathf.Lerp(swingForce, 0, angleFactor)); //HELP HELP ME HELP 
+
+        // physics._rb.AddRelativeForce(new Vector2(horizontalInput, 0) * swingForce);, this is old movement where you just apply a force left or right
+        
+    }
+    private void OnDrawGizmos()
+    {
+        if (currentVine) //just to see where the force is being applied
+        {
+            Vector2 directionToHook = currentVine.GetComponent<Vine>().hook.transform.position - transform.position;
+            Vector2 playerPos = transform.position;
+            Gizmos.DrawLine(playerPos, playerPos + Vector2.Perpendicular(directionToHook));
+        }
     }
     public float getHorizontalInput()
     {

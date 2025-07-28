@@ -65,6 +65,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: swingForce
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635077038626585809, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: prefabDustSpawner
       value: 
       objectReference: {fileID: 8613837917271531883, guid: 65cacc0a62f0b89488ae28cce587bd48, type: 3}
@@ -169,4 +173,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  hasArms: 0
+  armGrabZone: 0.5
+  armDetectionZone: 0
+  pullForce: 2
+  detachMultiplier: 1.5
   usedJump: 0

@@ -7,7 +7,7 @@ public class Vine : MonoBehaviour
 {
     public Rigidbody2D hook;
     public GameObject[] vineSegments;
-    [SerializeField] private int numSegments;
+    [SerializeField] public int numSegments;
     private float lengthOfVine;
     void Start()
     {
@@ -25,5 +25,9 @@ public class Vine : MonoBehaviour
             lengthOfVine += newSegment.GetComponent<BoxCollider2D>().bounds.size.y;
             prevBod = newSegment.GetComponent<Rigidbody2D>();
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(hook.transform.position, hook.transform.position - new Vector3(0, numSegments * vineSegments[0].transform.localScale.y, 0));
     }
 }

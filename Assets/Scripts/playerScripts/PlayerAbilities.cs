@@ -44,10 +44,12 @@ public class PlayerAbilities : MonoBehaviour
 
     [SerializeField] private float groundCheckerDistance;
     [SerializeField] private LayerMask groundMask;
-    #region Arm variable stuff
-    [SerializeField] private bool hasArms;
+    #region Arm variable stuff 
+    [SerializeField] private bool hasArms; 
     [SerializeField] private float armGrabZone; //zone where when ability button is pressed player grabs onto potential arms
     [SerializeField] private float armDetectionZone; //zone where when vine gameobjects enter, the nearest arm will begin to point towards it
+    [SerializeField] private float pullForce; //how much force is applied in the direction of the vine's hook when pulling, per distance from hook
+    [SerializeField] private float detachMultiplier; // multiplier of how much speed we get when letting go of vine
     #endregion
     public bool usedJump;
 
@@ -122,7 +124,7 @@ public class PlayerAbilities : MonoBehaviour
                             Debug.Log("Getting ran?");
                             if (hasArms)
                             {
-                                checkForVines();
+                                checkForVines(); //if you have arms and you are not grounded, check if you are on a vine
                             }
                         }
 
@@ -131,7 +133,7 @@ public class PlayerAbilities : MonoBehaviour
             }
             else
             {
-                detach();
+                Detach(); //if on a vine and ability is used, detach
             }
         }
     }
@@ -140,23 +142,37 @@ public class PlayerAbilities : MonoBehaviour
     {
         GameObject[] armsArray = GameObject.FindGameObjectsWithTag("Arm");
         Debug.Log(armsArray.Length);
-        foreach (GameObject arm in armsArray)
+        foreach (GameObject arm in armsArray) //check each hand for a vine segment, if present then attach
         {
             Collider2D collider = Physics2D.OverlapCircle(arm.transform.position, armGrabZone, LayerMask.GetMask("Vine"));
             if (collider)
             {
-                armJoint.enabled = true;
+                dashAmount = maxDashes; //reset dashes
+                armJoint.enabled = true; //enable the hingejoint2d on player
                 armJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
-                armJoint.connectedAnchor = arm.GetComponent<SpriteRenderer>().bounds.size;
-                playerMovement.currentVine = collider.transform.parent;
+                armJoint.connectedAnchor = arm.GetComponent<SpriteRenderer>().bounds.size; //this might have to change to make grabbing look more realistic
+                playerMovement.currentVine = collider.transform.parent; //update currentvine
             }
         }
     }
-    private void detach()
+    public void Detach() //Ability when on a vine, either pulls you toward hook or launches you in current swinging direction with a multiplied velocity
     {
         armJoint.connectedBody = null;
         armJoint.enabled = false;
+        Vine currentVineScript = playerMovement.currentVine.GetComponent<Vine>();
+        Vector2 directionToHook = currentVineScript.hook.transform.position - transform.position;
+        float input = playerMovement.getHorizontalInput();
+        if (input == 0f) //no input => pull
+        {
+            _rb.AddForce(directionToHook.normalized * (10 + pullForce * directionToHook.magnitude), ForceMode2D.Impulse);
+        }
+        else //let go and increase velocity for an impactful "boost"
+        {
+            _rb.velocity *= detachMultiplier;
+        }
+
         playerMovement.currentVine = null;
+
     }
 
 
@@ -254,6 +270,15 @@ public class PlayerAbilities : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
+        if (hasArms)
+        {
+            GameObject[] armsArray = GameObject.FindGameObjectsWithTag("Arm");
+            Debug.Log(armsArray.Length);
+            foreach (GameObject arm in armsArray)
+            {
+                Gizmos.DrawSphere(arm.transform.position, armGrabZone);
+            }
+        }
     }
     public bool GetCanUseAbility()
     {
