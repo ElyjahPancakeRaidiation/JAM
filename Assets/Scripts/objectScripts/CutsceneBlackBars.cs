@@ -9,8 +9,8 @@ public class CutsceneBlackBars : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        CutSceneManager.startCutsceneEvent.AddListener(moveCutsceneBarsIn);
-        CutSceneManager.endCutsceneEvent.AddListener(moveCutsceneBarsOut);
+        CutSceneManager.startCutsceneEvent?.AddListener(moveCutsceneBarsIn);
+        CutSceneManager.endCutsceneEvent?.AddListener(moveCutsceneBarsOut);
     }
 
     private void moveCutsceneBarsIn()
