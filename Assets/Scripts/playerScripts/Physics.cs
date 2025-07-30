@@ -33,6 +33,8 @@ public class Physics
             _rb.AddForce(new Vector2(0, -rainyFrictionUp), ForceMode2D.Impulse);
         }
     }
+     
+    
 
     public void setCoefficientOfFriction(float amount){ coefficientOfFriction = amount; }
     public void setRainyFrictionDown(float amount){ rainyFrictionDown = amount; }
