@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float coyoteTimer { get; set; }
    
-    private isGroundedScript isGroundedBox;  //the functions in this object are box-shaped, hence the name
+  //the functions in this object are box-shaped, hence the name
 
     private isGroundedScript groundedScript;
 
@@ -378,7 +378,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 jumpForce = new Vector2(horizontalInput * jumpSpeedX, jumpSpeedY);
         physics._rb.velocity = jumpForce;
         yield return new WaitForSeconds(.6f);
-        yield return new WaitUntil(() => isGroundedBox.isGroundedForHopping());
+        yield return new WaitUntil(() => groundedScript.isGroundedForHopping());
 
     }
     public IEnumerator impactSound()
@@ -410,16 +410,11 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 getCurVelocity() { return physics._rb.velocity; }
     public void setCurVelocity(Vector2 val) { physics._rb.velocity = val; }
     public int getFormInt() { return curForm; }
-    public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
-    public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
-    public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
+     public void setNewForm(AbilitySettingScriptable newForm) { forms.Add(newForm); }
     public AbilitySettingScriptable getCurForm() { return forms[curForm]; }
 
     public List<AbilitySettingScriptable> getAllForms() { return forms; }
     public float getRainyFrictionUp() { return rainyFrictionUp; }
-    public float getRainyFrictionDown() { return rainyFrictionDown; }
-    public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
-    public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }
     public float getRainyFrictionDown() { return rainyFrictionDown; }
     public void setRainyFrictionUp(float amount) { rainyFrictionUp = amount; }
     public void setRainyFrictionDown(float amount) { rainyFrictionDown = amount; }

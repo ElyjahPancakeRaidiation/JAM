@@ -84,9 +84,7 @@ public class PlayerAbilities : MonoBehaviour
 
     public void useFormsAbility()
     {
-        string formName = playerMovement.getCurForm().formName;
-        switch (formName)
-        {
+       
             string formName = playerMovement.getCurForm().formName;
             if (!playerMovement.currentVine)
             {
@@ -132,20 +130,20 @@ public class PlayerAbilities : MonoBehaviour
             {
                 detach();
             }
-        }
+        
     }
 
-    private void checkForVines()
-    {
-        Debug.Log("inside check for vines");
-        Collider2D collider = Physics2D.OverlapBox(gameObject.transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, LayerMask.GetMask("Vine"));
-        if (collider)
+        private void checkForVines()
         {
-            arms.enabled = true;
-            arms.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
-            playerMovement.currentVine = collider.transform.parent;
+            Debug.Log("inside check for vines");
+            Collider2D collider = Physics2D.OverlapBox(gameObject.transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, LayerMask.GetMask("Vine"));
+            if (collider)
+            {
+                arms.enabled = true;
+                arms.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
+                playerMovement.currentVine = collider.transform.parent;
+            }
         }
-    }
     private void detach()
     {
         arms.connectedBody = null;
@@ -174,9 +172,8 @@ public class PlayerAbilities : MonoBehaviour
 
             if (horInput == 0)
             {
-
-                // _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
-                _rb.AddForce(new Vector2(_rb.velocity.x / 100, UNCHANGEDDASHY), ForceMode2D.Impulse);
+                _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y / 2);
+                _rb.AddForce(new Vector2(_rb.velocity.x / 100, Mathf.Max(UNCHANGEDDASHY, (_rb.velocity.y *-1) + UNCHANGEDDASHY)), ForceMode2D.Impulse);
             }
 
             dashAmount--;
@@ -192,13 +189,7 @@ public class PlayerAbilities : MonoBehaviour
         yield return new WaitUntil(() => isGroundedScript.isGrounded());
         dashAmount = maxDashes;
     }
-    public void setAbilityPower(float dashX, float dashY, float megaJump)
-    {
-        DASHPOWERX = dashX;
-        DASHPOWERY = dashY;
-        UNCHANGEDDASHY = dashY;
-        jumpHeight = megaJump;
-    }
+
     public Vector3 getAbilityPower()
     {
         return new Vector3(DASHPOWERX, DASHPOWERY, jumpHeight);
@@ -254,12 +245,9 @@ public class PlayerAbilities : MonoBehaviour
         DASHPOWERX = dashX;
         DASHPOWERY = dashY;
         UNCHANGEDDASHY = dashY;
-        Jumpheight = megaJump;
+        jumpHeight = megaJump;
     }
-    public Vector3 getAbilityPower()
-    {
-        return new Vector3(DASHPOWERX, DASHPOWERY, Jumpheight);
-    }
+  
     public bool isGrounded()
     {
         //im gonna fucking kill myslef
@@ -272,12 +260,5 @@ public class PlayerAbilities : MonoBehaviour
     {
         Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
     }
-    public bool GetCanUseAbility()
-    {
-        return canUseAbility;
-    }
-    public int getDashAmount()
-    {
-        return dashAmount;
-    }
+  
 }
