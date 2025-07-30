@@ -10,7 +10,17 @@ public class PlayerManager : MonoBehaviour
 {
 
     public static PlayerManager playerManager;
-    public bool canControl { get; set; }
+    public bool canControl
+    {
+        get
+        {
+            return InputManager().canControl;
+        }
+        set
+        {
+            InputManager().canControl = value;
+        }
+    }
 
     public Rigidbody2D _rb { get; private set; }
     public SpriteRenderer _spr { get; private set; }

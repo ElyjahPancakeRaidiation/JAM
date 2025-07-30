@@ -55,8 +55,8 @@ public class BallForm : PlayerFormsScriptables
             isEasingOn = true;
             if (_dustSpawner == null) { _dustSpawner = Instantiate(ballVar.prefabDustSpawner); }
             //May have to rethink about this line
-            playerManager.PlayerMovement().getPlayerImpact()?.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
-            playerManager.PlayerAbility().GetGlobalWideAbiltiyEvent()?.AddListener(GiveMaxDash);
+            playerManager.PlayerMovement().playerImpact += _dustSpawner.GetComponent<DustScriptV2>().playLandingParticles;
+            playerManager.PlayerAbility().GetGlobalWideAbiltiyEvent().AddListener(GiveMaxDash);
         }
         public override void UpdateMethodMovement()
         {
@@ -154,6 +154,7 @@ public class BallForm : PlayerFormsScriptables
         private void GiveMaxDash()
         {
             dashAmount = ballVar.maxDashes;
+            Debug.Log("gave dah");
         }
 
         private IEnumerator EasingBackOn()

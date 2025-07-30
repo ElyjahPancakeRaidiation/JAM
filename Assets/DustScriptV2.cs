@@ -48,7 +48,7 @@ public class DustScriptV2 : MonoBehaviour
         {
             StartCoroutine(onJump());
         }
-        if (Input.GetKeyDown(playerManager.playerSwitchFormKey))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             debugLandingParticles();
         }

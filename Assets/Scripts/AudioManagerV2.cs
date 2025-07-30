@@ -65,8 +65,8 @@ public class AudioManagerV2 : MonoBehaviour
         List<AudioSource> sources = new List<AudioSource>(GetComponents<AudioSource>());
         currentSource = sources[0];
         incomingSource = sources[1];
-        // GameManager.current.pauseEvent += currentSource.Pause;
-        // GameManager.current.unPauseEvent += currentSource.UnPause;
+        GameManager.current.pauseEvent += currentSource.Pause;
+        GameManager.current.unPauseEvent += currentSource.UnPause;
         SFXsources = new Dictionary<string, AudioSource>();
         foreach (PlayerSFX p in playerSFXs)
         {
@@ -237,8 +237,9 @@ public class AudioManagerV2 : MonoBehaviour
     }
     void OnDestroy()
     {
-        TestManager.pauseEvent -= currentSource.Pause;
-        TestManager.unPauseEvent -= currentSource.UnPause;
+        GameManager.current.pauseEvent -= currentSource.Pause;
+        GameManager.current.unPauseEvent -= currentSource.UnPause;
+        
     }
 }
 

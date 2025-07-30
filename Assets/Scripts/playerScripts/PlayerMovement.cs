@@ -17,16 +17,15 @@ public class PlayerMovement : MonoBehaviour
 
     private bool checkingImpact;
     public float velocitySoundThreshold;
-    private UnityEvent playerImpact;
+    // private UnityEvent playerImpact;
+    public event Action playerImpact;//switched it from unity event to an action event because of some weird errors
 
     private float lastVelocityX; 
 
     void Start()
     {
-        // rightArm.SetActive(false);
-        // leftArm.SetActive(false);
 
-        playerImpact = new UnityEvent();
+        // if(playerImpact==null){ new UnityEvent(); }
         playerManager = GetComponent<PlayerManager>();
         physics = new Physics(GetComponent<Rigidbody2D>());
     }
@@ -72,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(physics._rb.velocity.y) > velocitySoundThreshold)
         {
             playerManager.PlayPlayerSfx("Landing");
-            playerImpact.Invoke();
+            playerImpact?.Invoke();
         }
         checkingImpact = false;
     }
@@ -83,7 +82,11 @@ public class PlayerMovement : MonoBehaviour
     public float getRainyFrictionDown() { return rainyFrictionDown; }
     public void setRainyFrictionUp(float amount) => rainyFrictionUp = amount;
     public void setRainyFrictionDown(float amount) => rainyFrictionDown = amount;
-    public UnityEvent getPlayerImpact() { return playerImpact; }
+    // public UnityEvent getPlayerImpact()
+    // {
+    //     if(playerImpact==null){ new UnityEvent(); }
+    //     return playerImpact;
+    // }
     public float GetAcceleration()
     {
         float aMultiplier; //acceleration multiplier

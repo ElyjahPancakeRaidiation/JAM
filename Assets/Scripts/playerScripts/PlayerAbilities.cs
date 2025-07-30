@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,8 +19,8 @@ public class PlayerAbilities : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        onUseAbilityEvent = new UnityEvent();
-        globalWideAbilityEvent = new UnityEvent();
+        if (onUseAbilityEvent == null){ onUseAbilityEvent = new UnityEvent(); }
+        if (globalWideAbilityEvent == null) { globalWideAbilityEvent = new UnityEvent(); }
         playerManager = GetComponent<PlayerManager>();
         canUseAbility = true;
     }
@@ -48,10 +49,12 @@ public class PlayerAbilities : MonoBehaviour
     public void SetCanUseAbility(bool val) { canUseAbility = val; }
     public UnityEvent GetOnUSeAbilityEvent()
     {
+        if (onUseAbilityEvent == null){ onUseAbilityEvent = new UnityEvent(); }
         return onUseAbilityEvent;
     }
     public UnityEvent GetGlobalWideAbiltiyEvent()
     {
+        if(globalWideAbilityEvent==null){ globalWideAbilityEvent = new UnityEvent(); }
         return globalWideAbilityEvent;
     }
 }

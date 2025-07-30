@@ -18946,6 +18946,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: audioPoints.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: audioPoints.Array.data[0].leftClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 26ca30f6060033041afbe3cf0bf3a410, type: 3}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: audioPoints.Array.data[0].rightClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b9378ac161e52ac4ea2e68009534036b, type: 3}
     - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.024742
@@ -33970,6 +33982,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1764675670}
   - component: {fileID: 1764675669}
+  - component: {fileID: 1764675671}
   m_Layer: 0
   m_Name: 'Level 1 intro song '
   m_TagString: AudioManager
@@ -34088,6 +34101,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1201323273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1764675671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764675668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57a8ed6fd88e514b874be31e17e0a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1770253805
 GameObject:
   m_ObjectHideFlags: 0

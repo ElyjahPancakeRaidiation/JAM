@@ -33858,7 +33858,7 @@ PrefabInstance:
     - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: playerForms.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 7d13f378c0fbf484ab723b854e7ebc06, type: 2}
+      objectReference: {fileID: 11400000, guid: 446f6b1a39a09f04a8ec37f0bae58a9d, type: 2}
     - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: playerForms.Array.data[1]
       value: 
@@ -33877,7 +33877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1438646360885530129, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_TagString
-      value: Player Right Arm
+      value: Arm
       objectReference: {fileID: 0}
     - target: {fileID: 3499816936792255374, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Sprite
@@ -33973,7 +33973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5656216100363277551, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_TagString
-      value: Player Left Arm
+      value: Arm
       objectReference: {fileID: 0}
     - target: {fileID: 6336476945996529853, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: objectToFollow
@@ -34126,10 +34126,7 @@ PrefabInstance:
     - {fileID: 5530095350427306113, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
     - {fileID: 8039400854384374809, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8880783838240531236, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1684155790}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
 --- !u!1 &1684155781 stripped
 GameObject:
@@ -34147,31 +34144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e977347f6a889a42b5166b302ceeaa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!233 &1684155790
-HingeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1684155781}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_BreakAction: 3
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 221.7, y: 199.9}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
 --- !u!114 &1684155797 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9046088161277589359, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}

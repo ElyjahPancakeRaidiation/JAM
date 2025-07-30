@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour
 {
     private float horizontalInput;
 
-    private bool canControl=true;//Might have to change this later KEEP IN MIND 
+    public bool canControl=true;//Might have to change this later KEEP IN MIND 
 
     public class MainTouch
     {

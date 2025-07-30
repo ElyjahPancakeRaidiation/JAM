@@ -112,12 +112,15 @@ public class TorsoForm : PlayerFormsScriptables
         {
             //Only using this for the visual and nothing important like movement wise or collider
             //This ensures that there isn't to many updates running at the same time in the player
-            var isCurrentForm = playerManager.GetCurPlayerForm().formName == torsoVar.formName;
-            if (isCurrentForm)
+            if (torsoVar.hasArms)
             {
-                SetArms(true);
+                var isCurrentForm = playerManager.GetCurPlayerForm().formName == torsoVar.formName;
+                if (isCurrentForm)
+                {
+                    SetArms(true);
+                }
+                else { SetArms(false); }
             }
-            else { SetArms(false); }
         }
 
         public override void FormMovement()
@@ -266,9 +269,12 @@ public class TorsoForm : PlayerFormsScriptables
 
         private void SetArms(bool activeStatus)
         {
-            foreach (GameObject arm in armsArray)
+            if (torsoVar.hasArms)
             {
-                arm.SetActive(activeStatus);
+                foreach (GameObject arm in armsArray)
+                {
+                    arm.SetActive(activeStatus);
+                }
             }
         }
 
