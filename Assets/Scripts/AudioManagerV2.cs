@@ -235,6 +235,10 @@ public class AudioManagerV2 : MonoBehaviour
     {
         return Mathf.Pow(10f, db / 20f);
     }
+    public void PlayCurrentSource()
+    {
+        currentSource.Play();
+    }
     void OnDestroy()
     {
         GameManager.current.pauseEvent -= currentSource.Pause;

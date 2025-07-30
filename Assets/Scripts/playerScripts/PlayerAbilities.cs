@@ -47,7 +47,7 @@ public class PlayerAbilities : MonoBehaviour
 
     public bool GetCanUseAbility() { return canUseAbility; }
     public void SetCanUseAbility(bool val) { canUseAbility = val; }
-    public UnityEvent GetOnUSeAbilityEvent()
+    public UnityEvent GetOnUseAbilityEvent()
     {
         if (onUseAbilityEvent == null){ onUseAbilityEvent = new UnityEvent(); }
         return onUseAbilityEvent;

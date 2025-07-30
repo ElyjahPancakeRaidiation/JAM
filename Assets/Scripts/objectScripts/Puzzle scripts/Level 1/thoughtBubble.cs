@@ -11,7 +11,7 @@ public class thoughtBubble : MonoBehaviour
 
     [SerializeField] private float maxTime;
     [SerializeField] private Vector2 positionOffset;
-
+    [SerializeField] private UnityEvent thoughtBubbleEvent;
     private Coroutine thoughtTrigger;
 
     // Start is called before the first frame update
@@ -21,7 +21,8 @@ public class thoughtBubble : MonoBehaviour
         /// When player manager is added make sure to switch this out with the event instead, decouple this code.
         /// 
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
-        playerManager.PlayerAbility().GetOnUSeAbilityEvent()?.AddListener(HasUsedAbility);
+        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.AddListener(HasUsedAbility);
+        if(thoughtBubbleEvent==null){thoughtBubbleEvent = new UnityEvent();}
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -38,6 +39,7 @@ public class thoughtBubble : MonoBehaviour
         if (!completed)
         {
             if (triggerThoughtBubble != null) { triggerThoughtBubble(true); }
+            thoughtBubbleEvent?.Invoke();
             yield return new WaitUntil(() => completed);
         }
         if (triggerThoughtBubble != null) { triggerThoughtBubble(false); }
@@ -46,7 +48,7 @@ public class thoughtBubble : MonoBehaviour
     private void HasUsedAbility()
     {
         completed = true;
-        playerManager.PlayerAbility().GetOnUSeAbilityEvent()?.RemoveListener(HasUsedAbility);
+        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.RemoveListener(HasUsedAbility);
     }
     
     

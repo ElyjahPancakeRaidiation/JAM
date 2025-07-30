@@ -53,19 +53,3 @@ MonoBehaviour:
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
     infinite: 0
-  - actionType: 2
-    information: 
-    actorIndex: 2
-    endPositionIndex: 0
-    waitTime: 4
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
-    infinite: 0
-  - actionType: 3
-    information: 
-    actorIndex: 2
-    endPositionIndex: 0
-    waitTime: 0
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
-    infinite: 0

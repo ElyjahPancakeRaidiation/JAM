@@ -32,7 +32,7 @@ public class CanvasScript : MonoBehaviour
 
         thoughtBubble.triggerThoughtBubble += SetActiveThoughtBubble;
         GameManager.current.pauseEvent += setActivePauseCanvas;
-        GameManager.current.unPauseEvent += setActivePauseCanvas;
+        GameManager.current.unPauseEvent += deactivateActivePauseCanvas;
     }
 
     // Update is called once per frame
@@ -46,7 +46,11 @@ public class CanvasScript : MonoBehaviour
 
     private void setActivePauseCanvas()
     {
-        if (pauseCanvas != null) { pauseCanvas.SetActive(!pauseCanvas.activeSelf); }
+        if (pauseCanvas != null) { pauseCanvas.SetActive(true); }
+    }
+    private void deactivateActivePauseCanvas()
+    {
+        if (pauseCanvas != null) { pauseCanvas.SetActive(false); }
     }
 
     private void SetActiveThoughtBubble(bool isActive)
