@@ -1,43 +1,28 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using TMPro;  
-using UnityEngine.UI;
+using UnityEngine.Events;
+using System;
 
 public class thoughtBubble : MonoBehaviour
 {
-    public GameObject thoughtBub;//Change
-    private PlayerAbilities playerAbilities;
+    public static event Action<bool> triggerThoughtBubble;
+    private PlayerManager playerManager;
     private bool completed = false;
 
     [SerializeField] private float maxTime;
     [SerializeField] private Vector2 positionOffset;
-
+    [SerializeField] private UnityEvent thoughtBubbleEvent;
     private Coroutine thoughtTrigger;
 
     // Start is called before the first frame update
     void Start()
     {
-        thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble");
         ///
         /// When player manager is added make sure to switch this out with the event instead, decouple this code.
         /// 
-        playerAbilities = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAbilities>();
-        thoughtBub.gameObject.SetActive(false);
-    }
-
-    void Update()
-    {
-        thoughtBub.transform.position = playerAbilities.transform.position + (Vector3)positionOffset;
-        //Ensures that the bubble wont appear if the player has already pressed dash before.
-        if (playerAbilities.getDashAmount() < 1)
-        {
-            if (!completed)
-            {
-                completed = true;
-            }
-        }
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.AddListener(HasUsedAbility);
+        if(thoughtBubbleEvent==null){thoughtBubbleEvent = new UnityEvent();}
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -53,11 +38,17 @@ public class thoughtBubble : MonoBehaviour
         yield return new WaitForSecondsRealtime(maxTime);
         if (!completed)
         {
-            thoughtBub.gameObject.SetActive(true);
-            yield return new WaitUntil(() => playerAbilities.getDashAmount() < 1);
+            if (triggerThoughtBubble != null) { triggerThoughtBubble(true); }
+            thoughtBubbleEvent?.Invoke();
+            yield return new WaitUntil(() => completed);
         }
-        thoughtBub.gameObject.SetActive(false);
+        if (triggerThoughtBubble != null) { triggerThoughtBubble(false); }
+    }
+
+    private void HasUsedAbility()
+    {
         completed = true;
+        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.RemoveListener(HasUsedAbility);
     }
     
     
