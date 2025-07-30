@@ -69,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
     private isGroundedScript groundedScript;
 
+  
     [SerializeField] private float floatTime;
     #endregion
 
@@ -112,6 +113,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Vine Settings")]
     public float swingForce;
     public Transform currentVine;
+    
     #endregion
     // Start is called before the first frame update
     void Start()
