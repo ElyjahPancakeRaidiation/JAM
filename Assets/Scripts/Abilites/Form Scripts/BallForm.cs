@@ -56,6 +56,7 @@ public class BallForm : PlayerFormsScriptables
             if (_dustSpawner == null) { _dustSpawner = Instantiate(ballVar.prefabDustSpawner); }
             //May have to rethink about this line
             playerManager.PlayerMovement().getPlayerImpact()?.AddListener(_dustSpawner.GetComponent<DustScriptV2>().playLandingParticles);
+            playerManager.PlayerAbility().GetGlobalWideAbiltiyEvent()?.AddListener(GiveMaxDash);
         }
         public override void UpdateMethodMovement()
         {
@@ -147,6 +148,11 @@ public class BallForm : PlayerFormsScriptables
             //automatically give your dash allowing double dash
             yield return new WaitForSeconds(0.2f);
             yield return new WaitUntil(() => playerManager.GlobalIsGrounded());
+            dashAmount = ballVar.maxDashes;
+        }
+
+        private void GiveMaxDash()
+        {
             dashAmount = ballVar.maxDashes;
         }
 

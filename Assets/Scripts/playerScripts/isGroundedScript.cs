@@ -24,14 +24,27 @@ public class isGroundedScript : MonoBehaviour
     public bool isGroundedCircle(Vector2 point, Vector2 pointOffset, float radius){
         return Physics2D.OverlapCircle(point + pointOffset, radius, mask);
     }
-    public bool isGroundedBox(Vector2 point, Vector2 pointOffset, Vector2 size) {
+    public bool isGroundedCircle(Vector2 point, Vector2 pointOffset, float radius, LayerMask mask){
+        return Physics2D.OverlapCircle(point + pointOffset, radius, mask);
+    }
+    public bool isGroundedBox(Vector2 point, Vector2 pointOffset, Vector2 size)
+    {
         return Physics2D.OverlapBox(point + pointOffset, size, angle, mask);
     }
-    public bool isGroundedRay(Vector2 point, Vector2 pointOffset, Vector2 endPosition, float distance) {
+    public bool isGroundedBox(Vector2 point, Vector2 pointOffset, Vector2 size, LayerMask mask)
+    {
+        return Physics2D.OverlapBox(point + pointOffset, size, angle, mask);
+    }
+    public bool isGroundedRay(Vector2 point, Vector2 pointOffset, Vector2 endPosition, float distance)
+    {
+        return Physics2D.Raycast(point + pointOffset, endPosition, distance, mask);
+    }
+    public bool isGroundedRay(Vector2 point, Vector2 pointOffset, Vector2 endPosition, float distance, LayerMask mask)
+    {
         return Physics2D.Raycast(point + pointOffset, endPosition, distance, mask);
     }
  
-    public void setCenterYOffset(float val){centerYOffset = val;}
+    public void setCenterYOffset(float val) { centerYOffset = val; }
        
        
     

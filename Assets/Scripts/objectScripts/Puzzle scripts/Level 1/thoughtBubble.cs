@@ -21,7 +21,7 @@ public class thoughtBubble : MonoBehaviour
         /// When player manager is added make sure to switch this out with the event instead, decouple this code.
         /// 
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
-        playerManager.PlayerAbility().GetAbilityEvent()?.AddListener(HasUsedAbility);
+        playerManager.PlayerAbility().GetOnUSeAbilityEvent()?.AddListener(HasUsedAbility);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -46,7 +46,7 @@ public class thoughtBubble : MonoBehaviour
     private void HasUsedAbility()
     {
         completed = true;
-        playerManager.PlayerAbility().GetAbilityEvent()?.RemoveListener(HasUsedAbility);
+        playerManager.PlayerAbility().GetOnUSeAbilityEvent()?.RemoveListener(HasUsedAbility);
     }
     
     

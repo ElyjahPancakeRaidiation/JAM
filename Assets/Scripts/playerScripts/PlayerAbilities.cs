@@ -10,12 +10,16 @@ public class PlayerAbilities : MonoBehaviour
 
     private bool canUseAbility;
 
-    private UnityEvent abilityEvent;
+    //onUseAbility event makes it easier for other script to know when the ability happens without being coupled to the ability. Usually used for sound.
+    private UnityEvent onUseAbilityEvent;
+    //Global wide events are a way for abilities to interact with each other but in a limited way where it doesn't have to depend on that ability.
+    private UnityEvent globalWideAbilityEvent;
 
     // Start is called before the first frame update
     void Start()
     {
-        abilityEvent = new UnityEvent();
+        onUseAbilityEvent = new UnityEvent();
+        globalWideAbilityEvent = new UnityEvent();
         playerManager = GetComponent<PlayerManager>();
         canUseAbility = true;
     }
@@ -36,14 +40,18 @@ public class PlayerAbilities : MonoBehaviour
         if (!playerManager.IsPlayerFormsEmpty() && canUseAbility)
         {
             playerManager.GetFormFunctionality().FormAbility();
-            if (abilityEvent != null) { abilityEvent.Invoke(); }
+            if (onUseAbilityEvent != null) { onUseAbilityEvent.Invoke(); }
         }
     }
 
     public bool GetCanUseAbility() { return canUseAbility; }
     public void SetCanUseAbility(bool val) { canUseAbility = val; }
-    public UnityEvent GetAbilityEvent()
+    public UnityEvent GetOnUSeAbilityEvent()
     {
-        return abilityEvent;
+        return onUseAbilityEvent;
+    }
+    public UnityEvent GetGlobalWideAbiltiyEvent()
+    {
+        return globalWideAbilityEvent;
     }
 }
