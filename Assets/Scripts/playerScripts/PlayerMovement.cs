@@ -23,6 +23,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        // rightArm.SetActive(false);
+        // leftArm.SetActive(false);
+
         playerImpact = new UnityEvent();
         playerManager = GetComponent<PlayerManager>();
         physics = new Physics(GetComponent<Rigidbody2D>());

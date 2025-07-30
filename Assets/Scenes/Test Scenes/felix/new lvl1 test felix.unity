@@ -11396,7 +11396,11 @@ MonoBehaviour:
   followObj: {fileID: 0}
   mask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  rayScales: []
+  timer: 0
+  vecScale: []
+  curForm: 0
 --- !u!1 &436666060
 GameObject:
   m_ObjectHideFlags: 0
@@ -33938,7 +33942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: swingForce
-      value: 200
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: forms.Array.size
