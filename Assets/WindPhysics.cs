@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class WindPhysics : MonoBehaviour
 {
@@ -49,7 +47,6 @@ public class WindPhysics : MonoBehaviour
         if (stayTimer >= maxStayTimer)
         {
             multiplier = maxMultiplier;
-            
         }
         Debug.Log(multiplier);
         return multiplier;
@@ -72,7 +69,7 @@ public class WindPhysics : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.Log("Hello assign the particle system to the game object. Irene");
+                Debug.Log("Hello assign the particle system to the game object. Irene || 1800018192393121239238193812912812 - E find my pages DISCOVER MY TRUTH");
             }
             
         }
@@ -90,7 +87,7 @@ public class WindPhysics : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.Log("Hello assign the particle system to the game object. Irene");
+                Debug.Log("Hello assign the particle system to the game object. Irene - GET THE OTHER ERROR FIND MY PAGES!");
             }
             
        

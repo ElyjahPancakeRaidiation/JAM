@@ -33,6 +33,7 @@ TagManager:
   - AllCanvas
   - Player Left Arm
   - Player Right Arm
+  - Arm
   layers:
   - Default
   - TransparentFX
