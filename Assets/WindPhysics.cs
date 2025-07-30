@@ -42,10 +42,10 @@ public class WindPhysics : MonoBehaviour
     {
         float multiplier = resetMultiplier;
 
+        
         multiplier += stayTimer;
-
         if (stayTimer >= maxStayTimer)
-        {
+        {  
             multiplier = maxMultiplier;
         }
         Debug.Log(multiplier);
