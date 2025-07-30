@@ -123,7 +123,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TestManager, Assembly-CSharp
-        m_MethodName: setIsPaused
+        m_MethodName: set_isPaused
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -647,7 +647,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1000
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &5490562182729990424
 MonoBehaviour:

@@ -82,7 +82,7 @@ public class Abilities : MonoBehaviour
         switch (PlayerController.playerForm)
         {
             case PlayerController.playerForms.Ball:
-                Dash();
+                // Dash();
                 break;
             case PlayerController.playerForms.Pogo:
                 //Have the functions for pogos abilities
@@ -111,33 +111,33 @@ public class Abilities : MonoBehaviour
     }
     
     #region Ball abilites
-    private void Dash(){
-        if (!TestManager.transitioned)
-        {
-            if (Input.GetKeyDown(abilityKey) || usedAbility)
-            {
-                tryingToDash = true;
-                attemptingToDashTimer = 0;
-                usedAbility = false;
-            }
-            if (tryingToDash)
-            {
-                attemptingToDashTimer += Time.deltaTime;
-                if (attemptingToDashTimer > dashInputForgivenessTime)
-                {
-                    tryingToDash = false;
-                }
-            }
-            if (tryingToDash && !isDashing && player.horiLatestInput != 0)
-            {
-                if (dashAmount > 0 || bonusCharges > 0)
-                {
-                    StartCoroutine(Dashing(dashingDuration));
-                    StartCoroutine(ignoreResistences());
-                }
-            }
-        }
-    }
+    // private void Dash(){
+    //     if (!TestManager.transitioned)
+    //     {
+    //         if (Input.GetKeyDown(abilityKey) || usedAbility)
+    //         {
+    //             tryingToDash = true;
+    //             attemptingToDashTimer = 0;
+    //             usedAbility = false;
+    //         }
+    //         if (tryingToDash)
+    //         {
+    //             attemptingToDashTimer += Time.deltaTime;
+    //             if (attemptingToDashTimer > dashInputForgivenessTime)
+    //             {
+    //                 tryingToDash = false;
+    //             }
+    //         }
+    //         if (tryingToDash && !isDashing && player.horiLatestInput != 0)
+    //         {
+    //             if (dashAmount > 0 || bonusCharges > 0)
+    //             {
+    //                 StartCoroutine(Dashing(dashingDuration));
+    //                 StartCoroutine(ignoreResistences());
+    //             }
+    //         }
+    //     }
+    // }
 
     public void abilitiesButton(){
         if(!usedAbility){
@@ -150,10 +150,10 @@ public class Abilities : MonoBehaviour
         //player.cam.shakeTime = 0.2f;
         //player.cam.shakeAmount = 0.2f;
         //CamControllerV2.isCameraShaking = true;
-        if (groundedScript.isGrounded())
-        {
-            player.rb.velocity = new Vector2(player.rb.velocity.x, 0);
-        }
+        // if (groundedScript.isGrounded())
+        // {
+        //     player.rb.velocity = new Vector2(player.rb.velocity.x, 0);
+        // }
         if (player.horizontal == 1)
         {
             player.rb.angularVelocity += 300 * player.horizontal;
@@ -167,7 +167,7 @@ public class Abilities : MonoBehaviour
         isDashing = true;        
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
-        yield return new WaitUntil(() => groundedScript.isGrounded());
+        // yield return new WaitUntil(() => groundedScript.isGrounded());
         ResetDash();
         // after we reset the dassh we can then transition to an arm boost which may allow more arier movement
     }
@@ -180,14 +180,14 @@ public class Abilities : MonoBehaviour
     void Jumping()
     {
         // Only allows if the player is grounded which
-        if (groundedScript.isGrounded())
-        {
-            coyotoeTimer = coyoteTimeVar;
-        }
-		else
-		{
-            coyotoeTimer -= Time.deltaTime; 
-		}
+        // if (groundedScript.isGrounded())
+        // {
+        //     coyotoeTimer = coyoteTimeVar;
+        // }
+		// else
+		// {
+        //     coyotoeTimer -= Time.deltaTime; 
+		// }
 
         if (coyotoeTimer > 0f)
         {
@@ -248,23 +248,24 @@ public class Abilities : MonoBehaviour
     IEnumerator Swinging(){
         if (!isConnected)
         {
-            if (!groundedScript.isGrounded())
-            {
-                player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-                hinge.enabled = true;
-                hinge.autoConfigureConnectedAnchor = false;
-                hinge.useLimits = true;
-                Vector2 vec = armCol.GetComponent<vinetest>().transformTest.localPosition;
-                hinge.connectedBody = armCol.GetComponent<Rigidbody2D>();
-                hinge.anchor = side;
-                hinge.connectedAnchor = vec;
-                armCol.GetComponent<vinetest>().onVine = true;
-                player.rb.AddForce(new Vector2(player.horizontal * grabBoostX, grabboostY), ForceMode2D.Impulse);
-                isConnected = !isConnected;
-                    
-                yield return new WaitForEndOfFrame();
-                StopCoroutine(Swinging());
-            }
+            // if (!groundedScript.isGrounded())
+            // {
+            //     player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+            //     hinge.enabled = true;
+            //     hinge.autoConfigureConnectedAnchor = false;
+            //     hinge.useLimits = true;
+            //     Vector2 vec = armCol.GetComponent<vinetest>().transformTest.localPosition;
+            //     hinge.connectedBody = armCol.GetComponent<Rigidbody2D>();
+            //     hinge.anchor = side;
+            //     hinge.connectedAnchor = vec;
+            //     armCol.GetComponent<vinetest>().onVine = true;
+            //     player.rb.AddForce(new Vector2(player.horizontal * grabBoostX, grabboostY), ForceMode2D.Impulse);
+            //     isConnected = !isConnected;
+
+            //     yield return new WaitForEndOfFrame();
+            //     StopCoroutine(Swinging());
+            // }
+            yield return null;
         }
         else
         {

@@ -6,58 +6,90 @@ public class MudScript : MonoBehaviour
 {
     private PolygonCollider2D _collider;
     private GameObject player;
-    private PlayerMovement pm;
-    private PlayerAbilities pa;
+    private PlayerManager playerManager;
     private ParticleSystem mudParticles;
     private bool playerWithin;
     //Default values that are saved on start
     private float defaultCOF;
     private Vector2 defaultPogoSpeed;
     private Vector3 defaultAbilityPower; //x is dashx, y is dashy, and z is the height of the megajump
-    ///////////////////////////////////////////
-    
+                                         ///////////////////////////////////////////
+
     [SerializeField] private float mudCOF;
-    [SerializeField] private float dashPowerModifier;
+    [SerializeField] private float decreaseAbilityModifier;
+    [SerializeField] private float decreaseMovementModifier=1;
     [SerializeField] private float splashLimit;
 
     void Start()
     {
         _collider = GetComponent<PolygonCollider2D>();
         player = GameObject.FindGameObjectWithTag("Player");
-        pm = player.GetComponent<PlayerMovement>();
-        pa = player.GetComponent<PlayerAbilities>();
+        playerManager = player.GetComponent<PlayerManager>();
 
-        defaultCOF = pm.getCoefficientOfFriction(); // Store the default coefficient of friction
-        defaultPogoSpeed = pm.GetJumpSpeed();
-        defaultAbilityPower = pa.getAbilityPower();
+        defaultCOF = playerManager.PlayerMovement().getCoefficientOfFriction();
+        // defaultCOF = playerManager.PlayerMovement().getCoefficientOfFriction(); // Store the default coefficient of friction
+        // defaultAbilityPower = pa.getAbilityPower();
         //Debug.Log(defaultAbilityPower.z);
     }
-    void Update()
-    {
-    }
+    
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
             //Debug.Log("GHHGEOFGKIJOAIHNFA");
-            if (pm.getCoefficientOfFriction() != mudCOF)
+            if (playerManager.PlayerMovement().getCoefficientOfFriction() != mudCOF)
             {
-                pm.setCoefficientOfFriction(mudCOF);
-                pm.SetJumpSpeed(defaultPogoSpeed*0.5f);
-                pa.setAbilityPower(defaultAbilityPower.x * dashPowerModifier, defaultAbilityPower.y * dashPowerModifier, defaultAbilityPower.z * (dashPowerModifier/2f));
+                playerManager.PlayerMovement().setCoefficientOfFriction(mudCOF);
+                var formFunctionality = playerManager.GetFormFunctionality();
+                formFunctionality.movementMultipliers = DecreaseMovementPowerModifier(playerManager.GetCurPlayerForm().formName);
+                formFunctionality.abilityMultipliers = DecreaseAbilityPowerModifier(playerManager.GetCurPlayerForm().formName);
+                // pm.setCoefficientOfFriction(mudCOF);
+                // pm.SetJumpSpeed(defaultPogoSpeed * 0.5f);
+                // pa.setAbilityPower(defaultAbilityPower.x * decreaseAbilityModifier, defaultAbilityPower.y * decreaseAbilityModifier, defaultAbilityPower.z * (decreaseAbilityModifier / 2f));
             }
         }
     }
+    
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            if (pm.getCoefficientOfFriction() != defaultCOF)
+            if (playerManager.PlayerMovement().getCoefficientOfFriction() != defaultCOF)
             {
-                pm.setCoefficientOfFriction(defaultCOF);
-                pm.SetJumpSpeed(defaultPogoSpeed);
-                pa.setAbilityPower(defaultAbilityPower.x, defaultAbilityPower.y, defaultAbilityPower.z);
+                playerManager.PlayerMovement().setCoefficientOfFriction(defaultCOF);
+                var formFunctionality = playerManager.GetFormFunctionality();
+                formFunctionality.movementMultipliers = 1;
+                formFunctionality.abilityMultipliers = 1;
+
+                // pm.setCoefficientOfFriction(defaultCOF);
+                // pm.SetJumpSpeed(defaultPogoSpeed);
+                // pa.setAbilityPower(defaultAbilityPower.x, defaultAbilityPower.y, defaultAbilityPower.z);
             }
+        }
+    }
+
+    private float DecreaseAbilityPowerModifier(string formName)
+    {
+        switch (formName)
+        {
+            case "Torso/Arm":
+                return decreaseAbilityModifier / 2f;
+            case "Ultimate Ball":
+                return 200f;
+            default:
+                return decreaseAbilityModifier;
+        }
+    }
+    private float DecreaseMovementPowerModifier(string formName)
+    {
+        switch (formName)
+        {
+            case "Torso/Arm":
+                return 0.5f;
+            case "Ultimate Ball":
+                return 500;
+            default:
+                return decreaseMovementModifier;
         }
     }
 }

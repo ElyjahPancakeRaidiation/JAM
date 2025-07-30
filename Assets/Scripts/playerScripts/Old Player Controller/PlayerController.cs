@@ -196,14 +196,14 @@ public class PlayerController : MonoBehaviour
 
             if (!ignoreResistences)
             {
-                if (groundedScript.isGrounded())
-                {
-                    Friction();
-                }
-                else
-                {
-                    AirResistance();
-                }
+                // if (groundedScript.isGrounded())
+                // {
+                //     Friction();
+                // }
+                // else
+                // {
+                //     AirResistance();
+                // }
             }
         }
 
@@ -304,18 +304,18 @@ public class PlayerController : MonoBehaviour
 			case playerForms.Pogo:
                 if (horizontal != 0)
                 {
-                    if (groundedScript.isGrounded())
-                    {
-                        if (canJump)
-                        {
-                            jumping = Jump();
-                            StartCoroutine(jumping);
-                            canJump = false;
-                        }
-                    }
-                    else{
-                        rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);
-                    }
+                    // if (groundedScript.isGrounded())
+                    // {
+                    //     if (canJump)
+                    //     {
+                    //         jumping = Jump();
+                    //         StartCoroutine(jumping);
+                    //         canJump = false;
+                    //     }
+                    // }
+                    // else{
+                    //     rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);
+                    // }
                 }
                 break;
 			default:
@@ -329,7 +329,7 @@ public class PlayerController : MonoBehaviour
         Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
         rb.AddForce(jumpForce, ForceMode2D.Impulse);
         yield return new WaitForSeconds(.5f);
-		yield return new WaitUntil (() => groundedScript.isGrounded());
+		// yield return new WaitUntil (() => groundedScript.isGrounded());
 		canJump = true;
     }
 
@@ -369,20 +369,20 @@ public class PlayerController : MonoBehaviour
 
         bonusRotationSpeed = -(rb.angularVelocity/2);
         
-        if (!groundedScript.isGrounded())
-        {
-            if(horizontal == 1){
-                if (rb.angularVelocity > 0.02f)
-                {
-                    rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                }
-            }else if(horizontal == -1){
-                if (rb.angularVelocity < -0.02f)
-                {
-                    rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                }
-            }
-        }
+        // if (!groundedScript.isGrounded())
+        // {
+        //     if(horizontal == 1){
+        //         if (rb.angularVelocity > 0.02f)
+        //         {
+        //             rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime * 10f;
+        //         }
+        //     }else if(horizontal == -1){
+        //         if (rb.angularVelocity < -0.02f)
+        //         {
+        //             rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime * 10f;
+        //         }
+        //     }
+        // }
         
         
         switch (horizontal)
@@ -484,7 +484,8 @@ public class PlayerController : MonoBehaviour
     {
         canMove = false;
         StartCoroutine(gm.RespawnLevel3());
-        yield return new WaitUntil(() => groundedScript.isGrounded());
+        // yield return new WaitUntil(() => groundedScript.isGrounded());
+        yield return null;
         canMove = true;
 
     }

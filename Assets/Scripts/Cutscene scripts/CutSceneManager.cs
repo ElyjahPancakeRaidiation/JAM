@@ -9,8 +9,8 @@ using UnityEngine.TerrainUtils;
 
 public class CutSceneManager : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
-    private PlayerAbilities playerAbilities;
+    PlayerManager playerManager;
+    
 
     //A scriptable object containing all of the data for the scene
     [SerializeField] private CutSceneScriptable cutSceneToPlay;
@@ -46,7 +46,10 @@ public class CutSceneManager : MonoBehaviour
 
     private void Start()
     {
-        if (playerMovement != null) { playerAbilities = playerMovement.GetComponent<PlayerAbilities>(); }
+        // if (playerMovement != null) { playerAbilities = playerMovement.GetComponent<PlayerAbilities>(); }
+        // Debug.Log(playerManager.PlayerMovement().getCoefficientOfFriction());
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+
         if (playOnStart)
         {
             canPlayCutScene = true;
@@ -69,10 +72,10 @@ public class CutSceneManager : MonoBehaviour
     {
         isPlaying = true;
         isFinished = false;
-        if (playerMovement != null)
+        if (playerManager != null)
         {
-            playerMovement.setCanControl(false);
-            playerAbilities.setUseAbility(false);
+            playerManager.canControl = false;
+            playerManager.PlayerAbility().SetCanUseAbility(false);
         }
         
         if (stopWhenSceneStarts) { StartCoroutine(easeObj(easeAmount)); }
@@ -88,10 +91,10 @@ public class CutSceneManager : MonoBehaviour
             if(startCutsceneEvent != null && useCutsceneBars){ endCutsceneEvent.Invoke(); }
             isPlaying = false;
             canPlayCutScene = false;
-            if (playerMovement != null)
+            if (playerManager != null)
             {
-                playerMovement.setCanControl(true);
-                playerAbilities.setUseAbility(true);
+                playerManager.canControl = true;
+                playerManager.PlayerAbility().SetCanUseAbility(true);
             }
             CameraOperator playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOperator>();
             if(scene.cutSceneInfo[sceneCounter-1].actionType != CutSceneInfo.ActionType.CameraActions){playerCamera.followPlayer = true;}
@@ -239,13 +242,14 @@ public class CutSceneManager : MonoBehaviour
     private IEnumerator easeObj(float easingAmount = 0)//This is for the player
     {
         if (easingAmount == 0) { easingAmount = 30; }
-        Vector2 velocity = playerMovement.getCurVelocity();
+        var _rb = playerManager._rb;
+        Vector2 velocity = _rb.velocity;
         if (Vector2.Distance(velocity, Vector2.zero) < 0.1f){yield break;}
         // if(Vector2.Distance(velocity, new Vector2(0.5f, 0.5f)) < 0.2f){yield break;}
         velocity.x = Mathf.Lerp(velocity.x, 0, easingAmount * Time.deltaTime);
         velocity.y = Mathf.Lerp(velocity.y, 0, easingAmount * Time.deltaTime);
-        playerMovement.GetComponent<Rigidbody2D>().angularVelocity = Mathf.Lerp(playerMovement.GetComponent<Rigidbody2D>().angularVelocity, 0, easeAmount * Time.deltaTime);
-        playerMovement.GetComponent<Rigidbody2D>().velocity = velocity;
+        _rb.angularVelocity = Mathf.Lerp(_rb.angularVelocity, 0, easeAmount * Time.deltaTime);
+        _rb.velocity = velocity;
         yield return new WaitForSecondsRealtime(0.2f);
         StartCoroutine(easeObj());
     }

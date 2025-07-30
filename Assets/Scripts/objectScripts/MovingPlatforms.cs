@@ -31,7 +31,8 @@ public class MovingPlatforms : MonoBehaviour
         ELYJAH,
         PENIS2,
         MOHAMMED,
-        PENIS3
+        PENIS3,
+        IMAPUNKROCKERYESIAM
     }
 
     void Start()
