@@ -11767,7 +11767,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: build
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum
@@ -12804,6 +12804,10 @@ PrefabInstance:
       propertyPath: playerForms.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: 5ac2f9d6fba19b141a9890ed1371b8c4, type: 2}
+    - target: {fileID: 1438646360885530129, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: DASHPOWERY
       value: 17
@@ -12819,6 +12823,10 @@ PrefabInstance:
     - target: {fileID: 5016967120434156615, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 2.2222223
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656216100363277551, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x

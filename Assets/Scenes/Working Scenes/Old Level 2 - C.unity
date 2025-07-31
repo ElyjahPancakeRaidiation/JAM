@@ -16119,6 +16119,10 @@ PrefabInstance:
       value: GameManager Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
+      propertyPath: build
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum
       value: 4
       objectReference: {fileID: 0}

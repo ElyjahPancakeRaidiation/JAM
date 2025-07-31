@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,13 @@ public class Vine : MonoBehaviour
     void Start()
     {
         generateVine();
+    }
+    private void OnEnable()
+    {
+        if (vineSegments.Length < 1)
+        {
+            generateVine();
+        }
     }
     void generateVine()
     {

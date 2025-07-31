@@ -15,6 +15,7 @@ public class SpecialObjects : MonoBehaviour
 
     [SerializeField] private enum ObjectIntendedState { FadeIn, FadeOut, }
     [SerializeField] private ObjectIntendedState objectIntendedState;
+    [SerializeField] private bool collisionTrigger;
 
     private float time;
 
@@ -60,6 +61,10 @@ public class SpecialObjects : MonoBehaviour
             _sprRender.color = color;
             yield return null;
         }
+        if (targetObject.GetComponent<Collider2D>())
+        {
+            targetObject.GetComponent<Collider2D>().enabled = collisionTrigger;
+        }
     }
     private IEnumerator FadeInObject()
     {
@@ -70,6 +75,10 @@ public class SpecialObjects : MonoBehaviour
             time += Time.deltaTime;
             _sprRender.color = color;
             yield return null;
+        }
+        if (targetObject.GetComponent<Collider2D>())
+        {
+            targetObject.GetComponent<Collider2D>().enabled = collisionTrigger;
         }
     }
 
