@@ -62,10 +62,11 @@ public class AudioManagerV2 : MonoBehaviour
     public bool fading = false;
     void Start()
     {
-
         List<AudioSource> sources = new List<AudioSource>(GetComponents<AudioSource>());
         currentSource = sources[0];
         incomingSource = sources[1];
+        GameManager.current.pauseEvent += currentSource.Pause;
+        GameManager.current.unPauseEvent += currentSource.UnPause;
         SFXsources = new Dictionary<string, AudioSource>();
         foreach (PlayerSFX p in playerSFXs)
         {
@@ -81,6 +82,7 @@ public class AudioManagerV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         for (int i = 0; i < audioPoints.Count; i++)
         {
             AudioPoint ap = audioPoints[i];
@@ -122,7 +124,7 @@ public class AudioManagerV2 : MonoBehaviour
     {
         fading = true;
         float maxDistance = ap.detectionSize.x;
-        float direction = (ap.playerCollider.transform.position.x < ap.centerPoint.x ? 1 : -1);
+        float direction = ap.playerCollider.transform.position.x < ap.centerPoint.x ? 1 : -1;
         float xEndPoint = direction * ap.detectionSize.x / 2 + ap.centerPoint.x; //so this should represen the opposite end of the overlap box from where the player entered
 
         if (direction == 1)
@@ -142,7 +144,7 @@ public class AudioManagerV2 : MonoBehaviour
             float distance = Math.Abs(ap.playerCollider.transform.position.x - xEndPoint);
             currentSource.volume = decibelToLinear(Mathf.Lerp(-70, mainVolume, distance / maxDistance));
             currentSource.panStereo = Mathf.Lerp(0, -direction, 1 - distance / maxDistance);
-            incomingSource.volume = decibelToLinear(Mathf.Lerp(mainVolume, -70, distance / maxDistance));;
+            incomingSource.volume = decibelToLinear(Mathf.Lerp(mainVolume, -70, distance / maxDistance)); ;
             incomingSource.panStereo = Mathf.Lerp(direction, 0, 1 - distance / maxDistance);
 
             yield return null;
@@ -229,8 +231,19 @@ public class AudioManagerV2 : MonoBehaviour
             Debug.Log("No SFX found with tag: " + tag);
         }
     }
-    public float decibelToLinear(float db) {
+    public float decibelToLinear(float db)
+    {
         return Mathf.Pow(10f, db / 20f);
+    }
+    public void PlayCurrentSource()
+    {
+        currentSource.Play();
+    }
+    void OnDestroy()
+    {
+        GameManager.current.pauseEvent -= currentSource.Pause;
+        GameManager.current.unPauseEvent -= currentSource.UnPause;
+        
     }
 }
 
