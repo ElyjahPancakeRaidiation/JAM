@@ -9,9 +9,7 @@ public class Physics
     private float rainyFrictionDown, rainyFrictionUp;
     public Rigidbody2D _rb;
 
-    private  const float GRAVITYINTENSIFIER = 4.27f;
-
-    public Physics(Rigidbody2D rb) {
+    public Physics(Rigidbody2D rb){
         _rb = rb;
     }
 
@@ -23,7 +21,7 @@ public class Physics
         int OppositedirectionMultipleY = -1 * (int)Mathf.Sign(_rb.velocity.y);
         // Multiplies the direction then coefficient of air resistence and the velocity squared
         _rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(_rb.velocity.x * _rb.velocity.x),
-        OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * (_rb.velocity.y/GRAVITYINTENSIFIER))));
+        OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(_rb.velocity.y * (_rb.velocity.y/4.27f))));
     }
 
     public void slipperyShitFunction(){//Just applies a downward force in the y direction 
@@ -33,8 +31,6 @@ public class Physics
             _rb.AddForce(new Vector2(0, -rainyFrictionUp), ForceMode2D.Impulse);
         }
     }
-     
-    
 
     public void setCoefficientOfFriction(float amount){ coefficientOfFriction = amount; }
     public void setRainyFrictionDown(float amount){ rainyFrictionDown = amount; }

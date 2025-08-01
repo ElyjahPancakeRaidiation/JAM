@@ -13,35 +13,21 @@ MonoBehaviour:
   m_Name: FinishedLoopingCutscene
   m_EditorClassIdentifier: 
   cutSceneInfo:
-  - actionType: 4
+  - forCamera: 0
+    actionType: 4
+    cameraActionType: 0
     information: 
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 0.01
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
     infinite: 0
-  - actionType: 1
+    clampVelocity: {x: 0, y: 0}
+  - forCamera: 0
+    actionType: 1
+    cameraActionType: 0
     information: addForce(20, -1, 1)
     actorIndex: 0
     endPositionIndex: 0
     waitTime: 2
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
     infinite: 0
-  - actionType: 4
-    information: 
-    actorIndex: 0
-    endPositionIndex: 0
-    waitTime: 1.5
     clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
-    infinite: 0
-  - actionType: 5
-    information: 
-    actorIndex: 0
-    endPositionIndex: 0
-    waitTime: 0
-    clampVelocity: {x: 0, y: 0}
-    eventIndex: 0
-    infinite: 0

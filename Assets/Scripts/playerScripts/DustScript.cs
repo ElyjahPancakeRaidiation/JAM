@@ -6,8 +6,9 @@ using UnityEngine;
 public class DustScript : MonoBehaviour
 {
     public GameObject player;
-    private PlayerManager playerManager;
     public Rigidbody2D rb;
+    public PlayerMovement playerMovement;
+    private PlayerAbilities playerAbilities;
     public float yOffset;
     public float xOffset;
     private float horizontalInput;
@@ -22,7 +23,7 @@ public class DustScript : MonoBehaviour
     [SerializeField] private float emissionMultiplier;
     [SerializeField] private float timeDelay;
     [SerializeField] private bool jumpedWhileSkidding;
-    public float rotationSpeed = 10f;
+     public float rotationSpeed = 10f;
     public LayerMask groundMask;
     private bool generatingDust;
 
@@ -36,10 +37,8 @@ public class DustScript : MonoBehaviour
         ySpeed = baseVelocity.yMultiplier; 
 
         player = GameObject.FindGameObjectWithTag("Player");
-        playerManager = player.GetComponent<PlayerManager>();
-
-        // playerMovement = player.GetComponent<PlayerMovement>();
-        // playerAbilities = player.GetComponent<PlayerAbilities>();
+        playerMovement = player.GetComponent<PlayerMovement>();
+        playerAbilities = player.GetComponent<PlayerAbilities>();
         rb = player.GetComponent<Rigidbody2D>();
 
         yOffset = player.GetComponent<CircleCollider2D>().radius;
@@ -48,9 +47,9 @@ public class DustScript : MonoBehaviour
     void Update()
     {
         // horizontalInput = Input.GetAxisRaw("Horizontal");
-        xOffset = Math.Abs(xOffset) * playerManager.GetHorizontalInput() * -1;
-        if(playerManager.GlobalIsGrounded()){
-            if(!jumpedWhileSkidding && playerManager.GetCurPlayerForm().formName == "Ball"){
+        xOffset = Math.Abs(xOffset) * playerMovement.getInput() * -1;
+        if(playerAbilities.isGrounded()){
+            if(!jumpedWhileSkidding && playerMovement.getCurForm().formName == "Ball"){
                 transform.position = new Vector2(player.transform.position.x - xOffset, player.transform.position.y - yOffset);
             }
         }
@@ -73,14 +72,14 @@ public class DustScript : MonoBehaviour
 
     public void checkForDust(){
         float speed = Math.Abs(rb.velocity.x);
-        if(speed >= skidSpeed && playerManager.GlobalIsGrounded()){
+        if(speed >= skidSpeed && playerAbilities.isGrounded() && playerAbilities.recentlyJumped == false){
             shouldSkid = true;
-            if (playerManager.PlayerMovement().GetAcceleration() < 0 && ((playerManager.GetHorizontalInput() == -1 && rb.velocity.x > 0) || (playerManager.GetHorizontalInput() == 1 && rb.velocity.x < 0)) && !generatingDust && playerManager.GetCurPlayerForm().formName == "Ball"){
-                StartCoroutine(createDust(playerManager.GetHorizontalInput()));
+            if (playerMovement.getAcceleration() < 0 && ((playerMovement.getInput() == -1 && rb.velocity.x > 0) || (playerMovement.getInput() == 1 && rb.velocity.x < 0)) && !generatingDust && playerMovement.getCurForm().formName == "Ball"){
+                StartCoroutine(createDust(playerMovement.getInput()));
                 dustParticles.Play();
             }
         }
-        if ((-1.5f < speed && speed < 1.5f) || playerManager.PlayerMovement().GetAcceleration() > 0 || rb.velocity.x/Math.Abs(rb.velocity.x) == horizontalInput || playerManager.GetCurPlayerForm().formName != "Ball"){
+        if ((-1.5f < speed && speed < 1.5f) || playerMovement.getAcceleration() > 0 || rb.velocity.x/Math.Abs(rb.velocity.x) == horizontalInput || playerMovement.getCurForm().formName != "Ball"){
             // Debug.Log("Stopping dust particles");
             shouldSkid = false;
             dustParticles.Stop();
@@ -93,7 +92,7 @@ public class DustScript : MonoBehaviour
         ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = dustParticles.velocityOverLifetime;
         velocityOverLifetime.xMultiplier = Math.Abs(velocityOverLifetime.xMultiplier) * (horizontalInput * -1);
         ParticleSystem.EmissionModule emission = dustParticles.emission;
-        while(shouldSkid && playerManager.GetCurPlayerForm().formName == "Ball"){
+        while(shouldSkid && playerMovement.getCurForm().formName == "Ball"){
             emission.rateOverTime = Math.Abs(rb.velocity.x) * emissionMultiplier;
             if(Input.GetKeyDown(KeyCode.Space)){
                 jumpedWhileSkidding = true;

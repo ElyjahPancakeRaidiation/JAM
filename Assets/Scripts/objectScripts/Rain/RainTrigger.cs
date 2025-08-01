@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class RainTrigger : MonoBehaviour
 {
-    private RainController rain;
+    private RainController rain; 
 
     [Header("----Increase and Decrease Settings----")]
     [SerializeField, Tooltip("Increases or decreases the amount you set")]
@@ -30,14 +30,11 @@ public class RainTrigger : MonoBehaviour
     private bool stopRainWhenOutOfCamera;
     [SerializeField] private bool followPlayerYAxis;
 
-
-
+    
+    
 
     // Start is called before the first frame update
-    void Start()
-    {
-        rain = GameObject.FindGameObjectWithTag("Rain Controller").GetComponent<RainController>();
-    }
+    void Start(){ rain = GameObject.FindGameObjectWithTag("Rain Controller").GetComponent<RainController>();  }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -51,8 +48,8 @@ public class RainTrigger : MonoBehaviour
             }
 
             if(changesRainFriction){
-                collision.GetComponent<PlayerManager>().PlayerMovement().setRainyFrictionUp(rainyFrictionUp);
-                collision.GetComponent<PlayerManager>().PlayerMovement().setRainyFrictionDown(rainyFrictionDown);
+                collision.GetComponent<PlayerMovement>().setRainyFrictionUp(rainyFrictionUp);
+                collision.GetComponent<PlayerMovement>().setRainyFrictionDown(rainyFrictionDown);
             }
 
             if(!rain.getIsOutOfSight()){//Makes it so it doesnt stop when the player goes through the trigger again

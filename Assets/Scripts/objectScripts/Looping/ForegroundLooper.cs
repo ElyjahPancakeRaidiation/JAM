@@ -14,7 +14,6 @@ public class ForegroundLooper : LoopingBackgroundScript
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         currentObj = new ObjectInfo(startInstance, useCol);
         newObj = new ObjectInfo(useCol);
         currentObj.getCurObject().GetComponent<MovingGround>().setCanMove(false);

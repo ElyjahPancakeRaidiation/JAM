@@ -60,11 +60,11 @@ public class JumpController : MonoBehaviour
         
         try
         {
-            // if (isGroundedScript.isGrounded())
-            // {
-            //     canJump = true;
-            // }
-            // else canJump = false;
+            if (isGroundedScript.isGrounded())
+            {
+                canJump = true;
+            }
+            else canJump = false;
 
             if (canJump && Input.GetKeyDown(KeyCode.F))
             {

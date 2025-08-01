@@ -31,7 +31,7 @@ public class CamControllV3 : MonoBehaviour
         Vector3 point = GetComponent<Camera>().WorldToViewportPoint(playerTarget.position);
         //Find the difference between the playerposition to the portpoints of .5
         
-        Vector3 delta = playerTarget.position - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 10f));
+        Vector3 delta = playerTarget.position - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
         //The total distance you want the camera to stay from the player
         Vector3 destination = transform.position + delta;
    

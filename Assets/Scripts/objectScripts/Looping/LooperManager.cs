@@ -5,15 +5,15 @@ using UnityEngine;
 public class LooperManager : MonoBehaviour
 {
     [SerializeField] private LoopingBackgroundScript[] loopers;
-    private bool stopOnNext;
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private bool stopOnNext;
+    [SerializeField] private AudioManagerV2 audioManager;
     [SerializeField] private float stopPosition;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if(audioSource == null ){ Debug.LogError("AudioManager is not set"); }
+        if(audioManager == null ){ Debug.LogError("AudioManager is not set"); }
     }
 
     // Update is called once per frame
@@ -27,9 +27,9 @@ public class LooperManager : MonoBehaviour
             }
         }
 
-        if (audioSource != null)
+        if (audioManager.currentSource != null)
         {
-            if (audioSource.time >= stopPosition)
+            if (audioManager.currentSource.time >= stopPosition)
             {
                 stopOnNext = true;
             }

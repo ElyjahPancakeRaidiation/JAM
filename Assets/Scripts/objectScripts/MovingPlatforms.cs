@@ -31,8 +31,7 @@ public class MovingPlatforms : MonoBehaviour
         ELYJAH,
         PENIS2,
         MOHAMMED,
-        PENIS3,
-        IMAPUNKROCKERYESIAM
+        PENIS3
     }
 
     void Start()
@@ -66,6 +65,7 @@ public class MovingPlatforms : MonoBehaviour
     }
     private IEnumerator reloadPlatforms()
     {
+        playingReload = true;
         while (playerWithin)
         {
             yield return new WaitForSeconds(timeBetweenLightning);
@@ -84,8 +84,8 @@ public class MovingPlatforms : MonoBehaviour
             }
             if (activePlatform != null)
             {
-                randomizeObstaclesInRange(collider.bounds.min.x + paddingLeft, activePlatform.GetComponent<PolygonCollider2D>().bounds.min.x); //left
-                randomizeObstaclesInRange(activePlatform.GetComponent<PolygonCollider2D>().bounds.max.x, collider.bounds.max.x - paddingRight); //right
+                randomizeObstaclesInRange(collider.bounds.min.x + paddingLeft, activePlatform.GetComponent<PolygonCollider2D>().bounds.min.x);
+                randomizeObstaclesInRange(activePlatform.GetComponent<PolygonCollider2D>().bounds.max.x, collider.bounds.max.x - paddingRight);
             }
             else
             {
