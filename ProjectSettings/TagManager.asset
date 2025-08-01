@@ -30,6 +30,9 @@ TagManager:
   - MovingGroundPoint
   - MobileObj
   - PCObj
+  - AllCanvas
+  - Player Left Arm
+  - Player Right Arm
   - Arm
   layers:
   - Default
@@ -43,7 +46,7 @@ TagManager:
   - Respawn
   - Player
   - Rock
-  - 
+  - Wind
   - 
   - 
   - 

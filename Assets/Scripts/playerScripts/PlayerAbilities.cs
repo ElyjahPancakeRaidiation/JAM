@@ -1,291 +1,60 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAbilities : MonoBehaviour
 {
-    private PlayerMovement playerMovement;
-    public isGroundedScript isGroundedScript { get; private set; }
-    private GameManager gm;
-    private Rigidbody2D _rb;
-    private HingeJoint2D armJoint;
-    private GameObject audioManager;
-    private AudioManagerV2 audioManagerV2;
+    PlayerManager playerManager;
 
-    #region Dash variables
-    [SerializeField] private float DASHPOWERX = 18, DASHPOWERY = 14;
-    [SerializeField] private float UNCHANGEDDASHY = 14;
-    [SerializeField] private int maxDashes;
-    private int dashAmount;
     private bool canUseAbility;
-    #endregion
 
-    #region Pogo variables
-    private const float SUPERJUMP = 28;
-
-
-    public bool usedJumpAbility = false;
-    [SerializeField] private bool canJumpNextFrame = false;
-    public float jumpFrameTimer = 0;
-    public float maxJumpFrameTimer;
-    public bool recentlyJumped;
-
-
-    private bool jumpAgain;
-
-    public RaycastHit2D groundThingyMajiggy { get; private set; }
-    public bool jumpedClicked;
-
-    [SerializeField] private float Jumpheight;
-
-    #endregion
-
-    [SerializeField] private float groundCheckerDistance;
-    [SerializeField] private LayerMask groundMask;
-    #region Arm variable stuff 
-    [SerializeField] private bool hasArms; 
-    [SerializeField] private float armGrabZone; //zone where when ability button is pressed player grabs onto potential arms
-    [SerializeField] private float armDetectionZone; //zone where when vine gameobjects enter, the nearest arm will begin to point towards it
-    [SerializeField] private float pullForce; //how much force is applied in the direction of the vine's hook when pulling, per distance from hook
-    [SerializeField] private float detachMultiplier; // multiplier of how much speed we get when letting go of vine
-    #endregion
-    public bool usedJump;
+    //onUseAbility event makes it easier for other script to know when the ability happens without being coupled to the ability. Usually used for sound.
+    private UnityEvent onUseAbilityEvent;
+    //Global wide events are a way for abilities to interact with each other but in a limited way where it doesn't have to depend on that ability.
+    private UnityEvent globalWideAbilityEvent;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
-        
-        isGroundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
-        gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        _rb = GetComponent<Rigidbody2D>();
-        armJoint = GetComponent<HingeJoint2D>();
-        armJoint.enabled = false;
-        audioManager = GameObject.FindGameObjectWithTag("AudioManager");
-        audioManagerV2 = audioManager.GetComponent<AudioManagerV2>();
-        dashAmount = maxDashes;
+        if (onUseAbilityEvent == null){ onUseAbilityEvent = new UnityEvent(); }
+        if (globalWideAbilityEvent == null) { globalWideAbilityEvent = new UnityEvent(); }
+        playerManager = GetComponent<PlayerManager>();
         canUseAbility = true;
-        jumpAgain = true;
-        jumpedClicked = false;
-        hasArms = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
-        if (Input.GetKeyDown(gm.playerAbilityKey) && canUseAbility)
+        if (Input.GetKeyDown(playerManager.playerAbilityKey))
         {
-
-            useFormsAbility();
+            UseAbility();
         }
 
+        playerManager.GetFormFunctionality().UpdateMethodAbility();
     }
 
-
-    public void useFormsAbility()
+    public void UseAbility()
     {
-        if (canUseAbility)
+        if (!playerManager.IsPlayerFormsEmpty() && canUseAbility)
         {
-            string formName = playerMovement.getCurForm().formName;
-            if (!playerMovement.currentVine)
-            {
-                switch (formName)
-                {
-                    case "Ball":
-
-                        //Will have the dashing ability
-
-                        dashAbility();
-                        break;
-                    case "Pogo":
-                        //Will have the mega jump 
-
-
-                        if (isGroundedScript.isGrounded())
-                        {
-                            StartCoroutine(JumpAbility());
-
-
-                        }
-                        else if (playerMovement.coyoteTimer > .56 && playerMovement.coyoteTimer < .65)
-                        {
-                            StartCoroutine(JumpCoyoteTimer());
-
-                            StartCoroutine(JumpAbility());
-
-                        }
-                        else
-                        {
-                            //not grounded, so at this point the only thing ability key will do is potentially grab vines
-                            Debug.Log("Getting ran?");
-                            if (hasArms)
-                            {
-                                checkForVines(); //if you have arms and you are not grounded, check if you are on a vine
-                            }
-                        }
-
-                        break;
-                }
-            }
-            else
-            {
-                Detach(); //if on a vine and ability is used, detach
-            }
+            playerManager.GetFormFunctionality().FormAbility();
+            if (onUseAbilityEvent != null) { onUseAbilityEvent.Invoke(); }
         }
     }
 
-    private void checkForVines()
+    public bool GetCanUseAbility() { return canUseAbility; }
+    public void SetCanUseAbility(bool val) { canUseAbility = val; }
+    public UnityEvent GetOnUseAbilityEvent()
     {
-        GameObject[] armsArray = GameObject.FindGameObjectsWithTag("Arm");
-        Debug.Log(armsArray.Length);
-        foreach (GameObject arm in armsArray) //check each hand for a vine segment, if present then attach
-        {
-            Collider2D collider = Physics2D.OverlapCircle(arm.transform.position, armGrabZone, LayerMask.GetMask("Vine"));
-            if (collider)
-            {
-                dashAmount = maxDashes; //reset dashes
-                armJoint.enabled = true; //enable the hingejoint2d on player
-                armJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
-                armJoint.connectedAnchor = arm.GetComponent<SpriteRenderer>().bounds.size; //this might have to change to make grabbing look more realistic
-                playerMovement.currentVine = collider.transform.parent; //update currentvine
-            }
-        }
+        if (onUseAbilityEvent == null){ onUseAbilityEvent = new UnityEvent(); }
+        return onUseAbilityEvent;
     }
-    public void Detach() //Ability when on a vine, either pulls you toward hook or launches you in current swinging direction with a multiplied velocity
+    public UnityEvent GetGlobalWideAbiltiyEvent()
     {
-        armJoint.connectedBody = null;
-        armJoint.enabled = false;
-        Vine currentVineScript = playerMovement.currentVine.GetComponent<Vine>();
-        Vector2 directionToHook = currentVineScript.hook.transform.position - transform.position;
-        float input = playerMovement.getHorizontalInput();
-        if (input == 0f) //no input => pull
-        {
-            _rb.AddForce(directionToHook.normalized * (10 + pullForce * directionToHook.magnitude), ForceMode2D.Impulse);
-        }
-        else //let go and increase velocity for an impactful "boost"
-        {
-            _rb.velocity *= detachMultiplier;
-        }
-
-        playerMovement.currentVine = null;
-
-    }
-
-
-    #region Ball Ability
-    private void dashAbility()
-    {
-        if (dashAmount > 0)
-        {
-            StartCoroutine(audioManagerV2.playPlayerSFX("Dashing"));
-            //based of the horizontal input -1, 0, 1
-            //0 will now only go up might be good for more movement combinations?
-            var horInput = playerMovement.getInput();
-       
-            if (horInput != 0)
-            {
-                _rb.velocity = Vector2.zero;
-                _rb.AddForce(new Vector2(horInput * DASHPOWERX, DASHPOWERY), ForceMode2D.Impulse);
-               
-                
-            }
-
-            if (horInput == 0)
-            {
-
-                // _rb.AddForce(new Vector2(horInput * DASHPOWERX, UNCHANGEDDASHY), ForceMode2D.Impulse);
-                _rb.AddForce(new Vector2(_rb.velocity.x / 100, UNCHANGEDDASHY), ForceMode2D.Impulse);
-            }
-
-            dashAmount--;
-            if (dashAmount == 0) { StartCoroutine(dashAmountBack()); }
-        }
-    }
-
-    private IEnumerator dashAmountBack()
-    {
-        //This function puts a short cool down when getting your dash back since if this isnt here it will
-        //automatically give your dash allowing double dash
-        yield return new WaitForSeconds(0.2f);
-        yield return new WaitUntil(() => isGroundedScript.isGrounded());
-        dashAmount = maxDashes;
-    }
-
-
-    #endregion
-
-    #region Pogo Ability
-    //this delay is so play can't infinitely jump while coyote timer is on. Otherwise you are able to double or even triple jump
-    //if you spam the jump key
-    private IEnumerator JumpCoyoteTimer()
-    {
-        yield return new WaitForSeconds(.03f);
-        playerMovement.coyoteTimer = 0;
-
-    }
-
-
-
-    private IEnumerator JumpAbility()
-    {
-        jumpedClicked = true;
-        float jumpForce = Mathf.Sqrt(Jumpheight * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
-        Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
-        _rb.velocity = Verticaldirection;
-        yield return new WaitForSeconds(.1f);
-        jumpedClicked = false;
-    }
-
-    #endregion
-
-    //This is for when the player changes form it changes the distance of the ray cast.
-    public void setGroundDistance(float distanceAmount) { groundCheckerDistance = distanceAmount; }
-    public void setUseAbility(bool canUseAbility)
-    {
-        this.canUseAbility = canUseAbility;
-    }
-    public void setAbilityPower(float dashX, float dashY, float megaJump)
-    {
-        DASHPOWERX = dashX;
-        DASHPOWERY = dashY;
-        UNCHANGEDDASHY = dashY;
-        Jumpheight = megaJump;
-    }
-    public Vector3 getAbilityPower()
-    {
-        return new Vector3(DASHPOWERX, DASHPOWERY, Jumpheight);
-    }
-    public bool isGrounded()
-    {
-        //im gonna fucking kill myslef
-        // Shoots a ray cast down and decides whether or not it is true based on if it is hitting an object with the layer mask ground
-        return isGroundedScript.isGrounded();
-    }
-
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(transform.position, -Vector2.up * groundCheckerDistance);
-        if (hasArms)
-        {
-            GameObject[] armsArray = GameObject.FindGameObjectsWithTag("Arm");
-            Debug.Log(armsArray.Length);
-            foreach (GameObject arm in armsArray)
-            {
-                Gizmos.DrawSphere(arm.transform.position, armGrabZone);
-            }
-        }
-    }
-    public bool GetCanUseAbility()
-    {
-        return canUseAbility;
-    }
-    public int getDashAmount()
-    {
-        return dashAmount;
+        if(globalWideAbilityEvent==null){ globalWideAbilityEvent = new UnityEvent(); }
+        return globalWideAbilityEvent;
     }
 }

@@ -91,7 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAbilityKey: 32
+  pauseKey: 112
+  sceneNum: 0
   hasSpawnPosition: 1
+  onStartTransition: 1
+  canPause: 1
   playerSpawnPosition: {fileID: 0}
   build: 1
-  clipToPlay: {fileID: 0}
