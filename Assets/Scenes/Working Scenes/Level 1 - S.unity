@@ -32049,6 +32049,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   objectIntendedState: 1
+  collisionTrigger: 0
 --- !u!1 &1665683085
 GameObject:
   m_ObjectHideFlags: 0
@@ -40302,6 +40303,10 @@ PrefabInstance:
     - target: {fileID: 4418647252240284476, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: m_Offset.y
       value: 9.403137
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
+      propertyPath: build
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum
