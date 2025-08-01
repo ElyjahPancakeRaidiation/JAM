@@ -50,6 +50,6 @@ public class isGroundedScript : MonoBehaviour
      }
 
     // void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)vecScales[], player.GetComponent<PlayerMovement>().getCurForm().groundChecker);
-    //private void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].startPositionOffset, playersForms[curForm].groundChecker);
+    private void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].startPositionOffset, playersForms[curForm].groundChecker);
 
 }
