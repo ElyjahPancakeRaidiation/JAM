@@ -18,8 +18,8 @@ MonoBehaviour:
   groundPointOffset: {x: 0, y: -0.61}
   globalGroundedColSize: {x: 0.82, y: 2}
   glboalGroundedPointOffset: {x: 0, y: -0.06}
-  jumpSpeedX: 6
-  jumpSpeedY: 6
+  jumpSpeedX: 4
+  jumpSpeedY: 5
   jumpHeight: 13.25
   floatTime: 0.65
   boxColliderSize: {x: 1, y: 2.24775}
