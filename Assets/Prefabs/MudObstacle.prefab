@@ -216,5 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3072435783196e745ba72c371783c411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultCOF: 0
-  mudCOF: 0.7
+  mudCOF: 0.9
+  dashPowerModifier: 0.5
+  splashLimit: 0

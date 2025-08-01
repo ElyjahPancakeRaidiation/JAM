@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DustScriptV2 : MonoBehaviour
 {
     private GameObject player;
     private ParticleSystem dust;
+    private ParticleSystem turningMode;
     private Rigidbody2D rb;
-    private PlayerMovement movement;
-    private PlayerAbilities abilities;
+    private PlayerManager playerManager;
     private GameManager gm;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float rotationSpeed;
@@ -22,14 +24,14 @@ public class DustScriptV2 : MonoBehaviour
     public bool playerSkidding;
     public bool generatingDust = false;
     public bool recentlyJumped = false;
+    private bool inMud;
+    private bool playingLanding;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        rb = player.GetComponent<Rigidbody2D>();
-        movement = player.GetComponent<PlayerMovement>();
-        abilities = player.GetComponent<PlayerAbilities>();
-        gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        player = playerManager.gameObject;
+        rb = playerManager._rb;
 
         dust = GetComponent<ParticleSystem>();
     }
@@ -37,12 +39,20 @@ public class DustScriptV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!recentlyJumped) { moveToPlayer(); }
-        if (Input.GetKeyDown(gm.playerAbilityKey) && abilities.GetCanUseAbility()) //dont have particles follow player midair after jumping
+        if (!recentlyJumped)
+        {
+            moveToPlayer();
+            //updateColor();
+        }
+        if (Input.GetKeyDown(playerManager.playerAbilityKey) && playerManager.PlayerAbility().GetCanUseAbility()) //dont have particles follow player midair after jumping
         {
             StartCoroutine(onJump());
         }
-        if (abilities.isGrounded() && !generatingDust)
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            debugLandingParticles();
+        }
+        if (playerManager.GlobalIsGrounded() && !generatingDust)
         {
             StartCoroutine(checkForSkidding());
         }
@@ -54,10 +64,9 @@ public class DustScriptV2 : MonoBehaviour
     private IEnumerator checkForSkidding()
     {
         generatingDust = true;
-        float lastVelocity = rb.velocity.x;
-        float movingDirection = 0;
-        float inputDirection = 0;
-        while (abilities.isGrounded())
+        float movingDirection;
+        float inputDirection;
+        while (playerManager.GlobalIsGrounded() && !playingLanding)
         {
             if (!dust.isPlaying)
             {
@@ -66,7 +75,7 @@ public class DustScriptV2 : MonoBehaviour
 
 
             movingDirection = rb.velocity.x == 0 ? 0 : Mathf.Sign(rb.velocity.x); //direction you're moving
-            inputDirection = Input.GetAxisRaw("Horizontal"); //this probably needs to be replaced
+            inputDirection = playerManager.GetHorizontalInput(); //this probably needs to be replaced
 
             //align emission to moving direction:
             var shape = dust.shape;
@@ -77,7 +86,7 @@ public class DustScriptV2 : MonoBehaviour
             {
                 dust.Play();
             }
-            if (Mathf.Abs(rb.velocity.x) < minimumVelocity)
+            if (Mathf.Abs(rb.velocity.x) < minimumVelocity || Math.Sign(rb.velocity.x) == Math.Sign(inputDirection))
             {
                 dust.Stop();
             }
@@ -106,25 +115,79 @@ public class DustScriptV2 : MonoBehaviour
     {
         recentlyJumped = true;
         yield return new WaitForSeconds(abilityDelayInSeconds);
-        yield return new WaitUntil(() => abilities.isGrounded());
+        yield return new WaitUntil(() => playerManager.GlobalIsGrounded());
         recentlyJumped = false;
     }
     private void loadSkidParticles()
     {
+        var mainModule = dust.main;
+        mainModule.loop = true;
+        mainModule.startSize = new ParticleSystem.MinMaxCurve(0.2f, 0.3f);
+        mainModule.simulationSpace = ParticleSystemSimulationSpace.Local;
 
+        var emissionModule = dust.emission;
+        emissionModule.rateOverTimeMultiplier = 60;
+        emissionModule.burstCount = 0;
+        var shapeModule = dust.shape;
+        shapeModule.shapeType = ParticleSystemShapeType.Circle;
+        shapeModule.radius = 0.9f;
+        shapeModule.radiusThickness = 0.04f;
+        shapeModule.arc = 40f;
+        shapeModule.arcMode = ParticleSystemShapeMultiModeValue.Random;
+        shapeModule.arcSpread = 0;
+        shapeModule.rotation = new Vector3(90, 0, 0);
+        shapeModule.scale = new Vector3(1f, 1f, 1f);
     }
     private void loadLandingParticles() //look at the reference in the scene for setting this up
     {
         var mainModule = dust.main;
         mainModule.loop = false;
+        mainModule.startSpeed = 5;
+        mainModule.startSize = new ParticleSystem.MinMaxCurve(0.1f, 0.2f);
+        mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
 
         var emissionModule = dust.emission;
-        emissionModule.burstCount = 0;
+        emissionModule.rateOverTimeMultiplier = 0;
+        ParticleSystem.Burst burst = new()
+        {
+            count = 30,
+            cycleCount = 1
+        };
+        emissionModule.burstCount = 1;
+        emissionModule.SetBurst(0, burst);
+
+        var shapeModule = dust.shape;
+        shapeModule.shapeType = ParticleSystemShapeType.Cone;
+        shapeModule.angle = 16f;
+        shapeModule.radius = 0.6f;
+        shapeModule.radiusThickness = 0.2f;
+        shapeModule.arcMode = ParticleSystemShapeMultiModeValue.Random;
+        shapeModule.arc = 360f;
+        shapeModule.length = 1.2f;
+        shapeModule.rotation = new Vector3(50, 0, 0);
+        shapeModule.scale = new Vector3(1f, 0.26f, 1f);
+
     }
     public void playLandingParticles()
     {
-        Debug.Log("player smacked the ground");
+        // Debug.Log("player smacked the ground");
+        playingLanding = true;
         loadLandingParticles();
+        moveToPlayer();
+        //updateColor();
         dust.Play();
+        StartCoroutine(ResetParticle());
+    }
+
+    private IEnumerator ResetParticle()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        loadSkidParticles();
+        playingLanding = false;
+        //Debug.Log("ended ts");
+    }
+    private void debugLandingParticles()
+    {
+        playLandingParticles();
     }
 }

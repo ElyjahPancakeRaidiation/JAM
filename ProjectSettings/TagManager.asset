@@ -28,6 +28,12 @@ TagManager:
   - Lightning
   - MovingGround
   - MovingGroundPoint
+  - MobileObj
+  - PCObj
+  - AllCanvas
+  - Player Left Arm
+  - Player Right Arm
+  - Arm
   layers:
   - Default
   - TransparentFX
@@ -40,7 +46,7 @@ TagManager:
   - Respawn
   - Player
   - Rock
-  - 
+  - Wind
   - 
   - 
   - 

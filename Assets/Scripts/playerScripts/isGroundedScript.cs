@@ -1,55 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class isGroundedScript : MonoBehaviour
 {
-    private GameObject player;
-    [SerializeField]private List<AbilitySettingScriptable> playersForms;
-    [SerializeField] LayerMask groundLayer;
-    public List<float> rayScales;
-    public int timer;
-    public Vector2[] vecScales;
-    public int curForm;
-    //public Collider2D groundCol;
-    private float angle;
+    [SerializeField] private GameObject followObj;
+    float angle;
+    [SerializeField] private LayerMask mask;
 
-
-    //Called only when the inspector is changed.
-    private void OnValidate()
-    {
-
-        // Debug.Log(player.GetComponent<PlayerMovement>().getAllForms());
-        // playersForms = player.GetComponent<PlayerMovement>().forms;
-        // curForm = player.GetComponent<PlayerMovement>().getFormInt();
-    }
+    //Since ball and pogo have different heights this adds an offset to the y to make it a little more even
+    private float centerYOffset;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        curForm = player.GetComponent<PlayerMovement>().getFormInt();
+        transform.position = followObj.transform.position + new Vector3(0, -1 * centerYOffset + .2f, 0);
+        
         //transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
 
     }
 
-    private void FixedUpdate()
-    {
-        transform.position = player.transform.position + new Vector3(0, -1 * (player.GetComponent<PlayerMovement>().getCurForm().groundChecker.y + .2f), 0);
-        curForm = player.GetComponent<PlayerMovement>().getFormInt();
-        //groundCol = Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
-
+    //isgrounded for ball and pogo jumping
+    public bool isGroundedCircle(Vector2 point, Vector2 pointOffset, float radius){
+        return Physics2D.OverlapCircle(point + pointOffset, radius, mask);
     }
-
-    public bool isGrounded()
+    public bool isGroundedCircle(Vector2 point, Vector2 pointOffset, float radius, LayerMask mask){
+        return Physics2D.OverlapCircle(point + pointOffset, radius, mask);
+    }
+    public bool isGroundedBox(Vector2 point, Vector2 pointOffset, Vector2 size)
     {
-
-        return Physics2D.OverlapBox(transform.position + (Vector3)player.GetComponent<PlayerMovement>().getCurForm().startPositionOffset, player.GetComponent<PlayerMovement>().getCurForm().groundChecker, angle, groundLayer);
-    //     return Physics2D.OverlapBox(transform.position + offset, groundChecker, angle, groundLayer);
-     }
-
-    // void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)vecScales[], player.GetComponent<PlayerMovement>().getCurForm().groundChecker);
-    //private void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position + (Vector3)playersForms[curForm].startPositionOffset, playersForms[curForm].groundChecker);
-
+        return Physics2D.OverlapBox(point + pointOffset, size, angle, mask);
+    }
+    public bool isGroundedBox(Vector2 point, Vector2 pointOffset, Vector2 size, LayerMask mask)
+    {
+        return Physics2D.OverlapBox(point + pointOffset, size, angle, mask);
+    }
+    public bool isGroundedRay(Vector2 point, Vector2 pointOffset, Vector2 endPosition, float distance)
+    {
+        return Physics2D.Raycast(point + pointOffset, endPosition, distance, mask);
+    }
+    public bool isGroundedRay(Vector2 point, Vector2 pointOffset, Vector2 endPosition, float distance, LayerMask mask)
+    {
+        return Physics2D.Raycast(point + pointOffset, endPosition, distance, mask);
+    }
+ 
+    public void setCenterYOffset(float val) { centerYOffset = val; }
+       
+       
+    
 }
