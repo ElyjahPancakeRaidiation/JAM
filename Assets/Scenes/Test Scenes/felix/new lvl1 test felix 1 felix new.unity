@@ -2362,6 +2362,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: speed
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: offset.x
       value: 30
       objectReference: {fileID: 0}
@@ -2376,6 +2380,10 @@ PrefabInstance:
     - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: followSpeed
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
+      propertyPath: amountOfParticles
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 6379076693886804909, guid: f8ae57fba6d1cc64db114c67e549b06d, type: 3}
       propertyPath: followPlayerYAxis
@@ -6326,7 +6334,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4949d4481d0ec2546a8937c7c636bf1f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6569,7 +6577,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.6137344, g: 0.6612371, b: 0.6679245, a: 1}
+      maxColor: {r: 0.6167675, g: 0.7801957, b: 0.7924528, a: 0.53333336}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6633,8 +6641,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.18
-      minScalar: 0.07
+      scalar: 1
+      minScalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6686,8 +6694,8 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 1
+      scalar: 2.5
+      minScalar: 3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6791,7 +6799,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -6844,7 +6852,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -6897,9 +6905,9 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotation:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.2617994
+      minScalar: 0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6952,8 +6960,8 @@ ParticleSystem:
     gravitySource: 1
     maxNumParticles: 3000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
-    size3D: 0
-    rotation3D: 0
+    size3D: 1
+    rotation3D: 1
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
@@ -7837,11 +7845,11 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 3.8
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -8371,7 +8379,7 @@ ParticleSystem:
     speedModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 1.3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -12961,7 +12969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &513179837
 Transform:
   m_ObjectHideFlags: 0
@@ -26865,6 +26873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6197e119a88cc7a47a8cb10ce103d691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  angleOffset: 0
 --- !u!1001 &1275759884
 PrefabInstance:
   m_ObjectHideFlags: 0
