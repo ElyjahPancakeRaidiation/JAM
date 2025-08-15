@@ -5,15 +5,16 @@ using UnityEngine;
 public class TestCamOp : MonoBehaviour
 {
 
-    [SerializeField] private float speed;
-    private GameObject target;
-    private float refFloatX, refFloatY;
+    [SerializeField] private Vector2 testSize;
+    [SerializeField] private Vector2 testOffsetSize;
+    private float angle;
+    [SerializeField] private BoxCollider2D col;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player");
+
     }
 
     // Update is called once per frame
@@ -21,21 +22,13 @@ public class TestCamOp : MonoBehaviour
     {
 
     }
-    
-    private void FixedUpdate()
+
+    void OnDrawGizmos()
     {
-        moveToTarget(target);
+        Gizmos.DrawWireCube(transform.position + (Vector3)testOffsetSize, testSize);
+        col.offset = testOffsetSize;
+        col.size = testSize;
+
     }
 
-    public void setTarget(GameObject val) { target = val; }
-    public void setSpeed(float val) { speed = val; }
-
-
-    private void moveToTarget(GameObject targ)
-    {
-        float xSmooth = Mathf.SmoothDamp(transform.position.x, targ.transform.position.x, ref refFloatX, speed * Time.deltaTime);
-        float ySmooth = Mathf.SmoothDamp(transform.position.y, targ.transform.position.y, ref refFloatY, speed * Time.deltaTime);
-
-        transform.position = new Vector3(xSmooth, ySmooth, -10f);
-    }
 }

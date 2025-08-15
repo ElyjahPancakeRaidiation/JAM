@@ -2233,6 +2233,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
+      propertyPath: playerForms.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d13f378c0fbf484ab723b854e7ebc06, type: 2}
     - target: {fileID: 3499816936792255374, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_SortingOrder
       value: 2
@@ -4662,6 +4670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d04920044f4e2438787fedd10dcbc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontSaveCurScene: 0
 --- !u!4 &1995032415
 Transform:
   m_ObjectHideFlags: 0
