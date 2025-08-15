@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviour
 
     public bool completedGame { get; set; }
 
-    public KeyCode playerAbilityKey;//Get rid of this and put it in the future player manager
-
     #region GameManager settings
     [Header("GameManager Settings")]
     public KeyCode pauseKey;

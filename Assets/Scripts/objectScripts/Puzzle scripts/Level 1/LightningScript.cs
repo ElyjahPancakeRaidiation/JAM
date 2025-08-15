@@ -97,4 +97,17 @@ public class LightningScript : MonoBehaviour
         }
         lightningActive = false;
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Vector2 fromPoint;
+        Vector2 toPoint; 
+        foreach (LightningBounds gogogaga in lightningBounds)
+        {
+            fromPoint = new Vector2(gogogaga.minX, 0);
+            toPoint = new Vector2(gogogaga.maxX, 0);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(fromPoint, toPoint);
+        }
+    }
 }

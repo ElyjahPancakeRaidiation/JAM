@@ -13,6 +13,7 @@ public class SaveSystem : MonoBehaviour
     // string nameDataPath;
     SaveSettings savedSettings;
     // weird weird;
+    [SerializeField] private bool dontSaveCurScene;
 
     private void SearchForFile(string path)
     {
@@ -29,7 +30,8 @@ public class SaveSystem : MonoBehaviour
             if (info.Length != 0)
             {
                 savedSettings = JsonUtility.FromJson<SaveSettings>(savedJson);
-            }else{ savedSettings = new SaveSettings(); }
+            }
+            else { savedSettings = new SaveSettings(); }
         }
     }
 
@@ -43,17 +45,6 @@ public class SaveSystem : MonoBehaviour
         // nameDataPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "Names.json";
         //For windows datapath it should be in Appdata/localLow/defualtcompany/JustAMind
         SearchForFile(dataPath);
-
-        // if (!File.Exists(nameDataPath))
-        // {
-        //     File.CreateText(nameDataPath);
-        //     weird = new weird();
-        // }
-        // else
-        // {
-        //     string savedJson = File.ReadAllText(nameDataPath);
-        //     weird = JsonUtility.FromJson<weird>(savedJson);
-        // }
     }
 
 
@@ -72,9 +63,12 @@ public class SaveSystem : MonoBehaviour
 
     public void SaveGame()
     {
-        //Converts the data into Json format to write to the text file.
-        string contents = JsonUtility.ToJson(savedSettings);
-        File.WriteAllText(dataPath, contents);
+        if (!dontSaveCurScene)
+        {
+            //Converts the data into Json format to write to the text file.
+            string contents = JsonUtility.ToJson(savedSettings, true);
+            File.WriteAllText(dataPath, contents);
+        }
     }
 
     public void ResetGame()
@@ -85,27 +79,19 @@ public class SaveSystem : MonoBehaviour
         GameManager.current.completedGame = savedSettings.completedGame;
 
     }
-    // public void SaveName()
-    // {
-    //     string contents = JsonUtility.ToJson(weird);
-    //     File.WriteAllText(nameDataPath, contents);
-    // }
-    // public void loadName()
-    // {
-    //     weird = JsonUtility.FromJson<weird>(nameDataPath);
-    //     for (int i = 0; i < weird.saveSettings.Count; i++)
-    //     {
-    //         GameObject obj = GameObject.Find(weird.saveSettings[i].name);
-    //         var test = obj.GetComponent<SaveSettingsV2>();
-
-    //     }
-    // }
-
-    // public void saveSetting(SaveSettingsV2 s) => weird.addSetting(s);
 
     void OnDestroy()
     {
         SaveGame();
+    }
+
+    public bool GetCompletedGame()
+    {
+        if (savedSettings != null)
+        {
+            return savedSettings.completedGame;
+        }
+        return false;
     }
 }
 
@@ -118,30 +104,3 @@ public class SaveSettings
         completedGame = false;
     }
 }
-
-// [Serializable]
-// public class SaveSettingsV2
-// {
-//     public string name;
-//     public int id;
-//     public string compName;
-//     public SaveSettingsV2 other;
-//     public SaveSettingsV2()
-//     {
-        
-//     }
-//     public void giveData(SaveSettingsV2 data){ other = data; }
-// }
-
-// public class weird
-// {
-//     public List<SaveSettingsV2> saveSettings;
-//     public weird()
-//     {
-//         saveSettings = new List<SaveSettingsV2>();
-//     }
-//     public void addSetting(SaveSettingsV2 s)
-//     {
-//         saveSettings.Add(s);
-//     }
-// }

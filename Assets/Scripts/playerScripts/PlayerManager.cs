@@ -117,7 +117,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        if(failedObject==null){failedObject = Instantiate(new GameObject("FailedInstances"), new Vector3(0, 0), quaternion.identity);}
+        if (failedObject == null) { failedObject = Instantiate(new GameObject("FailedInstances"), new Vector3(0, 0), quaternion.identity); }
 
         _rb = GetComponent<Rigidbody2D>();
         _spr = GetComponent<SpriteRenderer>();
@@ -135,6 +135,7 @@ public class PlayerManager : MonoBehaviour
             SetGlobalGroundedColSize(GetCurPlayerForm().globalGroundedColSize);
             SetGlobalGroundedPointOffset(GetCurPlayerForm().glboalGroundedPointOffset);
         }
+        
     }
 
     private void Update()
@@ -181,23 +182,37 @@ public class PlayerManager : MonoBehaviour
     }
     public void AddFormsComponents()
     {
-        foreach (PlayerFormsScriptables ability in playerForms)
+        if (!IsPlayerFormsEmpty())
         {
-            if (ability != null)
+            foreach (PlayerFormsScriptables ability in playerForms)
             {
-                ability.addComponent(this.gameObject);
+                if (ability != null)
+                {
+                    ability.addComponent(this.gameObject);
+                }
             }
+        }
+        else
+        {
+            Debug.LogError(MissingAbilityForms());
         }
     }
     public void OnStartForm()
     {
-        foreach (PlayerFormsScriptables ability in playerForms)
+        if (!IsPlayerFormsEmpty())
         {
-            if (ability != null)
+            foreach (PlayerFormsScriptables ability in playerForms)
             {
-                ability.functionality.OnStartMethod(ability);
+                if (ability != null)
+                {
+                    ability.functionality.OnStartMethod(ability);
 
+                }
             }
+        }
+        else
+        {
+            Debug.LogError(MissingAbilityForms());
         }
     }
     public void ChangeForm()
@@ -246,8 +261,8 @@ public class PlayerManager : MonoBehaviour
         MissingIsGroundedScript();
         return false;
     }
-    public void SetGlobalGroundedColSize(Vector2 val){ globalGroundColSize = val; }
-    public void SetGlobalGroundedPointOffset(Vector2 val){ globalGroundColPointOffset = val; }
+    public void SetGlobalGroundedColSize(Vector2 val) { globalGroundColSize = val; }
+    public void SetGlobalGroundedPointOffset(Vector2 val) { globalGroundColPointOffset = val; }
 
 
     private void OnDrawGizmos()
@@ -265,6 +280,7 @@ public class PlayerManager : MonoBehaviour
     private string MissingMovement() { return "Missing Movement script"; }
     private string MissingAbilities() { return "Missing Abilities script"; }
     private string MissingInput() { return "Missing Input Manager script"; }
+    private string MissingAbilityForms(){ return "Missing Forms. The player has no forms assigned in the player manager."; }
 
     #endregion
 
