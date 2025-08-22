@@ -31,6 +31,6 @@ MonoBehaviour:
   hasArms: 1
   swingForce: 130
   armGrabZone: 1
-  armDetectionZone: 0
+  armDetectionZone: 5
   pullForce: 3
   detachMultiplier: 1.5
