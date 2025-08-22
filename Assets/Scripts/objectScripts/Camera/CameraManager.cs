@@ -72,18 +72,21 @@ public class CameraManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        cameraCol = Physics2D.OverlapBox(transform.position + (Vector3)colliderOffsetSize, colliderSize, colliderAngular, colliderMask);
-        if (cameraCol != null)
+        if (colliderSize != Vector2.zero)
         {
-            if (!triggered) { activate(); }
-            triggered = true;
-        }
-        else
-        {
-            if (triggered)
+            cameraCol = Physics2D.OverlapBox(transform.position + (Vector3)colliderOffsetSize, colliderSize, colliderAngular, colliderMask);
+            if (cameraCol != null)
             {
-                deactivate();
-                triggered = false;
+                if (!triggered) { activate(); }
+                triggered = true;
+            }
+            else
+            {
+                if (triggered)
+                {
+                    deactivate();
+                    triggered = false;
+                }
             }
         }
     }

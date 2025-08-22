@@ -245,7 +245,7 @@ public class TorsoForm : PlayerFormsScriptables
         private IEnumerator JumpAbilityIEnumerator()
         {
             jumpedClicked = true;
-            float jumpForce = Mathf.Sqrt((torsoVar.jumpHeight * abilityMultipliers) * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
+            float jumpForce = Mathf.Sqrt(torsoVar.jumpHeight * abilityMultipliers * Physics2D.gravity.y * _rb.gravityScale * -2) * _rb.mass;
             Vector2 Verticaldirection = new Vector2(_rb.velocity.x, jumpForce);
             _rb.velocity = Verticaldirection;
             yield return new WaitForSeconds(.1f);
@@ -261,8 +261,8 @@ public class TorsoForm : PlayerFormsScriptables
         private IEnumerator Hopping()
         {
             coyoteTimer = torsoVar.floatTime;
-            Vector2 jumpForce = new Vector2(playerManager.GetHorizontalInput() * (torsoVar.jumpSpeedX * movementMultipliers), (torsoVar.jumpSpeedY * movementMultipliers));
-            _rb.velocity = jumpForce;
+            Vector2 hopForce = new Vector2(playerManager.GetHorizontalInput() * (torsoVar.jumpSpeedX * movementMultipliers), (torsoVar.jumpSpeedY * movementMultipliers));
+            _rb.velocity = hopForce;
             yield return new WaitForSeconds(.6f);
             //keep checking until the player touches the ground
             yield return new WaitUntil(() => playerManager.IsGrounded().isGroundedBox(transform.position, torsoVar.hoppingGroundOffsetSize, torsoVar.hoppingGroundColliderSize)/*playerAbility.groundedScript()*/);

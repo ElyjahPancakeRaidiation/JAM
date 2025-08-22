@@ -11,7 +11,7 @@ public class CameraOperator : MonoBehaviour
     private GameObject player;
 
     [SerializeField] private float defualtSpeed;
-    private float curSpeed;
+    [SerializeField] private float curSpeed;
 
     //Used for how fast the camera should zoom in or out.
     [SerializeField, Tooltip("How fast the camera will zome in and out this is mainly changed in the manager")]
@@ -58,7 +58,7 @@ public class CameraOperator : MonoBehaviour
     public bool canMove { get; set; } = true;
     public bool followPlayer { get; set; } = true;
 
-    private bool farFromPlayer;
+    [SerializeField] private bool farFromPlayer;
     private GameObject target;
 
     private Vector2 refVec = Vector2.zero;

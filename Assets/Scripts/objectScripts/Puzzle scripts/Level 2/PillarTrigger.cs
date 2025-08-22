@@ -8,6 +8,7 @@ public class PillarTrigger : MonoBehaviour
     
     [SerializeField] private float maxDistance;
     [SerializeField] private float time, startingTime, spawnBackTime;
+    [SerializeField] private bool canRespawn = true;
 
     private Coroutine respawnCoro;
     private GameObject spriteObj;
@@ -20,7 +21,7 @@ public class PillarTrigger : MonoBehaviour
     void Start()
     {
         //Subscribes the Ienumerator FallingPillar to the event in PillarManager
-        PillarManager.current.startTrigger += wrapperFallingPillar;
+        PillarManager.current.startTrigger += WrapperFallingPillar;
 
         startingPosition = transform.position;
         disappearingAnimation = GetComponent<Animation>(); 
@@ -66,13 +67,16 @@ public class PillarTrigger : MonoBehaviour
     }
 
     //Wrapper for the Ienumerator FallingPillar because events dont like Ienumerator.
-    private void wrapperFallingPillar() => StartCoroutine(FallingPillar());
+    private void WrapperFallingPillar() => StartCoroutine(FallingPillar());
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (canRespawn)
         {
-            if (respawnCoro == null) { respawnCoro = StartCoroutine(PillarLoop()); }
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                if (respawnCoro == null) { respawnCoro = StartCoroutine(PillarLoop()); }
+            }
         }
     }
 
@@ -84,6 +88,6 @@ public class PillarTrigger : MonoBehaviour
     void OnDestroy()
     {
         //Unscribes the method so it doesn't cause an error if it gets deleted mid game.
-        PillarManager.current.startTrigger -= wrapperFallingPillar;
+        PillarManager.current.startTrigger -= WrapperFallingPillar;
     }
 }

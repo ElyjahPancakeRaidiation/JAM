@@ -9,8 +9,6 @@ public class Movement : MonoBehaviour
     public float JumpHeight;
     public bool InAir = false;
 
-    
-
     private Rigidbody2D rb2d;
 
     void Start() {
