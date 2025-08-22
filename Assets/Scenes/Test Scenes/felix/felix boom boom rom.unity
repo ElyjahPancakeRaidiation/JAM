@@ -13166,7 +13166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &459207447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19448,6 +19448,26 @@ PrefabInstance:
       propertyPath: audioPoints.Array.data[0].rightClip
       value: 
       objectReference: {fileID: 8300000, guid: b9378ac161e52ac4ea2e68009534036b, type: 3}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[0].usePitchShift
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[1].usePitchShift
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[2].usePitchShift
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[0].pitchOffsetRange.Max
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[0].pitchOffsetRange.Min
+      value: -0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.024742

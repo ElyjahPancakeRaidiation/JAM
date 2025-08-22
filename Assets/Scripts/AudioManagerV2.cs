@@ -36,6 +36,8 @@ public class AudioManagerV2 : MonoBehaviour
     {
         [Range(-70, 0)]
         public float maxVolume; //yo fyi when using this "max volume" variable in the inspector, its to be converted to the linear system unity uses with the method "decibelToLinear"
+        public bool usePitchShift;
+        public FloatRange pitchOffsetRange;
         public AudioClip sfxClip;
         public AnimationCurve fadeVolumeCurve;
         public String tag;
@@ -49,6 +51,14 @@ public class AudioManagerV2 : MonoBehaviour
             this.fadeLength = fadeLength;
         }
 
+    }
+    [System.Serializable]
+    public struct FloatRange
+    {
+
+        public float Min;
+        public float Max;
+        
     }
     public List<AudioPoint> audioPoints;
     public List<PlayerSFX> playerSFXs;
@@ -209,6 +219,10 @@ public class AudioManagerV2 : MonoBehaviour
         {
             AudioSource audioSource = SFXsources[tag];
             audioSource.volume = decibelToLinear(sfx.maxVolume);
+            if (sfx.usePitchShift)
+            {
+                audioSource.pitch = 1 + UnityEngine.Random.Range(sfx.pitchOffsetRange.Min, sfx.pitchOffsetRange.Max); //1 is default pitch me thinks
+            }
             audioSource.Play();
 
             float trackLength = sfx.sfxClip.length;
