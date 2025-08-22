@@ -1,23 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Security.Cryptography;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using UnityEngine.Diagnostics;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
 
 public class ManageWind : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem Windparticles;
-    private ParticleSystem currentWindParticle;
+    private ParticleSystem windParticles;
+    //private ParticleSystem windParticles;
 
     [SerializeField] private Vector3 windParticlePosition;
-    private BoxCollider2D windCollider;
+   //  private BoxCollider2D windCollider;
     [SerializeField] private float sizeX;
     [SerializeField] private float sizeY;
     [SerializeField] private Vector2 offset;
@@ -26,7 +16,7 @@ public class ManageWind : MonoBehaviour
     [SerializeField] private float windForceY;
     private bool isForceHorizontal;
     [SerializeField] private int currentMaxParticles;
-    private bool playerWithinZone;
+    [SerializeField] private bool playerWithinZone;
 
     [SerializeField] private float incrementValue;
 
@@ -35,12 +25,11 @@ public class ManageWind : MonoBehaviour
 
     [SerializeField] private float maxMultiplier;
 
-    private isGroundedScript isGrounded;
+  //  [SerializeField] private isGroundedScript isGrounded;
 
-    private LayerMask mask;
-    private Vector2 point, pointOffset, endPosition;
+    private LayerMask layerMask;
 
-    private GameObject player;
+    [SerializeField] private GameObject player;
     private float multiplier;
     private Rigidbody2D playerRb;
 
@@ -56,30 +45,34 @@ public class ManageWind : MonoBehaviour
 
 
     */
-
+    void OnEnable()
+    {
+        
+    }
 
     void Awake()
     {
 
-        windCollider = GetComponent<BoxCollider2D>();
+        //windCollider = GetComponent<BoxCollider2D>();
+        windParticles = GetComponent<ParticleSystem>();
         playerWithinZone = false;
         player = GameObject.FindGameObjectWithTag("Player");
         playerRb = player.GetComponent<Rigidbody2D>();
-        isGrounded =  GameObject.FindGameObjectWithTag("WindDetector").GetComponent<isGroundedScript>();
-        
+        //isGrounded =  GameObject.FindGameObjectWithTag("WindDetector").GetComponent<isGroundedScript>();
+        layerMask = LayerMask.GetMask("Player");
     }
     void Start()
     {
-
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        ColliderBounds(new Vector2(sizeX, sizeY), offset);
+        //ColliderBounds(new Vector2(sizeX, sizeY), offset);
         ParticleBounds();
-        RotateWind(currentWindParticle);
-        GetParticlePosition(currentWindParticle);
+        RotateWind(windParticles);
+        GetParticlePosition(windParticles);
 
      //  Debug.Log(IsPlayerWithinZone());
         //RunWind();
@@ -98,22 +91,22 @@ public class ManageWind : MonoBehaviour
        
 
     }
-    void ColliderBounds(Vector2 size, Vector2 offset)
-    {
-        windCollider.size = size;
-        windCollider.offset = offset;
+    // void ColliderBounds(Vector2 size, Vector2 offset)
+    // {
+    //     // windCollider.size = size;
+    //     // windCollider.offset = offset;
 
-    }
+    // }
     
     void OnDrawGizmos()
     {
+    //    Gizmos.color = Color.cyan;
+
+    //    Gizmos.DrawWireCube(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY, 0));
+
        Gizmos.color = Color.cyan;
 
        Gizmos.DrawWireCube(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY, 0));
-
-    //    Gizmos.color = Color.red;
-
-    //    Gizmos.DrawWireCube(player.transform.position + (Vector3)point + (Vector3)pointOffset, endPosition);
 
     }
 
@@ -126,8 +119,8 @@ public class ManageWind : MonoBehaviour
             ForceMultiplierY(incrementValue, maxMultiplier);
             stayTimer += Time.deltaTime;
             IncreaseParticleSpeed(windForceX, windForceY);
-            SpawnWindParticles();
-            stayTimer += Time.deltaTime;
+            SpawnWindParticlesV2();
+        
         }
         else
         {   
@@ -138,12 +131,11 @@ public class ManageWind : MonoBehaviour
 
         }
     }
-  
+
 
     bool IsPlayerWithinZone()
     {
-
-        return isGrounded.isGroundedRay(player.transform.position + (Vector3)point, pointOffset, endPosition, mask);
+        return Physics2D.OverlapBox(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY), 0, layerMask);
     }
 
     bool ForceDirection(float forceX, float forceY)
@@ -157,13 +149,14 @@ public class ManageWind : MonoBehaviour
         {
             isForceHorizontal = true;
         }
+    
 
         return isForceHorizontal;
     }
 
     bool getIsForceIncreasing()
     {
-        if (incrementValue > 0)
+        if (maxMultiplier >1)
         {
             isForceIncreasing = true;
         }
@@ -184,7 +177,7 @@ public class ManageWind : MonoBehaviour
 
     void GetParticlePosition(ParticleSystem currentParticles)
     {
-        if (currentWindParticle != null)
+        
         {
             var windPosition = currentParticles.shape;
 
@@ -195,7 +188,7 @@ public class ManageWind : MonoBehaviour
 
     void IncreaseParticleSpeed(float forceX, float forceY)
     {
-        if (currentWindParticle != null)
+        
         {
 
             Vector2 originForce = new Vector2(0, 0);
@@ -203,18 +196,22 @@ public class ManageWind : MonoBehaviour
 
             float forceDifference = Vector2.Distance(curentForce, originForce);
             
-            ParticleSystem.VelocityOverLifetimeModule newParticleSpeed = currentWindParticle.velocityOverLifetime;
+            ParticleSystem.VelocityOverLifetimeModule newParticleSpeed = windParticles.velocityOverLifetime;
+            
+            ParticleSystem.EmissionModule particleAmount = windParticles.emission;
 
-            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(Mathf.Lerp(forceDifference/15, forceDifference / 8, stayTimer/5), Mathf.Lerp(forceDifference / 5, forceDifference/3, stayTimer/5));
-     
-            ParticleSystem.EmissionModule particleAmount = currentWindParticle.emission;
-
-            ParticleSystem.MainModule totalParticles = currentWindParticle.main;
+            ParticleSystem.MainModule totalParticles = windParticles.main;
            
             totalParticles.maxParticles = currentMaxParticles;
-            if (getIsForceIncreasing() || forceDifference > 2)
+            if (!getIsForceIncreasing())
             {
-                particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + forceDifference, 160 + forceDifference * 1.5f);
+                newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.6f + forceDifference / 40, 5 + forceDifference / 10);
+            }
+            else
+            {
+                newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(Mathf.Lerp(forceDifference / 20, forceDifference / 15, stayTimer / 5), Mathf.Lerp(forceDifference / 12, forceDifference / 7, stayTimer / 5));
+                particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + Mathf.Lerp(forceDifference * 5, forceDifference * 7, stayTimer / 3), 160 + Mathf.Lerp(forceDifference * 8, forceDifference * 12, stayTimer / 3));
+
             }
 
         }
@@ -226,7 +223,10 @@ public class ManageWind : MonoBehaviour
 
     public float ForceMultiplierY(float increment, float maxMultiplier)
     {
-        
+        if (increment < .05)
+        {
+            increment = .05f;
+        }
         multiplier += increment * stayTimer/10;
 
         if (multiplier > maxMultiplier)
@@ -268,10 +268,10 @@ public class ManageWind : MonoBehaviour
     }
     void ParticleBounds(/*Vector2 force, float radius*/)
     {
-        if (currentWindParticle != null)
+        
         {
-            var windParticle = currentWindParticle.shape;
-            windParticle.radius = ForceDirection(windForceX, windForceY) ? sizeX / 2 : sizeY / 2;
+            var windParticle = windParticles.shape;
+            windParticle.radius = ForceDirection(windForceX, windForceY) ? sizeX /1.5f : sizeY/1.5f;
         }
     }
 
@@ -280,13 +280,24 @@ public class ManageWind : MonoBehaviour
 
         if (!particlesInstantiated)
         {
-            currentWindParticle = Instantiate(Windparticles, transform.position + new Vector3(0, -50, 0), Quaternion.identity);
+            windParticles = Instantiate(windParticles, transform.position + (Vector3)offset, Quaternion.identity);
 
             particlesInstantiated = true;
         }
         if (windForceX != 0 || windForceY != 0)
         {
-            currentWindParticle.Play();
+            windParticles.Play();
+        }
+        else StopWindParticles();
+
+    }
+
+    void SpawnWindParticlesV2()
+    {
+
+        if (windForceX != 0 || windForceY != 0)
+        {
+            windParticles.Play();
         }
         else StopWindParticles();
 
@@ -295,7 +306,7 @@ public class ManageWind : MonoBehaviour
 
     void StopWindParticles()
     {
-        if (currentWindParticle != null) currentWindParticle.Stop();
+        windParticles.Stop();
     }
 
     void OnTriggerStay2D(Collider2D other)

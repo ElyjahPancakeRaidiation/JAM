@@ -30,7 +30,7 @@ MonoBehaviour:
   armsActiveScene: 
   hasArms: 1
   swingForce: 130
-  armGrabZone: 0.5
+  armGrabZone: 1
   armDetectionZone: 0
-  pullForce: 2
+  pullForce: 3
   detachMultiplier: 1.5

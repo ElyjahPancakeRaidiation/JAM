@@ -3111,6 +3111,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &128100843 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4420898204423505085, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+  m_PrefabInstance: {fileID: 6960859696735503829}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5b83f9dfdc14d418c00254bec33d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &130097766
 GameObject:
   m_ObjectHideFlags: 0
@@ -13833,6 +13844,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &566315862 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6248845435085599932, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+  m_PrefabInstance: {fileID: 6960859696735503829}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &590761056
 GameObject:
   m_ObjectHideFlags: 0
@@ -49919,12 +49935,40 @@ PrefabInstance:
       value: -21.65
       objectReference: {fileID: 0}
     - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: isGrounded
+      value: 
+      objectReference: {fileID: 128100843}
+    - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: windForceY
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: mask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: windCollider
+      value: 
+      objectReference: {fileID: 566315862}
+    - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: endPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: endPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: maxMultiplier
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: pointOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: pointOffset.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3276880358415699749, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: incrementValue
