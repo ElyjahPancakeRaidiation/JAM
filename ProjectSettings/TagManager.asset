@@ -34,6 +34,9 @@ TagManager:
   - Player Left Arm
   - Player Right Arm
   - Arm
+  - Wind
+  - Vine
+  - WindDetector
   layers:
   - Default
   - TransparentFX
