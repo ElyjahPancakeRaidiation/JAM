@@ -16,7 +16,7 @@ public class MovingGround : MonoBehaviour
     {
         if (canMove)
         {
-            if(point == null){point = GameObject.Find(tagName).GetComponent<Transform>();}
+            if (point == null) { point = GameObject.Find(tagName).GetComponent<Transform>(); }
             transform.position = Vector2.MoveTowards(transform.position, point.position, totalSpeed * Time.deltaTime);
         }
     }
