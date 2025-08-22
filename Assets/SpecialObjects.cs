@@ -23,7 +23,7 @@ public class SpecialObjects : MonoBehaviour
     [SerializeField] private bool collisionTrigger;
     private float time;
 
-    [Header("Moving position options")]
+    [Header("Moving position variables")]
     [SerializeField] private GameObject finalPosition;
     [SerializeField] private float movingSpeed;
 
