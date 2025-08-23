@@ -16,6 +16,9 @@ public abstract class PlayerFormsScriptables : ScriptableObject
     public Vector2 globalGroundedColSize;
     public Vector2 glboalGroundedPointOffset;
 
+    public float minVertexDistancefr;
+
+    public bool emmitting;
     public FormFunctionality functionality { get; set; }
     
     public abstract void changeForm(Rigidbody2D _rb, SpriteRenderer _spr, Collider2D _circleCol, Collider2D _boxCol);
