@@ -25,8 +25,13 @@ public class PlayerAbilities : MonoBehaviour
         if (globalWideAbilityEvent == null) { globalWideAbilityEvent = new UnityEvent(); }
         playerManager = GetComponent<PlayerManager>();
         canUseAbility = true;
-        tr = GetComponent<TrailRenderer>();
-       
+
+        if (tr == null)
+        {
+            return;
+        }
+
+        InitializeTrail();
     }
 
     // Update is called once per frame
@@ -35,15 +40,34 @@ public class PlayerAbilities : MonoBehaviour
         if (Input.GetKeyDown(playerManager.playerAbilityKey))
         {
             UseAbility();
-            tr.minVertexDistance = PlayerForm().minVertexDistancefr;
-            tr.emitting = PlayerForm().emmitting;
+           
         }
 
 
         playerManager.GetFormFunctionality().UpdateMethodAbility();
+
+        InitializeTrailVar();
+    }
+    void InitializeTrail()
+    {   
+         if (tr == null)
+        {
+            return;
+        }
+        tr = GetComponent<TrailRenderer>();
+
+       
+    }
+    void InitializeTrailVar()
+    {   
+        
+        if (tr == null)
+        {
+            return;
+        }
         tr.minVertexDistance = PlayerForm().minVertexDistancefr;
         tr.emitting = PlayerForm().emmitting;
-        
+
     }
 
     public PlayerFormsScriptables PlayerForm()
