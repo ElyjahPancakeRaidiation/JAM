@@ -6334,7 +6334,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9094859ac38180b428c3cbdf6bf91550, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15534,11 +15534,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea07d887e83fde44fb87d3de174b689a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thoughtBubble: {fileID: 0}
   maxTime: 4
   positionOffset: {x: 0, y: 0}
   thoughtBubbleEvent:
     m_PersistentCalls:
       m_Calls: []
+  SET: []
 --- !u!61 &670711441
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18064,6 +18066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea07d887e83fde44fb87d3de174b689a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thoughtBubble: {fileID: 0}
   maxTime: 4
   positionOffset: {x: 0, y: 0}
   thoughtBubbleEvent:
@@ -18081,6 +18084,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  SET: []
 --- !u!61 &775374184
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -2,54 +2,87 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using Unity.VisualScripting;
+using Unity.Properties;
+using UnityEngine.Analytics;
+using System.Net.NetworkInformation;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
-public class thoughtBubble : MonoBehaviour
+public class ThoughtBubble : MonoBehaviour
 {
+    [SerializeField] private GameObject thoughtBubble;
     public static event Action<bool> triggerThoughtBubble;
     private PlayerManager playerManager;
-    private bool completed = false;
 
     [SerializeField] private float maxTime;
     [SerializeField] private Vector2 positionOffset;
     [SerializeField] private UnityEvent thoughtBubbleEvent;
-    private Coroutine thoughtTrigger;
+    private Coroutine thoughtTrigger;    
+    private Coroutine keyOrderCoro;    
+    private bool followPlayer;
+
+    [SerializeField] private TrackKeyOrder keyOrder;
+    private bool inProgress;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        ///
-        /// When player manager is added make sure to switch this out with the event instead, decouple this code.
-        /// 
+        keyOrder.FindButtons();
+        if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
-        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.AddListener(HasUsedAbility);
-        if(thoughtBubbleEvent==null){thoughtBubbleEvent = new UnityEvent();}
+
+        if (thoughtBubbleEvent == null) { thoughtBubbleEvent = new UnityEvent(); }
+
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Update()
+    {
+        if (followPlayer)
+        {
+            thoughtBubble.transform.position = playerManager.transform.position;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.CompareTag("Player"))
+        {
+            if (!keyOrder.completed)
+            {
+                if (!inProgress)
+                {
+                    keyOrder.StartTrackingKeys();
+                    inProgress = true;
+                }
+                // TriggerThought(collision);
+            }
+        }
+    }
+
+    private void TriggerThought(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            if (thoughtTrigger == null && !completed) { thoughtTrigger = StartCoroutine(TriggerThought()); }
+            if (thoughtTrigger == null && !keyOrder.completed) { thoughtTrigger = StartCoroutine(TriggerThoughtEnum()); }
         }
     }
 
-    private IEnumerator TriggerThought()
+
+    private IEnumerator TriggerThoughtEnum()
     {
         yield return new WaitForSecondsRealtime(maxTime);
-        if (!completed)
+        if (!keyOrder.completed)
         {
-            if (triggerThoughtBubble != null) { triggerThoughtBubble(true); }
+            followPlayer = true;
+            if (thoughtBubble != null) { thoughtBubble.SetActive(true); }
             thoughtBubbleEvent?.Invoke();
-            yield return new WaitUntil(() => completed);
+            yield return new WaitUntil(() => keyOrder.completed);
         }
-        if (triggerThoughtBubble != null) { triggerThoughtBubble(false); }
+        followPlayer = false;
+        if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
     }
 
-    private void HasUsedAbility()
-    {
-        completed = true;
-        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.RemoveListener(HasUsedAbility);
-    }
-    
-    
 }

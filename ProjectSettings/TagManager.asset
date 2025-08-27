@@ -37,6 +37,7 @@ TagManager:
   - Wind
   - Vine
   - WindDetector
+  - PlayerButton
   layers:
   - Default
   - TransparentFX
