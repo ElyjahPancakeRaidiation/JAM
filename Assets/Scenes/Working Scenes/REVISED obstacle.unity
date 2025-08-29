@@ -208,11 +208,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 1
   shakeDuration: 1.2
   shakeStrength: 3
+  delayShakeSec: 0
   repeat: 0
 --- !u!4 &4553269
 Transform:
@@ -725,8 +727,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6489, y: 30.941551, z: 0}
-    m_Extent: {x: 24.0443, y: 34.58915, z: 0}
+    m_Center: {x: 1.65275, y: 30.949501, z: 0}
+    m_Extent: {x: 24.05165, y: 34.584, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -891,8 +893,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6501002, y: 30.573502, z: 0}
-    m_Extent: {x: 16.5366, y: 27.4436, z: 0}
+    m_Center: {x: 1.6402502, y: 30.58455, z: 0}
+    m_Extent: {x: 16.53955, y: 27.45175, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1743,8 +1745,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 10.6926, y: 30.208, z: 0}
-    m_Extent: {x: 10.1957, y: 26.764599, z: 0}
+    m_Center: {x: 10.688649, y: 30.21605, z: 0}
+    m_Extent: {x: 10.19135, y: 26.76215, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -2611,6 +2613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d6b75a2f60cf34681f390c35ea6b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accelerate: 1
   defualtSpeed: 15
   curSpeed: 0
   zoomSpeed: 8
@@ -4443,8 +4446,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6445498, y: 30.5741, z: 0}
-    m_Extent: {x: 16.53155, y: 27.4538, z: 0}
+    m_Center: {x: 1.6449504, y: 30.5773, z: 0}
+    m_Extent: {x: 16.53315, y: 27.4461, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -11123,11 +11126,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 1
   shakeDuration: 2
   shakeStrength: 0.3
+  delayShakeSec: 0
   repeat: 1
 --- !u!1 &771459872
 GameObject:
@@ -11326,8 +11331,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 10.687349, y: 30.20895, z: 0}
-    m_Extent: {x: 10.19965, y: 26.758148, z: 0}
+    m_Center: {x: 10.69355, y: 30.21615, z: 0}
+    m_Extent: {x: 10.18895, y: 26.75995, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -11800,8 +11805,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 10.6894, y: 30.214748, z: 0}
-    m_Extent: {x: 10.1992, y: 26.75185, z: 0}
+    m_Center: {x: 10.68965, y: 30.21395, z: 0}
+    m_Extent: {x: 10.19215, y: 26.75345, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -12579,8 +12584,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 10.690849, y: 30.2165, z: 0}
-    m_Extent: {x: 10.19635, y: 26.769001, z: 0}
+    m_Center: {x: 10.682401, y: 30.2108, z: 0}
+    m_Extent: {x: 10.1904, y: 26.758999, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -12830,8 +12835,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6452999, y: 30.58225, z: 0}
-    m_Extent: {x: 16.5408, y: 27.45115, z: 0}
+    m_Center: {x: 1.6441994, y: 30.57065, z: 0}
+    m_Extent: {x: 16.535, y: 27.449549, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -12969,8 +12974,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 10.6838, y: 30.213202, z: 0}
-    m_Extent: {x: 10.1970005, y: 26.7572, z: 0}
+    m_Center: {x: 10.68685, y: 30.206299, z: 0}
+    m_Extent: {x: 10.19165, y: 26.7616, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -13475,8 +13480,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6419497, y: 30.9527, z: 0}
-    m_Extent: {x: 24.046349, y: 34.5886, z: 0}
+    m_Center: {x: 1.64505, y: 30.9525, z: 0}
+    m_Extent: {x: 24.04625, y: 34.588898, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -14296,8 +14301,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 10.6896, y: 30.2234, z: 0}
-    m_Extent: {x: 10.201401, y: 26.7612, z: 0}
+    m_Center: {x: 10.6832, y: 30.2106, z: 0}
+    m_Extent: {x: 10.1953, y: 26.766699, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -14378,8 +14383,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.68259954, y: 30.61495, z: 0}
-    m_Extent: {x: 15.585199, y: 27.41915, z: 0}
+    m_Center: {x: 0.6900501, y: 30.61495, z: 0}
+    m_Extent: {x: 15.58795, y: 27.42055, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -14460,8 +14465,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6543503, y: 30.5763, z: 0}
-    m_Extent: {x: 16.53845, y: 27.442099, z: 0}
+    m_Center: {x: 1.6468, y: 30.56825, z: 0}
+    m_Extent: {x: 16.541801, y: 27.450651, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -15561,8 +15566,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 10.687799, y: 30.2188, z: 0}
-    m_Extent: {x: 10.1971, y: 26.761002, z: 0}
+    m_Center: {x: 10.68555, y: 30.2186, z: 0}
+    m_Extent: {x: 10.19345, y: 26.7656, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -16129,8 +16134,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6433, y: 30.9508, z: 0}
-    m_Extent: {x: 24.044601, y: 34.5948, z: 0}
+    m_Center: {x: 1.6424999, y: 30.94125, z: 0}
+    m_Extent: {x: 24.0461, y: 34.59045, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -16447,11 +16452,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 10
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 500
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 1
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!4 &1385198905
 Transform:
@@ -16786,8 +16793,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6487002, y: 30.57765, z: 0}
-    m_Extent: {x: 16.5345, y: 27.45255, z: 0}
+    m_Center: {x: 1.6482501, y: 30.5814, z: 0}
+    m_Extent: {x: 16.54485, y: 27.449, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -17204,11 +17211,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 1000
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 500
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 1
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!4 &1467255255
 Transform:
@@ -18268,8 +18277,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6459999, y: 30.948399, z: 0}
-    m_Extent: {x: 24.0425, y: 34.593098, z: 0}
+    m_Center: {x: 1.6408997, y: 30.951248, z: 0}
+    m_Extent: {x: 24.0539, y: 34.58735, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -18337,6 +18346,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4402686936637582344, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e0d9d5059ad3d354ba9bffef8cea0a3a, type: 3}
     - target: {fileID: 4406752026164359725, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
       propertyPath: m_Name
       value: AudioManagerV2
@@ -19292,11 +19305,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!1 &1815624941
 GameObject:
@@ -20203,8 +20218,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6459503, y: 31.28735, z: 0}
-    m_Extent: {x: 24.04825, y: 34.25475, z: 0}
+    m_Center: {x: 1.6463499, y: 31.2753, z: 0}
+    m_Extent: {x: 24.04955, y: 34.253098, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -20500,8 +20515,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6504498, y: 30.943953, z: 0}
-    m_Extent: {x: 24.05265, y: 34.591053, z: 0}
+    m_Center: {x: 1.6514997, y: 30.947498, z: 0}
+    m_Extent: {x: 24.048199, y: 34.5818, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -21041,11 +21056,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 500
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 500
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 1
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!4 &2045168618
 Transform:
@@ -21213,8 +21230,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6470995, y: 30.573, z: 0}
-    m_Extent: {x: 16.5386, y: 27.4457, z: 0}
+    m_Center: {x: 1.6483498, y: 30.57985, z: 0}
+    m_Extent: {x: 16.54105, y: 27.45525, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -21295,8 +21312,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.6521502, y: 30.94715, z: 0}
-    m_Extent: {x: 24.051151, y: 34.58185, z: 0}
+    m_Center: {x: 1.6393003, y: 30.945251, z: 0}
+    m_Extent: {x: 24.0486, y: 34.59175, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0

@@ -9,6 +9,7 @@ using System.Net.NetworkInformation;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(TrackKeyOrder), typeof(BoxCollider2D))]
 public class ThoughtBubble : MonoBehaviour
 {
     [SerializeField] private GameObject thoughtBubble;
@@ -18,18 +19,17 @@ public class ThoughtBubble : MonoBehaviour
     [SerializeField] private float maxTime;
     [SerializeField] private Vector2 positionOffset;
     [SerializeField] private UnityEvent thoughtBubbleEvent;
-    private Coroutine thoughtTrigger;    
-    private Coroutine keyOrderCoro;    
+    private Coroutine thoughtTrigger;
     private bool followPlayer;
 
-    [SerializeField] private TrackKeyOrder keyOrder;
+    private TrackKeyOrder keyOrder;
     private bool inProgress;
-    
+
 
     // Start is called before the first frame update
     void Start()
     {
-        keyOrder.FindButtons();
+        keyOrder = GetComponent<TrackKeyOrder>();
         if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 
@@ -57,7 +57,7 @@ public class ThoughtBubble : MonoBehaviour
                     keyOrder.StartTrackingKeys();
                     inProgress = true;
                 }
-                // TriggerThought(collision);
+                TriggerThought(collision);
             }
         }
     }

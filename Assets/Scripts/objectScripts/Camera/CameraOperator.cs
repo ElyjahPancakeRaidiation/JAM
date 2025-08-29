@@ -10,6 +10,7 @@ public class CameraOperator : MonoBehaviour
     private Camera _cam;
     private GameObject player;
 
+    [SerializeField] private bool accelerate = true;
     [SerializeField] private float defualtSpeed;
     [SerializeField] private float curSpeed;
 
@@ -57,6 +58,8 @@ public class CameraOperator : MonoBehaviour
     /// </summary>
     public bool canMove { get; set; } = true;
     public bool followPlayer { get; set; } = true;
+    public float returnCurSpeedDistance { get; set; } = 1;
+    public float delayShakeSec{ get; set; }
 
     [SerializeField] private bool farFromPlayer;
     private GameObject target;
@@ -97,7 +100,10 @@ public class CameraOperator : MonoBehaviour
 
         if (followPlayer)
         {
-            CameraCatchUp();
+            if (accelerate)
+            {
+                CameraCatchUp();
+            }
         }
         else
         {
@@ -158,13 +164,14 @@ public class CameraOperator : MonoBehaviour
     }
     private void HeadingTowardsPlayer()
     {
-        if (curSpeed > defualtSpeed && Vector2.Distance(transform.position, player.transform.position) > 1)
+        if (curSpeed > defualtSpeed && Vector2.Distance(transform.position, player.transform.position) > returnCurSpeedDistance)
         {
             curSpeed -= Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) * increaseSpeedPercentage * Time.deltaTime;
         }
         else
         {
             farFromPlayer = false;
+            curSpeed = defualtSpeed;
         }
     }
 
@@ -220,7 +227,6 @@ public class CameraOperator : MonoBehaviour
     //IEnumerators
     private IEnumerator ChangeCameraSize(float wantedFOV, float fovSpeed)
     {
-
         while (_cam.orthographicSize != wantedFOV)
         {
             _cam.orthographicSize = Mathf.SmoothDamp(_cam.orthographicSize, wantedFOV, ref refFloat, Time.deltaTime * fovSpeed);
@@ -241,6 +247,7 @@ public class CameraOperator : MonoBehaviour
 
     private IEnumerator CameraShake(float duration, float strength)
     {
+        yield return new WaitForSeconds(delayShakeSec);
         float time = 0;
         //this takes place of the strength variable so it can change its value while not affecting the strength variable in the inspector
         float curStrength = strength;

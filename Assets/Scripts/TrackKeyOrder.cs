@@ -12,118 +12,102 @@ public class TrackKeyOrder : MonoBehaviour
     public bool completed;
     [SerializeField] private AllKeys[] keys;
     private GameObject[] playerButtons;
-    private List<UnityEvent<int>> fn = new List<UnityEvent<int>>();
-    [SerializeField] int idx = 0;
-    [SerializeField] int amountPressed = 0;
+    [SerializeField] private int keysIdx = 0;
+    int amountPressed = 0;
+    private bool isRunning = false;
 
     private void Start()
     {
+        keysIdx = 0;
         if (isMobile)
         {
             FindButtons();
         }
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
+        if (OnStart)
         {
-            StartCoroutine(testEnum());
+            StartTrackingKeys();
         }
-    }
-
-    private bool testBool()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            Debug.Log("Running twice in the function");
-            idx++;
-            return true;
-        }
-
-        return false;
-    }
-
-    private IEnumerator testEnum()
-    {
-        yield return new WaitUntil(() => testBool());
-        StartCoroutine(testEnum());
     }
 
     public void StartTrackingKeys()
     {
-        StartCoroutine(TrackKeys());
+        if (!completed)
+        {
+            StartCoroutine(TrackCompletedKeyOrder());
+        }
+    }
+
+    private IEnumerator TrackCompletedKeyOrder()
+    {
+        while (keysIdx < keys.Length)
+        {
+            isRunning = false;
+            if (isMobile)
+            {
+                //Adds the events to check if the specfic button was clicked
+                AddToButtons();
+            }
+            yield return StartCoroutine(TrackKeys());
+
+        }
+        completed = true;
     }
 
     public IEnumerator TrackKeys()
     {
-        if (idx == keys.Length)
+        while (!isRunning)
         {
-            completed = true;
-            yield break;
+            if (!isMobile)
+            {
+                //For keyboard
+                if (Input.GetKeyDown(keys[keysIdx].GetKey()))
+                {
+                    keys[keysIdx].clicked = true;
+                    keys[keysIdx].correctClick = true;
+                }
+                else if (AnyKeyExceptMouse())
+                {
+                    keys[keysIdx].clicked = true;
+                    keys[keysIdx].correctClick = false;
+                }
+            }
+
+            //Checks if the key or button has been pressed than checks if it was the correct one. If so they can move on to next element. If not repeat on the first element.
+            if (keys[keysIdx].clicked)
+            {
+                if (keys[keysIdx].correctClick)
+                {
+                    amountPressed++;
+                    isRunning = true;
+                }
+                else
+                {
+                    keys[keysIdx].clicked = false;
+                    keys[keysIdx].correctClick = false;
+                    keysIdx = 0;
+                    amountPressed = 0;
+                    isRunning = true;
+                }
+            }
+
+            if (amountPressed == keys[keysIdx].amountOfPresses)
+            {
+                keys[keysIdx].clicked = false;
+                keys[keysIdx].correctClick = false;
+                keysIdx++;
+                amountPressed = 0;
+            }
+
+
+            yield return null;
         }
 
-        Debug.Log("bEING URN");
         if (isMobile)
         {
-            AddToButtons();
-        }
-        yield return new WaitUntil(() => PickedKey());
-        // StartCoroutine(TrackKeys());
-        Debug.Log("Still running");
-
-    }
-
-    private bool PickedKey()
-    {
-        int currentIdx = idx;
-        if (!isMobile)
-        {
-            if (Input.GetKeyDown(keys[currentIdx].GetKey()))
-            {
-                keys[currentIdx].clicked = true;
-                keys[currentIdx].correctClick = true;
-            }
-            else if (AnyKeyExceptMouse())
-            {
-                keys[currentIdx].clicked = true;
-                keys[currentIdx].correctClick = false;
-            }
+            RemoveFromButtons();
         }
 
-        if (keys[currentIdx].clicked)
-        {
-            if (keys[currentIdx].correctClick)
-            {
-                amountPressed++;
-            }
-            else
-            {
-                idx = 0;
-                amountPressed = 0;
-                keys[currentIdx].clicked = false;
-                keys[currentIdx].correctClick = false;
-                return true;
-            }
-
-
-            if (amountPressed == keys[currentIdx].amountOfPresses)
-            {
-                Debug.Log("Did i get pressed>>??");
-                if (isMobile)
-                {
-                    RemoveFromButtons();
-                }
-                idx++;
-                amountPressed = 0;
-                keys[currentIdx].clicked = false;
-                keys[currentIdx].correctClick = false;
-                StartCoroutine(TrackKeys());
-                return true;
-            }
-            
-        }
-        return false;
     }
 
     private bool AnyKeyExceptMouse()
@@ -148,17 +132,15 @@ public class TrackKeyOrder : MonoBehaviour
     {
         foreach (GameObject button in playerButtons)
         {
-            UnityEvent<int> fns = new UnityEvent<int>();
-            fns.AddListener(keys[idx].CheckIfClicked);
-            button.GetComponent<Button>().onClick.AddListener(() => fns.Invoke(button.GetInstanceID()));
-            fn.Add(fns);
+            button.GetComponent<Button>().onClick.AddListener(() => keys[keysIdx].CheckIfClicked(button.GetInstanceID()));
         }
     }
     private void RemoveFromButtons()
     {
+
         for (int i = 0; i < playerButtons.Length; i++)
         {
-            playerButtons[i].GetComponent<Button>().onClick.RemoveListener(() => fn[i].Invoke(playerButtons[i].gameObject.GetInstanceID()));
+            playerButtons[i].GetComponent<Button>().onClick.RemoveAllListeners();
         }
     }
 }
@@ -186,13 +168,18 @@ public class AllKeys
             case PlayerKeys.Ability:
                 return PlayerManager.playerManager.playerAbilityKey;
             case PlayerKeys.Switch:
-                return PlayerManager.playerManager.playerAbilityKey;
+                return PlayerManager.playerManager.playerSwitchFormKey;
         }
         return KeyCode.None;
     }
 
     public KeyCode GetKey()
     {
+        if (playerKeys != PlayerKeys.None && keys != KeyCode.None)
+        {
+            Debug.LogError("Choose either player keys or regular keys");
+            return KeyCode.None;
+        }
         if (playerKeys != PlayerKeys.None)
         {
             return GetPlayerKey();
