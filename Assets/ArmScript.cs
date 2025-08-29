@@ -16,6 +16,8 @@ public class ArmScript : MonoBehaviour
     void Start()
     {
         bodyOrigin = transform.parent;
+        transform.position = transform.parent.position + (Vector3)bodyOffset;
+        transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, angleOffset);
     }
 
     void Update()
@@ -45,7 +47,7 @@ public class ArmScript : MonoBehaviour
     }
     public void MoveToReset()
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0), Time.deltaTime * 10);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, angleOffset), Time.deltaTime * 10);
     }
     public bool IsActiveArm(Vector2 point)
     {

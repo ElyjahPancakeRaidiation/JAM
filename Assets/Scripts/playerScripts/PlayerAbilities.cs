@@ -11,6 +11,8 @@ public class PlayerAbilities : MonoBehaviour
 
     private bool canUseAbility;
 
+    private TrailRenderer tr;
+
     //onUseAbility event makes it easier for other script to know when the ability happens without being coupled to the ability. Usually used for sound.
     private UnityEvent onUseAbilityEvent;
     //Global wide events are a way for abilities to interact with each other but in a limited way where it doesn't have to depend on that ability.
@@ -33,11 +35,41 @@ public class PlayerAbilities : MonoBehaviour
         if (Input.GetKeyDown(playerManager.playerAbilityKey))
         {
             UseAbility();
+           
         }
 
+
         playerManager.GetFormFunctionality().UpdateMethodAbility();
+
+        InitializeTrailVar();
+    }
+    void InitializeTrail()
+    {   
+         if (tr == null)
+        {
+            return;
+        }
+        tr = GetComponent<TrailRenderer>();
+
+       
+    }
+    void InitializeTrailVar()
+    {   
+        
+        if (tr == null)
+        {
+            return;
+        }
+        tr.minVertexDistance = PlayerForm().minVertexDistancefr;
+        tr.emitting = PlayerForm().emmitting;
+
     }
 
+    public PlayerFormsScriptables PlayerForm()
+    {
+        return playerManager.GetCurPlayerForm();
+    }
+    
     public void UseAbility()
     {
         if (!playerManager.IsPlayerFormsEmpty() && canUseAbility)

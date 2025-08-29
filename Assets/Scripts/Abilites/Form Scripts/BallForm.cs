@@ -17,6 +17,8 @@ public class BallForm : PlayerFormsScriptables
     public int maxDashes;
     public GameObject prefabDustSpawner;
 
+    
+
     public override void changeForm(Rigidbody2D _rb, SpriteRenderer _spr, Collider2D _circleCol, Collider2D _boxCol)
     {
         _boxCol.enabled = false;

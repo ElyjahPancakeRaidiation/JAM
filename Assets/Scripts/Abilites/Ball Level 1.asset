@@ -18,6 +18,8 @@ MonoBehaviour:
   groundPointOffset: {x: 0, y: -0.36}
   globalGroundedColSize: {x: 0.62, y: 0.3}
   glboalGroundedPointOffset: {x: 0, y: -0.36}
+  minVertexDistancefr: 2
+  emmitting: 1
   groundColSize: {x: 0.65, y: 0.3}
   maxSpeedPoint: 7
   smoothStopSpeed: 0.2
