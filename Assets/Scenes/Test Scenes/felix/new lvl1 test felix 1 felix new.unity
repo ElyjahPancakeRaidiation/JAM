@@ -38737,6 +38737,9 @@ MonoBehaviour:
     fadeLength: 1
   currentSource: {fileID: 0}
   incomingSource: {fileID: 0}
+  playingRain: 1
+  rainClip: {fileID: 8300000, guid: 634cdb0de9cd13445b882121eb53ef1a, type: 3}
+  rainVolume: 0
   mainVolume: 0
   volumeCurve:
     serializedVersion: 2
@@ -41821,7 +41824,11 @@ MonoBehaviour:
   hook: {fileID: 206327476}
   vineSegments:
   - {fileID: 7663846012884438540, guid: d3e80be8d85af2548a827f7c2e9d143d, type: 3}
+  - {fileID: 7663846012884438540, guid: de85007f1961fc947ac1fd3760c27d3a, type: 3}
+  - {fileID: 7663846012884438540, guid: 85f3da0dff028ee4aba6ce9428d6bbbe, type: 3}
   numSegments: 12
+  overwritePlayerPull: 1
+  newForce: 500
 --- !u!1001 &2095332549
 PrefabInstance:
   m_ObjectHideFlags: 0
