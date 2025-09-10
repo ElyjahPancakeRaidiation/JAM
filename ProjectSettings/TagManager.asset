@@ -18,7 +18,26 @@ TagManager:
   - MusicChange2
   - ThoughtBubble
   - GM
+  - Dust
   - GameManager
+  - RainShit
+  - Rain Controller
+  - SplashParticles
+  - AudioManager
+  - GlobalLighting
+  - Lightning
+  - MovingGround
+  - MovingGroundPoint
+  - MobileObj
+  - PCObj
+  - AllCanvas
+  - Player Left Arm
+  - Player Right Arm
+  - Arm
+  - Wind
+  - Vine
+  - WindDetector
+  - Reorganize
   layers:
   - Default
   - TransparentFX
@@ -31,8 +50,8 @@ TagManager:
   - Respawn
   - Player
   - Rock
-  - 
-  - 
+  - Wind
+  - TopCollider
   - 
   - 
   - 
@@ -55,4 +74,25 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Sky
+    uniqueID: 1202775901
+    locked: 0
+  - name: Background3
+    uniqueID: 2125342101
+    locked: 0
+  - name: Background2
+    uniqueID: 4269457355
+    locked: 0
+  - name: Background1
+    uniqueID: 2923812663
+    locked: 0
+  - name: Player
+    uniqueID: 2527488691
+    locked: 0
+  - name: Midground
+    uniqueID: 3633487871
+    locked: 0
+  - name: Foreground
+    uniqueID: 3427709409
     locked: 0
