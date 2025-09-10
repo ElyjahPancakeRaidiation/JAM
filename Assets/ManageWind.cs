@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ManageWind : MonoBehaviour
@@ -14,6 +15,8 @@ public class ManageWind : MonoBehaviour
     private bool particlesInstantiated;
     [SerializeField] private float windForceX;
     [SerializeField] private float windForceY;
+
+    private BoxCollider2D windCollider;
     private bool isForceHorizontal;
     [SerializeField] private int currentMaxParticles;
     [SerializeField] private bool playerWithinZone;
@@ -33,18 +36,14 @@ public class ManageWind : MonoBehaviour
     private float multiplier;
     private Rigidbody2D playerRb;
 
+    private float currentVelocity;
+
+    private bool captureNextFrame;
+
+    public AnimationCurve windForceCurve;
 
     // Start is called before the first frame update
 
-
-    /*
-        Task: 
-        1. Play the particles and apply the force only when it's the player in there.
-        2. Orientiate wind particle in direction to the force
-        3. Figure out what to do when the bounds of the collider increases
-
-
-    */
     void OnEnable()
     {
 
@@ -52,14 +51,18 @@ public class ManageWind : MonoBehaviour
 
     void Awake()
     {
+        bool abe = false;
 
-        //windCollider = GetComponent<BoxCollider2D>();
+
+        // windCollider = GetComponent<BoxCollider2D>();
         windParticles = GetComponent<ParticleSystem>();
         playerWithinZone = false;
         player = GameObject.FindGameObjectWithTag("Player");
         playerRb = player.GetComponent<Rigidbody2D>();
         //isGrounded =  GameObject.FindGameObjectWithTag("WindDetector").GetComponent<isGroundedScript>();
         layerMask = LayerMask.GetMask("Player");
+      
+       // windCollider = GetComponent<BoxCollider2D>();
     }
     void Start()
     {
@@ -74,6 +77,9 @@ public class ManageWind : MonoBehaviour
         RotateWind(windParticles);
         GetParticlePosition(windParticles);
 
+        // ColliderBounds();
+     
+
         //  Debug.Log(IsPlayerWithinZone());
         //RunWind();
 
@@ -81,17 +87,16 @@ public class ManageWind : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        //Debug.Log("velocity: " + playerRb.velocity.y);
         RunWind();
 
+        // if (captureNextFrame == true)
+        // {
+        //     currentVelocity = playerRb.velocity.y;
+        //    // captureNextFrame = false;
+        // }
+        Debug.Log("current velocity: " + currentVelocity);
     }
-
-    void LateUpdate()
-    {
-
-
-    }
-
 
     void OnDrawGizmos()
     {
@@ -105,16 +110,24 @@ public class ManageWind : MonoBehaviour
 
     }
 
+    void ColliderBounds()
+    {
+        windCollider.size = new Vector2(sizeX, sizeY);
+        windCollider.offset = offset;
+    }
+
     void RunWind()
     {
         if (IsPlayerWithinZone())
         {
+
             playerWithinZone = true;
             ApplyForce();
-            ForceMultiplierY(incrementValue, maxMultiplier);
+            //ForceMultiplierY(incrementValue, maxMultiplier);
             stayTimer += Time.deltaTime;
             IncreaseParticleSpeed(windForceX, windForceY);
             SpawnWindParticlesV2();
+            // IncreaseMultiplier();
 
         }
         else
@@ -122,14 +135,16 @@ public class ManageWind : MonoBehaviour
             StopWindParticles();
             stayTimer = 0;
             multiplier = 1;
+            incrementValue = .5f;
             playerWithinZone = false;
+            maxMultiplier = 1;
 
         }
     }
 
 
     bool IsPlayerWithinZone()
-    {
+    {   
         return Physics2D.OverlapBox(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY), 0, layerMask);
     }
 
@@ -140,7 +155,7 @@ public class ManageWind : MonoBehaviour
 
         float forceDifference = Vector2.Distance(originForce, force);
 
-        Debug.Log("Difference " + forceDifference);
+        // Debug.Log("Difference " + forceDifference);
 
         if (forceX > 0 || forceX < 0)
         {
@@ -177,19 +192,13 @@ public class ManageWind : MonoBehaviour
 
     void GetParticlePosition(ParticleSystem currentParticles)
     {
-
-
         var windPosition = currentParticles.shape;
-
         windPosition.position = windParticlePosition;
-
 
     }
 
     void IncreaseParticleSpeed(float forceX, float forceY)
     {
-
-
 
         Vector2 originForce = new Vector2(0, 0);
         Vector2 curentForce = GetForce(forceX, forceY);
@@ -259,11 +268,30 @@ public class ManageWind : MonoBehaviour
     void ApplyForce()
     {
         playerRb.AddForce(GetForce(windForceX, windForceY), ForceMode2D.Force);
+        ApplyForceToVines();
+    }
+
+    void ApplyForceToVines()
+    {
+
+        if (GameObject.FindGameObjectsWithTag("Vine") != null)
+        {
+            GameObject[] vines = GameObject.FindGameObjectsWithTag("Vine");
+
+            foreach (GameObject vine in vines)
+            {
+                Rigidbody2D vineRb = vine.GetComponent<Rigidbody2D>();
+                vineRb.AddForce(GetForce(windForceX, windForceY), ForceMode2D.Force);
+            }
+        }
+            
+        
+      
     }
 
     void ParticleBounds(/*Vector2 force, float radius*/)
     {
-
+        // ParticleSystem.ShapeModule windPartShape = windParticles.shape;
         var windParticle = windParticles.shape;
         windParticle.radius = ForceDirection(windForceX, windForceY) ? sizeX / 1.5f : sizeY / 1.5f;
 
@@ -285,11 +313,24 @@ public class ManageWind : MonoBehaviour
     {
         windParticles.Stop();
     }
+    
+    void IncreaseMultiplier()
+    {
 
+        float playerVerticalVelocity = Mathf.Abs(playerRb.velocity.y);
+        maxMultiplier += windForceCurve.Evaluate(stayTimer);
+        incrementValue += .1f;
+        float verticalVelocity = playerRb.velocity.y;
+
+        // maxMultiplier += 
+
+
+
+    }
     void OnTriggerStay2D(Collider2D other)
     {
 
-        if (playerWithinZone)
+        if (IsPlayerWithinZone())
         {
             Rigidbody2D collidedRb = other.attachedRigidbody;
 
@@ -302,6 +343,20 @@ public class ManageWind : MonoBehaviour
         }
 
     }
+    void OnTriggerEnter2D(Collider2D other)
+    {
 
+        if (playerRb = other.attachedRigidbody)
+        {
+            currentVelocity = playerRb.velocity.y;
+        }
+
+
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        currentVelocity = 0;
+    }
 }
 

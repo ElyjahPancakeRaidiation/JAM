@@ -8,6 +8,9 @@ public class ArmScript : MonoBehaviour
     [SerializeField] private Vector2 bodyOffset;
     [SerializeField] private HandType handType;
     private Transform bodyOrigin;
+
+    public Vector3 updirection;
+    
     private enum HandType
     {
         EvilRight,
@@ -18,11 +21,14 @@ public class ArmScript : MonoBehaviour
         bodyOrigin = transform.parent;
         transform.position = transform.parent.position + (Vector3)bodyOffset;
         transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, angleOffset);
+        
+        
     }
 
     void Update()
     {
         //Debug.Log(TestPointToMouse());
+        
     }
     Vector2 TestPointToMouse()
     {
