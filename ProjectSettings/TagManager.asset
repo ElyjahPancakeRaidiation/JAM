@@ -38,6 +38,7 @@ TagManager:
   - Vine
   - WindDetector
   - Reorganize
+  - PlayerButton
   layers:
   - Default
   - TransparentFX
@@ -72,6 +73,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Special sky
+    uniqueID: 4030668657
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
 public class CameraOperator : MonoBehaviour
 {
 
@@ -28,7 +27,7 @@ public class CameraOperator : MonoBehaviour
     private float increaseSpeedPercentage;
 
     //This is the max speed point for the player, for the camera instead
-    [SerializeField] private float objectsMaxSpeedPoint;
+    [SerializeField] private float objectsMaxSpeedPoint = 11;
 
     //Offset from the currently focused object's position
     [SerializeField] private Vector2 offset;
@@ -46,16 +45,6 @@ public class CameraOperator : MonoBehaviour
     [SerializeField]
     private float leftBorder, rightBorder, upBorder, downBorder;
 
-    /// <summary>
-    /// These two bools use auto-property which is basically this line of code but in a smaller version
-    /// private bool canMove;
-    /// public bool canMove{
-    ///     get{return canMove;}
-    ///     set{canMove = value;}
-    /// }
-    /// After doing research people typically use properties over fields to make changes to the implimination instead of changing the visible surface of the class
-    /// Yes that line was directly copied from reddit. 
-    /// </summary>
     public bool canMove { get; set; } = true;
     public bool followPlayer { get; set; } = true;
     public float returnCurSpeedDistance { get; set; } = 1;
@@ -73,6 +62,14 @@ public class CameraOperator : MonoBehaviour
 
     private Coroutine changingSizeEnumerator;
     private Coroutine changingOffsetEnumerator;
+
+    [Header("Test Settings")]
+    [SerializeField] private bool testOuterSettings;
+    [SerializeField] private CamMovementData camMovementData;
+
+    [SerializeField] private bool reset;
+    [SerializeField] private bool waitTillMaxSpeed;
+    [SerializeField] private bool inverse;
 
 
     // Start is called before the first frame update
@@ -98,29 +95,104 @@ public class CameraOperator : MonoBehaviour
         // );
         // Debug.Log("Min: " + bounds.min); 
 
-        if (followPlayer)
+        if (reset)
         {
-            if (accelerate)
+            offset = Vector2.zero;
+            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+
+
+
+            reset = false;
+        }
+
+        target = player;
+        
+        CameraExtraMovement();
+
+        MoveCamera();
+
+        // if (!testOuterSettings)
+        // {
+        //     if (followPlayer)
+        //     {
+        //         if (accelerate)
+        //         {
+        //             CameraCatchUp();
+        //         }
+        //     }
+        //     else
+        //     {
+        //         if (!farFromPlayer)
+        //         {
+        //             if (Vector2.Distance(transform.position, player.transform.position) > 10)
+        //             {
+        //                 farFromPlayer = true;
+        //             }
+        //         }
+        //     }
+
+        //     if (target != null)
+        //     {
+        //         if (canMove) { moveCamera(target); }
+        //     }
+        // }
+        // else
+        // {
+        //     target = player;
+
+
+        //     CameraExtraMovement();
+
+        //     MoveCamera();
+        // }
+    }
+    
+
+    private void MoveCamera()
+    {
+        //Have it offset a little by the y axis when it gets to max speed.
+        float xSmoothDamp = Mathf.SmoothDamp(transform.position.x, target.transform.position.x + offset.x, ref refVec.x, curSpeed * Time.deltaTime);
+        float ySmoothDamp = Mathf.SmoothDamp(transform.position.y, target.transform.position.y + offset.y, ref refVec.y, (curSpeed * Time.deltaTime) + 0.1f);
+
+        transform.position = new Vector3(xSmoothDamp, ySmoothDamp, -10f);
+    }
+
+    private void CameraExtraMovement()
+    {
+        int dir = 0;
+        if (waitTillMaxSpeed)
+        {
+            if (GetPastMaxSpeedPointX())
             {
-                CameraCatchUp();
+                dir = (int)player.GetComponent<PlayerManager>().GetHorizontalInput();
             }
         }
         else
         {
-            if (!farFromPlayer)
-            {
-                if (Vector2.Distance(transform.position, player.transform.position) > 10)
-                {
-                    farFromPlayer = true;
-                }
-            }
+            dir = (int)player.GetComponent<PlayerManager>().GetHorizontalInput();
         }
 
-        if (target != null)
+
+        if (dir == 0)
         {
-            if (canMove) { moveCamera(target); }
+            if (Vector2.Distance(offset, Vector2.zero) <= 0.01f)
+            {
+                offset = Vector2.zero;
+            }
+            else
+            {
+                offset = camMovementData.MovePosition(offset, dir);
+            }
         }
+        else
+        {
+            offset = camMovementData.MovePosition(offset, dir);
+
+        }
+
     }
+
+    
 
 
     private void moveCamera(GameObject target)
@@ -222,7 +294,21 @@ public class CameraOperator : MonoBehaviour
         var checkXVelocity = _rb.velocity.x >= objectsMaxSpeedPoint || _rb.velocity.x <= -objectsMaxSpeedPoint;
         var checkYVelocity = _rb.velocity.y >= objectsMaxSpeedPoint || _rb.velocity.y <= -objectsMaxSpeedPoint;
         return (checkXVelocity || checkYVelocity);
-
+    }
+    private bool GetPastMaxSpeedPointX()
+    {
+        Rigidbody2D _rb = target.GetComponent<Rigidbody2D>();
+        if (target == null)
+        {
+            return false;
+        }
+        var checkXVelocity = _rb.velocity.x >= objectsMaxSpeedPoint || _rb.velocity.x <= -objectsMaxSpeedPoint;
+        return (checkXVelocity);
+    }
+    private bool NearZeroVelocity()
+    {
+        Rigidbody2D _rb = target.GetComponent<Rigidbody2D>();
+        return Vector2.Distance(_rb.velocity, Vector2.zero) <= 0.1f;
     }
     //IEnumerators
     private IEnumerator ChangeCameraSize(float wantedFOV, float fovSpeed)

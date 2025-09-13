@@ -90,11 +90,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518ac5bb85a8d4e4daad70162f155cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAbilityKey: 32
   pauseKey: 112
   sceneNum: 0
   hasSpawnPosition: 1
   onStartTransition: 1
   canPause: 1
   playerSpawnPosition: {fileID: 0}
-  build: 1
+  build: 0

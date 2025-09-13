@@ -434,7 +434,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1022174858}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: closeGame
+        m_MethodName: CloseGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1642,7 +1642,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4155541294904605292, guid: 53ff98c4b0ed1fb4b85d5a5f947b0d0e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6323347973375039988, guid: 53ff98c4b0ed1fb4b85d5a5f947b0d0e, type: 3}
       propertyPath: playOnStart
@@ -2852,6 +2852,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9431730580662442, guid: 4b75d66cb823cd443b4fbb52ba62c666, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4146396013042880267, guid: 4b75d66cb823cd443b4fbb52ba62c666, type: 3}
       propertyPath: m_Name
       value: Gamemanager
@@ -3467,7 +3471,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &1342446398
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3478,7 +3482,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8bebdf5ae072fa64780f33c475696f65, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e9f1804ed88ba634194ceaef661fd57c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

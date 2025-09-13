@@ -10,8 +10,8 @@ public class TrackKeyOrder : MonoBehaviour
     [SerializeField] private bool OnStart;
     [SerializeField] private bool isMobile;
     public bool completed;
+    [SerializeField] private GameObject[] playerButtons;
     [SerializeField] private AllKeys[] keys;
-    private GameObject[] playerButtons;
     [SerializeField] private int keysIdx = 0;
     int amountPressed = 0;
     private bool isRunning = false;
@@ -19,10 +19,6 @@ public class TrackKeyOrder : MonoBehaviour
     private void Start()
     {
         keysIdx = 0;
-        if (isMobile)
-        {
-            FindButtons();
-        }
 
         if (OnStart)
         {
