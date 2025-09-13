@@ -54,8 +54,8 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
+    #region Player Scripts functions
     private GameObject failedObject;
-
     public PlayerMovement PlayerMovement()
     {
         if (playerMovement != null)
@@ -109,6 +109,8 @@ public class PlayerManager : MonoBehaviour
         return failedObject.GetComponent<InputManager>();
     }
 
+    #endregion
+
     //Add all of the other keybinds into this
     private void Awake()
     {
@@ -135,13 +137,14 @@ public class PlayerManager : MonoBehaviour
             SetGlobalGroundedColSize(GetCurPlayerForm().globalGroundedColSize);
             SetGlobalGroundedPointOffset(GetCurPlayerForm().glboalGroundedPointOffset);
         }
-        
+
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(playerSwitchFormKey))
         {
+            // curCompletedKey.DidComplete();
             ChangeForm();
         }
     }
@@ -264,7 +267,6 @@ public class PlayerManager : MonoBehaviour
     public void SetGlobalGroundedColSize(Vector2 val) { globalGroundColSize = val; }
     public void SetGlobalGroundedPointOffset(Vector2 val) { globalGroundColPointOffset = val; }
 
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
@@ -280,8 +282,10 @@ public class PlayerManager : MonoBehaviour
     private string MissingMovement() { return "Missing Movement script"; }
     private string MissingAbilities() { return "Missing Abilities script"; }
     private string MissingInput() { return "Missing Input Manager script"; }
-    private string MissingAbilityForms(){ return "Missing Forms. The player has no forms assigned in the player manager."; }
+    private string MissingAbilityForms() { return "Missing Forms. The player has no forms assigned in the player manager."; }
 
     #endregion
 
+
 }
+

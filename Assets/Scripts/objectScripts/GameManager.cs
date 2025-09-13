@@ -131,25 +131,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void closeGame()
+    public void CloseGame()
     {
         if (gameClose != null) { gameClose(); }
         Application.Quit();
     }
 
-    public void resetLevel()
+    public void ResetLevel()
     {
         isPaused = false;
         sceneNum = SceneManager.GetActiveScene().buildIndex;
         transitionSceneAnimation(sceneNum);
     }
-    public void mainMenuSceneAnimation()
+    public void ExitScene()
     {
         isPaused = false;
-        StartCoroutine(MainMenuChangeScene());
+        StartCoroutine(ExitSceneEnum());
     }
 
-    public void changeSceneInstant(int sceneNum)
+    public void ChangeSceneInstant(int sceneNum)
     {
         SceneManager.LoadScene(sceneNum);
     }
@@ -168,10 +168,10 @@ public class GameManager : MonoBehaviour
             allCanvasObj._transitionsAnim.SetTrigger("SceneTransition");
             yield return new WaitForSecondsRealtime(allCanvasObj.sceneTransitionEndClip.length);
         }
-        changeSceneInstant(sceneNum);
+        ChangeSceneInstant(sceneNum);
     }
 
-    private IEnumerator MainMenuChangeScene()
+    private IEnumerator ExitSceneEnum()
     {
         if (allCanvasObj != null)
         {
@@ -179,7 +179,7 @@ public class GameManager : MonoBehaviour
             allCanvasObj._transitionsAnim.SetTrigger("MainMenuTransition");
             yield return new WaitForSecondsRealtime(allCanvasObj.mainMenuTransitionClip.length);
         }
-        changeSceneInstant(0);
+        ChangeSceneInstant(0);
     }
 
     void OnTriggerEnter2D(Collider2D collision)

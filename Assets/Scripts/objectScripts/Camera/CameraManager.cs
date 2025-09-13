@@ -42,6 +42,7 @@ public class CameraManager : MonoBehaviour
     public float cameraOffsetSpeed;
     public Vector2 returningCameraOffset;
     public float returningCameraOffsetSpeed;
+    public float returnCurSpeedDistance = 1;
     public bool keepOffsetSettings;
 
     [Header("Cutscene settings")]
@@ -52,6 +53,7 @@ public class CameraManager : MonoBehaviour
     public bool shakeCamera;
     public float shakeDuration;
     public float shakeStrength;
+    public float delayShakeSec;
     //if true it will repeat the effect when ever the player enters the area
     public bool repeat = false;
     private bool effectsActivated = false;//Track whether it was activated already or not
@@ -114,12 +116,13 @@ public class CameraManager : MonoBehaviour
 
         if (shakeCamera)
         {
+            camOperator.delayShakeSec = delayShakeSec;
             if (!effectsActivated)
             {
                 camOperator.shakeCamera(shakeDuration, shakeStrength);
                 effectsActivated = true;
             }
-            else if(effectsActivated && repeat)
+            else if (effectsActivated && repeat)
             {
                 camOperator.shakeCamera(shakeDuration, shakeStrength);
             }
@@ -131,6 +134,7 @@ public class CameraManager : MonoBehaviour
         if (moveToTarget && !keepSpeedSettings)
         {
             camOperator.moveToTarget(GameObject.FindGameObjectWithTag("Player"));//Null will set it to player
+            camOperator.returnCurSpeedDistance = returnCurSpeedDistance;
         }
 
         if (changeCameraSize && !keepSizeSettings)

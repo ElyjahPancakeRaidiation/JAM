@@ -18,6 +18,7 @@ public class PlayerAbilities : MonoBehaviour
     //Global wide events are a way for abilities to interact with each other but in a limited way where it doesn't have to depend on that ability.
     private UnityEvent globalWideAbilityEvent;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,12 +27,6 @@ public class PlayerAbilities : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         canUseAbility = true;
 
-        if (tr == null)
-        {
-            return;
-        }
-
-        InitializeTrail();
     }
 
     // Update is called once per frame
@@ -88,12 +83,13 @@ public class PlayerAbilities : MonoBehaviour
     public void SetCanUseAbility(bool val) { canUseAbility = val; }
     public UnityEvent GetOnUseAbilityEvent()
     {
-        if (onUseAbilityEvent == null){ onUseAbilityEvent = new UnityEvent(); }
+        if (onUseAbilityEvent == null) { onUseAbilityEvent = new UnityEvent(); }
         return onUseAbilityEvent;
     }
     public UnityEvent GetGlobalWideAbiltiyEvent()
     {
-        if(globalWideAbilityEvent==null){ globalWideAbilityEvent = new UnityEvent(); }
+        if (globalWideAbilityEvent == null) { globalWideAbilityEvent = new UnityEvent(); }
         return globalWideAbilityEvent;
     }
+    
 }

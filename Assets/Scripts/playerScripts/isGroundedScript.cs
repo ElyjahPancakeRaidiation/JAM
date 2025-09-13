@@ -12,12 +12,9 @@ public class isGroundedScript : MonoBehaviour
     private float centerYOffset;
 
     // Start is called before the first frame update
-    void Start()
+    void Update()
     {
         transform.position = followObj.transform.position + new Vector3(0, -1 * centerYOffset + .2f, 0);
-        
-        //transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
-
     }
 
     //isgrounded for ball and pogo jumping
@@ -42,6 +39,15 @@ public class isGroundedScript : MonoBehaviour
     public bool isGroundedRay(Vector2 point, Vector2 pointOffset, Vector2 endPosition, float distance, LayerMask mask)
     {
         return Physics2D.Raycast(point + pointOffset, endPosition, distance, mask);
+    }
+    public bool isGroundedRay(Vector2 pointOffset, Vector2 direction, float distance, LayerMask mask)
+    {
+        return Physics2D.Raycast(transform.position + (Vector3)pointOffset, direction, distance, mask);
+    }
+
+    public void DrawCustomRay(Vector2 pointOffset, Vector2 direction, float distance)
+    {
+        Debug.DrawRay(transform.position + (Vector3)pointOffset, direction * distance, Color.yellow);
     }
  
     public void setCenterYOffset(float val) { centerYOffset = val; }

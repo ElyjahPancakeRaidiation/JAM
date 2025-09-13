@@ -1576,7 +1576,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d6b75a2f60cf34681f390c35ea6b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accelerate: 1
   defualtSpeed: 15
+  curSpeed: 0
   zoomSpeed: 8
   objectsMaxSpeedPoint: 0
   offset: {x: 0, y: 0}
@@ -1585,6 +1587,7 @@ MonoBehaviour:
   rightBorder: 0
   upBorder: 0
   downBorder: 0
+  farFromPlayer: 0
 --- !u!114 &298044330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2484,6 +2487,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 715472343}
+  customColliderSize: {x: 0, y: 0}
+  customColliderSizeOffset: {x: 0, y: 0}
+  objectIntendedState: 0
   fadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -2508,8 +2514,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  objectIntendedState: 0
   collisionTrigger: 1
+  finalPosition: {fileID: 0}
+  movingSpeed: 0
 --- !u!61 &517256284
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8381,11 +8388,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!1 &1815624941
 GameObject:
@@ -9069,7 +9078,7 @@ PrefabInstance:
       objectReference: {fileID: 604296870}
     - target: {fileID: 4784801138853154254, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: mainMenuSceneAnimation
+      value: ExitScene
       objectReference: {fileID: 0}
     - target: {fileID: 4784801138853154254, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -9085,7 +9094,7 @@ PrefabInstance:
       objectReference: {fileID: 604296870}
     - target: {fileID: 6523450495395269008, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: resetLevel
+      value: ResetLevel
       objectReference: {fileID: 0}
     - target: {fileID: 6523450495395269008, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

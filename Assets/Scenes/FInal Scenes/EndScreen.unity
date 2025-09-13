@@ -1059,8 +1059,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1489398577}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: mainMenuSceneAnimation
-        m_Mode: 1
+        m_MethodName: ChangeSceneInstant
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1160,6 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d04920044f4e2438787fedd10dcbc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontSaveCurScene: 0
 --- !u!4 &1014410475
 Transform:
   m_ObjectHideFlags: 0

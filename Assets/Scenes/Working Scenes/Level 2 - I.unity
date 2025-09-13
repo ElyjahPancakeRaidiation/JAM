@@ -614,10 +614,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 20
-  time: 4
+  dissapearTime: 0
   startingTime: 5
   spawnBackTime: 2
   canRespawn: 1
+  spriteObj: {fileID: 0}
 --- !u!111 &78222766
 Animation:
   m_ObjectHideFlags: 0
@@ -842,6 +843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d6b75a2f60cf34681f390c35ea6b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accelerate: 1
   defualtSpeed: 15
   curSpeed: 0
   zoomSpeed: 8
@@ -853,6 +855,11 @@ MonoBehaviour:
   upBorder: 10000
   downBorder: -10000
   farFromPlayer: 0
+  testOuterSettings: 0
+  camMovementData: {fileID: 0}
+  reset: 0
+  waitTillMaxSpeed: 0
+  inverse: 0
 --- !u!114 &194504989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2300,7 +2307,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1371154633
-  m_SortingLayer: 1
+  m_SortingLayer: 4
   m_SortingOrder: -6
   m_Sprite: {fileID: 21300000, guid: f8678fd40e31af041adadaf805421fd5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2478,10 +2485,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 47
-  time: 4
+  dissapearTime: 0
   startingTime: 2
   spawnBackTime: 2
   canRespawn: 1
+  spriteObj: {fileID: 0}
 --- !u!111 &343615898
 Animation:
   m_ObjectHideFlags: 0
@@ -3280,7 +3288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4784801138853154254, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: mainMenuSceneAnimation
+      value: ExitScene
       objectReference: {fileID: 0}
     - target: {fileID: 4784801138853154254, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3336,7 +3344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6523450495395269008, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: resetLevel
+      value: ResetLevel
       objectReference: {fileID: 0}
     - target: {fileID: 6523450495395269008, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -4009,6 +4017,10 @@ MonoBehaviour:
   audioPoints: []
   playerSFXs:
   - maxVolume: -5.9
+    usePitchShift: 0
+    pitchOffsetRange:
+      Min: 0
+      Max: 0
     sfxClip: {fileID: 8300000, guid: 8079ab899383fed4bbe4799a9f5e4868, type: 3}
     fadeVolumeCurve:
       serializedVersion: 2
@@ -4055,6 +4067,10 @@ MonoBehaviour:
     tag: Dashing
     fadeLength: 1
   - maxVolume: 0
+    usePitchShift: 0
+    pitchOffsetRange:
+      Min: 0
+      Max: 0
     sfxClip: {fileID: 8300000, guid: 48cd867e1759f4d44be2c6310c9a8c9c, type: 3}
     fadeVolumeCurve:
       serializedVersion: 2
@@ -4101,6 +4117,10 @@ MonoBehaviour:
     tag: Landing
     fadeLength: 1
   - maxVolume: -6.3
+    usePitchShift: 0
+    pitchOffsetRange:
+      Min: 0
+      Max: 0
     sfxClip: {fileID: 8300000, guid: 99eeb8bad60dff948b92bdc3a6de524c, type: 3}
     fadeVolumeCurve:
       serializedVersion: 2
@@ -6017,10 +6037,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 35
-  time: 4
+  dissapearTime: 0
   startingTime: 3
   spawnBackTime: 2
   canRespawn: 1
+  spriteObj: {fileID: 0}
 --- !u!111 &728282404
 Animation:
   m_ObjectHideFlags: 0
@@ -7048,10 +7069,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 28
-  time: 4
+  dissapearTime: 0
   startingTime: 4
   spawnBackTime: 2
   canRespawn: 1
+  spriteObj: {fileID: 0}
 --- !u!111 &868780393
 Animation:
   m_ObjectHideFlags: 0
@@ -10430,11 +10452,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!1 &1389112741
 GameObject:
@@ -11773,7 +11797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: build
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum
@@ -11781,7 +11805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: hasSpawnPosition
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: playerSpawnPosition
