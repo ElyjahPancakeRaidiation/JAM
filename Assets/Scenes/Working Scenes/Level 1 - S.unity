@@ -13188,9 +13188,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 7cce7e25b64a1bd4498d03ba6789ba3f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -25686,7 +25686,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1201323273
 Transform:
   m_ObjectHideFlags: 0
@@ -36289,6 +36289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnStart: 0
   isMobile: 0
+  stopWhenOutOfBounds: 0
   completed: 0
   playerButtons:
   - {fileID: 1753423809}
@@ -39075,6 +39076,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnStart: 0
   isMobile: 1
+  stopWhenOutOfBounds: 0
   completed: 0
   playerButtons:
   - {fileID: 1753423809}
@@ -40772,16 +40774,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
-      propertyPath: hasSpawnPosition
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: playerSpawnPosition
       value: 
       objectReference: {fileID: 1910097723}
     - target: {fileID: 9034967165719325228, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 42.64
+      value: 585.6
       objectReference: {fileID: 0}
     - target: {fileID: 9034967165719325228, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: m_LocalPosition.y

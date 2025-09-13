@@ -4,17 +4,24 @@ using System;
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class TrackKeyOrder : MonoBehaviour
 {
     [SerializeField] private bool OnStart;
     [SerializeField] private bool isMobile;
+    [SerializeField] private bool stopWhenOutOfBounds = false;//Makes sure to stop tracking keys when the player exits the collider
+    public bool GetStopWhenOutofBounds() => stopWhenOutOfBounds;
     public bool completed;
-    [SerializeField] private GameObject[] playerButtons;
+
+    [SerializeField] private GameObject[] playerButtons;//This is for mobile, holds the buttons the player is able to use in game. Pause menu does not count.
     [SerializeField] private AllKeys[] keys;
     [SerializeField] private int keysIdx = 0;
     int amountPressed = 0;
     private bool isRunning = false;
+
+    private Coroutine trackCompletedKeyOrderCoro;
+    public delegate void StoppedTrackingEvents();//Incase another script wants to stop tracking keys but also wants to stop other things events that go with tracking keys this can be used to pass in functions to the method StopTrackingKeys
 
     private void Start()
     {
@@ -30,7 +37,16 @@ public class TrackKeyOrder : MonoBehaviour
     {
         if (!completed)
         {
-            StartCoroutine(TrackCompletedKeyOrder());
+            trackCompletedKeyOrderCoro = StartCoroutine(TrackCompletedKeyOrder());
+        }
+    }
+
+    public void StopTrackingKeys(StoppedTrackingEvents stoppedTrackingEvents)
+    {
+        if (trackCompletedKeyOrderCoro != null)
+        {
+            StopCoroutine(trackCompletedKeyOrderCoro);
+            stoppedTrackingEvents();
         }
     }
 

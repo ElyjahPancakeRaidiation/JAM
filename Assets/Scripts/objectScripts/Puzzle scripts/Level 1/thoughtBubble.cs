@@ -62,6 +62,24 @@ public class ThoughtBubble : MonoBehaviour
         }
     }
 
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        //fix this later to tired to fix now
+        if (collision.CompareTag("Player") && !Input.GetKeyDown(PlayerManager.playerManager.playerSwitchFormKey))
+        {
+            if (keyOrder.GetStopWhenOutofBounds())
+            {
+                keyOrder.StopTrackingKeys(TurnOffThoughtBubble);
+                if (thoughtTrigger != null)
+                {
+                    StopCoroutine(thoughtTrigger);
+                }
+                thoughtTrigger = null;
+                inProgress = false;
+            }
+        }
+    }
+
     private void TriggerThought(Collider2D collision)
     {
         if (collision.tag == "Player")
@@ -77,12 +95,17 @@ public class ThoughtBubble : MonoBehaviour
         if (!keyOrder.completed)
         {
             followPlayer = true;
+            thoughtBubble.transform.position = playerManager.transform.position;
             if (thoughtBubble != null) { thoughtBubble.SetActive(true); }
             thoughtBubbleEvent?.Invoke();
             yield return new WaitUntil(() => keyOrder.completed);
         }
+        TurnOffThoughtBubble();
+    }
+
+    private void TurnOffThoughtBubble()
+    {
         followPlayer = false;
         if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
     }
-
 }

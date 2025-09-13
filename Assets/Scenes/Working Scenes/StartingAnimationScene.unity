@@ -775,7 +775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 753, y: -340}
+  m_AnchoredPosition: {x: 753, y: -363}
   m_SizeDelta: {x: 774.35596, y: 417.63687}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!111 &1751084452
@@ -815,7 +815,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1568091336}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: changeSceneInstant
+        m_MethodName: ChangeSceneInstant
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1127,7 +1127,7 @@ PrefabInstance:
       objectReference: {fileID: 1568091336}
     - target: {fileID: 4334148466135264138, guid: f2b12f2d9158e2d408810d2ae4d9399b, type: 3}
       propertyPath: inGameEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: changeSceneInstant
+      value: ChangeSceneInstant
       objectReference: {fileID: 0}
     - target: {fileID: 9167094591487382404, guid: f2b12f2d9158e2d408810d2ae4d9399b, type: 3}
       propertyPath: m_LocalPosition.x

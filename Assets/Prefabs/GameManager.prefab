@@ -96,4 +96,4 @@ MonoBehaviour:
   onStartTransition: 1
   canPause: 1
   playerSpawnPosition: {fileID: 0}
-  build: 0
+  build: 1

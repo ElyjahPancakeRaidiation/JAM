@@ -104,12 +104,38 @@ public class CameraOperator : MonoBehaviour
 
             reset = false;
         }
-
-        target = player;
         
-        CameraExtraMovement();
+        if (followPlayer)
+        {
+            if (accelerate)
+            {
+                CameraCatchUp();
+            }
+        }
+        else
+        {
+            if (!farFromPlayer)
+            {
+                if (Vector2.Distance(transform.position, player.transform.position) > 10)
+                {
+                    farFromPlayer = true;
+                }
+            }
+        }
 
-        MoveCamera();
+        if (target != null)
+        {
+            if (canMove) { moveCamera(target); }
+        }
+        
+
+        // if (target == player)
+        // {
+
+        //     CameraExtraMovement();
+
+        //     MoveCamera();
+        // }
 
         // if (!testOuterSettings)
         // {
