@@ -31,7 +31,7 @@ public class ManageWind : MonoBehaviour
     //  [SerializeField] private isGroundedScript isGrounded;
 
     private LayerMask layerMask;
-
+    private LayerMask layerMaskVine;
     [SerializeField] private GameObject player;
     private float multiplier;
     private Rigidbody2D playerRb;
@@ -61,8 +61,8 @@ public class ManageWind : MonoBehaviour
         playerRb = player.GetComponent<Rigidbody2D>();
         //isGrounded =  GameObject.FindGameObjectWithTag("WindDetector").GetComponent<isGroundedScript>();
         layerMask = LayerMask.GetMask("Player");
-      
-       // windCollider = GetComponent<BoxCollider2D>();
+        layerMaskVine = LayerMask.GetMask("Vine");
+        // windCollider = GetComponent<BoxCollider2D>();
     }
     void Start()
     {
@@ -78,10 +78,10 @@ public class ManageWind : MonoBehaviour
         GetParticlePosition(windParticles);
 
         // ColliderBounds();
-     
+
 
         //  Debug.Log(IsPlayerWithinZone());
-        //RunWind();
+        ;
 
     }
 
@@ -90,12 +90,7 @@ public class ManageWind : MonoBehaviour
         //Debug.Log("velocity: " + playerRb.velocity.y);
         RunWind();
 
-        // if (captureNextFrame == true)
-        // {
-        //     currentVelocity = playerRb.velocity.y;
-        //    // captureNextFrame = false;
-        // }
-        Debug.Log("current velocity: " + currentVelocity);
+        Debug.Log(IsPlayerWithinZone());
     }
 
     void OnDrawGizmos()
@@ -123,13 +118,17 @@ public class ManageWind : MonoBehaviour
 
             playerWithinZone = true;
             ApplyForce();
-            //ForceMultiplierY(incrementValue, maxMultiplier);
+            
+
+            ForceMultiplierY(incrementValue, maxMultiplier);
             stayTimer += Time.deltaTime;
+         
             IncreaseParticleSpeed(windForceX, windForceY);
             SpawnWindParticlesV2();
             // IncreaseMultiplier();
-
+            ApplyForceToVines();
         }
+
         else
         {
             StopWindParticles();
@@ -137,15 +136,19 @@ public class ManageWind : MonoBehaviour
             multiplier = 1;
             incrementValue = .5f;
             playerWithinZone = false;
-            maxMultiplier = 1;
+
 
         }
     }
 
 
     bool IsPlayerWithinZone()
-    {   
+    {
         return Physics2D.OverlapBox(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY), 0, layerMask);
+    }
+    Collider2D[] IsVineWithinZone()
+    {
+        return Physics2D.OverlapBoxAll(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY), 0, layerMaskVine);
     }
 
     bool ForceDirection(float forceX, float forceY)
@@ -268,25 +271,35 @@ public class ManageWind : MonoBehaviour
     void ApplyForce()
     {
         playerRb.AddForce(GetForce(windForceX, windForceY), ForceMode2D.Force);
-        ApplyForceToVines();
+
+
     }
 
     void ApplyForceToVines()
     {
 
-        if (GameObject.FindGameObjectsWithTag("Vine") != null)
-        {
-            GameObject[] vines = GameObject.FindGameObjectsWithTag("Vine");
+         
+            // Collider2D[] vineColliders = GameObject.FindGameObjectWithTag("Vine").GetComponents<BoxCollider2D>();
 
-            foreach (GameObject vine in vines)
+            //if vine is in the zone, how does it know it's in the zone,
+            //if player is in the zone, and if the bool returns true, but both those return true
+            //what happens is all the vines get added force, what i need is the foreach loop to only get
+            //the vine in vines that are in that range in the first place
+            if (!IsPlayerWithinZone()) { return; }
+            foreach (Collider2D coll in IsVineWithinZone())
             {
-                Rigidbody2D vineRb = vine.GetComponent<Rigidbody2D>();
-                vineRb.AddForce(GetForce(windForceX, windForceY), ForceMode2D.Force);
+
+                Rigidbody2D vineRb = coll.attachedRigidbody;
+
+                vineRb.AddForce(GetForce(windForceX, windForceY), ForceMode2D.Force);   
+
             }
-        }
+           
+            
+            
             
         
-      
+
     }
 
     void ParticleBounds(/*Vector2 force, float radius*/)
@@ -313,7 +326,7 @@ public class ManageWind : MonoBehaviour
     {
         windParticles.Stop();
     }
-    
+
     void IncreaseMultiplier()
     {
 
@@ -327,36 +340,36 @@ public class ManageWind : MonoBehaviour
 
 
     }
-    void OnTriggerStay2D(Collider2D other)
-    {
+    // void OnTriggerStay2D(Collider2D other)
+    // {
 
-        if (IsPlayerWithinZone())
-        {
-            Rigidbody2D collidedRb = other.attachedRigidbody;
+    //     if (IsPlayerWithinZone())
+    //     {
+    //         Rigidbody2D collidedRb = other.attachedRigidbody;
 
-            if (collidedRb != playerRb)
-            {
-                collidedRb.AddForce(GetForce(windForceY, windForceY), ForceMode2D.Force);
-            }
+    //         if (collidedRb != playerRb)
+    //         {
+    //             collidedRb.AddForce(GetForce(windForceY, windForceY), ForceMode2D.Force);
+    //         }
 
-            // IncreaseParticleSpeed(windForceX, windForceY);
-        }
+    //         // IncreaseParticleSpeed(windForceX, windForceY);
+    //     }
 
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
+    // }
+    // void OnTriggerEnter2D(Collider2D other)
+    // {
 
-        if (playerRb = other.attachedRigidbody)
-        {
-            currentVelocity = playerRb.velocity.y;
-        }
+    //     if (playerRb = other.attachedRigidbody)
+    //     {
+    //         currentVelocity = playerRb.velocity.y;
+    //     }
 
 
-    }
+    // }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        currentVelocity = 0;
-    }
+    // void OnTriggerExit2D(Collider2D other)
+    // {
+    //     currentVelocity = 0;
+    // }
 }
 
