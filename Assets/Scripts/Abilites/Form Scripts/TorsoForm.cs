@@ -171,6 +171,47 @@ public class TorsoForm : PlayerFormsScriptables
 
         #region Ability methods        
         //Ability methods
+        GameObject GetArm(GameObject vine, int active) //get the active or inactive arm
+        {
+            foreach (GameObject arm in armsArray)
+            {
+                ArmScript armScript = arm.GetComponent<ArmScript>();
+                if (active == 1)
+                {
+                    if (armScript.IsActiveArm(vine.transform.position)) return arm;
+                }
+                else
+                {
+                    if (!armScript.IsActiveArm(vine.transform.position)) return arm;
+                }
+            }
+            return null;
+        }
+        public override void UpdateMethodAbility()
+        {
+            base.UpdateMethodAbility();
+            //Check the vicinity for vine segments
+            if (torsoVar.hasArms)
+            {
+                if (!currentVine)
+                {   
+                    Collider2D[] vines = Physics2D.OverlapCircleAll(transform.position, torsoVar.armDetectionZone, LayerMask.GetMask("Vine"));
+                    if (vines.Length > 0)
+                    {
+                        GetArm(vines[0].gameObject, 1).GetComponent<ArmScript>().PointToGameObject(vines[0].gameObject);
+                        GetArm(vines[0].gameObject, 0).GetComponent<ArmScript>().MoveToReset();
+                    }
+                    else
+                    {
+                        foreach (GameObject arm in armsArray)
+                        {
+                            arm.GetComponent<ArmScript>().MoveToReset();
+                        }
+                    }
+                }
+            }
+
+        }
         private void JumpAbility()
         {
             if (!currentVine)
@@ -244,7 +285,7 @@ public class TorsoForm : PlayerFormsScriptables
                     playerManager.PlayerAbility().GetGlobalWideAbiltiyEvent().Invoke();
                     armJoint.enabled = true; //enable the hingejoint2d on player
                     armJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
-                    armJoint.connectedAnchor = arm.GetComponent<SpriteRenderer>().bounds.size; //this might have to change to make grabbing look more realistic
+                    armJoint.connectedAnchor = arm.transform.GetChild(0).GetComponent<SpriteRenderer>().bounds.size; //this might have to change to make grabbing look more realistic
                     currentVine = collider.transform.parent; //update currentvine
                 }
             }

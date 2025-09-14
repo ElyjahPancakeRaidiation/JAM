@@ -16,6 +16,9 @@ public abstract class PlayerFormsScriptables : ScriptableObject
     public Vector2 globalGroundedColSize;
     public Vector2 glboalGroundedPointOffset;
 
+    public float minVertexDistancefr;
+
+    public bool emmitting;
     public FormFunctionality functionality { get; set; }
     
     public abstract void changeForm(Rigidbody2D _rb, SpriteRenderer _spr, Collider2D _circleCol, Collider2D _boxCol);
@@ -54,7 +57,7 @@ public abstract class PlayerFormsScriptables : ScriptableObject
             //These will be played in the start method in playermanager so there shouldn't be to much of a delay.
             playerManager = this.gameObject.GetComponent<PlayerManager>();
             _rb = playerManager._rb;
-
+            MudScript.setAllAbilitesToDefault += setMultipliersToDefulat;
         }
         
         public virtual void changeFormFunctionality() {}
@@ -64,7 +67,11 @@ public abstract class PlayerFormsScriptables : ScriptableObject
         public virtual void UpdateMethodAbility() {}
         public abstract void FormMovement();
         public abstract void FormAbility();
-
+        private void setMultipliersToDefulat()
+        {
+            movementMultipliers = 1;
+            abilityMultipliers = 1;
+        }
     }
 
 }

@@ -28,7 +28,7 @@ public class LightningScript : MonoBehaviour
     private AudioSource audioSource;
     private bool playingLightning; //is lightning currently playing
     private float betweenTime; //how long between checking for lightning
-    [SerializeField] private float timeBetweenLightning;
+    [SerializeField] private Vector2Int timeBetweenLightning;
     [SerializeField] private int chanceOfLightning; //chance of lightning per check out of 100
 
     [SerializeField] private int maxCheekedUpAmt; //how many times the lightning can "cheek up" before stopping
@@ -93,8 +93,21 @@ public class LightningScript : MonoBehaviour
                 }
                 playingLightning = false;
             }
-            yield return new WaitForSeconds(timeBetweenLightning);
+            yield return new WaitForSeconds(new System.Random().Next(timeBetweenLightning.x, timeBetweenLightning.y));
         }
         lightningActive = false;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Vector2 fromPoint;
+        Vector2 toPoint; 
+        foreach (LightningBounds gogogaga in lightningBounds)
+        {
+            fromPoint = new Vector2(gogogaga.minX, 0);
+            toPoint = new Vector2(gogogaga.maxX, 0);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(fromPoint, toPoint);
+        }
     }
 }

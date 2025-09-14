@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 7917929540971414385}
   m_Layer: 7
   m_Name: Vine
-  m_TagString: Untagged
+  m_TagString: Vine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

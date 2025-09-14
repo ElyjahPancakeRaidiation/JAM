@@ -26,8 +26,8 @@ public class PlayerMovement : MonoBehaviour
     {
 
         // if(playerImpact==null){ new UnityEvent(); }
-        playerManager = GetComponent<PlayerManager>();
         physics = new Physics(GetComponent<Rigidbody2D>());
+        playerManager = GetComponent<PlayerManager>();
     }
 
     void Update()
@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("RainShit"))
         {
-            physics.slipperyShitFunction();
+            physics?.slipperyShitFunction();
         }
     }
 

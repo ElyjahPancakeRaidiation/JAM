@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Go to the new level 1 demo!
+  m_text: Try out our obstacle course!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -859,7 +859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &864369720
 RectTransform:
   m_ObjectHideFlags: 0
@@ -924,14 +924,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: PlayButton
+      - m_Target: {fileID: 1489398577}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: transitionSceneAnimation
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1010,7 +1010,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17, y: -253}
+  m_AnchoredPosition: {x: -440, y: -253}
   m_SizeDelta: {x: 190, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &894882529
@@ -1059,8 +1059,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1489398577}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: mainMenuSceneAnimation
-        m_Mode: 1
+        m_MethodName: ChangeSceneInstant
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1160,6 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d04920044f4e2438787fedd10dcbc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontSaveCurScene: 0
 --- !u!4 &1014410475
 Transform:
   m_ObjectHideFlags: 0
@@ -1508,6 +1509,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4616493755987245498, guid: 4b75d66cb823cd443b4fbb52ba62c666, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8558161048729384434, guid: 4b75d66cb823cd443b4fbb52ba62c666, type: 3}
+      propertyPath: canPause
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8558161048729384434, guid: 4b75d66cb823cd443b4fbb52ba62c666, type: 3}

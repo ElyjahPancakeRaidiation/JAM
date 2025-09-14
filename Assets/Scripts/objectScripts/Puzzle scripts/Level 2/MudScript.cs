@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class MudScript : MonoBehaviour
     [SerializeField] private float decreaseAbilityModifier;
     [SerializeField] private float decreaseMovementModifier=1;
     [SerializeField] private float splashLimit;
+
+    public static event Action setAllAbilitesToDefault;
 
     void Start()
     {
@@ -60,7 +63,7 @@ public class MudScript : MonoBehaviour
                 var formFunctionality = playerManager.GetFormFunctionality();
                 formFunctionality.movementMultipliers = 1;
                 formFunctionality.abilityMultipliers = 1;
-
+                setAllAbilitesToDefault();
                 // pm.setCoefficientOfFriction(defaultCOF);
                 // pm.SetJumpSpeed(defaultPogoSpeed);
                 // pa.setAbilityPower(defaultAbilityPower.x, defaultAbilityPower.y, defaultAbilityPower.z);

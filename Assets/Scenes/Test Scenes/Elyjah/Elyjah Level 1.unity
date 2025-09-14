@@ -2357,7 +2357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &99225747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10059,7 +10059,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74c06d767afbf4faa77db6b72b18c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 5971499116106750657}
   cutSceneToPlay: {fileID: 11400000, guid: 31b76373ff59fc844a803b2f9f2fcff1, type: 2}
   actorObjects:
   - {fileID: 1988034275}
@@ -32078,7 +32077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc74c06d767afbf4faa77db6b72b18c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 5971499116106750657}
   cutSceneToPlay: {fileID: 11400000, guid: 990abf7e6196c4441ad96fc8fa6a9353, type: 2}
   actorObjects:
   - {fileID: 1988034275}
@@ -32228,6 +32226,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   objectIntendedState: 1
+  collisionTrigger: 0
 --- !u!1 &1665683085
 GameObject:
   m_ObjectHideFlags: 0
@@ -37543,6 +37542,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTime: 4
   positionOffset: {x: 0, y: 0}
+  thoughtBubbleEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1997541097
 GameObject:
   m_ObjectHideFlags: 0
@@ -37727,7 +37729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2009082238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39961,7 +39963,7 @@ PrefabInstance:
     - target: {fileID: 3926967166625142155, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5971499116106750658}
+      objectReference: {fileID: 0}
     - target: {fileID: 4127490226924715528, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -40181,28 +40183,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5971499116106750665}
   m_SourcePrefab: {fileID: 100100000, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
---- !u!114 &5971499116106750657 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5266313197752517175, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-  m_PrefabInstance: {fileID: 5971499116106750656}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988034275}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375c6698793798e4ba925bb120894e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5971499116106750658 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3885449311235757612, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
-  m_PrefabInstance: {fileID: 5971499116106750656}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988034275}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e042c9a7d9667478f1e5ac0f961f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!233 &5971499116106750659
 HingeJoint2D:
   m_ObjectHideFlags: 0

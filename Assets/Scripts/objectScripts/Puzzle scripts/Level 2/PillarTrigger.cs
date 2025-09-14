@@ -2,15 +2,17 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PillarTrigger : MonoBehaviour
 {
     Vector2 startingPosition;
-    
+
     [SerializeField] private float maxDistance;
-    [SerializeField] private float time, startingTime, spawnBackTime;
+    [SerializeField] private float dissapearTime, startingTime, spawnBackTime;
+    [SerializeField] private bool canRespawn = true;
 
     private Coroutine respawnCoro;
-    private GameObject spriteObj;
+    [SerializeField] private GameObject spriteObj;
 
     private Animation disappearingAnimation;
 
@@ -20,12 +22,12 @@ public class PillarTrigger : MonoBehaviour
     void Start()
     {
         //Subscribes the Ienumerator FallingPillar to the event in PillarManager
-        PillarManager.current.startTrigger += wrapperFallingPillar;
+        PillarManager.current.startTrigger += WrapperFallingPillar;
 
         startingPosition = transform.position;
-        disappearingAnimation = GetComponent<Animation>(); 
-        //Gets the first child in the 
-        spriteObj = transform.GetChild(0).gameObject;
+        disappearingAnimation = GetComponent<Animation>();
+        //Gets the first child in the
+        // spriteObj = transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -35,6 +37,7 @@ public class PillarTrigger : MonoBehaviour
         {
             if (transform.position != (Vector3)startingPosition)
             {
+                Debug.Log(Vector2.Distance(startingPosition, transform.position));
                 //Checks if the pillar is at the max distance with it's original position
                 if (Vector2.Distance(startingPosition, transform.position) >= maxDistance)
                 {
@@ -47,7 +50,7 @@ public class PillarTrigger : MonoBehaviour
     //This turns off and on the object in a certain time frame. Also replays the FallingPillar method.
     private IEnumerator PillarLoop()
     {
-        yield return new WaitForSecondsRealtime(time);
+        yield return new WaitForSecondsRealtime(dissapearTime);
         disappearingAnimation.Play();
         yield return new WaitForSecondsRealtime(disappearingAnimation.clip.length);
         spriteObj.SetActive(false);
@@ -66,13 +69,16 @@ public class PillarTrigger : MonoBehaviour
     }
 
     //Wrapper for the Ienumerator FallingPillar because events dont like Ienumerator.
-    private void wrapperFallingPillar() => StartCoroutine(FallingPillar());
+    private void WrapperFallingPillar() => StartCoroutine(FallingPillar());
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (canRespawn)
         {
-            if (respawnCoro == null) { respawnCoro = StartCoroutine(PillarLoop()); }
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                if (respawnCoro == null) { respawnCoro = StartCoroutine(PillarLoop()); }
+            }
         }
     }
 
@@ -84,6 +90,6 @@ public class PillarTrigger : MonoBehaviour
     void OnDestroy()
     {
         //Unscribes the method so it doesn't cause an error if it gets deleted mid game.
-        PillarManager.current.startTrigger -= wrapperFallingPillar;
+        PillarManager.current.startTrigger -= WrapperFallingPillar;
     }
 }

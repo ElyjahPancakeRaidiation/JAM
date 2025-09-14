@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class PillarManager : MonoBehaviour
 {
     public static PillarManager current;
