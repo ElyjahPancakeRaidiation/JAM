@@ -220,7 +220,7 @@ public class TorsoForm : PlayerFormsScriptables
                 {
                     StartCoroutine(JumpAbilityIEnumerator());
                 }
-                else if (coyoteTimer > .56f && coyoteTimer < .65f)
+                else if (coyoteTimer > .4f && coyoteTimer < .65f)
                 {
                     StartCoroutine(JumpCoyoteTimerIEnumerator());
                     StartCoroutine(JumpAbilityIEnumerator());

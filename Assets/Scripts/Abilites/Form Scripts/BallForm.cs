@@ -52,7 +52,6 @@ public class BallForm : PlayerFormsScriptables
         {
             base.OnStartMethod(f);
             ballVar = (BallForm)f;
-
             dashAmount = ballVar.maxDashes;
             isEasingOn = true;
             if (_dustSpawner == null) { _dustSpawner = Instantiate(ballVar.prefabDustSpawner); }
@@ -156,7 +155,7 @@ public class BallForm : PlayerFormsScriptables
         private void GiveMaxDash()
         {
             dashAmount = ballVar.maxDashes;
-            Debug.Log("gave dah");
+            // Debug.Log("gave dah");
         }
 
         private IEnumerator EasingBackOn()

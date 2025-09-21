@@ -1,7 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using Unity.Collections;
 public class ManageWind : MonoBehaviour
 {
     private ParticleSystem windParticles;
@@ -19,16 +19,15 @@ public class ManageWind : MonoBehaviour
     private BoxCollider2D windCollider;
     private bool isForceHorizontal;
     [SerializeField] private int currentMaxParticles;
-    [SerializeField] private bool playerWithinZone;
-
-    [SerializeField] private float incrementValue;
+    private bool playerWithinZone;
 
     private bool isForceIncreasing;
     private float stayTimer;
+    private enum MultiplierStatus { On, Off }
 
+    [SerializeField] private MultiplierStatus multiplierStatus;
     [SerializeField] private float maxMultiplier;
-
-    //  [SerializeField] private isGroundedScript isGrounded;
+    [SerializeField] private float incrementValue;
 
     private LayerMask layerMask;
     private LayerMask layerMaskVine;
@@ -42,18 +41,20 @@ public class ManageWind : MonoBehaviour
 
     public AnimationCurve windForceCurve;
 
-    // Start is called before the first frame update
+    private PlayerManager playerManager;
 
-    void OnEnable()
-    {
+    [SerializeField] private bool velocityChecked;
 
-    }
+    public float playerVelocity;
+
+    private float finalVelocity;
+    public float currentPosition;
+
+    [SerializeField] private float increaseDistance;
+    [SerializeField] private WindForceAdjustment[] windForceAdjustments;
 
     void Awake()
     {
-        bool abe = false;
-
-
         // windCollider = GetComponent<BoxCollider2D>();
         windParticles = GetComponent<ParticleSystem>();
         playerWithinZone = false;
@@ -63,46 +64,87 @@ public class ManageWind : MonoBehaviour
         layerMask = LayerMask.GetMask("Player");
         layerMaskVine = LayerMask.GetMask("Vine");
         // windCollider = GetComponent<BoxCollider2D>();
-    }
-    void Start()
-    {
+        windForceAdjustments = GetComponents<WindForceAdjustment>();
+        playerManager = player.GetComponent<PlayerManager>();
 
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         //ColliderBounds(new Vector2(sizeX, sizeY), offset);
         ParticleBounds();
         RotateWind(windParticles);
         GetParticlePosition(windParticles);
-
-        // ColliderBounds();
-
-
-        //  Debug.Log(IsPlayerWithinZone());
-        ;
+        // Debug.Log("Player's velocity: " + GetVelocity());
 
     }
 
     void FixedUpdate()
     {
-        //Debug.Log("velocity: " + playerRb.velocity.y);
         RunWind();
+        GetVelocity();
+        ChangeMultiplier();
+    }
 
-        Debug.Log(IsPlayerWithinZone());
+    float GetVelocity()
+    {
+
+        if (!playerManager.GlobalIsGrounded() && velocityChecked)
+        {
+            currentPosition = player.transform.position.y;
+            velocityChecked = false;
+        }
+
+        if (playerManager.GlobalIsGrounded())
+        {
+            velocityChecked = true;
+            playerVelocity = 0;
+            finalVelocity = playerVelocity;
+
+        }
+        //Mathf.Pow(increaseDistance, 2)
+        float distance = (currentPosition * increaseDistance) - offset.y;
+       // finalVelocity = Mathf.Abs((currentPosition * Velocitydifference) - offset.y);
+        // Debug.Log("distance: " + distance);
+        finalVelocity = Mathf.Sqrt(2 * 9.8f * distance);
+
+        return finalVelocity;
+
+    }
+    [SerializeField] private Vector2 firstFrame;
+    [SerializeField]private Vector2 secondFrame;
+    [SerializeField] private Vector2 thirdFrame;
+    [SerializeField]private float fourthFrame;
+   
+    void ChangeMultiplier()
+    {
+        //float velocity = Mathf.Abs(GetVelocity());
+
+        if (multiplierStatus == MultiplierStatus.On)
+        {
+
+            Debug.Log("final velocity: " + finalVelocity);
+            // windForceCurve.AddKey(3.5f, finalVelocity);
+     
+            windForceCurve = new AnimationCurve(new Keyframe(0, firstFrame.y), new Keyframe(secondFrame.x, secondFrame.y),
+            new Keyframe(thirdFrame.x, thirdFrame.y), new Keyframe(fourthFrame, finalVelocity));
+
+            windForceY = windForceCurve.Evaluate(stayTimer);
+            // incrementValue += velocity / 1000;
+            //Debug.Log("increment: " + incrementValue);
+
+            Debug.Log("multiplier: " + multiplier);
+            Debug.Log("Result: " + multiplier * windForceY);
+
+        }
+
     }
 
     void OnDrawGizmos()
     {
-        //    Gizmos.color = Color.cyan;
-
-        //    Gizmos.DrawWireCube(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY, 0));
-
         Gizmos.color = Color.cyan;
-
         Gizmos.DrawWireCube(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY, 0));
-
     }
 
     void ColliderBounds()
@@ -116,13 +158,11 @@ public class ManageWind : MonoBehaviour
         if (IsPlayerWithinZone())
         {
 
+            // Debug.Log("maxMultiplier: " + maxMultiplier);
             playerWithinZone = true;
             ApplyForce();
-            
-
-            ForceMultiplierY(incrementValue, maxMultiplier);
+            // ForceMultiplierY(incrementValue, maxMultiplier);
             stayTimer += Time.deltaTime;
-         
             IncreaseParticleSpeed(windForceX, windForceY);
             SpawnWindParticlesV2();
             // IncreaseMultiplier();
@@ -134,13 +174,11 @@ public class ManageWind : MonoBehaviour
             StopWindParticles();
             stayTimer = 0;
             multiplier = 1;
-            incrementValue = .5f;
+            // incrementValue = .5f;
             playerWithinZone = false;
-
 
         }
     }
-
 
     bool IsPlayerWithinZone()
     {
@@ -159,7 +197,6 @@ public class ManageWind : MonoBehaviour
         float forceDifference = Vector2.Distance(originForce, force);
 
         // Debug.Log("Difference " + forceDifference);
-
         if (forceX > 0 || forceX < 0)
         {
             isForceHorizontal = true;
@@ -168,13 +205,12 @@ public class ManageWind : MonoBehaviour
         {
             isForceHorizontal = true;
         }
-
         return isForceHorizontal;
     }
 
     bool getIsForceIncreasing()
     {
-        if (maxMultiplier > 1)
+        if (multiplierStatus == MultiplierStatus.On)
         {
             isForceIncreasing = true;
         }
@@ -189,7 +225,6 @@ public class ManageWind : MonoBehaviour
         //collidedRb.AddForce(new Vector2(windForceX, windForceY * OldForceMultiplierY(multiplierIncrement)),
 
         Vector2 forcePower = new Vector2(forceX, forceY * multiplier);
-
         return forcePower;
     }
 
@@ -197,7 +232,6 @@ public class ManageWind : MonoBehaviour
     {
         var windPosition = currentParticles.shape;
         windPosition.position = windParticlePosition;
-
     }
 
     void IncreaseParticleSpeed(float forceX, float forceY)
@@ -226,27 +260,30 @@ public class ManageWind : MonoBehaviour
 
         }
 
-
-
-
         // Debug.Log("New speed: " + particleStartSpeed.startSpeed);
         // Debug.Log("Multiplier: " + particleStartSpeed.startSpeed);
     }
 
     public float ForceMultiplierY(float increment, float maxMultiplier)
     {
-        if (increment < .05)
+        if (multiplierStatus == MultiplierStatus.On)
         {
-            increment = .05f;
-        }
-        multiplier += increment * stayTimer / 10;
+            if (increment < .05)
+            {
+                increment = .05f;
+            }
+            multiplier += increment * stayTimer;
 
-        if (multiplier > maxMultiplier)
-        {
-            multiplier = maxMultiplier;
+            if (multiplier > maxMultiplier)
+            {
+                multiplier = maxMultiplier;
+            }
+            // Debug.Log("multiplier: " + multiplier);
+            // Debug.Log("ResultForce: " + multiplier * windForceY);
+            // Debug.Log("WindY: " + windForceY);
+            return multiplier;
         }
-
-        return multiplier;
+        return 1;
     }
 
     void RotateWind(ParticleSystem currentParticles)
@@ -272,41 +309,27 @@ public class ManageWind : MonoBehaviour
     {
         playerRb.AddForce(GetForce(windForceX, windForceY), ForceMode2D.Force);
 
-
     }
 
     void ApplyForceToVines()
     {
 
-         
-            // Collider2D[] vineColliders = GameObject.FindGameObjectWithTag("Vine").GetComponents<BoxCollider2D>();
+        if (!IsPlayerWithinZone()) { return; }
+        foreach (Collider2D coll in IsVineWithinZone())
+        {
 
-            //if vine is in the zone, how does it know it's in the zone,
-            //if player is in the zone, and if the bool returns true, but both those return true
-            //what happens is all the vines get added force, what i need is the foreach loop to only get
-            //the vine in vines that are in that range in the first place
-            if (!IsPlayerWithinZone()) { return; }
-            foreach (Collider2D coll in IsVineWithinZone())
-            {
+            Rigidbody2D vineRb = coll.attachedRigidbody;
 
-                Rigidbody2D vineRb = coll.attachedRigidbody;
+            vineRb.AddForce(GetForce(windForceX * .5f, windForceY * .5f), ForceMode2D.Force);
 
-                vineRb.AddForce(GetForce(windForceX, windForceY), ForceMode2D.Force);   
-
-            }
-           
-            
-            
-            
-        
-
+        }
     }
 
-    void ParticleBounds(/*Vector2 force, float radius*/)
+    void ParticleBounds()
     {
         // ParticleSystem.ShapeModule windPartShape = windParticles.shape;
         var windParticle = windParticles.shape;
-        windParticle.radius = ForceDirection(windForceX, windForceY) ? sizeX / 1.5f : sizeY / 1.5f;
+        windParticle.radius = ForceDirection(windForceX, windForceY) ? sizeX / 1.2f : sizeY / 1.2f;
 
     }
 
@@ -321,55 +344,10 @@ public class ManageWind : MonoBehaviour
 
     }
 
-
     void StopWindParticles()
     {
         windParticles.Stop();
     }
 
-    void IncreaseMultiplier()
-    {
-
-        float playerVerticalVelocity = Mathf.Abs(playerRb.velocity.y);
-        maxMultiplier += windForceCurve.Evaluate(stayTimer);
-        incrementValue += .1f;
-        float verticalVelocity = playerRb.velocity.y;
-
-        // maxMultiplier += 
-
-
-
-    }
-    // void OnTriggerStay2D(Collider2D other)
-    // {
-
-    //     if (IsPlayerWithinZone())
-    //     {
-    //         Rigidbody2D collidedRb = other.attachedRigidbody;
-
-    //         if (collidedRb != playerRb)
-    //         {
-    //             collidedRb.AddForce(GetForce(windForceY, windForceY), ForceMode2D.Force);
-    //         }
-
-    //         // IncreaseParticleSpeed(windForceX, windForceY);
-    //     }
-
-    // }
-    // void OnTriggerEnter2D(Collider2D other)
-    // {
-
-    //     if (playerRb = other.attachedRigidbody)
-    //     {
-    //         currentVelocity = playerRb.velocity.y;
-    //     }
-
-
-    // }
-
-    // void OnTriggerExit2D(Collider2D other)
-    // {
-    //     currentVelocity = 0;
-    // }
 }
 
