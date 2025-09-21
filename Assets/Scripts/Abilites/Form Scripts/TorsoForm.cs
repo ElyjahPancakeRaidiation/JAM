@@ -282,6 +282,7 @@ public class TorsoForm : PlayerFormsScriptables
                 Collider2D collider = Physics2D.OverlapCircle(arm.transform.position, torsoVar.armGrabZone, LayerMask.GetMask("Vine"));
                 if (collider)
                 {
+                    Debug.Log("Have collided by an chance???");
                     playerManager.PlayerAbility().GetGlobalWideAbiltiyEvent().Invoke();
                     armJoint.enabled = true; //enable the hingejoint2d on player
                     armJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
