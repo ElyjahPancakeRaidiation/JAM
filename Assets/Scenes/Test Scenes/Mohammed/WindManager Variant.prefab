@@ -98,11 +98,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 1
   shakeDuration: 5
   shakeStrength: 0.6
+  delayShakeSec: 0
   repeat: 1
 --- !u!198 &6248371246066912326
 ParticleSystem:
@@ -5089,11 +5091,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 1
   shakeDuration: 5
   shakeStrength: 0.3
+  delayShakeSec: 0
   repeat: 0
 --- !u!198 &2938568543135817236
 ParticleSystem:
@@ -15047,11 +15051,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 1
   shakeDuration: 4
   shakeStrength: 1.2
+  delayShakeSec: 0
   repeat: 1
 --- !u!61 &589809112496475544
 BoxCollider2D:
