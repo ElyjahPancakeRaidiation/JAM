@@ -2,54 +2,110 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using Unity.VisualScripting;
+using Unity.Properties;
+using UnityEngine.Analytics;
+using System.Net.NetworkInformation;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
-public class thoughtBubble : MonoBehaviour
+[RequireComponent(typeof(TrackKeyOrder), typeof(BoxCollider2D))]
+public class ThoughtBubble : MonoBehaviour
 {
+    [SerializeField] private GameObject thoughtBubble;
     public static event Action<bool> triggerThoughtBubble;
     private PlayerManager playerManager;
-    private bool completed = false;
 
     [SerializeField] private float maxTime;
     [SerializeField] private Vector2 positionOffset;
     [SerializeField] private UnityEvent thoughtBubbleEvent;
     private Coroutine thoughtTrigger;
+    private bool followPlayer;
+
+    private TrackKeyOrder keyOrder;
+    private bool inProgress;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        ///
-        /// When player manager is added make sure to switch this out with the event instead, decouple this code.
-        /// 
+        keyOrder = GetComponent<TrackKeyOrder>();
+        if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
-        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.AddListener(HasUsedAbility);
-        if(thoughtBubbleEvent==null){thoughtBubbleEvent = new UnityEvent();}
+
+        if (thoughtBubbleEvent == null) { thoughtBubbleEvent = new UnityEvent(); }
+
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Update()
+    {
+        if (followPlayer)
+        {
+            thoughtBubble.transform.position = playerManager.transform.position;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.CompareTag("Player"))
+        {
+            if (!keyOrder.completed)
+            {
+                if (!inProgress)
+                {
+                    keyOrder.StartTrackingKeys();
+                    inProgress = true;
+                }
+                TriggerThought(collision);
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        //fix this later to tired to fix now
+        if (collision.CompareTag("Player") && !Input.GetKeyDown(PlayerManager.playerManager.playerSwitchFormKey))
+        {
+            if (keyOrder.GetStopWhenOutofBounds())
+            {
+                keyOrder.StopTrackingKeys(TurnOffThoughtBubble);
+                if (thoughtTrigger != null)
+                {
+                    StopCoroutine(thoughtTrigger);
+                }
+                thoughtTrigger = null;
+                inProgress = false;
+            }
+        }
+    }
+
+    private void TriggerThought(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            if (thoughtTrigger == null && !completed) { thoughtTrigger = StartCoroutine(TriggerThought()); }
+            if (thoughtTrigger == null && !keyOrder.completed) { thoughtTrigger = StartCoroutine(TriggerThoughtEnum()); }
         }
     }
 
-    private IEnumerator TriggerThought()
+
+    private IEnumerator TriggerThoughtEnum()
     {
         yield return new WaitForSecondsRealtime(maxTime);
-        if (!completed)
+        if (!keyOrder.completed)
         {
-            if (triggerThoughtBubble != null) { triggerThoughtBubble(true); }
+            followPlayer = true;
+            thoughtBubble.transform.position = playerManager.transform.position;
+            if (thoughtBubble != null) { thoughtBubble.SetActive(true); }
             thoughtBubbleEvent?.Invoke();
-            yield return new WaitUntil(() => completed);
+            yield return new WaitUntil(() => keyOrder.completed);
         }
-        if (triggerThoughtBubble != null) { triggerThoughtBubble(false); }
+        TurnOffThoughtBubble();
     }
 
-    private void HasUsedAbility()
+    private void TurnOffThoughtBubble()
     {
-        completed = true;
-        playerManager.PlayerAbility().GetOnUseAbilityEvent()?.RemoveListener(HasUsedAbility);
+        followPlayer = false;
+        if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
     }
-    
-    
 }

@@ -17,6 +17,8 @@ public class BallForm : PlayerFormsScriptables
     public int maxDashes;
     public GameObject prefabDustSpawner;
 
+    
+
     public override void changeForm(Rigidbody2D _rb, SpriteRenderer _spr, Collider2D _circleCol, Collider2D _boxCol)
     {
         _boxCol.enabled = false;
@@ -50,7 +52,6 @@ public class BallForm : PlayerFormsScriptables
         {
             base.OnStartMethod(f);
             ballVar = (BallForm)f;
-
             dashAmount = ballVar.maxDashes;
             isEasingOn = true;
             if (_dustSpawner == null) { _dustSpawner = Instantiate(ballVar.prefabDustSpawner); }
@@ -154,7 +155,7 @@ public class BallForm : PlayerFormsScriptables
         private void GiveMaxDash()
         {
             dashAmount = ballVar.maxDashes;
-            Debug.Log("gave dah");
+            // Debug.Log("gave dah");
         }
 
         private IEnumerator EasingBackOn()

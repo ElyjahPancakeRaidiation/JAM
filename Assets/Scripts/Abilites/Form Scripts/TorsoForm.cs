@@ -191,19 +191,22 @@ public class TorsoForm : PlayerFormsScriptables
         {
             base.UpdateMethodAbility();
             //Check the vicinity for vine segments
-            if (!currentVine)
+            if (torsoVar.hasArms)
             {
-                Collider2D[] vines = Physics2D.OverlapCircleAll(transform.position, torsoVar.armDetectionZone, LayerMask.GetMask("Vine"));
-                if (vines.Length > 0)
-                {
-                    GetArm(vines[0].gameObject, 1).GetComponent<ArmScript>().PointToGameObject(vines[0].gameObject);
-                    GetArm(vines[0].gameObject, 0).GetComponent<ArmScript>().MoveToReset();
-                }
-                else
-                {
-                    foreach (GameObject arm in armsArray)
+                if (!currentVine)
+                {   
+                    Collider2D[] vines = Physics2D.OverlapCircleAll(transform.position, torsoVar.armDetectionZone, LayerMask.GetMask("Vine"));
+                    if (vines.Length > 0)
                     {
-                        arm.GetComponent<ArmScript>().MoveToReset();
+                        GetArm(vines[0].gameObject, 1).GetComponent<ArmScript>().PointToGameObject(vines[0].gameObject);
+                        GetArm(vines[0].gameObject, 0).GetComponent<ArmScript>().MoveToReset();
+                    }
+                    else
+                    {
+                        foreach (GameObject arm in armsArray)
+                        {
+                            arm.GetComponent<ArmScript>().MoveToReset();
+                        }
                     }
                 }
             }
@@ -217,7 +220,7 @@ public class TorsoForm : PlayerFormsScriptables
                 {
                     StartCoroutine(JumpAbilityIEnumerator());
                 }
-                else if (coyoteTimer > .56f && coyoteTimer < .65f)
+                else if (coyoteTimer > .4f && coyoteTimer < .65f)
                 {
                     StartCoroutine(JumpCoyoteTimerIEnumerator());
                     StartCoroutine(JumpAbilityIEnumerator());

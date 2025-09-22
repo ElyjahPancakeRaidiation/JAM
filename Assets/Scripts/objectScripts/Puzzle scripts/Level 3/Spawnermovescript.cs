@@ -11,7 +11,7 @@ public class Spawnermovescript : MonoBehaviour
 	{
 		if (collision.gameObject.tag == "Player")
 		{
-			gm.resetLevel();
+			gm.ResetLevel();
 		}
 	}
 }

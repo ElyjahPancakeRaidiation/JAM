@@ -7,6 +7,7 @@ public class VineSegment : MonoBehaviour
     public GameObject above, below;
     void Start()
     {
+        gameObject.tag = "Vine";
         above = GetComponent<HingeJoint2D>().connectedBody.gameObject;
         VineSegment aboveSegment = above.GetComponent<VineSegment>();
         if (aboveSegment)

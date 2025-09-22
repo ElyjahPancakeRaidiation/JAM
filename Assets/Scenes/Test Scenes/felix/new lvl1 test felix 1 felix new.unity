@@ -2812,7 +2812,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 263, y: 210}
+  m_ConnectedAnchor: {x: 232.24, y: 219.79}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -15443,6 +15443,7 @@ GameObject:
   - component: {fileID: 670711439}
   - component: {fileID: 670711441}
   - component: {fileID: 670711440}
+  - component: {fileID: 670711442}
   m_Layer: 0
   m_Name: PC Thouhgt Trigger
   m_TagString: PCObj
@@ -15477,6 +15478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea07d887e83fde44fb87d3de174b689a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thoughtBubble: {fileID: 0}
   maxTime: 4
   positionOffset: {x: 0, y: 0}
   thoughtBubbleEvent:
@@ -15527,6 +15529,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.6014595, y: 6.4163055}
   m_EdgeRadius: 0
+--- !u!114 &670711442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670711438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0299152fc5edc49a620a7b3bbef25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStart: 0
+  isMobile: 0
+  completed: 0
+  playerButtons: []
+  keys: []
+  keysIdx: 0
 --- !u!1 &679434196
 GameObject:
   m_ObjectHideFlags: 0
@@ -17973,6 +17993,7 @@ GameObject:
   - component: {fileID: 775374182}
   - component: {fileID: 775374184}
   - component: {fileID: 775374183}
+  - component: {fileID: 775374185}
   m_Layer: 0
   m_Name: 'Mobile Thouhgt Trigger '
   m_TagString: MobileObj
@@ -18007,6 +18028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea07d887e83fde44fb87d3de174b689a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thoughtBubble: {fileID: 0}
   maxTime: 4
   positionOffset: {x: 0, y: 0}
   thoughtBubbleEvent:
@@ -18069,6 +18091,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.6014595, y: 6.4163055}
   m_EdgeRadius: 0
+--- !u!114 &775374185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775374181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0299152fc5edc49a620a7b3bbef25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStart: 0
+  isMobile: 0
+  completed: 0
+  playerButtons: []
+  keys: []
+  keysIdx: 0
 --- !u!1 &776349232
 GameObject:
   m_ObjectHideFlags: 0
@@ -37278,11 +37318,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0.07
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0.09
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!1 &1821620350
 GameObject:
@@ -41802,7 +41844,7 @@ Transform:
   m_GameObject: {fileID: 2095244183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 263, y: 210, z: 0.54699737}
+  m_LocalPosition: {x: 232.24, y: 219.79, z: 0.54699737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

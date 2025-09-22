@@ -22,7 +22,7 @@ public class CameraManagerEditor : Editor
 
     //Settings for camera zooms in and out
     SerializedProperty newCameraSize, cameraSizeSpeed;
-    SerializedProperty returningSize, returningSizeSpeed;
+    SerializedProperty returningSize, returningSizeSpeed, returnCurSpeedDistance;
     SerializedProperty keepSizeSettings;
 
     //Settings for changing the offset
@@ -33,6 +33,7 @@ public class CameraManagerEditor : Editor
     SerializedProperty shakeCamera;
     SerializedProperty shakeDuration;
     SerializedProperty shakeStrength;
+    SerializedProperty delayShakeSec;
     SerializedProperty repeat;
 
     SerializedProperty camWaitTime;
@@ -51,6 +52,7 @@ public class CameraManagerEditor : Editor
 
         shakeDuration = serializedObject.FindProperty(nameof(shakeDuration));
         shakeStrength = serializedObject.FindProperty(nameof(shakeStrength));
+        delayShakeSec = serializedObject.FindProperty(nameof(delayShakeSec));
         repeat = serializedObject.FindProperty(nameof(repeat));
 
         camTarget = serializedObject.FindProperty(nameof(camTarget));
@@ -64,6 +66,7 @@ public class CameraManagerEditor : Editor
         returningPercentageSpeed = serializedObject.FindProperty(nameof(returningPercentageSpeed));
         returningSize = serializedObject.FindProperty(nameof(returningSize));
         returningSizeSpeed = serializedObject.FindProperty(nameof(returningSizeSpeed));
+        returnCurSpeedDistance = serializedObject.FindProperty(nameof(returnCurSpeedDistance));
         returningCameraOffset = serializedObject.FindProperty(nameof(returningCameraOffset));
         returningCameraOffsetSpeed = serializedObject.FindProperty(nameof(returningCameraOffsetSpeed));
 
@@ -96,6 +99,7 @@ public class CameraManagerEditor : Editor
             if (!keepSpeedSettings.boolValue)
             {
                 VariableField(returningPercentageSpeed);
+                VariableField(returnCurSpeedDistance);
             }
             VariableField(keepSpeedSettings);
         }
@@ -130,6 +134,7 @@ public class CameraManagerEditor : Editor
         {
             VariableField(shakeDuration);
             VariableField(shakeStrength);
+            VariableField(delayShakeSec);
             VariableField(repeat);
         }
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -73,14 +72,11 @@ public class CanvasScript : MonoBehaviour
         pauseCanvas = GameObject.Find("PauseCanvas") ?? null;
         blackBarCanvas = GameObject.Find("BlackBarCanvas") ?? null;
         TransitionCanvas = GameObject.Find("Transition") ?? null;
-        thoughtBubbleObj = GameObject.FindGameObjectWithTag("ThoughtBubble") ?? null;
         _transitionsAnim = TransitionCanvas.GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
 
         if (pauseCanvas != null) { pauseCanvas.SetActive(false); }
-        if (thoughtBubbleObj != null) { thoughtBubbleObj.SetActive(false); }
 
-        thoughtBubble.triggerThoughtBubble += SetActiveThoughtBubble;
         GameManager.current.pauseEvent += setActivePauseCanvas;
         GameManager.current.unPauseEvent += deactivateActivePauseCanvas;
 
@@ -229,7 +225,6 @@ public class CanvasScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        thoughtBubble.triggerThoughtBubble -= SetActiveThoughtBubble;
         GameManager.current.pauseEvent -= setActivePauseCanvas;
         GameManager.current.unPauseEvent -= setActivePauseCanvas;
     }
