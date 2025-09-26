@@ -7,20 +7,28 @@ public class ManageWind : MonoBehaviour
     private ParticleSystem windParticles;
     //private ParticleSystem windParticles;
     [Header("Wind Position and Size of the Wind Bounds")]
+    [Space(10)]
     [SerializeField] private Vector3 windParticlePosition;
+  
     //  private BoxCollider2D windCollider;
     [SerializeField] private float sizeX;
     [SerializeField] private float sizeY;
     [SerializeField] private Vector2 windRangeOffset;
     private bool particlesInstantiated;
-
+    [Space(5)]
     [Header("Wind Force Amount")]
+    [Space(10)]
     [SerializeField] private float windForceX;
     [SerializeField] private float windForceY;
 
     private BoxCollider2D windCollider;
     private bool isForceHorizontal;
+    [Space(5)]
+    [Header("Wind Particles Amount/Speed/Rate")]
+    [Space(10)]
     [SerializeField] private int currentMaxParticles;
+    [SerializeField] private float particleSpeed;
+    [SerializeField] private float particleRate;
     private bool playerWithinZone;
 
     private bool isForceIncreasing;
@@ -266,7 +274,8 @@ public class ManageWind : MonoBehaviour
         totalParticles.maxParticles = currentMaxParticles;
         if (!getIsForceIncreasing())
         {
-            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 40, 6 + forceDifference / 10);
+            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 40 * (1 + particleSpeed), 6 + forceDifference / 10 * (1 + particleSpeed));
+            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + forceDifference * (1+ particleRate),  160 + forceDifference *(1+ particleRate));
         }
         else
         {

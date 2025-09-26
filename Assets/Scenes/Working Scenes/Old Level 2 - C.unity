@@ -27998,7 +27998,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 118411476933988032, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -107.8
+      value: -123.55
       objectReference: {fileID: 0}
     - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: player
@@ -28013,12 +28013,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: particleRate
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: windBounds.x
       value: 51.5
       objectReference: {fileID: 0}
     - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: windBounds.y
       value: -211
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: particleSpeed
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: currentPosition
@@ -28031,6 +28039,14 @@ PrefabInstance:
     - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: multiplierStatus
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: windRangeOffset.x
+      value: 51.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: windRangeOffset.y
+      value: -211
       objectReference: {fileID: 0}
     - target: {fileID: 1419690037413923004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: windParticlePosition.x
@@ -28099,6 +28115,14 @@ PrefabInstance:
     - target: {fileID: 2692062841787543556, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: m_Name
       value: WindManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3441026610847786004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.9098039
+      objectReference: {fileID: 0}
+    - target: {fileID: 3441026610847786004, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
+      propertyPath: InitialModule.startColor.minColor.a
+      value: 0.7254902
       objectReference: {fileID: 0}
     - target: {fileID: 8618675794556471521, guid: 4e04398cd61b39042ae9f7de8eee2b37, type: 3}
       propertyPath: multiplierStatus
@@ -65802,7 +65826,7 @@ Transform:
   m_GameObject: {fileID: 1935756673}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.8, y: 18.9, z: -9.643929}
+  m_LocalPosition: {x: 86.3, y: -4.6, z: -9.643929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

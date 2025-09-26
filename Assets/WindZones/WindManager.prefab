@@ -88,6 +88,8 @@ MonoBehaviour:
   windForceX: 0
   windForceY: 10
   currentMaxParticles: 6000
+  particleSpeed: 0
+  particleRate: 0
   multiplierStatus: 0
   vRange: []
   windForceCurve:
@@ -307,8 +309,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 1, g: 1, b: 1, a: 0.2}
-      maxColor: {r: 1, g: 1, b: 1, a: 0.8509804}
+      minColor: {r: 1, g: 1, b: 1, a: 0.6313726}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.9372549}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.9924528, g: 0.9924528, b: 0.9924528, a: 0.37254903}
@@ -5101,6 +5103,8 @@ MonoBehaviour:
   windForceX: 5
   windForceY: -10
   currentMaxParticles: 2000
+  particleSpeed: 0
+  particleRate: 0
   multiplierStatus: 1
   vRange: []
   windForceCurve:

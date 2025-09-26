@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Working Scenes/StartingAnimationScene.unity
     guid: 239b3fd159d90ac48852711d0037cce3
   - enabled: 1
-    path: Assets/Scenes/Working Scenes/Level 1 - S.unity
+    path: Assets/Scenes/Working Scenes/Level 1 - S-Duplicate.unity
     guid: 6d07e838dd5802545b916b414add1a80
   - enabled: 1
     path: Assets/Scenes/Working Scenes/New-Level 2 I.unity
