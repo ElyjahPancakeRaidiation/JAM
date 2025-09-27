@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Collections;
+
 public class ManageWind : MonoBehaviour
 {
     private ParticleSystem windParticles;
@@ -13,6 +14,8 @@ public class ManageWind : MonoBehaviour
     //  private BoxCollider2D windCollider;
     [SerializeField] private float sizeX;
     [SerializeField] private float sizeY;
+
+    [SerializeField] private float sizeMultiplier;
     [SerializeField] private Vector2 windRangeOffset;
     private bool particlesInstantiated;
     [Space(5)]
@@ -263,7 +266,7 @@ public class ManageWind : MonoBehaviour
         Vector2 originForce = new Vector2(0, 0);
         Vector2 curentForce = GetForce(forceX, forceY);
 
-        float forceDifference = Vector2.Distance(curentForce, originForce);
+        float forceDifference = Mathf.Abs(Vector2.Distance(curentForce, originForce));
 
         ParticleSystem.VelocityOverLifetimeModule newParticleSpeed = windParticles.velocityOverLifetime;
 
@@ -274,13 +277,15 @@ public class ManageWind : MonoBehaviour
         totalParticles.maxParticles = currentMaxParticles;
         if (!getIsForceIncreasing())
         {
-            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 40 * (1 + particleSpeed), 6 + forceDifference / 10 * (1 + particleSpeed));
-            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + forceDifference * (1+ particleRate),  160 + forceDifference *(1+ particleRate));
+            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 25 * (1 + particleSpeed), 6 + forceDifference / 10 * (1 + particleSpeed));
+            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + forceDifference * (1 + particleRate), 160 + forceDifference * (1 + particleRate));
         }
         else
         {
-            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(Mathf.Lerp(forceDifference / 60, forceDifference / 40, stayTimer / 5), Mathf.Lerp(forceDifference / 40, forceDifference / 30, stayTimer / 5));
-            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + Mathf.Lerp(forceDifference * 5, forceDifference * 7, stayTimer / 3), 160 + Mathf.Lerp(forceDifference * 8, forceDifference * 12, stayTimer / 3));
+            // newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(Mathf.Lerp(forceDifference / 60, forceDifference / 40, stayTimer / 5), Mathf.Lerp(forceDifference / 40, forceDifference / 30, stayTimer / 5));
+            // particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + Mathf.Lerp(forceDifference * 5, forceDifference * 7, stayTimer / 3), 160 + Mathf.Lerp(forceDifference * 8, forceDifference * 12, stayTimer / 3));
+            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 40 * (1 + particleSpeed), 6 + forceDifference / 10 * (1 + particleSpeed));
+            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + forceDifference * (1+ particleRate),  160 + forceDifference *(1+ particleRate));
 
         }
 
@@ -353,7 +358,7 @@ public class ManageWind : MonoBehaviour
     {
         // ParticleSystem.ShapeModule windPartShape = windParticles.shape;
         var windParticle = windParticles.shape;
-        windParticle.radius = ForceDirection(windForceX, windForceY) ? sizeX / 1.2f : sizeY / 1.2f;
+        windParticle.radius =  ForceDirection(windForceX, windForceY) ? (1 + sizeMultiplier) * sizeX / 1.2f : ( 1 + sizeMultiplier * sizeY) / 1.2f;
 
     }
 
