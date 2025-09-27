@@ -39,7 +39,7 @@ public class CameraOperator : MonoBehaviour
 
     [Header("       Camera border and size settings     ")]
     [SerializeField, Tooltip("If it is 0 then it will revert to the defualt size being 8.")]
-    private float camStartSize;
+    public float camStartSize;
     private const float CAMDEFAULTSIZE = 8f;
 
     [SerializeField]

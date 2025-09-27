@@ -149,7 +149,7 @@ public class ManageWind : MonoBehaviour
             new Keyframe(thirdFrame.x, thirdFrame.y), new Keyframe(fourthFrame, finalVelocity * increaseDistance));
 
             windForceY = windForceCurve.Evaluate(stayTimer);
-          
+            
            // Debug.Log("Increase Distance: " + increaseDistance);
         }
 
