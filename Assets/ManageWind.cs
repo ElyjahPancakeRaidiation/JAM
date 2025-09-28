@@ -42,6 +42,9 @@ public class ManageWind : MonoBehaviour
     private enum MultiplierStatus { On, Off }
     [Header("Vary WindForce With Graph")]
     [SerializeField] private MultiplierStatus multiplierStatus;
+
+    [SerializeField] private float finalVelocity;
+
     private float maxMultiplier;
     private float incrementValue;
 
@@ -63,7 +66,7 @@ public class ManageWind : MonoBehaviour
 
     private float playerVelocity;
 
-    private float finalVelocity;
+    
     private float currentPosition;
     float currentDistance;
     private float increaseDistance;
@@ -125,10 +128,11 @@ public class ManageWind : MonoBehaviour
 
         }
         //Mathf.Pow(increaseDistance, 2)
-        float distance = currentPosition * 10  - windRangeOffset.y;
+        float distance = Mathf.Abs(currentPosition *3 - windRangeOffset.y);
+        
        // finalVelocity = Mathf.Abs((currentPosition * Velocitydifference) - windRangeOffset.y);
-        // Debug.Log("distance: " + distance);
-        finalVelocity = Mathf.Sqrt(2 * 9.8f * Mathf.Abs(distance));
+         Debug.Log("distance: " + distance);
+        finalVelocity = Mathf.Sqrt(2 * 9.8f * distance);
 
         return finalVelocity;
 
