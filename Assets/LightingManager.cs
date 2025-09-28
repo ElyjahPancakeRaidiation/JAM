@@ -17,6 +17,8 @@ public class LightingManager : MonoBehaviour
     [SerializeField] private GameObject mainLightHolder;
     [SerializeField] private GameObject mushroomLightHolder;
     private GameObject player;
+    [SerializeField] private Color lightColor;
+    [SerializeField] private Color mushroomColor;
     private Light2D playerLight;
     [SerializeField] private AnimationCurve lightCurve;
     [SerializeField] private float playerLightRadius;
@@ -39,11 +41,14 @@ public class LightingManager : MonoBehaviour
 
         foreach (Transform t in mainLightHolder.transform)
         {
-            t.GetComponent<Light2D>().intensity = mainLighting;
+            Light2D tLight2D = t.GetComponent<Light2D>();
+            tLight2D.intensity = mainLighting;
+            tLight2D.color = lightColor;
         }
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerLight = player.GetComponent<Light2D>();
+        playerLight.color = lightColor;
         playerLight.pointLightOuterRadius = playerLightRadius;
 
         mushroomLightList = new List<Light2D>();
@@ -51,6 +56,7 @@ public class LightingManager : MonoBehaviour
         {
             Light2D mushroomLight = mushroom.GetComponent<Light2D>();
             mushroomLight.intensity = 0;
+            mushroomLight.color = mushroomColor;
             if (mushroomLight) mushroomLightList.Add(mushroomLight);
         }
 

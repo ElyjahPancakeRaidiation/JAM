@@ -6133,8 +6133,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 119.052444, y: 48.1624, z: 0}
-    m_Extent: {x: 129.57675, y: 117.6053, z: 0}
+    m_Center: {x: 119.0593, y: 48.162903, z: 0}
+    m_Extent: {x: 129.5835, y: 117.6138, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -10484,14 +10484,16 @@ MonoBehaviour:
   mainLighting: 2
   mainLightHolder: {fileID: 2110333878}
   mushroomLightHolder: {fileID: 1649290806}
+  lightColor: {r: 0.6745283, g: 0.81156904, b: 1, a: 1}
+  mushroomColor: {r: 0.07058824, g: 0.4627451, b: 1, a: 1}
   lightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -10510,14 +10512,14 @@ MonoBehaviour:
     m_RotationOrder: 4
   playerLightRadius: 6
   mushroomLightInnerRadius: 1
-  mushroomLightOuterRadius: 50
+  mushroomLightOuterRadius: 40
   maxPlayerLightIntensity: 0.3
   maxLightningLightIntensity: 1.5
   maxMushroomLightIntensity: 10
   lightningSource: {fileID: 1386431118}
   playingLightning: 0
   strikeLengthIn: 1.5
-  strikeLength: 2
+  strikeLength: 3
   mushroomOffset: 1.2
 --- !u!4 &1160130959
 Transform:
@@ -11002,8 +11004,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 343.62656, y: -46.01915, z: 0}
-    m_Extent: {x: 411.11044, y: 134.34975, z: 0}
+    m_Center: {x: 343.62326, y: -46.028698, z: 0}
+    m_Extent: {x: 411.10306, y: 134.3534, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -13578,8 +13580,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -3.077999, y: 21.5794, z: 0}
-    m_Extent: {x: 76.3578, y: 53.3105, z: 0}
+    m_Center: {x: -3.0796013, y: 21.570799, z: 0}
+    m_Extent: {x: 76.354095, y: 53.306297, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0

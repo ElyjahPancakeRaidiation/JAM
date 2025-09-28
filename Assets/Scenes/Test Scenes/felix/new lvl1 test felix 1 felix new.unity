@@ -2812,7 +2812,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 232.24, y: 219.79}
+  m_ConnectedAnchor: {x: 234.5, y: 219.4}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -15543,6 +15543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnStart: 0
   isMobile: 0
+  stopWhenOutOfBounds: 0
   completed: 0
   playerButtons: []
   keys: []
@@ -18105,6 +18106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnStart: 0
   isMobile: 0
+  stopWhenOutOfBounds: 0
   completed: 0
   playerButtons: []
   keys: []
@@ -34022,7 +34024,7 @@ PrefabInstance:
     - target: {fileID: 397912409613441259, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: playerForms.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 2f5f15ca6a5e7a845b416ee073353fc2, type: 2}
+      objectReference: {fileID: 11400000, guid: f8b173566c39a7d4eb6e23b78f01449d, type: 2}
     - target: {fileID: 3499816936792255374, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -41844,7 +41846,7 @@ Transform:
   m_GameObject: {fileID: 2095244183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 232.24, y: 219.79, z: 0.54699737}
+  m_LocalPosition: {x: 234.5, y: 219.4, z: 0.54699737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41868,8 +41870,8 @@ MonoBehaviour:
   - {fileID: 7663846012884438540, guid: d3e80be8d85af2548a827f7c2e9d143d, type: 3}
   - {fileID: 7663846012884438540, guid: de85007f1961fc947ac1fd3760c27d3a, type: 3}
   - {fileID: 7663846012884438540, guid: 85f3da0dff028ee4aba6ce9428d6bbbe, type: 3}
-  numSegments: 12
-  overwritePlayerPull: 1
+  numSegments: 18
+  overwritePlayerPull: 0
   newForce: 500
 --- !u!1001 &2095332549
 PrefabInstance:
