@@ -31,8 +31,8 @@ MonoBehaviour:
   jumpGroundOffsetSize: {x: -0.04, y: -1.05}
   armsActiveScene: 
   hasArms: 1
-  swingForce: 140
-  armGrabZone: 1.6
+  swingForce: 130
+  armGrabZone: 1.3
   armDetectionZone: 10
   pullForce: 2
   detachMultiplier: 1.5

@@ -18,11 +18,13 @@ MonoBehaviour:
   groundPointOffset: {x: 0, y: -0.36}
   globalGroundedColSize: {x: 0.65, y: 0.3}
   glboalGroundedPointOffset: {x: 0, y: -0.36}
+  minVertexDistancefr: 0
+  emmitting: 0
   groundColSize: {x: 0.65, y: 0.3}
   maxSpeedPoint: 7
   smoothStopSpeed: 0.2
   dashPowerX: 18
   dashPowerY: 17
-  unchangedDashY: 14
+  unchangedDashY: 15
   maxDashes: 1
   prefabDustSpawner: {fileID: 8613837917271531883, guid: 65cacc0a62f0b89488ae28cce587bd48, type: 3}
