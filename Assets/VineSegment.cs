@@ -13,7 +13,7 @@ public class VineSegment : MonoBehaviour
         if (aboveSegment)
         {
             aboveSegment.below = gameObject;
-            float bottomOfSprite = above.GetComponent<SpriteRenderer>().bounds.size.y;
+            float bottomOfSprite = 1;
             GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, -1 * bottomOfSprite);
         }
         else
