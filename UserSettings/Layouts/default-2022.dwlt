@@ -464,7 +464,7 @@ MonoBehaviour:
       displayed: 1
       snapOffset: {x: -171, y: -26.400024}
       snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 3
+      snapCorner: 0
       id: Tool Settings
       index: 0
       layout: 1
@@ -477,7 +477,7 @@ MonoBehaviour:
       displayed: 1
       snapOffset: {x: -141, y: -105}
       snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 3
+      snapCorner: 0
       id: unity-grid-and-snap-toolbar
       index: 1
       layout: 1
