@@ -128,7 +128,7 @@ public class ManageWind : MonoBehaviour
         float distance = currentPosition * 10  - windRangeOffset.y;
        // finalVelocity = Mathf.Abs((currentPosition * Velocitydifference) - windRangeOffset.y);
         // Debug.Log("distance: " + distance);
-        finalVelocity = Mathf.Sqrt(2 * 9.8f * distance);
+        finalVelocity = Mathf.Sqrt(2 * 9.8f * Mathf.Abs(distance));
 
         return finalVelocity;
 

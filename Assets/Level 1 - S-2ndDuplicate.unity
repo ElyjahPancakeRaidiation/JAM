@@ -40833,7 +40833,7 @@ PrefabInstance:
     - target: {fileID: 3081369792604085366, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 00c40f6a4164a0544806ff811e1ab743, type: 3}
+      objectReference: {fileID: 21300000, guid: f4b5f2ab3c8ff2c4083e0211da65fbef, type: 3}
     - target: {fileID: 3357782129019893483, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 243.88155
@@ -41050,6 +41050,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 4858032143526271851, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5249344246424013105, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_Type
       value: 0
@@ -41134,6 +41138,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: AllCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7654204547448190669, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7755439727338693880, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -41189,7 +41197,7 @@ PrefabInstance:
     - target: {fileID: 8469944898164144110, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 00c40f6a4164a0544806ff811e1ab743, type: 3}
+      objectReference: {fileID: 21300000, guid: f4b5f2ab3c8ff2c4083e0211da65fbef, type: 3}
     - target: {fileID: 8469944898164144110, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_Material
       value: 
