@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627a5326ec4851e4d917ab0713562b7d, type: 3}
+  m_Name: Torso&Arm
+  m_EditorClassIdentifier: 
+  formName: Torso/Arm
+  movementSpeed: 6
+  formSprite: {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
+  groundPointOffset: {x: 0, y: -0.61}
+  globalGroundedColSize: {x: 0.82, y: 2}
+  glboalGroundedPointOffset: {x: 0, y: -0.06}
+  minVertexDistancefr: 0
+  emmitting: 0
+  jumpSpeedX: 6
+  jumpSpeedY: 6
+  jumpHeight: 13.25
+  floatTime: 0.65
+  boxColliderSize: {x: 1, y: 2.24775}
+  hoppingGroundColliderSize: {x: 0.57, y: 0.47}
+  hoppingGroundOffsetSize: {x: -0.06, y: -0.7}
+  jumpGroundColliderSize: {x: 0.49, y: 1.05}
+  jumpGroundOffsetSize: {x: -0.04, y: -1.05}
+  armsActiveScene: 
+  hasArms: 1
+  swingForce: 130
+  armGrabZone: 1.3
+  armDetectionZone: 10
+  pullForce: 2
+  detachMultiplier: 1.5

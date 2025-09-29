@@ -62,6 +62,7 @@ public class CanvasScript : MonoBehaviour
     [SerializeField] private List<MobileButton> buttons;
     [SerializeField] private List<MobileButton> editButtons;
     [SerializeField] private Slider buttonScale;
+    [SerializeField] private Slider opacityScale;
     private RectTransform currentDraggedObject;
     private bool isEditMode;
 
@@ -102,17 +103,16 @@ public class CanvasScript : MonoBehaviour
         {
             Debug.Log("missing slider reference in reorganize ui");
         }
-    }
-
-    private void UpdateButtonScale(float v)
-    {
-        foreach (MobileButton button in buttons)
+        if (opacityScale)
         {
             SpawnEditableButtons(button);
             button.editable.GetComponent<RectTransform>().sizeDelta = button.DefaultSize * v;
         }
+        else
+        {
+            Debug.Log("missing slider reference in reorganize ui");
+        }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -136,7 +136,33 @@ public class CanvasScript : MonoBehaviour
             }
         }
     }
+    private void UpdateButtonOpacity(float v)
+    {
+        foreach (MobileButton button in buttons)
+        {
+            if (button.editable.GetComponent<RectTransform>() == null)
+            {
+                Debug.Log("yo this button is missing the right components, all buttons need button component and rect transform");
+                return;
+            }
+            var editableColor = button.editable.GetComponent<Image>().color;
+            editableColor.a = v;
+            button.editable.GetComponent<Image>().color = editableColor;
+        }
+    }
 
+    private void UpdateButtonScale(float v)
+    {
+        foreach (MobileButton button in buttons)
+        {
+            if (button.editable.GetComponent<RectTransform>() == null)
+            {
+                Debug.Log("yo this button is missing the right components, all buttons need button component and rect transform");
+                return;
+            }
+            button.editable.GetComponent<RectTransform>().sizeDelta = button.DefaultSize * v;
+        }
+    }
     private IEnumerator DragButton()
     {
         while (currentDraggedObject)
@@ -167,6 +193,11 @@ public class CanvasScript : MonoBehaviour
             int index = buttons.FindIndex(b => b.editable == hitObject);
             if (index != -1)
             {
+                if (buttons[index].editable.GetComponent<RectTransform>() == null)
+                {
+                    Debug.Log("yo this button is missing the right components, all buttons need button component and rect transform");
+                    return;
+                }
                 Debug.Log("we found smth");
                 currentDraggedObject = hitObject.GetComponent<RectTransform>();
             }
@@ -233,6 +264,7 @@ public class CanvasScript : MonoBehaviour
                 Debug.Log("remember to turn off the reorganize ui before starting");
             }
         }
+        Debug.Log("elyjah help me save this to player settings json");
     }
     private void SpawnEditableButtons(MobileButton button)
     {

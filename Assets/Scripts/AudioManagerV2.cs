@@ -66,6 +66,12 @@ public class AudioManagerV2 : MonoBehaviour
 
     public AudioSource currentSource;
     public AudioSource incomingSource;
+    //really crappy way to add rain audio
+    [SerializeField] private bool playingRain;
+    [SerializeField] private AudioClip rainClip;
+    private AudioSource rainSource;
+    [Range(-70, 0)]
+    public float rainVolume; //im lazy :)
     [Range(-70, 0)]
     public float mainVolume;
     public AnimationCurve volumeCurve;
@@ -90,6 +96,14 @@ public class AudioManagerV2 : MonoBehaviour
         incomingSource.volume = 0;
         //currentSource.volume = 1;
         //currentSource.Play();
+        if (rainClip && playingRain)
+        {
+            rainSource = gameObject.AddComponent<AudioSource>();
+            rainSource.clip = rainClip;
+            rainSource.loop = true;
+            rainSource.volume = decibelToLinear(rainVolume);
+            rainSource.Play();
+        }
     }
 
     // Update is called once per frame

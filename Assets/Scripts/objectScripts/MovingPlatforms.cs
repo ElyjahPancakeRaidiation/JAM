@@ -12,15 +12,16 @@ public class MovingPlatforms : MonoBehaviour
     private GameObject player;
     [SerializeField] private new BoxCollider2D collider; //yo ima be honest i only put the new keyword so that vsc could SHUT UP
     private GameObject globalLight;
-    private PuzzleLighting puzzleLighting;
+    private LightingManager puzzleLighting;
     private bool playerWithin = false;
     private bool playingReload = false;
+    [SerializeField] private float enterWaitTime; //how long it takes for lightning to start playing upon entering memory puzzle
     [SerializeField] private float padding;
     [SerializeField] private float paddingLeft;
     [SerializeField] private float paddingRight;
     [SerializeField] private float timeBetweenLightning;
-    [SerializeField] private float rangeOfObstacleGap;
-    [SerializeField] private float rangeOfVerticality;
+    [SerializeField] private float rangeOfObstacleGap; // how much gap there is between each obstacle in terms of their bounds with regards to the box collider's x
+    [SerializeField] private float rangeOfVerticality; // how much gap there is between an obstacle and the center of the puzzle's box collider in terms of y
     public bool inQueue = false;
     public float queueTime = 2.0f;
     private enum Verticality
@@ -39,7 +40,7 @@ public class MovingPlatforms : MonoBehaviour
     {
         collider = GetComponent<BoxCollider2D>();
         globalLight = GameObject.FindGameObjectWithTag("GlobalLighting");
-        puzzleLighting = globalLight.GetComponent<PuzzleLighting>();
+        puzzleLighting = globalLight.GetComponent<LightingManager>();
         player = GameObject.FindGameObjectWithTag("Player");
     }
     void Update()
@@ -106,7 +107,8 @@ public class MovingPlatforms : MonoBehaviour
     private IEnumerator initialize()
     {
         inQueue = true;
-        yield return StartCoroutine(puzzleLighting.startLighting());
+        StartCoroutine(puzzleLighting.SetPlayerLight(true, enterWaitTime));
+        yield return new WaitForSeconds(enterWaitTime);
         StartCoroutine(reloadPlatforms());
         inQueue = false;
     }
@@ -116,7 +118,7 @@ public class MovingPlatforms : MonoBehaviour
         Debug.Log("end ran");
         StopCoroutine(reloadPlatforms());
         yield return new WaitUntil(() => !puzzleLighting.playingLightning);
-        yield return StartCoroutine(puzzleLighting.stopLighting());
+        yield return StartCoroutine(puzzleLighting.SetPlayerLight(false, enterWaitTime));
         inQueue = false;
     }
     public void randomizeObstaclesInRange(float start, float end)
@@ -128,7 +130,9 @@ public class MovingPlatforms : MonoBehaviour
             List<GameObject> currentPrefabs = verticality == Verticality.UPPER ? upperPrefabObstacles : lowerPrefabObstacles;
             int prefabIndex = UnityEngine.Random.Range(0, currentPrefabs.Count); //choose a random prefab obstacle from the list
             float randomXGap = UnityEngine.Random.Range(0, rangeOfObstacleGap);
-            float randomYShift = UnityEngine.Random.Range(0, rangeOfVerticality);
+            float randomYShift = UnityEngine.Random.Range(0, rangeOfVerticality); //change so that based !!!!!!!!!! on verticality, different amt of y shift
+
+            // we might need to have the bottom platforms shifted lower, basically a min and max shift
 
 
             Vector3 obstacleSize = currentPrefabs[prefabIndex].GetComponent<PolygonCollider2D>().bounds.size;

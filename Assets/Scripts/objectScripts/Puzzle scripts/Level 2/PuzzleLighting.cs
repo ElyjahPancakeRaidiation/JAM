@@ -8,7 +8,7 @@ using UnityEngine.Rendering.Universal.Internal;
 
 public class PuzzleLighting : MonoBehaviour
 {
-    private readonly float normalGlobalLight = 10f;
+    private float normalGlobalLight = 2.33f;
     [SerializeField] private float initialFadeTime; //entering the puzzle section darkens the level
     [SerializeField] private float strikeLengthIn; //how long it takes to get full brightness
     [SerializeField] private float strikeLength; //how long it takes to return to darkness
@@ -25,12 +25,13 @@ public class PuzzleLighting : MonoBehaviour
     void Start()
     {
         globalLight = GetComponent<Light2D>();
+        normalGlobalLight = globalLight.intensity; //added
         lightningLight = GameObject.FindGameObjectWithTag("Lightning").GetComponent<Light2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         playerLight = player.GetComponent<Light2D>();
         playerLight.pointLightOuterRadius = playerLightRadius;
 
-        globalLight.intensity = normalGlobalLight;
+        //globalLight.intensity = normalGlobalLight;
         lightningLight.intensity = 0;
     }
 

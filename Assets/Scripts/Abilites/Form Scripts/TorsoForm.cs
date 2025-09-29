@@ -220,7 +220,7 @@ public class TorsoForm : PlayerFormsScriptables
                 {
                     StartCoroutine(JumpAbilityIEnumerator());
                 }
-                else if (coyoteTimer > .56f && coyoteTimer < .65f)
+                else if (coyoteTimer > .4f && coyoteTimer < .65f)
                 {
                     StartCoroutine(JumpCoyoteTimerIEnumerator());
                     StartCoroutine(JumpAbilityIEnumerator());
@@ -282,6 +282,7 @@ public class TorsoForm : PlayerFormsScriptables
                 Collider2D collider = Physics2D.OverlapCircle(arm.transform.position, torsoVar.armGrabZone, LayerMask.GetMask("Vine"));
                 if (collider)
                 {
+                    Debug.Log("Have collided by an chance???");
                     playerManager.PlayerAbility().GetGlobalWideAbiltiyEvent().Invoke();
                     armJoint.enabled = true; //enable the hingejoint2d on player
                     armJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>(); //connect arms hinge to the vine segment
@@ -299,7 +300,12 @@ public class TorsoForm : PlayerFormsScriptables
             float input = playerManager.GetHorizontalInput();
             if (input == 0f) //no input => pull
             {
-                _rb.AddForce(directionToHook.normalized * (10 + torsoVar.pullForce * directionToHook.magnitude), ForceMode2D.Impulse);
+                _rb.AddForce(directionToHook.normalized * (!currentVineScript.PullForceOverwritten() ?
+                (10 + torsoVar.pullForce * directionToHook.magnitude) : currentVineScript.VineSpecificForce()), ForceMode2D.Impulse);
+                if (currentVineScript.PullForceOverwritten())
+                {
+                    Debug.Log("fuck you.");
+                }
             }
             else //let go and increase velocity for an impactful "boost"
             {
