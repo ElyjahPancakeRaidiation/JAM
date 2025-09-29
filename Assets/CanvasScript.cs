@@ -105,8 +105,12 @@ public class CanvasScript : MonoBehaviour
         }
         if (opacityScale)
         {
-            SpawnEditableButtons(button);
-            button.editable.GetComponent<RectTransform>().sizeDelta = button.DefaultSize * v;
+            opacityScale.onValueChanged.AddListener((v) =>
+            {
+                UpdateButtonOpacity(v);
+            });
+            // SpawnEditableButtons(button);
+            // button.editable.GetComponent<RectTransform>().sizeDelta = button.DefaultSize * v;
         }
         else
         {

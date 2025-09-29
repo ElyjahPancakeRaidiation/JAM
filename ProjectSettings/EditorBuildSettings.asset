@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/Working Scenes/Main Menu - S.unity
+    path: Assets/Scenes/Working Scenes/Main Menu Duplicate S.unity
     guid: a3417e5f6b1745f47a4b6d36e07bd7ed
   - enabled: 0
     path: Assets/Scenes/Working Scenes/StartingAnimationScene.unity
     guid: 239b3fd159d90ac48852711d0037cce3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Working Scenes/Level 1 - S-Duplicate.unity
     guid: 6d07e838dd5802545b916b414add1a80
   - enabled: 0
@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Working Scenes/Old Level 2 - C.unity
     guid: 5bf974df0ab2b3a47bae7aaf05f52d68
   - enabled: 0
-    path: Assets/Scenes/Working Scenes/REVISED obstacle.unity
+    path: Assets/Scenes/Working Scenes/V2 REVISED obstacle.unity
     guid: 275ec51bc14934d4c989496b6a4d160a
   - enabled: 0
     path: Assets/Scenes/Working Scenes/Level 2 - I.unity
