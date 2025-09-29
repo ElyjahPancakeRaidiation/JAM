@@ -50,7 +50,7 @@ public class SkipButtonManager : MonoBehaviour
         }
 
         anim = GetComponent<Animation>();
-        if (SaveSystem.current.GetCompletedGame())
+        if (GameManager.current.completedGame)
         {
             anim.Play();
         }
@@ -61,7 +61,7 @@ public class SkipButtonManager : MonoBehaviour
         //Although it isn't good to have these both in the update method I didn't want to go through the hassal of  gettng the build version
         //The previous version Felix used for the input manager wasn't working for me for some reason.
         //Plus(Another excuse for bad programming...)The method will always stop(For mobile) before getting to the heavy portions because of the bool isTouchingButton
-        if (SaveSystem.current.GetCompletedGame())
+        if (GameManager.current.completedGame)
         {
             MobileSkip();
             PCSkip();

@@ -220,6 +220,8 @@ GameObject:
   - component: {fileID: 4142228119726061483}
   - component: {fileID: 2847921727030134477}
   - component: {fileID: 2247235343198469698}
+  - component: {fileID: 339537234284618077}
+  - component: {fileID: 2683250818135605766}
   m_Layer: 0
   m_Name: ThoughtBubble
   m_TagString: ThoughtBubble
@@ -311,6 +313,35 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &339537234284618077
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808672466245630513}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!111 &2683250818135605766
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808672466245630513}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 64c9a2231e9b32b4b9e68d3902a3c8f8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 64c9a2231e9b32b4b9e68d3902a3c8f8, type: 2}
+  - {fileID: 7400000, guid: f11396dcf95f0784a8b75ae155887608, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &810689744304854291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,6 +1630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4384297411491090027}
   - component: {fileID: 3590389990533615006}
+  - component: {fileID: 3353837026767379981}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -1680,6 +1712,22 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3353837026767379981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6153512680268914728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd157c03bbec54429e74c5809fee784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveFileName: PlayerSettings
+  assignedSaveManager: {fileID: 0}
+  ID: 
+  slider: {fileID: 3590389990533615006}
 --- !u!1 &6565827941585883296
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,6 +31,12 @@ public class CanvasScript : MonoBehaviour
             var editableRect = editable.GetComponent<RectTransform>();
             mainButtonRect.anchoredPosition = editableRect.anchoredPosition;
             mainButtonRect.sizeDelta = editableRect.sizeDelta;
+
+            var saveButtonUI = mainButton.GetComponent<SaveButtonUI>();
+            saveButtonUI.ChangeSizeDelta(editableRect.sizeDelta);
+            saveButtonUI.gameObject.transform.position = mainButtonRect.gameObject.transform.position;
+            saveButtonUI.GetAssignedManager().SaveDataToFile();
+
         }
         public void ResetToDefault()
         {
@@ -41,8 +47,8 @@ public class CanvasScript : MonoBehaviour
             editableRect.anchoredPosition = DefaultPostion;
             mainButtonRect.sizeDelta = DefaultSize;
             editableRect.sizeDelta = DefaultSize;
-
         }
+
     }
     private GameObject pauseCanvas, blackBarCanvas, thoughtBubbleObj, TransitionCanvas;
     private GameObject reorganizeUI;
@@ -80,6 +86,9 @@ public class CanvasScript : MonoBehaviour
             var buttonRect = button.mainButton.GetComponent<RectTransform>();
             button.DefaultPostion = buttonRect.anchoredPosition;
             button.DefaultSize = buttonRect.sizeDelta;
+
+            buttonRect.position = button.mainButton.GetComponent<SaveButtonUI>().GetPosition();
+            buttonRect.sizeDelta = button.mainButton.GetComponent<SaveButtonUI>().GetSizeDelta();
         }
         if (buttonScale) //if the slider is correctly passed to the script
         {
@@ -99,6 +108,7 @@ public class CanvasScript : MonoBehaviour
     {
         foreach (MobileButton button in buttons)
         {
+            SpawnEditableButtons(button);
             button.editable.GetComponent<RectTransform>().sizeDelta = button.DefaultSize * v;
         }
     }
@@ -198,8 +208,9 @@ public class CanvasScript : MonoBehaviour
         {
             foreach (MobileButton button in buttons)
             {
-                if (!button.editable) button.editable = Instantiate(button.mainButton, reorganizeUI.transform);
-                button.editable.SetActive(true);
+                button.mainButton.GetComponent<SaveButtonUI>().OnStart();
+                SpawnEditableButtons(button);
+                Debug.Log(button.mainButton.name);
             }
         }
         else
@@ -222,6 +233,16 @@ public class CanvasScript : MonoBehaviour
                 Debug.Log("remember to turn off the reorganize ui before starting");
             }
         }
+    }
+    private void SpawnEditableButtons(MobileButton button)
+    {
+        reorganizeUI = GameObject.FindGameObjectWithTag("Reorganize");
+        if (!button.editable)
+        {
+            button.editable = Instantiate(button.mainButton, reorganizeUI.transform);
+            Destroy(button.editable.GetComponent<SaveButtonUI>());
+        }
+        button.editable.SetActive(true);
     }
     public void OnBeginDrag(PointerEventData eventData)
     {

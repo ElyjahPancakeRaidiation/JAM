@@ -2,12 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
-using Unity.VisualScripting;
-using Unity.Properties;
-using UnityEngine.Analytics;
-using System.Net.NetworkInformation;
-using UnityEngine.UI;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(TrackKeyOrder), typeof(BoxCollider2D))]
 public class ThoughtBubble : MonoBehaviour
@@ -24,6 +18,8 @@ public class ThoughtBubble : MonoBehaviour
 
     private TrackKeyOrder keyOrder;
     private bool inProgress;
+
+    [SerializeField] private Animation anim;
 
 
     // Start is called before the first frame update
@@ -97,15 +93,22 @@ public class ThoughtBubble : MonoBehaviour
             followPlayer = true;
             thoughtBubble.transform.position = playerManager.transform.position;
             if (thoughtBubble != null) { thoughtBubble.SetActive(true); }
+            anim.Play("FadeInObj");
             thoughtBubbleEvent?.Invoke();
             yield return new WaitUntil(() => keyOrder.completed);
+            anim.Play("FadeOutObj");
+            yield return new WaitForSeconds(anim.clip.length);
+            anim.gameObject.SetActive(false);
         }
-        TurnOffThoughtBubble();
+
     }
 
     private void TurnOffThoughtBubble()
     {
         followPlayer = false;
-        if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
+        if (thoughtBubble != null)
+        {
+            thoughtBubble.SetActive(false);
+        }
     }
 }

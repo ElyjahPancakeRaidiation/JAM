@@ -6,50 +6,45 @@ using UnityEngine.UIElements;
 public class SavePosition : SaveData
 {
 
-    [SerializeField] public float numbers;
-    [SerializeField] public Vector2 position;
-
-    public class SaveDataVariablesP : SaveDataVariables
+    protected Vector2 position;
+    private void OnEnable()
     {
-        public Vector2 position;
-    }
-    private SaveDataVariablesP saveDataVariablesP;
-    public override void InitializeSaveDataVariables()
-    {
-        base.InitializeSaveDataVariables();
-        saveDataVariablesP = new SaveDataVariablesP();
+        OnStart();
     }
 
-    void Start()
+    public virtual void OnStart()
     {
-        InitializeSaveDataVariables();
-        PublicStartMethod();
-    }
-
-    void Update()
-    {
+        if (assignedSaveManager == null)
+        {
+            Debug.LogError("Save Manager is not assigned");
+        }
         StoreGameObjectVariables();
+        PublicStartMethod(ID);
     }
 
     public override void StoreGameObjectVariables()
     {
         base.StoreGameObjectVariables();
-        saveDataVariablesP.position = this.gameObject.transform.position;
     }
 
     public override void VaribalesToJSON()
     {
         base.VaribalesToJSON();
-        dataObj.Add("Numbers", numbers);
-        dataObj.Add("Position", saveDataVariablesP.position);
+        position = gameObject.transform.position;
+        dataObj.Add("Position", position);
     }
 
-    public override void PullData(JSONObject data)
+    public override void JSONToVariables(JSONObject data)
     {
-        base.PullData(data);
-        numbers = data["Numbers"];
+        base.JSONToVariables(data);
         position = data["Position"];
         gameObject.transform.position = position;
+    }
+
+    
+    private void OnDestroy()
+    {
+        RunWhenDestroyed();
     }
 
 

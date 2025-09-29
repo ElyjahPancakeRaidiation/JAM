@@ -15443,6 +15443,7 @@ GameObject:
   - component: {fileID: 670711439}
   - component: {fileID: 670711441}
   - component: {fileID: 670711440}
+  - component: {fileID: 670711442}
   m_Layer: 0
   m_Name: Thouhgt Trigger
   m_TagString: Guide
@@ -15477,6 +15478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea07d887e83fde44fb87d3de174b689a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thoughtBubble: {fileID: 0}
   maxTime: 4
   positionOffset: {x: 0, y: 0}
   thoughtBubbleEvent:
@@ -15527,6 +15529,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.6014595, y: 6.4163055}
   m_EdgeRadius: 0
+--- !u!114 &670711442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670711438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0299152fc5edc49a620a7b3bbef25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStart: 0
+  isMobile: 0
+  stopWhenOutOfBounds: 0
+  completed: 0
+  playerButtons: []
+  keys: []
+  keysIdx: 0
 --- !u!1 &679434196
 GameObject:
   m_ObjectHideFlags: 0
@@ -37461,11 +37482,13 @@ MonoBehaviour:
   cameraOffsetSpeed: 0.07
   returningCameraOffset: {x: 0, y: 0}
   returningCameraOffsetSpeed: 0.09
+  returnCurSpeedDistance: 1
   keepOffsetSettings: 0
   camWaitTime: 0
   shakeCamera: 0
   shakeDuration: 0
   shakeStrength: 0
+  delayShakeSec: 0
   repeat: 0
 --- !u!1 &1821620350
 GameObject:
@@ -38769,6 +38792,10 @@ MonoBehaviour:
   audioPoints: []
   playerSFXs:
   - maxVolume: -5.9
+    usePitchShift: 0
+    pitchOffsetRange:
+      Min: 0
+      Max: 0
     sfxClip: {fileID: 8300000, guid: 8079ab899383fed4bbe4799a9f5e4868, type: 3}
     fadeVolumeCurve:
       serializedVersion: 2
@@ -38815,6 +38842,10 @@ MonoBehaviour:
     tag: Dashing
     fadeLength: 1
   - maxVolume: 0
+    usePitchShift: 0
+    pitchOffsetRange:
+      Min: 0
+      Max: 0
     sfxClip: {fileID: 8300000, guid: 48cd867e1759f4d44be2c6310c9a8c9c, type: 3}
     fadeVolumeCurve:
       serializedVersion: 2
@@ -38861,6 +38892,10 @@ MonoBehaviour:
     tag: Landing
     fadeLength: 1
   - maxVolume: -6.3
+    usePitchShift: 0
+    pitchOffsetRange:
+      Min: 0
+      Max: 0
     sfxClip: {fileID: 8300000, guid: 99eeb8bad60dff948b92bdc3a6de524c, type: 3}
     fadeVolumeCurve:
       serializedVersion: 2

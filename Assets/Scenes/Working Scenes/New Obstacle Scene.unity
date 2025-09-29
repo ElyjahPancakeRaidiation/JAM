@@ -1588,6 +1588,11 @@ MonoBehaviour:
   upBorder: 0
   downBorder: 0
   farFromPlayer: 0
+  testOuterSettings: 0
+  camMovementData: {fileID: 0}
+  reset: 0
+  waitTillMaxSpeed: 0
+  inverse: 0
 --- !u!114 &298044330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7824,6 +7829,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b413fc2bdb94c438fa6b029737c485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1716032339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1716032341}
+  - component: {fileID: 1716032340}
+  m_Layer: 0
+  m_Name: SaveManagerSettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1716032340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716032339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f546e1303271a43b05bde9ecbac30c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataFolderName: PlayerSettings
+  autoSave: 1
+  autoSaveTime: 10
+--- !u!4 &1716032341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716032339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 259.69623, y: 270.3168, z: -4.2487445}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1764376149
 GameObject:
   m_ObjectHideFlags: 0
@@ -9088,6 +9140,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6123493315278823556, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: assignedSaveManager
+      value: 
+      objectReference: {fileID: 1716032340}
     - target: {fileID: 6523450495395269008, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -9128,6 +9184,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 8358228119968913673, guid: c536e65dd41793b4ca9eb0ee2366985c, type: 3}
+      propertyPath: assignedSaveManager
+      value: 
+      objectReference: {fileID: 1716032340}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10052,3 +10112,4 @@ SceneRoots:
   - {fileID: 517256285}
   - {fileID: 1549860792}
   - {fileID: 749394610}
+  - {fileID: 1716032341}

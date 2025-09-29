@@ -3,32 +3,28 @@ using SimpleJSON;
 using System.Collections.Generic;
 using System;
 using System.IO;
-using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Serialization;
-using System.Runtime.CompilerServices;
 
 [Serializable]
 public class SaveData : MonoBehaviour
 {
     [SerializeField] private string saveFileName = "UntitledData";
     protected JSONObject dataObj;
-    protected int saveManagerListID;
+    [SerializeField] protected SaveManager assignedSaveManager;
+    private bool setUpComplete = false;//This checks if PublicStartMethod was ran.
 
-    public class SaveDataVariables
+    #region Variables To Save
+    [SerializeField] protected string ID;
+
+    #endregion
+
+    void OnEnable()
     {
-        public string ID;
-        public string objectName;
-        public SaveDataVariables()
+        if (assignedSaveManager == null)
         {
-
+            Debug.LogError("Save Manager is not assigned");
         }
-    }
-    protected SaveDataVariables saveDataVariables;
-
-    void Start()
-    {
-        InitializeSaveDataVariables();
-        PublicStartMethod();
+        StoreGameObjectVariables();
+        PublicStartMethod(ID);
     }
 
     void Update()
@@ -36,34 +32,33 @@ public class SaveData : MonoBehaviour
         StoreGameObjectVariables();
     }
 
-    public virtual void InitializeSaveDataVariables()
+    public virtual void PublicStartMethod(string ID)
     {
-        saveDataVariables = new SaveDataVariables();
-    }
-
-    public virtual void PublicStartMethod()
-    {
-        if (SaveManager.saveManager != null)
+        if (!setUpComplete && assignedSaveManager != null)
         {
-            SaveManager.saveManager.pushDataToSave += PushData;
-            saveFileName = SaveManager.saveManager.curDataFolder + Path.AltDirectorySeparatorChar + saveFileName + ".json";
+            assignedSaveManager.pushDataToSave += PushData;
+            saveFileName = assignedSaveManager.getCurDataFolder() + Path.AltDirectorySeparatorChar + saveFileName + ".json";
             dataObj = new JSONObject();
-            var o = SaveManager.saveManager.PullData(saveFileName, gameObject.GetInstanceID().ToString());
+            var o = assignedSaveManager.PullData(saveFileName, ID);
             if (o != null)
             {
                 if (o.ToString() != "{}")//{} is null for javascript so if this is empty than it'll create a new JSONObject
                 {
                     dataObj = o;
-                    PullData(dataObj);
+                    JSONToVariables(dataObj);
                 }
             }
+            else
+            {
+                Debug.Log("Data null");
+            }
+            setUpComplete = true;
         }
     }
 
     public virtual void StoreGameObjectVariables()
     {
-        saveDataVariables.ID = gameObject.GetInstanceID().ToString();
-        saveDataVariables.objectName = gameObject.name;
+        ID = gameObject.name;
 
     }
 
@@ -73,30 +68,41 @@ public class SaveData : MonoBehaviour
         if (!jsonDic.ContainsKey(saveFileName))
         {
             JSONObject jObj = new JSONObject();
-            jObj.Add(saveDataVariables.ID, dataObj);
+            jObj.Add(ID, dataObj);
             jsonDic.Add(saveFileName, jObj);
         }
         else
         {
             JSONObject j = jsonDic[saveFileName];
-            if (j.HasKey(saveDataVariables.ID))//Prevents duplicates from apperaing in the files
+            if (j.HasKey(ID))//Prevents duplicates from apperaing in the files
             {
-                jsonDic[saveFileName].AsObject[saveDataVariables.ID] = dataObj;
+                jsonDic[saveFileName].AsObject[ID] = dataObj;
             }
             else
             {
-                jsonDic[saveFileName].Add(saveDataVariables.ID, dataObj);
+                jsonDic[saveFileName].Add(ID, dataObj);
             }
         }
     }
 
-    public virtual void VaribalesToJSON()
-    {
-        //This method will be used to transfer all of the variables you want to the JSONObject
-        dataObj.Add("Object Name", saveDataVariables.objectName);
-    }
+    public virtual void VaribalesToJSON(){}
 
     //Used to load from the JSONObject to the variables.
-    public virtual void PullData(JSONObject data) { }
+    public virtual void JSONToVariables(JSONObject data) { }
 
+
+    public SaveManager GetAssignedManager()
+    {
+        return assignedSaveManager;
+    }
+
+    public void RunWhenDestroyed()
+    {
+        assignedSaveManager.pushDataToSave -= PushData;
+    }
+
+    void OnDestroy()
+    {
+        RunWhenDestroyed();
+    }
 }
