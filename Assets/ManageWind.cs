@@ -2,81 +2,103 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Collections;
+
 public class ManageWind : MonoBehaviour
 {
     private ParticleSystem windParticles;
     //private ParticleSystem windParticles;
-
+    [Header("Wind Position and Size of the Wind Bounds")]
+    [Space(10)]
     [SerializeField] private Vector3 windParticlePosition;
+  
     //  private BoxCollider2D windCollider;
     [SerializeField] private float sizeX;
     [SerializeField] private float sizeY;
-    [SerializeField] private Vector2 offset;
+
+    [SerializeField] private float sizeMultiplier;
+    [SerializeField] private Vector2 windRangeOffset;
     private bool particlesInstantiated;
+    [Space(5)]
+    [Header("Wind Force Amount")]
+    [Space(10)]
     [SerializeField] private float windForceX;
     [SerializeField] private float windForceY;
 
     private BoxCollider2D windCollider;
     private bool isForceHorizontal;
+    [Space(5)]
+    [Header("Wind Particles Amount/Speed/Rate")]
+    [Space(10)]
     [SerializeField] private int currentMaxParticles;
+    [SerializeField] private float particleSpeed;
+    [SerializeField] private float particleRate;
     private bool playerWithinZone;
 
     private bool isForceIncreasing;
+    
     private float stayTimer;
-    private enum MultiplierStatus { On, Off }
 
+   
+    private enum MultiplierStatus { On, Off }
+    [Header("Vary WindForce With Graph")]
     [SerializeField] private MultiplierStatus multiplierStatus;
-    [SerializeField] private float maxMultiplier;
-    [SerializeField] private float incrementValue;
+
+    [SerializeField] private float finalVelocity;
+
+    private float maxMultiplier;
+    private float incrementValue;
 
     private LayerMask layerMask;
     private LayerMask layerMaskVine;
-    [SerializeField] private GameObject player;
+    private GameObject player;
     private float multiplier;
     private Rigidbody2D playerRb;
 
     private float currentVelocity;
 
     private bool captureNextFrame;
-
-    public AnimationCurve windForceCurve;
+    [Header("Player's Velocity Thresholds to Change WindForce")]
+    [SerializeField] private Vector2[] vRange;
 
     private PlayerManager playerManager;
 
-    [SerializeField] private bool velocityChecked;
+    private bool velocityChecked;
 
-    public float playerVelocity;
+    private float playerVelocity;
 
-    private float finalVelocity;
-    public float currentPosition;
+    
+    private float currentPosition;
+    float currentDistance;
+    private float increaseDistance;
+    [Header("Adjust Wind Graph and Edit KeyFrames")]
 
-    [SerializeField] private float increaseDistance;
-    [SerializeField] private WindForceAdjustment[] windForceAdjustments;
+    [SerializeField] private AnimationCurve windForceCurve;
+    [SerializeField] private Vector2 firstFrame;
+    [SerializeField]private Vector2 secondFrame;
+    [SerializeField] private Vector2 thirdFrame;
+    [SerializeField]private float fourthFrame;
 
     void Awake()
     {
-        // windCollider = GetComponent<BoxCollider2D>();
         windParticles = GetComponent<ParticleSystem>();
         playerWithinZone = false;
         player = GameObject.FindGameObjectWithTag("Player");
         playerRb = player.GetComponent<Rigidbody2D>();
-        //isGrounded =  GameObject.FindGameObjectWithTag("WindDetector").GetComponent<isGroundedScript>();
         layerMask = LayerMask.GetMask("Player");
         layerMaskVine = LayerMask.GetMask("Vine");
-        // windCollider = GetComponent<BoxCollider2D>();
-        windForceAdjustments = GetComponents<WindForceAdjustment>();
         playerManager = player.GetComponent<PlayerManager>();
 
     }
-
+    void Start()
+    {
+        currentDistance = increaseDistance;
+    }
 
     void Update()
     {
-        //ColliderBounds(new Vector2(sizeX, sizeY), offset);
         ParticleBounds();
         RotateWind(windParticles);
         GetParticlePosition(windParticles);
-        // Debug.Log("Player's velocity: " + GetVelocity());
 
     }
 
@@ -94,6 +116,7 @@ public class ManageWind : MonoBehaviour
         {
             currentPosition = player.transform.position.y;
             velocityChecked = false;
+       
         }
 
         if (playerManager.GlobalIsGrounded())
@@ -101,22 +124,21 @@ public class ManageWind : MonoBehaviour
             velocityChecked = true;
             playerVelocity = 0;
             finalVelocity = playerVelocity;
+           
 
         }
         //Mathf.Pow(increaseDistance, 2)
-        float distance = (currentPosition * increaseDistance) - offset.y;
-       // finalVelocity = Mathf.Abs((currentPosition * Velocitydifference) - offset.y);
-        // Debug.Log("distance: " + distance);
+        float distance = Mathf.Abs(currentPosition *3 - windRangeOffset.y);
+        
+       // finalVelocity = Mathf.Abs((currentPosition * Velocitydifference) - windRangeOffset.y);
+         Debug.Log("distance: " + distance);
         finalVelocity = Mathf.Sqrt(2 * 9.8f * distance);
 
         return finalVelocity;
 
     }
-    [SerializeField] private Vector2 firstFrame;
-    [SerializeField]private Vector2 secondFrame;
-    [SerializeField] private Vector2 thirdFrame;
-    [SerializeField]private float fourthFrame;
-   
+
+
     void ChangeMultiplier()
     {
         //float velocity = Mathf.Abs(GetVelocity());
@@ -125,32 +147,40 @@ public class ManageWind : MonoBehaviour
         {
 
             Debug.Log("final velocity: " + finalVelocity);
-            // windForceCurve.AddKey(3.5f, finalVelocity);
-     
+       
+            TrackVelocity();
             windForceCurve = new AnimationCurve(new Keyframe(0, firstFrame.y), new Keyframe(secondFrame.x, secondFrame.y),
-            new Keyframe(thirdFrame.x, thirdFrame.y), new Keyframe(fourthFrame, finalVelocity));
+            new Keyframe(thirdFrame.x, thirdFrame.y), new Keyframe(fourthFrame, finalVelocity * increaseDistance));
 
             windForceY = windForceCurve.Evaluate(stayTimer);
-            // incrementValue += velocity / 1000;
-            //Debug.Log("increment: " + incrementValue);
-
-            Debug.Log("multiplier: " + multiplier);
-            Debug.Log("Result: " + multiplier * windForceY);
-
+            
+           // Debug.Log("Increase Distance: " + increaseDistance);
         }
 
     }
+    void TrackVelocity()
+    {
 
+        for (int i = 0; i < vRange.Length; i++)
+        {   //2D array or list or dictionary, final velocity between two numbers, [x,y] y needs to initialize increaseDistance
+            if (vRange[i].x <= finalVelocity && finalVelocity <= vRange[i + 1].x)
+            {
+                increaseDistance = vRange[i].y;
+                
+            }
+
+        }
+    }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY, 0));
+        Gizmos.DrawWireCube(transform.position + (Vector3)windRangeOffset, new Vector3(sizeX, sizeY, 0));
     }
 
     void ColliderBounds()
     {
         windCollider.size = new Vector2(sizeX, sizeY);
-        windCollider.offset = offset;
+        windCollider.offset = windRangeOffset;
     }
 
     void RunWind()
@@ -182,11 +212,11 @@ public class ManageWind : MonoBehaviour
 
     bool IsPlayerWithinZone()
     {
-        return Physics2D.OverlapBox(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY), 0, layerMask);
+        return Physics2D.OverlapBox(transform.position + (Vector3)windRangeOffset, new Vector3(sizeX, sizeY), 0, layerMask);
     }
     Collider2D[] IsVineWithinZone()
     {
-        return Physics2D.OverlapBoxAll(transform.position + (Vector3)offset, new Vector3(sizeX, sizeY), 0, layerMaskVine);
+        return Physics2D.OverlapBoxAll(transform.position + (Vector3)windRangeOffset, new Vector3(sizeX, sizeY), 0, layerMaskVine);
     }
 
     bool ForceDirection(float forceX, float forceY)
@@ -240,7 +270,7 @@ public class ManageWind : MonoBehaviour
         Vector2 originForce = new Vector2(0, 0);
         Vector2 curentForce = GetForce(forceX, forceY);
 
-        float forceDifference = Vector2.Distance(curentForce, originForce);
+        float forceDifference = Mathf.Abs(Vector2.Distance(curentForce, originForce));
 
         ParticleSystem.VelocityOverLifetimeModule newParticleSpeed = windParticles.velocityOverLifetime;
 
@@ -251,12 +281,15 @@ public class ManageWind : MonoBehaviour
         totalParticles.maxParticles = currentMaxParticles;
         if (!getIsForceIncreasing())
         {
-            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 40, 6 + forceDifference / 10);
+            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 25 * (1 + particleSpeed), 6 + forceDifference / 10 * (1 + particleSpeed));
+            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + forceDifference * (1 + particleRate), 160 + forceDifference * (1 + particleRate));
         }
         else
         {
-            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(Mathf.Lerp(forceDifference / 20, forceDifference / 15, stayTimer / 5), Mathf.Lerp(forceDifference / 12, forceDifference / 7, stayTimer / 5));
-            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + Mathf.Lerp(forceDifference * 5, forceDifference * 7, stayTimer / 3), 160 + Mathf.Lerp(forceDifference * 8, forceDifference * 12, stayTimer / 3));
+            // newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(Mathf.Lerp(forceDifference / 60, forceDifference / 40, stayTimer / 5), Mathf.Lerp(forceDifference / 40, forceDifference / 30, stayTimer / 5));
+            // particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + Mathf.Lerp(forceDifference * 5, forceDifference * 7, stayTimer / 3), 160 + Mathf.Lerp(forceDifference * 8, forceDifference * 12, stayTimer / 3));
+            newParticleSpeed.speedModifier = new ParticleSystem.MinMaxCurve(.7f + forceDifference / 40 * (1 + particleSpeed), 6 + forceDifference / 10 * (1 + particleSpeed));
+            particleAmount.rateOverTime = new ParticleSystem.MinMaxCurve(100 + forceDifference * (1+ particleRate),  160 + forceDifference *(1+ particleRate));
 
         }
 
@@ -329,7 +362,7 @@ public class ManageWind : MonoBehaviour
     {
         // ParticleSystem.ShapeModule windPartShape = windParticles.shape;
         var windParticle = windParticles.shape;
-        windParticle.radius = ForceDirection(windForceX, windForceY) ? sizeX / 1.2f : sizeY / 1.2f;
+        windParticle.radius =  ForceDirection(windForceX, windForceY) ? (1 + sizeMultiplier) * sizeX / 1.2f : ( 1 + sizeMultiplier * sizeY) / 1.2f;
 
     }
 

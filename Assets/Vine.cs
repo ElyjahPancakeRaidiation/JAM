@@ -10,6 +10,8 @@ public class Vine : MonoBehaviour
     public GameObject[] vineSegments;
     [SerializeField] public int numSegments;
     private float lengthOfVine;
+    [SerializeField] private bool overwritePlayerPull;
+    [SerializeField] private float newForce;
     void Start()
     {
         generateVine();
@@ -26,7 +28,7 @@ public class Vine : MonoBehaviour
         Rigidbody2D prevBod = hook;
         for (int i = 0; i < numSegments; i++)
         {
-            GameObject newSegment = Instantiate(vineSegments[0]);
+            GameObject newSegment = Instantiate(vineSegments[Random.Range(0, vineSegments.Length)]);
             newSegment.transform.parent = transform;
             newSegment.transform.position = transform.position;
             newSegment.GetComponent<HingeJoint2D>().connectedBody = prevBod;
@@ -37,5 +39,13 @@ public class Vine : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(hook.transform.position, hook.transform.position - new Vector3(0, numSegments * vineSegments[0].transform.localScale.y, 0));
+    }
+    public bool PullForceOverwritten()
+    {
+        return overwritePlayerPull;
+    }
+    public float VineSpecificForce()
+    {
+        return newForce;
     }
 }
