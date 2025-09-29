@@ -84,6 +84,7 @@ MonoBehaviour:
   windParticlePosition: {x: -27.19, y: -335.8, z: 0}
   sizeX: 399.6
   sizeY: 84.3
+  sizeMultiplier: 0
   windRangeOffset: {x: 0, y: 0}
   windForceX: 0
   windForceY: 10
@@ -91,6 +92,7 @@ MonoBehaviour:
   particleSpeed: 0
   particleRate: 0
   multiplierStatus: 0
+  finalVelocity: 0
   vRange: []
   windForceCurve:
     serializedVersion: 2
@@ -4929,7 +4931,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -5099,6 +5101,7 @@ MonoBehaviour:
   windParticlePosition: {x: 31.1, y: -144.6, z: 0}
   sizeX: 100.3
   sizeY: 95.3
+  sizeMultiplier: 0
   windRangeOffset: {x: 0, y: 0}
   windForceX: 5
   windForceY: -10
@@ -5106,6 +5109,7 @@ MonoBehaviour:
   particleSpeed: 0
   particleRate: 0
   multiplierStatus: 1
+  finalVelocity: 0
   vRange: []
   windForceCurve:
     serializedVersion: 2

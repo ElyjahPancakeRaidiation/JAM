@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ball Level 3
   m_EditorClassIdentifier: 
   formName: Ball
-  movementSpeed: 14.5
+  movementSpeed: 15
   formSprite: {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   groundPointOffset: {x: 0, y: -0.36}
   globalGroundedColSize: {x: 0.65, y: 0.3}
@@ -25,6 +25,6 @@ MonoBehaviour:
   smoothStopSpeed: 0.2
   dashPowerX: 18
   dashPowerY: 20
-  unchangedDashY: 16
+  unchangedDashY: 17
   maxDashes: 1
   prefabDustSpawner: {fileID: 8613837917271531883, guid: 65cacc0a62f0b89488ae28cce587bd48, type: 3}
