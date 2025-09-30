@@ -6,9 +6,11 @@ using UnityEngine.EventSystems;
 public class MobileSkipButton : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] SkipButtonManager assignedButton;
-    
+
     public void OnPointerDown(PointerEventData pointerEventData)
     {
-        assignedButton.isTouchingButton = true;
+        if (GameManager.current.GetBuildVer() == GameManager.Build.Mobile) {
+            assignedButton.isTouchingButton = true;
+        }
     }
 }
