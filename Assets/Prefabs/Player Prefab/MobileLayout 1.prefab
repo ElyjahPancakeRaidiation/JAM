@@ -599,6 +599,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveFileName: PlayerSettings
   assignedSaveManager: {fileID: 0}
+  ID: 
+  sizeDelta: {x: 0, y: 0}
   specificID: AbilityButton
 --- !u!1 &5449118433317719897
 GameObject:
@@ -852,6 +854,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveFileName: PlayerSettings
   assignedSaveManager: {fileID: 0}
+  ID: 
+  sizeDelta: {x: 0, y: 0}
   specificID: SwitchButton
 --- !u!1 &8886716892042099564
 GameObject:

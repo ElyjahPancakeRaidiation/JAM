@@ -16,7 +16,7 @@ public class SavePosition : SaveData
     {
         if (assignedSaveManager == null)
         {
-            Debug.LogError("Save Manager is not assigned");
+            Debug.LogError("Save Manager is not assigned to " + gameObject.name);
         }
         StoreGameObjectVariables();
         PublicStartMethod(ID);

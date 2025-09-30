@@ -31,8 +31,9 @@ public class GameManager : MonoBehaviour
 
 
     #region build variables
-    private enum Build { Mobile, PC }
+    public enum Build { Mobile, PC }
     [SerializeField] private Build build;
+    public Build GetBuildVer(){ return build; }
     private GameObject[] MobileObjects;
     private GameObject[] PCObjects;
     #endregion

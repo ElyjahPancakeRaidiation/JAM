@@ -51,6 +51,7 @@ public class CanvasScript : MonoBehaviour
 
     }
     private GameObject pauseCanvas, blackBarCanvas, thoughtBubbleObj, TransitionCanvas;
+    [SerializeField] private GameObject PCCanvas, MobileCanvas;
     private GameObject reorganizeUI;
     private bool isThoughtBubbleFollow;
 
@@ -70,6 +71,18 @@ public class CanvasScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PCCanvas == null || MobileCanvas == null)
+        {
+            Debug.LogError("Missing either PC or Mobiles canvases");
+        }
+        else
+        {
+            PCCanvas.SetActive(false);
+            MobileCanvas.SetActive(false);
+            GameManager.current.pauseEvent += ChangePauseCanvasState;
+            GameManager.current.unPauseEvent += ChangePauseCanvasState;
+        }
+
         //Finds all of the objects according to their NAME(Except thought bubble).
         pauseCanvas = GameObject.Find("PauseCanvas") ?? null;
         blackBarCanvas = GameObject.Find("BlackBarCanvas") ?? null;
@@ -155,6 +168,19 @@ public class CanvasScript : MonoBehaviour
         }
     }
 
+    private void ChangePauseCanvasState()
+    {
+        switch (GameManager.current.GetBuildVer())
+        {
+            case GameManager.Build.Mobile:
+                MobileCanvas.SetActive(!MobileCanvas.gameObject.activeSelf);
+                break;
+            case GameManager.Build.PC:
+                PCCanvas.SetActive(!PCCanvas.gameObject.activeSelf);
+                break;
+        }
+    }
+
     private void UpdateButtonScale(float v)
     {
         foreach (MobileButton button in buttons)
@@ -233,6 +259,8 @@ public class CanvasScript : MonoBehaviour
     {
         GameManager.current.pauseEvent -= setActivePauseCanvas;
         GameManager.current.unPauseEvent -= setActivePauseCanvas;
+        GameManager.current.pauseEvent -= ChangePauseCanvasState;
+        GameManager.current.unPauseEvent -= ChangePauseCanvasState;
     }
     public void LoadButtonForOrganization()
     {

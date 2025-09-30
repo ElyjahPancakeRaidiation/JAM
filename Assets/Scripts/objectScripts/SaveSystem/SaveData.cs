@@ -98,7 +98,7 @@ public class SaveData : MonoBehaviour
 
     public void RunWhenDestroyed()
     {
-        assignedSaveManager.pushDataToSave -= PushData;
+        if(assignedSaveManager!=null){assignedSaveManager.pushDataToSave -= PushData;}
     }
 
     void OnDestroy()
