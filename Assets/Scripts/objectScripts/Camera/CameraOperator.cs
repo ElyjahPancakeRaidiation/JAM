@@ -220,7 +220,7 @@ public class CameraOperator : MonoBehaviour
 
     
 
-
+    public float GetCamSize(){ return Camera.main.orthographicSize; }
     private void moveCamera(GameObject target)
     {
 

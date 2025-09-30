@@ -59,6 +59,8 @@ public class CameraManager : MonoBehaviour
     private bool effectsActivated = false;//Track whether it was activated already or not
 
     private bool mysteryLoop;
+    public bool useOrigSize;
+    private float origSize;
 
     // Start is called before the first frame update
     void Start()
@@ -106,6 +108,10 @@ public class CameraManager : MonoBehaviour
 
         if (changeCameraSize)
         {
+            if (useOrigSize)
+            {
+                origSize = camOperator.GetCamSize();
+            }
             camOperator.setZoomSpeed(cameraSizeSpeed);
             camOperator.setCameraSize(newCameraSize);
         }
@@ -141,6 +147,7 @@ public class CameraManager : MonoBehaviour
 
         if (changeCameraSize && !keepSizeSettings)
         {
+            if(useOrigSize){ returningSize = origSize; }
             camOperator.setZoomSpeed(returningSizeSpeed);
             camOperator.setCameraSize(returningSize);
         }

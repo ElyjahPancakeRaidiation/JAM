@@ -10181,6 +10181,7 @@ MonoBehaviour:
   stopWhenSceneStarts: 0
   playOnStart: 1
   useCutsceneBars: 1
+  stopPlayer: 1
 --- !u!4 &279021748
 Transform:
   m_ObjectHideFlags: 0
@@ -15667,6 +15668,7 @@ MonoBehaviour:
   shakeStrength: 0
   delayShakeSec: 0
   repeat: 0
+  useOrigSize: 0
 --- !u!4 &548232372
 Transform:
   m_ObjectHideFlags: 0
@@ -32727,6 +32729,7 @@ MonoBehaviour:
   stopWhenSceneStarts: 0
   playOnStart: 0
   useCutsceneBars: 1
+  stopPlayer: 1
 --- !u!4 &1662136774
 Transform:
   m_ObjectHideFlags: 0
@@ -41313,7 +41316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: build
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum
