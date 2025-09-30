@@ -24,6 +24,11 @@ public class ManageWind : MonoBehaviour
     [SerializeField] private float windForceX;
     [SerializeField] private float windForceY;
 
+    [SerializeField] private bool checkPlayerInVisibleZone;
+    [SerializeField] private Vector2 visibleSize;
+
+    [SerializeField] private Vector2 visibleWindOffset;
+
     private BoxCollider2D windCollider;
     private bool isForceHorizontal;
     [Space(5)]
@@ -99,6 +104,7 @@ public class ManageWind : MonoBehaviour
         ParticleBounds();
         RotateWind(windParticles);
         GetParticlePosition(windParticles);
+        IncreaseParticleSpeed(windForceX, windForceY);
 
     }
 
@@ -175,6 +181,10 @@ public class ManageWind : MonoBehaviour
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireCube(transform.position + (Vector3)windRangeOffset, new Vector3(sizeX, sizeY, 0));
+
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position + (Vector3)visibleWindOffset, (Vector3)visibleSize);
     }
 
     void ColliderBounds()
@@ -193,10 +203,15 @@ public class ManageWind : MonoBehaviour
             ApplyForce();
             // ForceMultiplierY(incrementValue, maxMultiplier);
             stayTimer += Time.deltaTime;
-            IncreaseParticleSpeed(windForceX, windForceY);
-            SpawnWindParticlesV2();
+     
+           
             // IncreaseMultiplier();
             ApplyForceToVines();
+            if (!checkPlayerInVisibleZone)
+            {
+                SpawnWindParticlesV2();
+                        
+            }
         }
 
         else
@@ -206,8 +221,18 @@ public class ManageWind : MonoBehaviour
             multiplier = 1;
             // incrementValue = .5f;
             playerWithinZone = false;
-
         }
+
+        if (checkPlayerInVisibleZone)
+        {
+
+            if (IsPlayerWithinVisibleWindZone())
+            {
+                SpawnWindParticlesV2();
+            }
+            else StopWindParticles();
+        }
+      
     }
 
     bool IsPlayerWithinZone()
@@ -217,6 +242,10 @@ public class ManageWind : MonoBehaviour
     Collider2D[] IsVineWithinZone()
     {
         return Physics2D.OverlapBoxAll(transform.position + (Vector3)windRangeOffset, new Vector3(sizeX, sizeY), 0, layerMaskVine);
+    }
+    bool IsPlayerWithinVisibleWindZone()
+    {
+        return Physics2D.OverlapBox(transform.position + (Vector3)visibleWindOffset, (Vector3)visibleSize, 0, layerMask);
     }
 
     bool ForceDirection(float forceX, float forceY)
