@@ -27,7 +27,7 @@ PrefabInstance:
     - target: {fileID: 1190251712854042125, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: playerForms.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 446f6b1a39a09f04a8ec37f0bae58a9d, type: 2}
+      objectReference: {fileID: 11400000, guid: 4b3ccf53db92fdd419e92b2c86d47313, type: 2}
     - target: {fileID: 1190251712854042125, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: playerForms.Array.data[1]
       value: 
@@ -327,6 +327,7 @@ MonoBehaviour:
   angleOffset: 15
   bodyOffset: {x: 0.2, y: 0}
   handType: 1
+  updirection: {x: 0, y: 0, z: 0}
 --- !u!114 &4948594084085980826 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5885576358666887292, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
@@ -358,6 +359,7 @@ MonoBehaviour:
   angleOffset: -15
   bodyOffset: {x: -0.4, y: 0}
   handType: 0
+  updirection: {x: 0, y: 0, z: 0}
 --- !u!1 &5766301462787149592 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4973997343657685502, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
