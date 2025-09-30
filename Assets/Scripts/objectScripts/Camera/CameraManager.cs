@@ -58,6 +58,8 @@ public class CameraManager : MonoBehaviour
     public bool repeat = false;
     private bool effectsActivated = false;//Track whether it was activated already or not
 
+    private bool mysteryLoop;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -156,6 +158,14 @@ public class CameraManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(camWaitTime);
         deactivate();
     }
+
+    public IEnumerator PlayManagerAutomaticallyMystery()
+    {
+        activate();
+        yield return new WaitUntil(() => !mysteryLoop);
+        deactivate();
+    }
+    public void SetMysteryBool(bool val){ mysteryLoop = val; }
 
     void OnDrawGizmosSelected() => Gizmos.DrawWireCube(transform.position + (Vector3)colliderOffsetSize, colliderSize);
 
