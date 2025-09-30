@@ -235,7 +235,7 @@ public class ManageWind : MonoBehaviour
       
     }
 
-    bool IsPlayerWithinZone()
+    public bool IsPlayerWithinZone()
     {
         return Physics2D.OverlapBox(transform.position + (Vector3)windRangeOffset, new Vector3(sizeX, sizeY), 0, layerMask);
     }
