@@ -25,6 +25,6 @@ MonoBehaviour:
   smoothStopSpeed: 0.2
   dashPowerX: 18
   dashPowerY: 17
-  unchangedDashY: 15
+  unchangedDashY: 14
   maxDashes: 1
   prefabDustSpawner: {fileID: 8613837917271531883, guid: 65cacc0a62f0b89488ae28cce587bd48, type: 3}
