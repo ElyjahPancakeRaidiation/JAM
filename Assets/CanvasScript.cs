@@ -29,12 +29,16 @@ public class CanvasScript : MonoBehaviour
         {
             var mainButtonRect = mainButton.GetComponent<RectTransform>();
             var editableRect = editable.GetComponent<RectTransform>();
+            var img = editable.GetComponent<Image>();
+            var mainImg = mainButton.GetComponent<Image>();
             mainButtonRect.anchoredPosition = editableRect.anchoredPosition;
             mainButtonRect.sizeDelta = editableRect.sizeDelta;
+            mainImg.color = img.color;
 
             var saveButtonUI = mainButton.GetComponent<SaveButtonUI>();
             saveButtonUI.ChangeSizeDelta(editableRect.sizeDelta);
-            saveButtonUI.gameObject.transform.position = mainButtonRect.gameObject.transform.position;
+            saveButtonUI.ChangePosition(mainButtonRect.gameObject.transform.position);
+            saveButtonUI.ChangeOpacity(img.color);
             saveButtonUI.GetAssignedManager().SaveDataToFile();
 
         }
@@ -52,7 +56,7 @@ public class CanvasScript : MonoBehaviour
     }
     private GameObject pauseCanvas, blackBarCanvas, thoughtBubbleObj, TransitionCanvas;
     [SerializeField] private GameObject PCCanvas, MobileCanvas;
-    private GameObject reorganizeUI;
+    [SerializeField] private GameObject reorganizeUI;
     private bool isThoughtBubbleFollow;
 
     private GameObject player;
@@ -98,11 +102,15 @@ public class CanvasScript : MonoBehaviour
         foreach (MobileButton button in buttons)
         {
             var buttonRect = button.mainButton.GetComponent<RectTransform>();
+            var buttonImg = button.mainButton.GetComponent<Image>();
             button.DefaultPostion = buttonRect.anchoredPosition;
             button.DefaultSize = buttonRect.sizeDelta;
 
             buttonRect.position = button.mainButton.GetComponent<SaveButtonUI>().GetPosition();
             buttonRect.sizeDelta = button.mainButton.GetComponent<SaveButtonUI>().GetSizeDelta();
+            buttonImg.color = button.mainButton.GetComponent<SaveButtonUI>().GetColor();
+            Debug.Log(buttonImg.color);
+            Debug.Log(button.mainButton.GetComponent<SaveButtonUI>().GetColor());
         }
         if (buttonScale) //if the slider is correctly passed to the script
         {
@@ -157,6 +165,7 @@ public class CanvasScript : MonoBehaviour
     {
         foreach (MobileButton button in buttons)
         {
+            SpawnEditableButtons(button);
             if (button.editable.GetComponent<RectTransform>() == null)
             {
                 Debug.Log("yo this button is missing the right components, all buttons need button component and rect transform");
@@ -185,6 +194,7 @@ public class CanvasScript : MonoBehaviour
     {
         foreach (MobileButton button in buttons)
         {
+            SpawnEditableButtons(button);
             if (button.editable.GetComponent<RectTransform>() == null)
             {
                 Debug.Log("yo this button is missing the right components, all buttons need button component and rect transform");
@@ -266,14 +276,13 @@ public class CanvasScript : MonoBehaviour
     {
         isEditMode = true;
         Debug.Log(reorganizeUI);
-        reorganizeUI = GameObject.FindGameObjectWithTag("Reorganize");
+        // reorganizeUI = GameObject.FindGameObjectWithTag("Reorganize");
         if (reorganizeUI)
         {
             foreach (MobileButton button in buttons)
             {
                 button.mainButton.GetComponent<SaveButtonUI>().OnStart();
                 SpawnEditableButtons(button);
-                Debug.Log(button.mainButton.name);
             }
         }
         else

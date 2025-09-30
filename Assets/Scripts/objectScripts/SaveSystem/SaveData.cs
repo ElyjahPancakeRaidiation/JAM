@@ -8,12 +8,13 @@ using System.IO;
 public class SaveData : MonoBehaviour
 {
     [SerializeField] private string saveFileName = "UntitledData";
+    private string saveFilePath;
     protected JSONObject dataObj;
     [SerializeField] protected SaveManager assignedSaveManager;
     private bool setUpComplete = false;//This checks if PublicStartMethod was ran.
 
     #region Variables To Save
-    [SerializeField] protected string ID;
+    protected string ID;
 
     #endregion
 
@@ -37,9 +38,9 @@ public class SaveData : MonoBehaviour
         if (!setUpComplete && assignedSaveManager != null)
         {
             assignedSaveManager.pushDataToSave += PushData;
-            saveFileName = assignedSaveManager.getCurDataFolder() + Path.AltDirectorySeparatorChar + saveFileName + ".json";
+            saveFilePath = assignedSaveManager.getCurDataFolder() + Path.AltDirectorySeparatorChar + saveFileName + ".json";
             dataObj = new JSONObject();
-            var o = assignedSaveManager.PullData(saveFileName, ID);
+            var o = assignedSaveManager.PullData(saveFilePath, ID);
             if (o != null)
             {
                 if (o.ToString() != "{}")//{} is null for javascript so if this is empty than it'll create a new JSONObject
@@ -65,22 +66,22 @@ public class SaveData : MonoBehaviour
     public void PushData(Dictionary<string, JSONObject> jsonDic)
     {
         VaribalesToJSON();
-        if (!jsonDic.ContainsKey(saveFileName))
+        if (!jsonDic.ContainsKey(saveFilePath))
         {
             JSONObject jObj = new JSONObject();
             jObj.Add(ID, dataObj);
-            jsonDic.Add(saveFileName, jObj);
+            jsonDic.Add(saveFilePath, jObj);
         }
         else
         {
-            JSONObject j = jsonDic[saveFileName];
+            JSONObject j = jsonDic[saveFilePath];
             if (j.HasKey(ID))//Prevents duplicates from apperaing in the files
             {
-                jsonDic[saveFileName].AsObject[ID] = dataObj;
+                jsonDic[saveFilePath].AsObject[ID] = dataObj;
             }
             else
             {
-                jsonDic[saveFileName].Add(ID, dataObj);
+                jsonDic[saveFilePath].Add(ID, dataObj);
             }
         }
     }
