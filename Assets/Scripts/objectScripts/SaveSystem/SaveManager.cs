@@ -25,6 +25,8 @@ public class SaveManager : MonoBehaviour
 
     [SerializeField] private bool autoSave;
     [SerializeField] private float autoSaveTime = 10;
+    [SerializeField] private bool saveOnce = false;
+    [SerializeField] private int counter;
     private Coroutine AutoSaveCoro;
     private bool saving = false;
     private bool loaded = false;
@@ -86,9 +88,16 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        if (autoSave && AutoSaveCoro == null)
+        if (counter == 0)
         {
-            AutoSaveCoro = StartCoroutine(AutoSave());
+            if (autoSave && AutoSaveCoro == null)
+            {
+                if (autoSave)
+                {
+                    counter++;
+                }
+                AutoSaveCoro = StartCoroutine(AutoSave());
+            }
         }
         AddCommands();
     }
@@ -101,9 +110,16 @@ public class SaveManager : MonoBehaviour
     void Update()
     {
 
-        if (autoSave && AutoSaveCoro == null)
+        if (counter == 0)
         {
-            AutoSaveCoro = StartCoroutine(AutoSave());
+            if (autoSave && AutoSaveCoro == null)
+            {
+                if (autoSave)
+                {
+                    counter++;
+                }
+                AutoSaveCoro = StartCoroutine(AutoSave());
+            }
         }
     }
 
@@ -184,7 +200,7 @@ public class SaveManager : MonoBehaviour
 
     private IEnumerator AutoSave()
     {
-        while (autoSave)
+        while (autoSave && counter == 0)
         {
             if (!saving)
             {

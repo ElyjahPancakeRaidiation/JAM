@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SaveEndGame : SaveData
 {
-
+    [SerializeField] private GameManager gm;
     public bool completedGame;
 
     // Start is called before the first frame update
@@ -32,7 +32,7 @@ public class SaveEndGame : SaveData
 
         if (GameManager.current != null)
         {
-            GameManager.current.completedGame = completedGame;
+            gm.completedGame = completedGame;
         }
     }
 

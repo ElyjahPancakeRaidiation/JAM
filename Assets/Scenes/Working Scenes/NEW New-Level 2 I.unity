@@ -2963,11 +2963,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 395.5
+      value: 779.37
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 222.9
+      value: 188.98
       objectReference: {fileID: 0}
     - target: {fileID: 8771094301091103628, guid: e047bc0bf1d43b947823044c64581ad4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5254,7 +5254,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -7
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 99008099f11de3e48b2477ae94a430db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5281,6 +5281,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &474685226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4399506538411790612, guid: de9bb1e6891c4754395e6ed78ad797b3, type: 3}
+  m_PrefabInstance: {fileID: 1178012118}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &484557283
 GameObject:
   m_ObjectHideFlags: 0
@@ -6399,8 +6404,8 @@ MonoBehaviour:
   stopWhenOutOfBounds: 0
   completed: 0
   playerButtons:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 474685226}
+  - {fileID: 1178012121}
   keys:
   - playerKeys: 0
     playerForm: 2
@@ -6439,6 +6444,8 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   anim: {fileID: 209788014}
+  colSize: {x: 0, y: 0}
+  colOffset: {x: 0, y: 0}
 --- !u!4 &607251264
 Transform:
   m_ObjectHideFlags: 0
@@ -7098,8 +7105,8 @@ MonoBehaviour:
   stopWhenOutOfBounds: 1
   completed: 0
   playerButtons:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 474685226}
+  - {fileID: 1178012121}
   keys:
   - playerKeys: 0
     playerForm: 1
@@ -7112,7 +7119,7 @@ MonoBehaviour:
     playerButton: {fileID: 1178012120}
     amountOfPresses: 1
   - playerKeys: 0
-    playerForm: 2
+    playerForm: 0
     keys: 0
     playerButton: {fileID: 1178012122}
     amountOfPresses: 1
@@ -7136,6 +7143,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   anim: {fileID: 1878953479}
+  colSize: {x: 30.8, y: 46.4}
+  colOffset: {x: 1.2, y: 6.87}
 --- !u!4 &683919381
 Transform:
   m_ObjectHideFlags: 0
@@ -7689,6 +7698,10 @@ PrefabInstance:
     - target: {fileID: 4418647252240284476, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: m_Offset.y
       value: 10.638191
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
+      propertyPath: build
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum
@@ -8891,8 +8904,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 343.6287, y: -46.02025, z: 0}
-    m_Extent: {x: 411.09518, y: 134.35495, z: 0}
+    m_Center: {x: 343.63574, y: -46.022747, z: 0}
+    m_Extent: {x: 411.10303, y: 134.35735, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -9881,8 +9894,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -3.0775986, y: 21.5754, z: 0}
-    m_Extent: {x: 76.3528, y: 53.305397, z: 0}
+    m_Center: {x: -3.0732994, y: 21.57755, z: 0}
+    m_Extent: {x: 76.356, y: 53.31115, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -13049,7 +13062,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3834880783209105002, guid: de9bb1e6891c4754395e6ed78ad797b3, type: 3}
   m_PrefabInstance: {fileID: 1178012118}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 474685226}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -14425,6 +14438,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   anim: {fileID: 1878953479}
+  colSize: {x: 0, y: 0}
+  colOffset: {x: 0, y: 0}
 --- !u!4 &1255395217
 Transform:
   m_ObjectHideFlags: 0
@@ -18389,8 +18404,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 119.0646, y: 48.1642, z: 0}
-    m_Extent: {x: 129.577, y: 117.6039, z: 0}
+    m_Center: {x: 119.055954, y: 48.163803, z: 0}
+    m_Extent: {x: 129.57405, y: 117.6024, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -18516,6 +18531,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   anim: {fileID: 209788014}
+  colSize: {x: 0, y: 0}
+  colOffset: {x: 0, y: 0}
 --- !u!4 &1622052556
 Transform:
   m_ObjectHideFlags: 0

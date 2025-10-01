@@ -20,11 +20,16 @@ public class ThoughtBubble : MonoBehaviour
     private bool inProgress;
 
     [SerializeField] private Animation anim;
+    private Collider2D col;
+    [SerializeField] private Vector2 colSize, colOffset;
+    private float angle;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        colSize = GetComponent<BoxCollider2D>().size;
+        colOffset = GetComponent<BoxCollider2D>().offset;
         keyOrder = GetComponent<TrackKeyOrder>();
         if (thoughtBubble != null) { thoughtBubble.SetActive(false); }
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
@@ -41,10 +46,10 @@ public class ThoughtBubble : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void FixedUpdate()
     {
-
-        if (collision.CompareTag("Player"))
+        col = Physics2D.OverlapBox(transform.position + (Vector3)colOffset, colSize, angle, LayerMask.GetMask("Player"));
+        if (col)
         {
             if (!keyOrder.completed)
             {
@@ -53,15 +58,10 @@ public class ThoughtBubble : MonoBehaviour
                     keyOrder.StartTrackingKeys();
                     inProgress = true;
                 }
-                TriggerThought(collision);
+                TriggerThought(col);
             }
         }
-    }
-
-    void OnTriggerExit2D(Collider2D collision)
-    {
-        //fix this later to tired to fix now
-        if (collision.CompareTag("Player") && !Input.GetKeyDown(PlayerManager.playerManager.playerSwitchFormKey))
+        else
         {
             if (keyOrder.GetStopWhenOutofBounds())
             {
@@ -110,5 +110,10 @@ public class ThoughtBubble : MonoBehaviour
         {
             thoughtBubble.SetActive(false);
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(transform.position + (Vector3)colOffset, colSize);
     }
 }

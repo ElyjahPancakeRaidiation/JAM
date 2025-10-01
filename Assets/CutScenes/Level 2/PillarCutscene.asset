@@ -17,7 +17,7 @@ MonoBehaviour:
     information: 
     actorIndex: 0
     endPositionIndex: 0
-    waitTime: 12
+    waitTime: 17
     clampVelocity: {x: 0, y: 0}
     eventIndex: 0
     infinite: 0

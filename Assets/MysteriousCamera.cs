@@ -40,6 +40,7 @@ public class MysteriousCamera : MonoBehaviour
             _sprRenderer.color = highlight;
             if (col && !beingMysterious)
             {
+                Debug.Log("Being ran");
                 beingMysterious = true;
                 cameraManager.SetMysteryBool(beingMysterious);
 

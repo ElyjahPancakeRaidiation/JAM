@@ -16171,7 +16171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: build
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum
@@ -16379,6 +16379,7 @@ MonoBehaviour:
   shakeStrength: 0
   delayShakeSec: 0
   repeat: 0
+  useOrigSize: 0
 --- !u!4 &389368754
 Transform:
   m_ObjectHideFlags: 0
@@ -28828,6 +28829,7 @@ MonoBehaviour:
   shakeStrength: 0
   delayShakeSec: 0
   repeat: 0
+  useOrigSize: 0
 --- !u!4 &789574264
 Transform:
   m_ObjectHideFlags: 0
@@ -49860,6 +49862,7 @@ MonoBehaviour:
   stopWhenSceneStarts: 1
   playOnStart: 0
   useCutsceneBars: 1
+  stopPlayer: 1
 --- !u!4 &1396247075
 Transform:
   m_ObjectHideFlags: 0
@@ -66349,6 +66352,9 @@ MonoBehaviour:
     fadeLength: 1
   currentSource: {fileID: 0}
   incomingSource: {fileID: 0}
+  playingRain: 0
+  rainClip: {fileID: 0}
+  rainVolume: 0
   mainVolume: 0
   volumeCurve:
     serializedVersion: 2
@@ -72583,3 +72589,4 @@ SceneRoots:
   - {fileID: 567512863}
   - {fileID: 282844922}
   - {fileID: 164663178}
+  - {fileID: 770253078}

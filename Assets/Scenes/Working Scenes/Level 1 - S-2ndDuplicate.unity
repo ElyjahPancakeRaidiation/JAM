@@ -40895,6 +40895,10 @@ PrefabInstance:
       propertyPath: assignedSaveManager
       value: 
       objectReference: {fileID: 1460987842}
+    - target: {fileID: 5901477527780807295, guid: de9bb1e6891c4754395e6ed78ad797b3, type: 3}
+      propertyPath: assignedSaveManager
+      value: 
+      objectReference: {fileID: 1460987842}
     - target: {fileID: 5986151065681630098, guid: de9bb1e6891c4754395e6ed78ad797b3, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -40915,6 +40919,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 6573866402874997241}
+    - target: {fileID: 7612716304681290246, guid: de9bb1e6891c4754395e6ed78ad797b3, type: 3}
+      propertyPath: assignedSaveManager
+      value: 
+      objectReference: {fileID: 1460987842}
     - target: {fileID: 8010368077390936967, guid: de9bb1e6891c4754395e6ed78ad797b3, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -41316,7 +41324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: build
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7967749192211735272, guid: 2539bc13bbae338459796a4bf03cb904, type: 3}
       propertyPath: sceneNum

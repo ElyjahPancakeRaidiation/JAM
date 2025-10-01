@@ -99,6 +99,7 @@ public class CameraManager : MonoBehaviour
 
     private void activate()
     {
+        Debug.Log(gameObject.name + "Is running me");
         if (moveToTarget)
         {
             camOperator.moveToTarget(camTarget);
