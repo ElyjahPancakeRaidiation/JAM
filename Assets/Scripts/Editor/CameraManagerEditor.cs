@@ -37,6 +37,7 @@ public class CameraManagerEditor : Editor
     SerializedProperty repeat;
 
     SerializedProperty camWaitTime;
+    SerializedProperty useOrigSize;
 
 
     void OnEnable()
@@ -75,6 +76,7 @@ public class CameraManagerEditor : Editor
         keepOffsetSettings = serializedObject.FindProperty(nameof(keepOffsetSettings));
 
         camWaitTime = serializedObject.FindProperty(nameof(camWaitTime));
+        useOrigSize = serializedObject.FindProperty(nameof(useOrigSize));
 
     }
 
@@ -110,9 +112,10 @@ public class CameraManagerEditor : Editor
             VariableField(cameraSizeSpeed);
             if (!keepSizeSettings.boolValue)
             {
-                VariableField(returningSize);
+                if(!useOrigSize.boolValue){VariableField(returningSize);}
                 VariableField(returningSizeSpeed);
             }
+            VariableField(useOrigSize);
             VariableField(keepSizeSettings);
 
         }

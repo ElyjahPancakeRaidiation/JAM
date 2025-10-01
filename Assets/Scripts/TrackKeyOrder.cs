@@ -86,7 +86,7 @@ public class TrackKeyOrder : MonoBehaviour
             }
 
             //Checks if the key or button has been pressed than checks if it was the correct one. If so they can move on to next element. If not repeat on the first element.
-            if (keys[keysIdx].clicked)
+            if (keys[keysIdx].clicked && IsCorrectForm(keys[keysIdx].GetWantedPlayerForm()))
             {
                 if (keys[keysIdx].correctClick)
                 {
@@ -120,6 +120,19 @@ public class TrackKeyOrder : MonoBehaviour
             RemoveFromButtons();
         }
 
+    }
+
+    private bool IsCorrectForm(AllKeys.PlayerForm playerForm)
+    {
+        var playerManager = PlayerManager.playerManager;
+        if (playerForm == AllKeys.PlayerForm.Any) return true;//Checks if it can be any form first
+        if (playerManager == null) return false;//Checks if there is a playermanager
+        if (playerManager.curForm == (int)playerForm)//Checks we are in the correct form
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private bool AnyKeyExceptMouse()
@@ -160,17 +173,26 @@ public class TrackKeyOrder : MonoBehaviour
 [Serializable]
 public class AllKeys
 {
-    public enum PlayerKeys
+    private enum PlayerKeys
     {
         None,
         Ability,
         Switch
     }
-    public PlayerKeys playerKeys;
+    public enum PlayerForm
+    {
+        //Adjusted to the order that is usually set in the inspector
+        Any = 2,
+        Torso = 1,
+        Ball = 0
+    }
+
+    [SerializeField] private PlayerKeys playerKeys;
+    [SerializeField] private PlayerForm playerForm = PlayerForm.Any;
     public KeyCode keys;
     public Button playerButton;
-    public bool clicked{ get; set; }
-    public bool correctClick{ get; set; }
+    public bool clicked { get; set; }
+    public bool correctClick { get; set; }
     public int amountOfPresses = 1;
 
     public KeyCode GetPlayerKey()
@@ -216,4 +238,5 @@ public class AllKeys
             clicked = true;
         }
     }
+    public PlayerForm GetWantedPlayerForm(){ return playerForm; }
 }

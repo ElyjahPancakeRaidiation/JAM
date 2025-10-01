@@ -137,7 +137,7 @@ public class ManageWind : MonoBehaviour
         float distance = Mathf.Abs(currentPosition *3 - windRangeOffset.y);
         
        // finalVelocity = Mathf.Abs((currentPosition * Velocitydifference) - windRangeOffset.y);
-         Debug.Log("distance: " + distance);
+        //  Debug.Log("distance: " + distance);
         finalVelocity = Mathf.Sqrt(2 * 9.8f * distance);
 
         return finalVelocity;
@@ -152,7 +152,7 @@ public class ManageWind : MonoBehaviour
         if (multiplierStatus == MultiplierStatus.On)
         {
 
-            Debug.Log("final velocity: " + finalVelocity);
+            // Debug.Log("final velocity: " + finalVelocity);
        
             TrackVelocity();
             windForceCurve = new AnimationCurve(new Keyframe(0, firstFrame.y), new Keyframe(secondFrame.x, secondFrame.y),

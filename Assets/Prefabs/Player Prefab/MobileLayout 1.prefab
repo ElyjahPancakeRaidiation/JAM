@@ -464,6 +464,7 @@ GameObject:
   - component: {fileID: 1823872474219230941}
   - component: {fileID: 1165715086024706115}
   - component: {fileID: 3452200436577710335}
+  - component: {fileID: 7667846638678080637}
   m_Layer: 5
   m_Name: Activate Ability
   m_TagString: PlayerButton
@@ -584,6 +585,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7667846638678080637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2872938274572478337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72363dd8ea64c0d449373063e0dc1b4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveFileName: PlayerSettings
+  assignedSaveManager: {fileID: 0}
+  ID: 
+  sizeDelta: {x: 0, y: 0}
+  specificID: AbilityButton
 --- !u!1 &5449118433317719897
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +719,7 @@ GameObject:
   - component: {fileID: 6366923355023819029}
   - component: {fileID: 2536911401448168295}
   - component: {fileID: 8895168348696758254}
+  - component: {fileID: 5579055515529741808}
   m_Layer: 5
   m_Name: Switch Ability
   m_TagString: PlayerButton
@@ -821,6 +840,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5579055515529741808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5792454581630957471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72363dd8ea64c0d449373063e0dc1b4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveFileName: PlayerSettings
+  assignedSaveManager: {fileID: 0}
+  ID: 
+  sizeDelta: {x: 0, y: 0}
+  specificID: SwitchButton
 --- !u!1 &8886716892042099564
 GameObject:
   m_ObjectHideFlags: 0

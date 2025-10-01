@@ -37,6 +37,7 @@ public class CutSceneManager : MonoBehaviour
     public static UnityEvent startCutsceneEvent;
     public static UnityEvent endCutsceneEvent;
     [SerializeField] private bool useCutsceneBars = true;
+    [SerializeField] private bool stopPlayer = true;
 
     void Awake()
     {
@@ -72,14 +73,17 @@ public class CutSceneManager : MonoBehaviour
     {
         isPlaying = true;
         isFinished = false;
-        if (playerManager != null)
+        if (playerManager != null && stopPlayer)
         {
             playerManager.canControl = false;
             playerManager.PlayerAbility().SetCanUseAbility(false);
         }
-        
-        if (stopWhenSceneStarts) { StartCoroutine(easeObj(easeAmount)); }
-        if(startCutsceneEvent != null && useCutsceneBars){ startCutsceneEvent.Invoke(); }
+
+        if (stopPlayer)
+        {
+            if (stopWhenSceneStarts) { StartCoroutine(easeObj(easeAmount)); }
+            if(startCutsceneEvent != null && useCutsceneBars){ startCutsceneEvent.Invoke(); }
+        }
         StartCoroutine(RunCutScene(cutSceneToPlay));
     }
 
@@ -91,7 +95,7 @@ public class CutSceneManager : MonoBehaviour
             if(startCutsceneEvent != null && useCutsceneBars){ endCutsceneEvent.Invoke(); }
             isPlaying = false;
             canPlayCutScene = false;
-            if (playerManager != null)
+            if (playerManager != null && stopPlayer)
             {
                 playerManager.canControl = true;
                 playerManager.PlayerAbility().SetCanUseAbility(true);

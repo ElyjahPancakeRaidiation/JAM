@@ -58,6 +58,10 @@ public class CameraManager : MonoBehaviour
     public bool repeat = false;
     private bool effectsActivated = false;//Track whether it was activated already or not
 
+    private bool mysteryLoop;
+    public bool useOrigSize;
+    private float origSize;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,6 +99,7 @@ public class CameraManager : MonoBehaviour
 
     private void activate()
     {
+        Debug.Log(gameObject.name + "Is running me");
         if (moveToTarget)
         {
             camOperator.moveToTarget(camTarget);
@@ -104,6 +109,10 @@ public class CameraManager : MonoBehaviour
 
         if (changeCameraSize)
         {
+            if (useOrigSize)
+            {
+                origSize = camOperator.GetCamSize();
+            }
             camOperator.setZoomSpeed(cameraSizeSpeed);
             camOperator.setCameraSize(newCameraSize);
         }
@@ -139,6 +148,7 @@ public class CameraManager : MonoBehaviour
 
         if (changeCameraSize && !keepSizeSettings)
         {
+            if(useOrigSize){ returningSize = origSize; }
             camOperator.setZoomSpeed(returningSizeSpeed);
             camOperator.setCameraSize(returningSize);
         }
@@ -156,6 +166,14 @@ public class CameraManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(camWaitTime);
         deactivate();
     }
+
+    public IEnumerator PlayManagerAutomaticallyMystery()
+    {
+        activate();
+        yield return new WaitUntil(() => !mysteryLoop);
+        deactivate();
+    }
+    public void SetMysteryBool(bool val){ mysteryLoop = val; }
 
     void OnDrawGizmosSelected() => Gizmos.DrawWireCube(transform.position + (Vector3)colliderOffsetSize, colliderSize);
 

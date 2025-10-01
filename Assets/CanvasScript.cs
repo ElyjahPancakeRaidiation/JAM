@@ -29,12 +29,18 @@ public class CanvasScript : MonoBehaviour
         {
             var mainButtonRect = mainButton.GetComponent<RectTransform>();
             var editableRect = editable.GetComponent<RectTransform>();
+            var img = editable.GetComponent<Image>();
+            var mainImg = mainButton.GetComponent<Image>();
             mainButtonRect.anchoredPosition = editableRect.anchoredPosition;
             mainButtonRect.sizeDelta = editableRect.sizeDelta;
-            var mainColor = mainButton.GetComponent<Image>().color;
-            var editableColor = editable.GetComponent<Image>().color;
-            mainColor.a = editableColor.a;
-            mainButton.GetComponent<Image>().color = mainColor;
+            mainImg.color = img.color;
+
+            var saveButtonUI = mainButton.GetComponent<SaveButtonUI>();
+            saveButtonUI.ChangeSizeDelta(editableRect.sizeDelta);
+            saveButtonUI.ChangePosition(mainButtonRect.gameObject.transform.position);
+            saveButtonUI.ChangeOpacity(img.color);
+            saveButtonUI.GetAssignedManager().SaveDataToFile();
+
         }
         public void ResetToDefault()
         {
@@ -45,11 +51,12 @@ public class CanvasScript : MonoBehaviour
             editableRect.anchoredPosition = DefaultPostion;
             mainButtonRect.sizeDelta = DefaultSize;
             editableRect.sizeDelta = DefaultSize;
-
         }
+
     }
     private GameObject pauseCanvas, blackBarCanvas, thoughtBubbleObj, TransitionCanvas;
-    private GameObject reorganizeUI;
+    [SerializeField] private GameObject PCCanvas, MobileCanvas;
+    [SerializeField] private GameObject reorganizeUI;
     private bool isThoughtBubbleFollow;
 
     private GameObject player;
@@ -68,6 +75,18 @@ public class CanvasScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PCCanvas == null || MobileCanvas == null)
+        {
+            Debug.LogError("Missing either PC or Mobiles canvases");
+        }
+        else
+        {
+            PCCanvas.SetActive(false);
+            MobileCanvas.SetActive(false);
+            GameManager.current.pauseEvent += ChangePauseCanvasState;
+            GameManager.current.unPauseEvent += ChangePauseCanvasState;
+        }
+
         //Finds all of the objects according to their NAME(Except thought bubble).
         pauseCanvas = GameObject.Find("PauseCanvas") ?? null;
         blackBarCanvas = GameObject.Find("BlackBarCanvas") ?? null;
@@ -83,8 +102,15 @@ public class CanvasScript : MonoBehaviour
         foreach (MobileButton button in buttons)
         {
             var buttonRect = button.mainButton.GetComponent<RectTransform>();
+            var buttonImg = button.mainButton.GetComponent<Image>();
             button.DefaultPostion = buttonRect.anchoredPosition;
             button.DefaultSize = buttonRect.sizeDelta;
+
+            buttonRect.position = button.mainButton.GetComponent<SaveButtonUI>().GetPosition();
+            buttonRect.sizeDelta = button.mainButton.GetComponent<SaveButtonUI>().GetSizeDelta();
+            buttonImg.color = button.mainButton.GetComponent<SaveButtonUI>().GetColor();
+            Debug.Log(buttonImg.color);
+            Debug.Log(button.mainButton.GetComponent<SaveButtonUI>().GetColor());
         }
         if (buttonScale) //if the slider is correctly passed to the script
         {
@@ -102,9 +128,10 @@ public class CanvasScript : MonoBehaviour
         {
             opacityScale.onValueChanged.AddListener((v) =>
             {
-                Debug.Log("hehehe");
                 UpdateButtonOpacity(v);
             });
+            // SpawnEditableButtons(button);
+            // button.editable.GetComponent<RectTransform>().sizeDelta = button.DefaultSize * v;
         }
         else
         {
@@ -138,6 +165,7 @@ public class CanvasScript : MonoBehaviour
     {
         foreach (MobileButton button in buttons)
         {
+            SpawnEditableButtons(button);
             if (button.editable.GetComponent<RectTransform>() == null)
             {
                 Debug.Log("yo this button is missing the right components, all buttons need button component and rect transform");
@@ -149,10 +177,24 @@ public class CanvasScript : MonoBehaviour
         }
     }
 
+    private void ChangePauseCanvasState()
+    {
+        switch (GameManager.current.GetBuildVer())
+        {
+            case GameManager.Build.Mobile:
+                MobileCanvas.SetActive(!MobileCanvas.gameObject.activeSelf);
+                break;
+            case GameManager.Build.PC:
+                PCCanvas.SetActive(!PCCanvas.gameObject.activeSelf);
+                break;
+        }
+    }
+
     private void UpdateButtonScale(float v)
     {
         foreach (MobileButton button in buttons)
         {
+            SpawnEditableButtons(button);
             if (button.editable.GetComponent<RectTransform>() == null)
             {
                 Debug.Log("yo this button is missing the right components, all buttons need button component and rect transform");
@@ -227,18 +269,20 @@ public class CanvasScript : MonoBehaviour
     {
         GameManager.current.pauseEvent -= setActivePauseCanvas;
         GameManager.current.unPauseEvent -= setActivePauseCanvas;
+        GameManager.current.pauseEvent -= ChangePauseCanvasState;
+        GameManager.current.unPauseEvent -= ChangePauseCanvasState;
     }
     public void LoadButtonForOrganization()
     {
         isEditMode = true;
         Debug.Log(reorganizeUI);
-        reorganizeUI = GameObject.FindGameObjectWithTag("Reorganize");
+        // reorganizeUI = GameObject.FindGameObjectWithTag("Reorganize");
         if (reorganizeUI)
         {
             foreach (MobileButton button in buttons)
             {
-                if (!button.editable) button.editable = Instantiate(button.mainButton, reorganizeUI.transform);
-                button.editable.SetActive(true);
+                button.mainButton.GetComponent<SaveButtonUI>().OnStart();
+                SpawnEditableButtons(button);
             }
         }
         else
@@ -262,6 +306,16 @@ public class CanvasScript : MonoBehaviour
             }
         }
         Debug.Log("elyjah help me save this to player settings json");
+    }
+    private void SpawnEditableButtons(MobileButton button)
+    {
+        reorganizeUI = GameObject.FindGameObjectWithTag("Reorganize");
+        if (!button.editable)
+        {
+            button.editable = Instantiate(button.mainButton, reorganizeUI.transform);
+            Destroy(button.editable.GetComponent<SaveButtonUI>());
+        }
+        button.editable.SetActive(true);
     }
     public void OnBeginDrag(PointerEventData eventData)
     {

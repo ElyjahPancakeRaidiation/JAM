@@ -1,0 +1,109 @@
+using UnityEngine;
+using SimpleJSON;
+using System.Collections.Generic;
+using System;
+using System.IO;
+
+[Serializable]
+public class SaveData : MonoBehaviour
+{
+    [SerializeField] private string saveFileName = "UntitledData";
+    private string saveFilePath;
+    protected JSONObject dataObj;
+    [SerializeField] protected SaveManager assignedSaveManager;
+    private bool setUpComplete = false;//This checks if PublicStartMethod was ran.
+
+    #region Variables To Save
+    protected string ID;
+
+    #endregion
+
+    void OnEnable()
+    {
+        if (assignedSaveManager == null)
+        {
+            Debug.LogError("Save Manager is not assigned");
+        }
+        StoreGameObjectVariables();
+        PublicStartMethod(ID);
+    }
+
+    void Update()
+    {
+        StoreGameObjectVariables();
+    }
+
+    public virtual void PublicStartMethod(string ID)
+    {
+        if (!setUpComplete && assignedSaveManager != null)
+        {
+            assignedSaveManager.pushDataToSave += PushData;
+            saveFilePath = assignedSaveManager.getCurDataFolder() + Path.AltDirectorySeparatorChar + saveFileName + ".json";
+            dataObj = new JSONObject();
+            var o = assignedSaveManager.PullData(saveFilePath, ID);
+            if (o != null)
+            {
+                if (o.ToString() != "{}")//{} is null for javascript so if this is empty than it'll create a new JSONObject
+                {
+                    dataObj = o;
+                    JSONToVariables(dataObj);
+                }
+            }
+            else
+            {
+                Debug.Log("Data null");
+            }
+            setUpComplete = true;
+        }
+    }
+
+    public virtual void StoreGameObjectVariables()
+    {
+        ID = gameObject.name;
+
+    }
+
+    public void PushData(Dictionary<string, JSONObject> jsonDic)
+    {
+        VaribalesToJSON();
+        if (!jsonDic.ContainsKey(saveFilePath))
+        {
+            JSONObject jObj = new JSONObject();
+            jObj.Add(ID, dataObj);
+            jsonDic.Add(saveFilePath, jObj);
+        }
+        else
+        {
+            JSONObject j = jsonDic[saveFilePath];
+            if (j.HasKey(ID))//Prevents duplicates from apperaing in the files
+            {
+                jsonDic[saveFilePath].AsObject[ID] = dataObj;
+            }
+            else
+            {
+                jsonDic[saveFilePath].Add(ID, dataObj);
+            }
+        }
+    }
+
+    public virtual void VaribalesToJSON(){}
+
+    //Used to load from the JSONObject to the variables.
+    public virtual void JSONToVariables(JSONObject data) { }
+
+
+    public SaveManager GetAssignedManager()
+    {
+        return assignedSaveManager;
+    }
+
+    public void RunWhenDestroyed()
+    {
+        if(assignedSaveManager!=null){assignedSaveManager.pushDataToSave -= PushData;}
+    }
+
+    void OnDestroy()
+    {
+        RunWhenDestroyed();
+    }
+}
