@@ -39,6 +39,7 @@ TagManager:
   - WindDetector
   - Reorganize
   - PlayerButton
+  - WindAudio
   layers:
   - Default
   - TransparentFX

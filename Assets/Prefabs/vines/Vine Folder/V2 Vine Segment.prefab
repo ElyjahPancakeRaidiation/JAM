@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5362917633902491425}
   - component: {fileID: 8786363080173680692}
   m_Layer: 7
-  m_Name: VineSegment 1
+  m_Name: V2 Vine Segment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 7663846012884438540}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1204, y: 0, z: 0}
-  m_LocalScale: {x: 0.53137404, y: 0.92539895, z: 1}
+  m_LocalPosition: {x: 0.1161, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 4, z: 1.080615}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -56,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 7ebb896c2575a294c9152064bbd50e3d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 4d57cd3cf8f49c24c9284ac90dae5026, type: 3}
-  m_Color: {r: 0.39569244, g: 0.7169812, b: 0.4866232, a: 1}
+  m_Color: {r: 0.08586205, g: 0.5698112, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -172,7 +172,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.5}
+  m_Offset: {x: 0, y: -0.501006}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 1}
@@ -183,7 +183,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.0085361}
   m_EdgeRadius: 0
 --- !u!114 &8786363080173680692
 MonoBehaviour:
