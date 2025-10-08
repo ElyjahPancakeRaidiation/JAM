@@ -5,6 +5,7 @@ using Unity.Collections;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEditor;
+using Unity.Mathematics;
 
 public class ManageWind : MonoBehaviour
 {
@@ -89,6 +90,7 @@ public class ManageWind : MonoBehaviour
     public static bool IsPlayerInAnyZone;
     public static int windCounter;
 
+
     private WindAudioPlayer windAudio;
     void Awake()
     {
@@ -126,7 +128,7 @@ public class ManageWind : MonoBehaviour
         AdjustWindZoneAudio();
         IRunAudioWhenPlayerExitsZone();
         RunAudioTimer();
-
+        // PlayerManager.playerManager.playerForms[0].functionality.GetDash();
         Debug.Log("AudioTImer: " + audioTimer);
 
     }
@@ -166,7 +168,10 @@ public class ManageWind : MonoBehaviour
         return finalVelocity;
 
     }
-
+    void SetDashAmount(int d)
+    {
+        PlayerManager.playerManager.playerForms[0].functionality.setFloat(d);
+    }
 
     void ChangeMultiplier()
     {
@@ -217,6 +222,7 @@ public class ManageWind : MonoBehaviour
         windCollider.offset = windRangeOffset;
     }
 
+    bool isDashRecharged;
     void RunWind()
     {
         if (IsPlayerWithinZone())
@@ -225,7 +231,11 @@ public class ManageWind : MonoBehaviour
             playerWithinZone = true;
             ApplyForce();
             stayTimer += Time.deltaTime;
-
+            if (multiplierOn && !isDashRecharged)
+            {
+                SetDashAmount(1);
+                isDashRecharged = true;
+            }
             windCounter = 300;
             ApplyForceToVines();
             if (!checkPlayerInVisibleZone)
@@ -249,6 +259,7 @@ public class ManageWind : MonoBehaviour
             stayTimer = 0;
             multiplier = 1;
             windCounter = 0;
+            isDashRecharged = false;
             // incrementValue = .5f;
 
 
