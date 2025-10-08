@@ -8,11 +8,12 @@ public class SaveEndGame : SaveData
 {
     [SerializeField] private GameManager gm;
     public bool completedGame;
+    [SerializeField] private bool checkedLevel;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "EndScreen")
+        if (checkedLevel)
         {
             completedGame = true;
             Debug.Log(completedGame);

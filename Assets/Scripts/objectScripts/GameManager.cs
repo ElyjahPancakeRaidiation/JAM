@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool hasSpawnPosition;
     //controls wheater or not the scene will start with the beginning transition
     [SerializeField] private bool onStartTransition = true;
+    public bool GetOnStartTransition(){return onStartTransition;}
     [SerializeField] private bool canPause = true;
     [SerializeField] private Transform playerSpawnPosition;
 
@@ -89,10 +90,10 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (!onStartTransition)
-            {
-                allCanvasObj._transitionsAnim.SetBool("IdleOnStart", true);
-            }
+            // if (!onStartTransition)
+            // {
+            //     allCanvasObj._transitionsAnim.SetBool("IdleOnStart", true);
+            // }
         }
 
         if (hasSpawnPosition)

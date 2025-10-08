@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -381,8 +380,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.095350266, y: 0.71239996, z: 0}
-    m_Extent: {x: 14.20765, y: 9.547199, z: 0}
+    m_Center: {x: -0.09194994, y: 0.7174001, z: 0}
+    m_Extent: {x: 14.212851, y: 9.552099, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 2.04
@@ -18504,8 +18503,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 48.400047, y: -58.647602, z: 0}
-    m_Extent: {x: 129.58154, y: 132.6143, z: 0}
+    m_Center: {x: 48.393196, y: -58.646397, z: 0}
+    m_Extent: {x: 129.57779, y: 132.6118, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 11.7
@@ -38420,8 +38419,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 114.468155, y: -97.494705, z: 0}
-    m_Extent: {x: 74.90355, y: 105.1691, z: 0}
+    m_Center: {x: 114.47145, y: -97.48985, z: 0}
+    m_Extent: {x: 74.898254, y: 105.16885, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 11.7
@@ -74266,8 +74265,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 48.393353, y: -58.643303, z: 0}
-    m_Extent: {x: 129.57915, y: 132.61331, z: 0}
+    m_Center: {x: 48.393196, y: -58.646397, z: 0}
+    m_Extent: {x: 129.57779, y: 132.6118, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 11.7
@@ -86811,8 +86810,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 48.397602, y: -58.641148, z: 0}
-    m_Extent: {x: 124.19881, y: 127.23245, z: 0}
+    m_Center: {x: 48.39305, y: -58.646652, z: 0}
+    m_Extent: {x: 124.19725, y: 127.23155, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 11.7
@@ -88475,8 +88474,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.08795023, y: 0.71309996, z: 0}
-    m_Extent: {x: 14.2120495, y: 9.555901, z: 0}
+    m_Center: {x: -0.09194994, y: 0.7174001, z: 0}
+    m_Extent: {x: 14.212851, y: 9.552099, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 2.04
@@ -102263,10 +102262,10 @@ MonoBehaviour:
   finalVelocity: 33.704308
   vRange:
   - {x: 0, y: 0.5}
-  - {x: 10, y: 5}
-  - {x: 20, y: 5}
-  - {x: 27, y: 5.6}
-  - {x: 30, y: 1.7}
+  - {x: 10, y: 5.6}
+  - {x: 20, y: 5.6}
+  - {x: 27, y: 6}
+  - {x: 30, y: 6}
   - {x: 36, y: 3}
   - {x: 300, y: 4}
   windForceCurve:
@@ -115762,8 +115761,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 114.46485, y: -97.493904, z: 0}
-    m_Extent: {x: 77.50045, y: 107.7712, z: 0}
+    m_Center: {x: 114.471855, y: -97.4887, z: 0}
+    m_Extent: {x: 77.49935, y: 107.768, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 11.7
@@ -140626,8 +140625,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.091799736, y: 0.7150998, z: 0}
-    m_Extent: {x: 14.2093, y: 9.5567, z: 0}
+    m_Center: {x: -0.09194994, y: 0.7174001, z: 0}
+    m_Extent: {x: 14.212851, y: 9.552099, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 2.04
@@ -262992,8 +262991,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.09069967, y: 0.71480036, z: 0}
-    m_Extent: {x: 14.2111, y: 9.558701, z: 0}
+    m_Center: {x: -0.09194994, y: 0.7174001, z: 0}
+    m_Extent: {x: 14.212851, y: 9.552099, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 2.04
@@ -317410,8 +317409,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.08850002, y: 0.71985006, z: 0}
-    m_Extent: {x: 14.2158, y: 9.54665, z: 0}
+    m_Center: {x: -0.09194994, y: 0.7174001, z: 0}
+    m_Extent: {x: 14.212851, y: 9.552099, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 2.04
@@ -317496,8 +317495,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.09704971, y: 0.7207999, z: 0}
-    m_Extent: {x: 14.21175, y: 9.5529, z: 0}
+    m_Center: {x: -0.09194994, y: 0.7174001, z: 0}
+    m_Extent: {x: 14.212851, y: 9.552099, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 2.04
@@ -330285,12 +330284,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &1994750589
 GameObject:
   m_ObjectHideFlags: 0
@@ -341069,8 +341068,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 48.3911, y: -58.641747, z: 0}
-    m_Extent: {x: 129.5823, y: 132.60974, z: 0}
+    m_Center: {x: 48.393196, y: -58.6469, z: 0}
+    m_Extent: {x: 129.57779, y: 132.6123, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 11.7

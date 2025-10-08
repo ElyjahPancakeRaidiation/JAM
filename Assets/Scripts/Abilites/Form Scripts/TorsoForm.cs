@@ -298,7 +298,8 @@ public class TorsoForm : PlayerFormsScriptables
             Vine currentVineScript = currentVine.GetComponent<Vine>();
             Vector2 directionToHook = currentVineScript.hook.transform.position - transform.position;
             float input = playerManager.GetHorizontalInput();
-            if (input == 0f) //no input => pull
+            Debug.Log(input);
+            if (input != 1 && input != -1) //no input => pull
             {
                 _rb.AddForce(directionToHook.normalized * (!currentVineScript.PullForceOverwritten() ?
                 (10 + torsoVar.pullForce * directionToHook.magnitude) : currentVineScript.VineSpecificForce()), ForceMode2D.Impulse);

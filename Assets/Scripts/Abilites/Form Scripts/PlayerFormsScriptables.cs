@@ -44,13 +44,13 @@ public abstract class PlayerFormsScriptables : ScriptableObject
         functionality.OnStartMethod(this);
     }
     
-    
     public abstract class FormFunctionality : MonoBehaviour
     {
         protected PlayerManager playerManager;
         protected Rigidbody2D _rb;
         public float movementMultipliers { get; set; } = 1;
         public float abilityMultipliers { get; set; } = 1;
+
 
         public virtual void OnStartMethod(PlayerFormsScriptables f)
         {
