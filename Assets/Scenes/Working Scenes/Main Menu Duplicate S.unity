@@ -3073,6 +3073,10 @@ PrefabInstance:
       propertyPath: onStartTransition
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8558161048729384434, guid: 4b75d66cb823cd443b4fbb52ba62c666, type: 3}
+      propertyPath: completeGameSaveManager
+      value: 
+      objectReference: {fileID: 55792556}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

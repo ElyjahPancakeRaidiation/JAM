@@ -137,7 +137,7 @@ public class ThoughtBubbleInteractive : MonoBehaviour
         }
         else
         {
-            yield return StartCoroutine(MoveAnswersToPositionEnum(thoughtBubbleAnswers[idx].GetCurInstance(), thoughtBubbleAnswers[idx].GetDefualtPosition(), movingSpeedMultiplier));
+            StartCoroutine(MoveAnswersToPositionEnum(thoughtBubbleAnswers[idx].GetCurInstance(), thoughtBubbleAnswers[idx].GetDefualtPosition(), movingSpeedMultiplier));
             thoughtBubbleAnswers[idx].GetCurInstance().GetComponent<MoveUIAnswers>().canClick = true;
 
             curID = 0;
@@ -162,15 +162,16 @@ public class ThoughtBubbleInteractive : MonoBehaviour
 
     private void MoveAnswersToPosition(int idx, Vector2 position, float speedMultiplier)
     {
-        moved = StartCoroutine(MoveAnswersToPositionEnum(thoughtBubbleAnswers[idx].GetCurInstance(), position, speedMultiplier));
+        StartCoroutine(MoveAnswersToPositionEnum(thoughtBubbleAnswers[idx].GetCurInstance(), position, speedMultiplier));
     }
 
-    private IEnumerator MoveAnswersToPositionEnum(GameObject obj, Vector2 position, float speedMultiplier)
+    private IEnumerator MoveAnswersToPositionEnum(GameObject obj, Vector3 position, float speedMultiplier)
     {
         var conObject = obj.transform;
         float time = 0;
-        while (conObject.position != (Vector3)position && !obj.GetComponent<MoveUIAnswers>().isClicked)
+        while (conObject.position != position && !obj.GetComponent<MoveUIAnswers>().isClicked)
         {
+            Debug.Log(conObject);
             time += Time.deltaTime;
             conObject.position = Vector2.MoveTowards(conObject.position, position, speedCurve.Evaluate(time) * speedMultiplier);
 
@@ -179,10 +180,20 @@ public class ThoughtBubbleInteractive : MonoBehaviour
             if (conObject.position == (Vector3)position)//For saftey
             {
                 Debug.Log("HELLO?!!");
+                // if (moved != null)
+                // {
+                //     StopCoroutine(moved);
+                //     moved = null;
+                // }
                 break;
             }
             yield return null;
         }
+        // if (moved != null)
+        // {
+        //     StopCoroutine(moved);
+        //     moved = null;
+        // }
     }
 
     void OnDrawGizmosSelected()

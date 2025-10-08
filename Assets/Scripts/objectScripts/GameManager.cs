@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     public bool isPaused { get; set; }
     private GameObject player;
     private CanvasScript allCanvasObj;
+    [SerializeField] private SaveManager completeGameSaveManager;
 
 
     private void Awake()
@@ -140,6 +141,7 @@ public class GameManager : MonoBehaviour
         if (ConsoleScript.consoleScript != null)
         {
             ConsoleScript.consoleScript.AddCommand("ChangeVar", "GameManager", CompleteGameFunc);
+            // if(completeGameSaveManager!=null){completeGameSaveManager.SaveDataToFile();}
         }
     }
 

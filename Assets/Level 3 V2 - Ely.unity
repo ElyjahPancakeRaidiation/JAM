@@ -50249,11 +50249,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseKey: 112
   sceneNum: 5
-  hasSpawnPosition: 0
+  hasSpawnPosition: 1
   onStartTransition: 1
   canPause: 1
   playerSpawnPosition: {fileID: 993561667}
-  build: 1
+  build: 0
 --- !u!61 &277219309
 BoxCollider2D:
   m_ObjectHideFlags: 0
