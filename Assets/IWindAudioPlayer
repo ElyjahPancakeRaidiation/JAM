@@ -1,0 +1,8 @@
+public interface IWindAudioPlayer{
+
+    public virtual void PlayerAudio();
+    
+    
+
+
+}
