@@ -46,7 +46,7 @@ public class WindAudioPlayer : MonoBehaviour
             currentTimer += Time.deltaTime;
         }
         else currentTimer = 0;
-        Debug.Log("currenTImer: " + currentTimer);
+        // Debug.Log("currenTImer: " + currentTimer);
     }
     float currentPitch;
     float currentVolume;

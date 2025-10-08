@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11914,12 +11913,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!20 &365238990
 Camera:
   m_ObjectHideFlags: 0
@@ -19609,6 +19608,18 @@ PrefabInstance:
       propertyPath: audioPoints.Array.data[0].rightClip
       value: 
       objectReference: {fileID: 8300000, guid: b9378ac161e52ac4ea2e68009534036b, type: 3}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[0].usePitchShift
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[0].pitchOffsetRange.Max
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 145697861418341028, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
+      propertyPath: playerSFXs.Array.data[0].pitchOffsetRange.Min
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1386902994798715081, guid: cb4f7b398dc66d542a2c47672ca59892, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.024742
@@ -29584,6 +29595,8 @@ MonoBehaviour:
   dataFolderName: PlayerSettings
   autoSave: 1
   autoSaveTime: 10
+  saveOnce: 0
+  counter: 0
 --- !u!4 &1460987843
 Transform:
   m_ObjectHideFlags: 0
@@ -36544,6 +36557,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   anim: {fileID: 451134771}
+  colSize: {x: 0, y: 0}
+  colOffset: {x: 0, y: 0}
 --- !u!61 &1885992300
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -39302,6 +39317,8 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   anim: {fileID: 451134771}
+  colSize: {x: 0, y: 0}
+  colOffset: {x: 0, y: 0}
 --- !u!61 &2036183552
 BoxCollider2D:
   m_ObjectHideFlags: 0

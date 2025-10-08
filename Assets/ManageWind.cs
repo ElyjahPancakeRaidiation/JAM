@@ -128,8 +128,8 @@ public class ManageWind : MonoBehaviour
         AdjustWindZoneAudio();
         IRunAudioWhenPlayerExitsZone();
         RunAudioTimer();
-        // PlayerManager.playerManager.playerForms[0].functionality.GetDash();
-        Debug.Log("AudioTImer: " + audioTimer);
+
+        // Debug.Log("AudioTImer: " + audioTimer);
 
     }
 

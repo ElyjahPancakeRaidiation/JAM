@@ -62,9 +62,7 @@ public class InputManager : MonoBehaviour
             {    //if maintouch not initialized yet
                 if (touch.phase == TouchPhase.Began && mainTouch == null && touch.position.x < screenSize.x * inputDetectionPercentX)
                 {
-                    mainTouch = new MainTouch();
-                    mainTouch.setOrigin(touch.position);
-                    mainTouch.setFingerID(touch.fingerId);
+                    GetMainTouch(touch.position, touch.fingerId);
                     Debug.Log("Touch started: " + touch.fingerId);
                 }
             }   //if maintouch is initialized, update its position
@@ -86,7 +84,7 @@ public class InputManager : MonoBehaviour
     {
         foreach (Touch touch in Input.touches)
         {
-            if (touch.fingerId == mainTouch.fingerID)
+            if (touch.fingerId == GetMainTouch(touch.position, touch.fingerId).fingerID)
             {
                 if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                 {
@@ -99,6 +97,16 @@ public class InputManager : MonoBehaviour
                 }
             }
         }
+    }
+    private MainTouch GetMainTouch(Vector2 touchPosition, float fingerID)
+    {
+        if (mainTouch == null)
+        {
+            mainTouch = new MainTouch();
+            mainTouch.setOrigin(touchPosition);
+            mainTouch.setFingerID(fingerID);
+        }
+        return mainTouch;
     }
     private void OnGUI()
     {

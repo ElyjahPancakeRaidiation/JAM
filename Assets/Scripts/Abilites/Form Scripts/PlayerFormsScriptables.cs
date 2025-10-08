@@ -44,7 +44,6 @@ public abstract class PlayerFormsScriptables : ScriptableObject
         functionality.OnStartMethod(this);
     }
     
-    
     public abstract class FormFunctionality : MonoBehaviour
     {
         protected PlayerManager playerManager;

@@ -94,6 +94,10 @@ public class CanvasScript : MonoBehaviour
         _transitionsAnim = TransitionCanvas.GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
 
+        if(!GameManager.current.GetOnStartTransition()){
+            _transitionsAnim.SetBool("IdleOnStart", true);
+        }
+
         if (pauseCanvas != null) { pauseCanvas.SetActive(false); }
 
         GameManager.current.pauseEvent += setActivePauseCanvas;

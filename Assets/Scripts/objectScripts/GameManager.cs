@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool hasSpawnPosition;
     //controls wheater or not the scene will start with the beginning transition
     [SerializeField] private bool onStartTransition = true;
+    public bool GetOnStartTransition(){return onStartTransition;}
     [SerializeField] private bool canPause = true;
     [SerializeField] private Transform playerSpawnPosition;
 
@@ -89,10 +91,10 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (!onStartTransition)
-            {
-                allCanvasObj._transitionsAnim.SetBool("IdleOnStart", true);
-            }
+            // if (!onStartTransition)
+            // {
+            //     allCanvasObj._transitionsAnim.SetBool("IdleOnStart", true);
+            // }
         }
 
         if (hasSpawnPosition)
@@ -102,6 +104,7 @@ public class GameManager : MonoBehaviour
         }
 
         isPaused = false;
+        AddComands();
     }
 
     void Update()
@@ -129,6 +132,29 @@ public class GameManager : MonoBehaviour
                 if (unPauseEvent != null) { unPauseEvent(); }
                 Time.timeScale = 1;
             }
+        }
+    }
+
+    private void AddComands()
+    {
+        if (ConsoleScript.consoleScript != null)
+        {
+            ConsoleScript.consoleScript.AddCommand("ChangeVar", "GameManager", CompleteGameFunc);
+        }
+    }
+
+    private void CompleteGameFunc(string[] fuck) {
+        if (fuck[2] == "true")
+        {
+            completedGame = true;
+        }
+        else if (fuck[2] == "false")
+        {
+            completedGame = false;
+        }
+        else
+        {
+            Debug.Log("Errorfuc");
         }
     }
 
