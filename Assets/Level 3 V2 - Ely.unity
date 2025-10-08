@@ -50253,7 +50253,7 @@ MonoBehaviour:
   onStartTransition: 1
   canPause: 1
   playerSpawnPosition: {fileID: 993561667}
-  build: 1
+  build: 0
 --- !u!61 &277219309
 BoxCollider2D:
   m_ObjectHideFlags: 0
