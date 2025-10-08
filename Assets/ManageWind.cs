@@ -243,15 +243,7 @@ public class ManageWind : MonoBehaviour
                 SpawnWindParticlesV2();
 
             }
-            // if (!windAudio.GetAudioPlaying())
-            // {
-            //     windAudio.PlayAudio();
-            //     windAudio.GetAudioPlaying(true);
-
-            // 
-
-
-
+       
         }
         else
         {
@@ -260,15 +252,7 @@ public class ManageWind : MonoBehaviour
             multiplier = 1;
             windCounter = 0;
             isDashRecharged = false;
-            // incrementValue = .5f;
-
-
-            // if (windAudio.GetAudioPlaying())
-            // {
-            //     windAudio.StopAudio();
-            //     windAudio.GetAudioPlaying(false);
-
-            // }
+          
         }
 
         if (checkPlayerInVisibleZone)
@@ -334,8 +318,6 @@ public class ManageWind : MonoBehaviour
 
     Vector2 GetForce(float forceX, float forceY)
     {
-        //collidedRb.AddForce(new Vector2(windForceX, windForceY * OldForceMultiplierY(multiplierIncrement)),
-
         Vector2 forcePower = new Vector2(forceX, forceY * multiplier);
         return forcePower;
     }
@@ -472,8 +454,6 @@ public class ManageWind : MonoBehaviour
         if (audioPlayedOnce == false && windAudio.GetAudioPlaying())
         {
 
-
-            // windAudio.StopAudio();
             windAudio.GetAudioPlaying(false);
         }
 
