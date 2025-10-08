@@ -29,9 +29,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Test Scenes/Mohammed/mi dup3- lvl 3 demo.unity
     guid: f115e2f46f04b8649a421208b76b6604
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test Scenes/Elyjah/Level 3 - Ely.unity
     guid: effb0dfad2ae2754eb71e4afb85ad70d
+  - enabled: 1
+    path: Assets/Level 3 V2 - Ely.unity
+    guid: f93ca70d5cefce74a95993f16cdefd26
   - enabled: 0
     path: Assets/Scenes/Working Scenes/Old Level 2 - C.unity
     guid: 5bf974df0ab2b3a47bae7aaf05f52d68
