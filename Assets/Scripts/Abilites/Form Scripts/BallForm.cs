@@ -46,6 +46,11 @@ public class BallForm : PlayerFormsScriptables
         private GameObject _dustSpawner;
         private Coroutine turnEasingBackOn;
 
+        public override void setFloat(int value){
+            dashAmount = value;
+        }
+       
+       
         public override void OnStartMethod(PlayerFormsScriptables f)
         {
             base.OnStartMethod(f);

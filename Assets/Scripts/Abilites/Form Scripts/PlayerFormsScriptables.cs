@@ -51,7 +51,9 @@ public abstract class PlayerFormsScriptables : ScriptableObject
         public float movementMultipliers { get; set; } = 1;
         public float abilityMultipliers { get; set; } = 1;
 
+        public virtual void setFloat(int value){}
 
+       
         public virtual void OnStartMethod(PlayerFormsScriptables f)
         {
             //These will be played in the start method in playermanager so there shouldn't be to much of a delay.
