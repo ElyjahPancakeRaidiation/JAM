@@ -33,10 +33,12 @@ public class ConsoleScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F10))
-        {
-            ChangeConsoleState();
-        }
+
+    }
+
+    public void TURNONCONSOLE()
+    {
+        ChangeConsoleState();
     }
 
     public void SendCommand(string command)

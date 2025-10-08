@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbleInteracable : MonoBehaviour
 {
-    [SerializeField] ThoughtBubbleInteractive thoughtBubbleInteractive;
+    [SerializeField] private ThoughtBubbleInteractive thoughtBubbleInteractive;
     private Collider2D col;
     private float colAngle;
     [SerializeField] private Vector2 colVector, colOffset;

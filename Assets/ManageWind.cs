@@ -127,7 +127,7 @@ public class ManageWind : MonoBehaviour
         IRunAudioWhenPlayerExitsZone();
         RunAudioTimer();
 
-        Debug.Log("AudioTImer: " + audioTimer);
+        // Debug.Log("AudioTImer: " + audioTimer);
 
     }
 

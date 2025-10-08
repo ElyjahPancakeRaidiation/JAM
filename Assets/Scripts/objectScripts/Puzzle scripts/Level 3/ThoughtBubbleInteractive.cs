@@ -87,6 +87,7 @@ public class ThoughtBubbleInteractive : MonoBehaviour
 
     public IEnumerator StartMinigame()
     {
+        Debug.Log(isPlayingMG);
         thoughtBubbleHolder.SetActive(true);
         _anim.Play(startAnimName);
         foreach (GameObject item in activeObjects)
@@ -172,9 +173,12 @@ public class ThoughtBubbleInteractive : MonoBehaviour
         {
             time += Time.deltaTime;
             conObject.position = Vector2.MoveTowards(conObject.position, position, speedCurve.Evaluate(time) * speedMultiplier);
+
             Debug.Log(conObject.position + ": " + position);
+            Debug.Log(obj.GetComponent<MoveUIAnswers>().isClicked);
             if (conObject.position == (Vector3)position)//For saftey
             {
+                Debug.Log("HELLO?!!");
                 break;
             }
             yield return null;
