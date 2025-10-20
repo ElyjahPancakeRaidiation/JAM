@@ -6,6 +6,8 @@ using SimpleJSON;
 using CustomFileFunc;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Text;
+using UnityEngine.EventSystems;
 
 public class SaveManager : MonoBehaviour
 {
@@ -52,11 +54,13 @@ public class SaveManager : MonoBehaviour
             {
                 string fileName = sceneData.savedDataPaths[i].FullName.Replace(@"\", "/");
                 if (File.Exists(fileName))
-                {
-                    string jsonData = File.ReadAllText(fileName);
-                    if (jsonData != "")
+                {  
+                    string jsonDataEncoded = File.ReadAllText(fileName);
+                    byte[] decodedBytes = Convert.FromBase64String(jsonDataEncoded);
+                    string jsonDataDecoded = Encoding.UTF8.GetString(decodedBytes);
+                    if (jsonDataDecoded != "")
                     {
-                        JSONObject j = (JSONObject)JSON.Parse(jsonData);
+                        JSONObject j = (JSONObject)JSON.Parse(jsonDataDecoded);
                         sceneSavedData.Add(fileName, j);
                     }
                 }
@@ -171,7 +175,10 @@ public class SaveManager : MonoBehaviour
             foreach (KeyValuePair<string, JSONObject> item in sceneSavedData)
             {
                 CustomFuncs.CreateFile(item.Key);
-                File.WriteAllText(item.Key, sceneSavedData[item.Key].ToString(4));
+                string baseData = sceneSavedData[item.Key].ToString(4);
+                byte[] bytesToEncode = Encoding.UTF8.GetBytes(baseData);
+                string encodedData = Convert.ToBase64String(bytesToEncode);
+                File.WriteAllText(item.Key, encodedData);
             }
             saving = false;
         }
